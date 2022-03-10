@@ -7,11 +7,12 @@
 
   .nav-item{
     font-family: 'Lobster', cursive;
-  text-shadow: 2px 2px 8px #903D05;
+  text-shadow: 2px 2px 8px #f09a3e;
+  
   }
 .h5{
   font-family: 'Lobster', cursive;
-  text-shadow: 2px 2px 8px #903D05;
+  text-shadow: 2px 2px 8px #f09a3e;
 }
 
 /*Codigo para la política de cookies*/
@@ -129,7 +130,8 @@ box-shadow:         3px -3px 1px rgba(50, 50, 50, 0.56);
 
         .gris{
         
-            background: #903D05;
+            background:  #f09a3e;
+            ;
              border-radius: 3px;
              
 
@@ -169,9 +171,9 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-thumb {
-  background: #903D05;
+  background: #f09a3e;
   border-radius: 900px;
-  border-right: 4px solid #903D05;
+  border-right: 4px solid #f09a3e;
 }
 
 
