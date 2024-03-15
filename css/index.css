@@ -1,18 +1,26 @@
 
 .h1{
     font-family: 'Lobster', cursive;
-  text-shadow: 2px 2px 8px wheat;
+  text-shadow: 2px 2px 8px rgb(40, 16, 137);
+  
 
   }
 
   .nav-item{
     font-family: 'Lobster', cursive;
-  text-shadow: 2px 2px 8px #f09a3e;
+  text-shadow: 2px 2px 8px rgb(40, 16, 137);
   
+   
   }
 .h5{
   font-family: 'Lobster', cursive;
-  text-shadow: 2px 2px 8px #f09a3e;
+  text-shadow: 2px 2px 8px rgb(40, 16, 137);
+}
+
+
+.navbar-brand{
+  font-family: 'Lobster', cursive;
+
 }
 
 /*Codigo para la política de cookies*/
@@ -105,7 +113,6 @@ box-shadow:         3px -3px 1px rgba(50, 50, 50, 0.56);
  
 /* Fin del CSS para cookies */
  
-</style>
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 .body {
@@ -125,12 +132,24 @@ box-shadow:         3px -3px 1px rgba(50, 50, 50, 0.56);
 
 }
 
+.section-title{
+
+  font-family: 'Lobster', cursive;
+
+}
+
+.page-footer{
+  background-color: rgb(40, 16, 137);
+  font-family: 'Lobster', cursive;
+
+}
+
 
 
 
         .gris{
         
-            background:  #f09a3e;
+            background:  rgb(40, 16, 137);
             ;
              border-radius: 3px;
              
@@ -166,14 +185,14 @@ border-left:-150px;
 /* Scroll Personalizado */
 
 body::-webkit-scrollbar {
-  width: 15px;
+  width: 10px;
   background: white;
 }
 
 body::-webkit-scrollbar-thumb {
-  background: #f09a3e;
+  background: rgb(85, 61, 183);
   border-radius: 900px;
-  border-right: 4px solid #f09a3e;
+  border-right: 4px solid rgb(85, 61, 183);
 }
 
 
