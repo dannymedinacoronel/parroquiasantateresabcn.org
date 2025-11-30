@@ -14,342 +14,307 @@
                                                                                                                                                                   
 -->
 
-
+<!DOCTYPE html>
 <html lang="es">
-<!-- saved from url=(0014)about:internet -->
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="google-site-verification" content="VPnsEJ8eoLn1oCmTMKtjPE2oXmyNlapYjslb4OXHVe8" />
-  <link rel="stylesheet" type="text/css" href="css/index.css">
-  <meta name="google-site-verification" content="VPnsEJ8eoLn1oCmTMKtjPE2oXmyNlapYjslb4OXHVe8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="VPnsEJ8eoLn1oCmTMKtjPE2oXmyNlapYjslb4OXHVe8" />
+    <title>Parroquia Santa Teresa de Jesús | Barcelona</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
 
+    <style>
+        /* --- VARIABLES Y DISEÑO GENERAL --- */
+        :root {
+            --bg-color: #fcfbf9;
+            --text-color: #4a4a4a;
+            --accent-color: #bfa065; /* Dorado */
+            --white: #ffffff;
+            --black-footer: #111111;
+            --header-font: 'Cormorant Garamond', serif;
+            --body-font: 'Montserrat', sans-serif;
+            --nav-height: 90px;
+        }
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="shortcut icon" type="image/x-icon" href="imagenes/faviconparroquiaweb.ico">
-  <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-padding-top: var(--nav-height); }
+        
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-top: var(--nav-height);
+        }
 
-  <!-- Font Awesome Boostrap elementos incluidos para el navbar -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
-  <!-- Bootstrap core CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Material Design Bootstrap -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.6/css/mdb.min.css" rel="stylesheet">
-   <!-- cookies -->
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+        /* --- HEADER & NAVEGACIÓN --- */
+        header {
+            background-color: var(--white);
+            height: var(--nav-height);
+            width: 100%;
+            padding: 0 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.03);
+            position: fixed;
+            top: 0; left: 0; z-index: 1000;
+        }
 
+        .logo {
+            font-family: var(--header-font);
+            font-size: 1.5rem; 
+            font-weight: 700;
+            color: #1a1a1a;
+            text-decoration: none;
+            line-height: 1.1;
+        }
 
-  <!--TituLo de la web -->
-  <title>Parroquia de Santa Teresa de Jesús </title>
-  <link rel="shortcut icon" href="/fotosdefinitivas/portada/faviconico.ico" type="image/x-icon">  
+        .nav-menu { display: flex; gap: 2rem; list-style: none; }
 
+        .nav-link {
+            text-decoration: none;
+            color: #2c2c2c;
+            font-family: var(--header-font); 
+            font-weight: 700; 
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+            position: relative;
+        }
 
+        .nav-link:hover { color: var(--accent-color); }
+        
+        /* Icono Hamburguesa (Móvil) */
+        .hamburger { display: none; cursor: pointer; z-index: 1001; }
+        .bar { display: block; width: 25px; height: 2px; margin: 5px auto; background-color: #2c2c2c; transition: 0.3s; }
 
+        /* --- HERO (PORTADA) --- */
+        .hero {
+            height: 85vh;
+            /* IMAGEN DE FONDO */
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('fotosdefinitivas/portada/3.jpg'); 
+            /* Si la imagen local no carga, usa esta de prueba para ver el diseño: 
+               url('https://images.unsplash.com/photo-1548625361-16a75f284a69?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--white); padding: 0 1rem;
+        }
 
+        .hero h1 {
+            font-family: var(--header-font);
+            font-size: 4.5rem; 
+            font-weight: 600;
+            font-style: italic;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-divider { width: 80px; height: 3px; background-color: var(--accent-color); margin: 0 auto 1.5rem auto; }
+        .hero p { font-size: 1.2rem; font-weight: 300; letter-spacing: 0.5px; }
 
-  <!--TituLo de la web -->
+        /* --- SECCIONES GENERALES --- */
+        section { padding: 5rem 10%; }
+        h2 { font-family: var(--header-font); font-size: 2.8rem; margin-bottom: 1rem; text-align: center; color: #1a1a1a; }
+        .subtitulo { text-align: center; color: var(--accent-color); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; display: block; margin-bottom: 0.5rem; font-weight: 600; }
+        
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; margin-top: 3rem; }
 
-  <h1 align="center" class="section-title h1">Parroquia de Santa Teresa de Jesús </h1>
-  <!--Navbar -->
-  <nav class="mb- navbar navbar navbar-expand-lg navbar-dark  gris scrolling-navbar  !fixed-center ">
-    <a class="navbar-brand" href="https://goo.gl/maps/Y4SiUkiMGwp">C/Llobregós, 132, 08032 Barcelona </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
-      aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+        /* --- TARJETAS --- */
+        .card { background: var(--white); padding: 2.5rem; text-align: center; border: 1px solid #eaeaea; transition: 0.3s; }
+        .card:hover { border-color: var(--accent-color); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .card h3 { font-size: 1.8rem; margin-bottom: 1rem; font-style: italic; font-family: var(--header-font); }
+        .card ul { list-style: none; }
+        .card li { margin-bottom: 0.5rem; border-bottom: 1px dotted #eee; padding-bottom: 0.5rem; }
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
-      <ul class="navbar-nav text-center ml-auto ">
-        <!--/.Barra menu principal  espacios de la web no tocar -->
+        /* --- WIDGETS (Evangelio / Instagram) --- */
+        .widget-container {
+            background: #fff;
+            padding: 2rem;
+            border: 1px solid #eee;
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 500px; /* Altura mínima para asegurar que se vean bien */
+        }
 
+        /* --- FOOTER --- */
+        footer { background-color: var(--black-footer); color: #a0a0a0; padding: 4rem 10% 2rem 10%; font-size: 0.9rem; }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; border-bottom: 1px solid #333; padding-bottom: 3rem; }
+        .footer-col h4 { font-family: var(--header-font); color: var(--white); font-size: 1.4rem; margin-bottom: 1.5rem; text-decoration: underline; text-decoration-color: var(--accent-color); }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 0.8rem; }
+        .footer-links a { color: #a0a0a0; text-decoration: none; transition: 0.3s; }
+        .footer-links a:hover { color: var(--accent-color); }
 
-        <!--/.Barra menu principal no tocar -->
-
-        <li class="nav-item">
-          <a href="index.html" class="nav-link">Inicio</a>
-
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">Noticias
-          </a>
-          <div class="dropdown-menu dropdown-default" aria-labelledby="navbarDropdownMenuLink-333">
-            <a class="dropdown-item" href="#noticias">Noticias</a>
-            <a class="dropdown-item" href="#revista">Revista</a>
-          </div>
-
-
-        <li class="nav-item">
-          <a href="html/organigramaparroquial.html" class="nav-link">Organigrama Parroquial</a>
-        </li>
-
-
-        <li class="nav-item">
-          <a href="html/dinamicapastoral.html" class="nav-link">Dinámica pastoral</a>
-
-        </li>
-
-        <li class="nav-item">
-          <a href="html/historia.html" class="nav-link">Historia</a>
-
-        </li>
-
-        <li class="nav-item">
-          <a href="html/imagenes.html" class="nav-link">Imágenes</a>
-        </li>
-        <li class="nav-item">
-          <a href="html/contacto.html" class="nav-link">Contacto</a>
-        </li>
-
-      </ul>
-      </li>
-      </ul>
-
-
-      <ul class="navbar-nav ml-auto nav-flex-icons">
-
-        <li class="nav-item">
-          <a href="https://www.instagram.com/parroquiasantateresadejesusbcn/" class="nav-link waves-effect waves-light"> @parroquiasantateresadejesusbcn <i class="fab fa-instagram"></i>
-          </a>
-        </li>
-        </li>
-      </ul>
-</div>
-  </nav>
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hamburger { display: block; }
+            .nav-menu {
+                position: fixed; left: -100%; top: var(--nav-height);
+                gap: 0; flex-direction: column; background-color: var(--white);
+                width: 100%; height: calc(100vh - var(--nav-height));
+                text-align: center; transition: 0.3s; padding-top: 2rem;
+            }
+            .nav-menu.active { left: 0; }
+            .nav-item { margin: 15px 0; }
+            .hero h1 { font-size: 3rem; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+        }
+    </style>
 </head>
-  <!--/.Barra menu principal aqui acaba no tocar -->
-  <!-- Aqui empieza el carrusel de imagenes -->
-  <body>
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="fotosdefinitivas/portada/3.jpg" class="d-block w-100" height="10%"  alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="fotosdefinitivas/portada/2.jpg" class="d-block w-100" height="10%"  alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="fotosdefinitivas/portada/1.jpg" class="d-block w-100" height="10%"  alt="...">
-    </div>
-  </div>
-  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
-  <!-- Aqui acaba el carrusel de la imagenes-->
-  <hr>
+<body>
 
-  <div class="container">
-    <!-- Example row of columns -->
-
-    <div class="row">
-      <div class="col-md-6">
-        <a name="revista"></a>
-        <h1 class="section-title h1">El evangelio de hoy</h1>
-        <h2></h2>
-        <h4>Lee hoy mismo el evangelio de cada dia</h4>
-        <hr>
-        <br>
-        <br>
-
-        <div class="agm_content_38">
-
-          <p>
-            <iframe align="center" width="90%" height="450" frameborder="0" src="https://evangeli.net/evangelio/widget/web">
-            </iframe>
-          </p>
-          <hr>
+    <header>
+        <a href="#" class="logo">Parroquia<br>Santa Teresa de Jesús</a>
+        
+        <div class="hamburger">
+            <span class="bar"></span><span class="bar"></span><span class="bar"></span>
         </div>
 
-      </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="#" class="nav-link">Inicio</a></li>
+            <li class="nav-item"><a href="#horarios" class="nav-link">Eucaristias</a></li>
+            <li class="nav-item"><a href="#actualidad" class="nav-link">Noticias</a></li>
+            <li class="nav-item"><a href="html/organigramaparroquial.html" class="nav-link">Organigrama</a></li>
+            <li class="nav-item"><a href="html/historia.html" class="nav-link">Historia</a></li>
+            <li class="nav-item"><a href="html/contacto.html" class="nav-link">Contacto</a></li>
+        </ul>
+    </header>
 
-      <div class="col-mc-6">
-        <a name="noticias"></a>
-        <h1 class="section-title h1">Ultimas Noticias/Redes Sociales</h1>
-        <h4>Siguenos en nuestras redes sociales</h4>
-        <hr>
-<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/CcKvS29hI4E/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/CcKvS29hI4E/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">Ver esta publicación en Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/CcKvS29hI4E/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">Una publicación compartida de parroquiasantateresadejesusbcn (@parroquiasantateresadejesusbcn)</a></p></div></blockquote> <script async src="//www.instagram.com/embed.js"></script>
+    <section class="hero">
+        <h1>Santa Teresa<br>de Jesús</h1>
+        <div class="hero-divider"></div>
+        <p>C/Llobregós, 132, 08032 Barcelona</p>
+        <br>
+        <a href="#horarios" style="color:white; border:1px solid white; padding: 10px 20px; text-decoration: none; text-transform: uppercase; font-size: 0.8rem;">Ver Horarios</a>
+    </section>
 
-<!--Start of cookies-->
-    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
-<script>
-window.cookieconsent.initialise({
-  "palette": {
-    "popup": {
-      "background": "#000000"
-    },
-    "button": {
-      "background": "#f1d600"
-    }
-  },
-  "theme": "classic",
-  "position": "bottom-left",
-  "content": {
-    "message": "Utilizamos cookies para mejorar la calidad de nuestro servicio.\nAl navegar por nuestra web aceptas nuestras politica de cookies.",
-    "dismiss": "OK",
-    "link": "\"politica de cookies\""
-  }
-});
-</script>
- 
-<!--End of cookies-->
+    <section id="horarios">
+        <span class="subtitulo">Celebraciones Litúrgicas</span>
+        <h2>Horarios de Eucaristía</h2>
+        <div class="grid-container">
+            <div class="card">
+                <h3>Laborables</h3>
+                <ul>
+                   
+                    <li>19:00 PM — Eucaristia</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Sábados</h3>
+                <ul>
+                    <li>19:00 PM — Eucaristia</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Domingos</h3>
+                <ul>
+                    <li>11:00 AM — Eucaristia </li>
+                    <li>13:00 PM — Eucaristia </li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
+    <section id="actualidad" style="background-color: #fff;">
+        <span class="subtitulo">Vida Parroquial</span>
+        <h2>Actualidad y Evangelio</h2>
+        
+        <div class="grid-container">
+            
+            <div class="widget-container">
+                <h3 style="text-align:center; font-family: var(--header-font); margin-bottom:1rem;">Evangelio de Hoy</h3>
+                <iframe align="center" width="100%" height="450" frameborder="0" src="https://evangeli.net/evangelio/widget/web"></iframe>
+            </div>
 
-<!--Start of Tawk.to Script chat em vivp-->
-<script type="text/javascript">
-  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-  (function(){
-  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-  s1.async=true;
-  s1.src='https://embed.tawk.to/5e7d2de035bcbb0c9aaad04f/default';
-  s1.charset='UTF-8';
-  s1.setAttribute('crossorigin','*');
-  s0.parentNode.insertBefore(s1,s0);
-  })();
-  </script>
-  <!--End of Tawk.to Script-->
+            <div class="widget-container">
+                <h3 style="text-align:center; font-family: var(--header-font); margin-bottom:1rem;">@parroquiasantateresadejesusbcn</h3>
+                
+                <script src="https://elfsightcdn.com/platform.js" async></script>
+                <div class="elfsight-app-8b9a40bb-7d76-4b43-bf12-9ed787fa24e2" data-elfsight-app-lazy></div>
 
+            </div>
 
+        </div>
+    </section>
 
-    <!-- JQuery  Esto sigue siendo parte del Bosstrap menu-->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <!-- Bootstrap tooltips -->
-    <script type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
-    <!-- Bootstrap core JavaScript -->
-    <script type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <!-- MDB core JavaScript -->
-    <script type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.6/js/mdb.min.js"></script>
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Santa Teresa de Jesús</h4>
+                <p>Carrer del Llobregós, 132</p>
+                <p>08032 Barcelona</p>
+                <br>
+                <a href="https://goo.gl/maps/Y4SiUkiMGwp" style="color:var(--accent-color); font-size:0.8rem;">Ver en Google Maps &rarr;</a>
+            </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+            <div class="footer-col">
+                <h4>Enlaces de Interés</h4>
+                <ul class="footer-links">
+                    <li><a href="https://www.esglesiabarcelona.cat/">Arzobispado de Barcelona</a></li>
+                    <li><a href="https://caritas.barcelona">Cáritas Barcelona</a></li>
+                    <li><a href="https://www.esglesiabarcelona.cat/mapa/index.php?view=barcelona-santateresadejesus">Buscador de Parroquias</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <ul class="footer-links">
+                    <li><a href="html/contacto.html">Contactar</a></li>
+                    <li><a href="https://www.instagram.com/parroquiasantateresadejesusbcn/">Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div style="text-align: center; opacity: 0.5; font-size: 0.8rem;">
+            &copy; 2025 Parroquia Santa Teresa de Jesús.
+        </div>
+    </footer>
+
     <script>
-      window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
+        /* Menú Móvil */
+        const hamburger = document.querySelector(".hamburger");
+        const navMenu = document.querySelector(".nav-menu");
+        hamburger.addEventListener("click", () => {
+            hamburger.classList.toggle("active");
+            navMenu.classList.toggle("active");
+        });
+        document.querySelectorAll(".nav-link").forEach(n => n.addEventListener("click", () => {
+            hamburger.classList.remove("active");
+            navMenu.classList.remove("active");
+        }));
     </script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+    <script>
+    window.cookieconsent.initialise({
+      "palette": { "popup": { "background": "#000000" }, "button": { "background": "#f1d600" } },
+      "theme": "red", "position": "bottom-left",
+      "content": { "message": "Utilizamos cookies para mejorar la calidad de nuestro servicio.", "dismiss": "OK" }
+    });
+    </script>
 
-    <hr width="100%" style="color: #0056b2;">
-
-
-  </div>
-  </div>
-  </div>
-  <!-- /container -->
-
+    <script type="text/javascript">
+      var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+      (function(){
+      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+      s1.async=true; s1.src='https://embed.tawk.to/5e7d2de035bcbb0c9aaad04f/default';
+      s1.charset='UTF-8'; s1.setAttribute('crossorigin','*');
+      s0.parentNode.insertBefore(s1,s0);
+      })();
+    </script>
 
 </body>
-<!-- Footer -->
-<footer class="page-footer font-small  pt-4">
-
-  <!-- Footer Links -->
-  <div class="container-fluid text-center text-md-left">
-
-    <!-- Grid row -->
-    <div class="row">
-
-      <!-- Grid column -->
-      <div class="col-md-6 mt-md-0 mt-3">
-
-        <!-- Content -->
-        <h1 class="section-title h1"><u>Parroquia Santa Teresa de Jesús</u></h1>
-
-        <h4>Carrer del Llobregós, 132, 08032 Barcelona</h4>
-      </div>
-      <!-- Grid column -->
-
-      <hr class="clearfix w-100 d-md-none pb-3">
-
-      <!-- Grid column -->
-      <div class="col-md-3 mb-md-0 mb-3">
-
-        <!-- Links -->
-        <h5 class="text-uppercase"><u>otros sitios</u></h5>
-
-        <ul class="list-unstyled">
-          <li>
-            <a href="html/contacto.html">Contacta con nosotros</a>
-          </li>
-          <li>
-            <a href="index.html#noticias">Noticias</a>
-          </li>
-          <li>
-            <a href="index.html#revista">Revista</a>
-          </li>
-
-        </ul>
-
-      </div>
-      <!-- Grid column -->
-
-
-
-      <!-- Grid column -->
-      <div class="col-md-3 mb-md-0 mb-3">
-
-        <!-- Links -->
-        <h5 class="text-uppercase"><u>enlaces de interés</u></h5>
-
-        <ul class="list-unstyled">
-          <li>
-            <a href="https://www.esglesiabarcelona.cat/">Arzobispado de Barcelona</a>
-          </li>
-          <li>
-            <a href="https://caritas.barcelona">Cáritas de Barcelona</a>
-          </li>
-          <li>
-            <a href="https://www.esglesiabarcelona.cat/mapa/index.php?view=barcelona-santateresadejesus">Encuentra tu
-              parroquia más cercana</a>
-          </li>
-
-        </ul>
-
-      </div>
-      <!-- Grid column -->
-
-    </div>
-
-  </div>
-  <!-- Footer Links -->
-
-  <!-- Copyright -->
-  <div class="footer-copyright text-center py-3">© 2019 Copyright:
-    <a href="index.html">parroquiasantateresa.org</a>
-
-    <div align="center" id="google_translate_element"></div>
-    <script type="text/javascript">
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-          pageLanguage: 'es',
-          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: false,
-        }, 'google_translate_element');
-      }
-    </script>
-    <script type="text/javascript"
-      src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <div class="clearbreak"></div>
-  </div>
-  </div>
-  </div>
-  <div class=" jsn-modulecontainer">
-    <div class="jsn-modulecontainer_inner">
-      <div class="jsn-modulecontent">
-        <div class="bannergroup">
-        </div>
-
-      </div>
-      <!-- Copyright -->
-
+</html>
 </footer>
 <!-- Footer -->
 
