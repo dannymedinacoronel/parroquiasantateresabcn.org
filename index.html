@@ -1,20 +1,3 @@
-
-<!DOCTYPE html>
-
-
-<!--
- /$$$$$$$  /$$$$$$$$ /$$      /$$  /$$$$$$   /$$$$$$  /$$$$$$$         /$$$$$$   /$$$$$$  /$$      /$$ /$$$$$$$  /$$   /$$ /$$$$$$$$ /$$$$$$$$ /$$$$$$$   /$$$$$$ 
-| $$__  $$| $$_____/| $$$    /$$$ /$$__  $$ /$$__  $$| $$__  $$       /$$__  $$ /$$__  $$| $$$    /$$$| $$__  $$| $$  | $$|__  $$__/| $$_____/| $$__  $$ /$$__  $$
-| $$  \ $$| $$      | $$$$  /$$$$| $$  \__/| $$  \ $$| $$  \ $$      | $$  \__/| $$  \ $$| $$$$  /$$$$| $$  \ $$| $$  | $$   | $$   | $$      | $$  \ $$| $$  \__/
-| $$  | $$| $$$$$   | $$ $$/$$ $$| $$      | $$  | $$| $$$$$$$/      | $$      | $$  | $$| $$ $$/$$ $$| $$$$$$$/| $$  | $$   | $$   | $$$$$   | $$$$$$$/|  $$$$$$ 
-| $$  | $$| $$__/   | $$  $$$| $$| $$      | $$  | $$| $$__  $$      | $$      | $$  | $$| $$  $$$| $$| $$____/ | $$  | $$   | $$   | $$__/   | $$__  $$ \____  $$
-| $$  | $$| $$      | $$\  $ | $$| $$    $$| $$  | $$| $$  \ $$      | $$    $$| $$  | $$| $$\  $ | $$| $$      | $$  | $$   | $$   | $$      | $$  \ $$ /$$  \ $$
-| $$$$$$$/| $$$$$$$$| $$ \/  | $$|  $$$$$$/|  $$$$$$/| $$  | $$      |  $$$$$$/|  $$$$$$/| $$ \/  | $$| $$      |  $$$$$$/   | $$   | $$$$$$$$| $$  | $$|  $$$$$$/
-|_______/ |________/|__/     |__/ \______/  \______/ |__/  |__/       \______/  \______/ |__/     |__/|__/       \______/    |__/   |________/|__/  |__/ \______/ 
-                                                                                                                                                                                                                                                                                                           
-                                                                                                                                                                  
--->
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -25,7 +8,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
 
@@ -39,7 +22,7 @@
             --black-footer: #111111;
             --header-font: 'Cormorant Garamond', serif;
             --body-font: 'Montserrat', sans-serif;
-            --nav-height: 90px;
+            --nav-height: 65px; /* ✅ REDUCIDO MÁS: Alto de la barra de 70px a 65px */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,44 +36,53 @@
             padding-top: var(--nav-height);
         }
 
-        /* --- HEADER & NAVEGACIÓN --- */
+        /* --- HEADER & NAVEGACIÓN (ULTRA-COMPACTO) --- */
         header {
             background-color: var(--white);
-            height: var(--nav-height);
+            height: var(--nav-height); /* Usa el nuevo alto */
             width: 100%;
             padding: 0 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.03);
+            box-shadow: 0 1px 10px rgba(0,0,0,0.05);
             position: fixed;
             top: 0; left: 0; z-index: 1000;
         }
 
         .logo {
             font-family: var(--header-font);
-            font-size: 1.5rem; 
+            font-size: 1.3rem; /* ✅ REDUCIDO MÁS: Logo de 1.4rem a 1.3rem */
             font-weight: 700;
             color: #1a1a1a;
             text-decoration: none;
             line-height: 1.1;
         }
 
-        .nav-menu { display: flex; gap: 2rem; list-style: none; }
+        .nav-menu { 
+            display: flex; 
+            gap: 1rem; /* ✅ REDUCIDO MÁS: Espacio entre enlaces de 1.2rem a 1rem */
+            list-style: none; 
+        }
 
         .nav-link {
             text-decoration: none;
             color: #2c2c2c;
-            font-family: var(--header-font); 
-            font-weight: 700; 
-            font-size: 1.1rem;
+            font-family: var(--body-font); 
+            font-weight: 500; 
+            font-size: 0.8rem; /* ✅ REDUCIDO MÁS: Tamaño de fuente de 0.85rem a 0.8rem */
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: color 0.3s;
+            letter-spacing: 1px; /* ✅ REDUCIDO MÁS: Espaciado de letras de 2px a 1px */
+            padding: 3px 0; /* Menos padding vertical */
+            transition: all 0.3s ease-in-out;
             position: relative;
         }
 
-        .nav-link:hover { color: var(--accent-color); }
+        .nav-link:hover { 
+            color: var(--accent-color); 
+            border-bottom: 2px solid var(--accent-color);
+            transform: translateY(-1px);
+        }
         
         /* Icono Hamburguesa (Móvil) */
         .hamburger { display: none; cursor: pointer; z-index: 1001; }
@@ -101,8 +93,6 @@
             height: 85vh;
             /* IMAGEN DE FONDO */
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('fotosdefinitivas/portada/3.jpg'); 
-            /* Si la imagen local no carga, usa esta de prueba para ver el diseño: 
-               url('https://images.unsplash.com/photo-1548625361-16a75f284a69?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); */
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -161,7 +151,7 @@
         @media (max-width: 768px) {
             .hamburger { display: block; }
             .nav-menu {
-                position: fixed; left: -100%; top: var(--nav-height);
+                position: fixed; left: -100%; top: var(--nav-height); /* Usa el nuevo alto */
                 gap: 0; flex-direction: column; background-color: var(--white);
                 width: 100%; height: calc(100vh - var(--nav-height));
                 text-align: center; transition: 0.3s; padding-top: 2rem;
@@ -176,20 +166,20 @@
 <body>
 
     <header>
-        <a href="#" class="logo">Parroquia Santa Teresa de Jesús</a>
+        <a href="#" class="logo">Parroquia Santa Teresa<br>de Jesús</a>
         
         <div class="hamburger">
             <span class="bar"></span><span class="bar"></span><span class="bar"></span>
         </div>
 
-     <ul class="nav-menu">
-            <li class="nav-item"><a href="index.html" class="nav-link">Inicio</a></li>
-          <li class="nav-item"><a href="index.html/#horarios" class="nav-link">Eucaristias</a></li>
-          <li class="nav-item"><a href="index.html/#actualidad" class="nav-link">Noticias</a></li>
-            <li class="nav-item"><a href="/HTML/dinamicapastoral.html" class="nav-link">Dinámica Pastoral</a></li>
-            <li class="nav-item"><a href="/HTML/organigramaparroquial.html" class="nav-link">Organigrama</a></li>
-            <li class="nav-item"><a href="/HTML/historia.html" class="nav-link">Historia</a></li>
-            <li class="nav-item"><a href="/HTML/contacto.html" class="nav-link">Contacto</a></li>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="index.html" class="nav-link">INICIO</a></li>
+            <li class="nav-item"><a href="index.html/#horarios" class="nav-link">EUCARISTÍAS</a></li>
+            <li class="nav-item"><a href="index.html/#actualidad" class="nav-link">NOTICIAS</a></li>
+            <li class="nav-item"><a href="/HTML/dinamicapastoral.html" class="nav-link">DINÁMICA PASTORAL</a></li>
+            <li class="nav-item"><a href="/HTML/organigramaparroquial.html" class="nav-link">ORGANIGRAMA</a></li>
+            <li class="nav-item"><a href="/HTML/historia.html" class="nav-link">HISTORIA</a></li>
+            <li class="nav-item"><a href="/HTML/contacto.html" class="nav-link">CONTACTO</a></li>
         </ul>
     </header>
 
@@ -208,7 +198,6 @@
             <div class="card">
                 <h3>Laborables</h3>
                 <ul>
-                   
                     <li>19:00 PM — Eucaristia</li>
                 </ul>
             </div>
@@ -257,15 +246,15 @@
                 <p>Carrer del Llobregós, 132</p>
                 <p>08032 Barcelona</p>
                 <br>
-                <a href="https://goo.gl/maps/Y4SiUkiMGwp" style="color:var(--accent-color); font-size:0.8rem;">Ver en Google Maps &rarr;</a>
+                <a href="https://goo.gl/maps/Y4SiUkiMGwp" style="color:var(--accent-color); font-size:0.8rem;" target="_blank">Ver en Google Maps &rarr;</a>
             </div>
 
             <div class="footer-col">
                 <h4>Enlaces de Interés</h4>
                 <ul class="footer-links">
-                    <li><a href="https://www.esglesiabarcelona.cat/">Arzobispado de Barcelona</a></li>
-                    <li><a href="https://caritas.barcelona">Cáritas Barcelona</a></li>
-                    <li><a href="https://www.esglesiabarcelona.cat/mapa/index.php?view=barcelona-santateresadejesus">Buscador de Parroquias</a></li>
+                    <li><a href="https://www.esglesiabarcelona.cat/" target="_blank">Arzobispado de Barcelona</a></li>
+                    <li><a href="https://caritas.barcelona" target="_blank">Cáritas Barcelona</a></li>
+                    <li><a href="https://www.esglesiabarcelona.cat/mapa/index.php?view=barcelona-santateresadejesus" target="_blank">Buscador de Parroquias</a></li>
                 </ul>
             </div>
 
@@ -273,7 +262,7 @@
                 <h4>Contacto</h4>
                 <ul class="footer-links">
                     <li><a href="html/contacto.html">Contactar</a></li>
-                    <li><a href="https://www.instagram.com/parroquiasantateresadejesusbcn/">Instagram</a></li>
+                    <li><a href="https://www.instagram.com/parroquiasantateresadejesusbcn/" target="_blank">Instagram</a></li>
                 </ul>
             </div>
         </div>
@@ -316,8 +305,4 @@
     </script>
 
 </body>
-</html>
-</footer>
-<!-- Footer -->
-
 </html>
