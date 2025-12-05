@@ -10,726 +10,636 @@
 | $$  | $$| $$      | $$\  $ | $$| $$    $$| $$  | $$| $$  \ $$      | $$    $$| $$  | $$| $$\  $ | $$| $$      | $$  | $$   | $$   | $$      | $$  \ $$ /$$  \ $$
 | $$$$$$$/| $$$$$$$$| $$ \/  | $$|  $$$$$$/|  $$$$$$/| $$  | $$      |  $$$$$$/|  $$$$$$/| $$ \/  | $$| $$      |  $$$$$$/   | $$   | $$$$$$$$| $$  | $$|  $$$$$$/
 |_______/ |________/|__/     |__/ \______/  \______/ |__/  |__/       \______/  \______/ |__/     |__/|__/       \______/    |__/   |________/|__/  |__/ \______/ 
-                                                                                                                                                                                                                                                                                                           
-                                                                                                                                                                  
--->
+
+
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="shortcut icon" type="image/x-icon" href="../imagenes/faviconparroquiaweb.ico">
-    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
-     <link rel="stylesheet" type="text/css" href="../css/index.css">
-      <link rel="stylesheet" type="text/css" href="../css/dinamicapastoral.css">
+    <title>Dinámica Pastoral | Parroquia Santa Teresa de Jesús</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Mantenemos las fuentes del diseño anterior -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+    <style>
+        /* --- VARIABLES Y DISEÑO GENERAL (Copiado de la versión anterior) --- */
+        :root {
+            --bg-color: #fcfbf9;
+            --text-color: #4a4a4a;
+            --accent-color: #bfa065; /* Dorado */
+            --white: #ffffff;
+            --black-footer: #111111;
+            --header-font: 'Cormorant Garamond', serif;
+            --body-font: 'Montserrat', sans-serif;
+            --nav-height: 90px; /* Vuelve a la altura original de 90px */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-padding-top: var(--nav-height); }
+        
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-top: var(--nav-height);
+        }
+
+        /* --- HEADER & NAVEGACIÓN (Izquierda y 90px) --- */
+        header {
+            background-color: var(--white);
+            height: var(--nav-height);
+            width: 100%;
+            padding: 0 5%;
+            display: flex;
+            justify-content: space-between; /* Izquierda - Derecha */
+            align-items: center;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.03);
+            position: fixed;
+            top: 0; left: 0; z-index: 1000;
+        }
+
+        .logo {
+            font-family: var(--header-font);
+            font-size: 1.5rem; 
+            font-weight: 700;
+            color: #1a1a1a;
+            text-decoration: none;
+            line-height: 1.1; /* Restaura la altura de línea para las dos líneas */
+        }
+
+        .nav-menu { 
+            display: flex; 
+            gap: 2rem; 
+            list-style: none; 
+            margin-left: 0; 
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #2c2c2c;
+            font-family: var(--header-font); 
+            font-weight: 700; 
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover { color: var(--accent-color); }
+        
+        /* Icono Hamburguesa (Móvil) */
+        .hamburger { display: none; cursor: pointer; z-index: 1001; }
+        .bar { display: block; width: 25px; height: 2px; margin: 5px auto; background-color: #2c2c2c; transition: 0.3s; }
+
+        /* --- SECCIONES GENERALES --- */
+        section { padding: 3rem 10%; }
+        h1.section-title, h2 { 
+            font-family: var(--header-font); 
+            font-size: 2.8rem; 
+            margin-bottom: 0.5rem; 
+            text-align: center; 
+            color: #1a1a1a; 
+            font-weight: 600;
+        }
+        .subtitle { 
+            text-align: center; 
+            color: var(--accent-color); 
+            font-size: 0.9rem; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            display: block; 
+            margin-bottom: 3rem; 
+            font-weight: 600; 
+        }
+        
+        /* --- TARJETAS FLIP (Recreación del efecto MDB) --- */
+        #dinamica-pastoral { background-color: #f4f4f4; }
+        .card-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 2rem; 
+        }
+
+        /* Contenedor de la tarjeta que permite el 3D */
+        .image-flip {
+            perspective: 1000px;
+            height: 100%;
+            min-height: 400px;
+            cursor: pointer;
+        }
+
+        /* Contenedor que rota */
+        .mainflip {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        /* Estado 'hover' o 'active' para rotar */
+        .image-flip.hover .mainflip,
+        .image-flip:hover .mainflip { /* MODIFICADO: Añadido :hover para que gire al pasar el ratón */
+            transform: rotateY(180deg);
+        }
+
+        .frontside, .backside {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Oculta la cara cuando está girada */
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Diseño de la cara frontal */
+        .frontside {
+            background-color: var(--white);
+            z-index: 2;
+        }
+        .frontside .card-body { padding: 1.5rem; }
+        .frontside .card-title { font-family: var(--header-font); font-size: 1.5rem; margin-bottom: 10px; }
+        .frontside .card-text { font-size: 0.9rem; color: #666; }
+        .frontside img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px 8px 0 0; margin-bottom: 1rem; }
+
+        /* Diseño de la cara trasera (girada) */
+        .backside {
+            background-color: var(--accent-color);
+            color: var(--white);
+            transform: rotateY(180deg);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .backside .card-title { font-family: var(--header-font); font-size: 1.6rem; margin-bottom: 1rem; font-weight: 600; }
+        .backside .card-text { font-size: 0.95rem; font-weight: 300; }
+        .backside a { color: var(--white); border: 1px solid var(--white); padding: 8px 15px; margin-top: 15px; display: inline-block; text-decoration: none; font-size: 0.8rem; transition: background-color 0.3s; }
+        .backside a:hover { background-color: rgba(255, 255, 255, 0.2); }
 
 
+        /* --- FOOTER --- */
+        footer { background-color: var(--black-footer); color: #a0a0a0; padding: 4rem 10% 2rem 10%; font-size: 0.9rem; }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; border-bottom: 1px solid #333; padding-bottom: 3rem; }
+        .footer-col h4 { font-family: var(--header-font); color: var(--white); font-size: 1.4rem; margin-bottom: 1.5rem; text-decoration: underline; text-decoration-color: var(--accent-color); }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 0.8rem; }
+        .footer-links a { color: #a0a0a0; text-decoration: none; transition: 0.3s; }
+        .footer-links a:hover { color: var(--accent-color); }
 
 
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .nav-menu { margin-left: 0; gap: 1rem; }
+        }
 
-                        <!-- Font Awesome Boostrap elementos incluidos para el navbar -->
-                        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
-                        <!-- Bootstrap core CSS -->
-                        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-                        <!-- Material Design Bootstrap -->
-                        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.6/css/mdb.min.css" rel="stylesheet">
-                            
-                            
+        @media (max-width: 768px) {
+            .logo { position: static; transform: none; text-align: left; }
+            header { justify-content: space-between; }
 
-<title>Parroquia de Santa Teresa de Jesús </title>
+            .hamburger { display: block; }
+            .nav-menu {
+                position: fixed; left: -100%; top: var(--nav-height);
+                gap: 0; flex-direction: column; background-color: var(--white);
+                width: 100%; height: calc(100vh - var(--nav-height));
+                text-align: center; transition: 0.3s; padding-top: 2rem;
+                margin-left: 0;
+                justify-content: flex-start;
+            }
+            .nav-menu.active { left: 0; }
+            .nav-item { margin: 15px 0; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+        }
+    </style>
 </head>
 <body>
 
-    
-
-    <h1  align="center" class="section-title h1">Parroquia de Santa Teresa de Jesús </h1>
-
-
-
-
-  <!--Navbar -->
-    
-<nav class="mb- navbar navbar navbar-expand-lg navbar-dark  gris scrolling-navbar  !fixed-center ">
-    <a class="navbar-brand" href="https://goo.gl/maps/Y4SiUkiMGwp" >C/Llobregós, 132, 08032 Barcelona  </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
-      aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    
-    <div  class="collapse navbar-collapse" id="navbarSupportedContent-333">
-      <ul class="navbar-nav text-center ml-auto ">
-          <!--/.Barra menu principal  espacios de la web no tocar -->
-
-
-                        <!--/.Barra menu principal no tocar -->
-
-                          <li class="nav-item">
-                              <a href="../index.html" class="nav-link">Inicio</a>
-
-                          </li>
-                                   
+    <header>
+        <!-- Título a dos líneas, alineado a la izquierda, altura 90px -->
+        <a href="#" class="logo">Parroquia Santa Teresa de Jesús</a>
         
+        <div class="hamburger">
+            <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </div>
 
-                            <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
-                                      aria-haspopup="true" aria-expanded="false">Noticias
-                                    </a>
-                                    <div class="dropdown-menu dropdown-default" aria-labelledby="navbarDropdownMenuLink-333">
-                                      <a class="dropdown-item" href="../index.html#noticias">Noticias</a>
-                                      <a class="dropdown-item" href="../index.html#revista">Revista</a>
-                                    </div>
-                        
-                                      <li class="nav-item">
-                                           <a href="organigramaparroquial.html" class="nav-link">Organigrama Parroquial</a>
-                                          </li>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="#" class="nav-link">Inicio</a></li>
+            <li class="nav-item"><a href="#dinamica-pastoral" class="nav-link">Dinámica Pastoral</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Organigrama</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Historia</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Contacto</a></li>
+        </ul>
+    </header>
 
+    <section id="dinamica-pastoral">
+        <h1 align="center" class="section-title h1">Dinámica Pastoral</h1>
+        <hr style="width: 100px; border: 0; border-top: 2px solid var(--accent-color); margin: 0.5rem auto 3rem;">
 
-                                             <li class="nav-item">
-                                             <a href="dinamicapastoral.html" class="nav-link">Dinámica Pastoral</a>
-
-                                              </li>
-
-                                             <li class="nav-item">
-                                             <a href="historia.html" class="nav-link">Historia</a>
-
-                                              </li>
-
-                                             <li class="nav-item">
-                                             <a href="imagenes.html" class="nav-link">Imágenes</a>
-
-                                              </li>
-
-                                             <li class="nav-item">
-                                             <a href="contacto.html" class="nav-link">Contacto</a>
-
-                                              </li>
-
-
-
-                                
-      </ul>
-  
-<!--      <form class="form-inline my-2 my-lg-0"> -->
-    <!--    <input class="form-control mr-sm-2" type="search"  placeholder="Buscar..."> -->
-<!--        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>-->
-    
-
-    <!--  </form> -->
-
-
-      <ul class="navbar-nav ml-auto nav-flex-icons">
-        
-        <li class="nav-item">
-          <a href="https://www.instagram.com/parroquisantateresadejesusbcn/" class="nav-link waves-effect waves-light">
-            <i class="fab fa-instagram">parroquisantateresadejesúsbcn</i>
-          </a>
-        </li>
-       
-      
-       
-      
-          
-    
-        </li>
-      </ul>
-    </div>
-  </nav>
-
-  
-    
-
-
-<br>
-<br>
-
-
-        <h1 align="center" class="section-title  h1">Dinámica pastoral</h1>
-        <hr>
-
-<!-- Team -->
-<section id="team" class="pb-5">
-    <div class="container">
-        <div class="row">
-            <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="../fotosdefinitivas/DSC_0448.JPG" alt="card image"></p>
-                                    <h4 class="card-title">Misa dominical de las 11:00h y actos eucarísticos</h4>
-                                    
-                                    <p class="card-text">De las misas que se celebran durante el fin de semana, desde el punto de vista de animación, destaca la de las 11:00h.</p>
-                                    
-                                </div>
-                            </div>
+        <!-- Grid de Tarjetas -->
+        <div class="card-grid">
+            
+            <!-- Equipo member 1: Misa dominical -->
+            <div class="image-flip" onclick="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card-body text-center">
+                            <img src="../fotosdefinitivas/DSC_0448.JPG" alt="Misa dominical de las 11:00h" onerror="this.src='https://placehold.co/300x180/E5E5E5/4A4A4A?text=Misa+Dominical'" >
+                            <h4 class="card-title">Misa dominical de las 11:00h y actos eucarísticos</h4>
+                            <p class="card-text">De las misas que se celebran durante el fin de semana, desde el punto de vista de animación, destaca la de las 11:00h.</p>
                         </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Misa dominical de las 11:00h y actos eucarísticos</h4>
-                                             <p class="card-text"> 
-                                            De las misas que se celebran durante el fin de semana, desde el punto de vista de animación, destaca la de las 11:00h. Todos los domingos (salvo en agosto) canta un amplio grupo de Góspel en dicha misa.
-                                            </p>
-
-                                        <li class="list-inline-item">
-                                    <a href="misas.html" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-                                            </a>
-                                        </li>
-                                       </li>
-                                    </ul>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card-body text-center mt-4">
+                            <h4 class="card-title">Misa dominical de las 11:00h y actos eucarísticos</h4>
+                            <p class="card-text"> 
+                                De las misas que se celebran durante el fin de semana, desde el punto de vista de animación, destaca la de las 11:00h. Todos los domingos (salvo en agosto) canta un amplio grupo de Góspel en dicha misa.
+                            </p>
+                            <a href="#" class="btn btn-primary btn-sm">Ver Horarios</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ./Team member -->
-            <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="../fotosdefinitivas/IMG_5471.jpg" alt="card image"></p>
-                                    <h4 class="card-title">Administración de otros Sacramentos</h4>
-                                    <p class="card-text">Mn. Sols administra el sacramento del Perdón de manera ﬁja los sábados</p>
-
-
-
-                                </div>
-                            </div>
+            <!-- ./Team member 1 -->
+            
+            <!-- Equipo member 2: Sacramentos -->
+            <div class="image-flip" onclick="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card-body text-center">
+                             <img src="../fotosdefinitivas/IMG_5471.jpg" alt="Administración de otros Sacramentos" onerror="this.src='https://placehold.co/300x180/E5E5E5/4A4A4A?text=Sacramentos'" >
+                            <h4 class="card-title">Administración de otros Sacramentos</h4>
+                            <p class="card-text">Mn. Sols administra el sacramento del Perdón de manera ﬁja los sábados.</p>
                         </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Administración de otros Sacramentos</h4>
-                                    <p class="card-text">
-
-                                    Mn. Sols administra el sacramento del Perdón de manera ﬁja los sábados de 18:30-19'00 horas y siempre un rato antes de cada misa.
-
-										Hay ceremonias bautismales al mediodía en cualquier domingo del año que se le pida.
-
-									Cada tres años se celebra la Conﬁrmación.
- </p>
-                                   
-                                       
-                                    </ul>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card-body text-center mt-4">
+                            <h4 class="card-title">Administración de otros Sacramentos</h4>
+                            <p class="card-text">
+                                Mn. Sols administra el sacramento del Perdón de manera ﬁja los sábados de 18:30-19:00 horas y siempre un rato antes de cada misa. Hay ceremonias bautismales al mediodía en cualquier domingo del año que se le pida. Cada tres años se celebra la Conﬁrmación.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <br>
-           
-            <!-- ./Team member -->
-            <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="../fotosdefinitivas/caritas.jpg" alt="card image"></p>
-                                    <h4 class="card-title">Cáritas parroquial y equipo arciprestal de Cáritas</h4>
-                            
-                                    <p class="card-text">La labor que realiza Cáritas parroquial consiste en repartir alimentos, un día al mes, a varias docenas de familias. </p>
-                                </div>
-                            </div>
+            <!-- ./Team member 2 -->
+            
+            <!-- Equipo member 3: Cáritas -->
+            <div class="image-flip" onclick="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card-body text-center">
+                            <img src="../fotosdefinitivas/caritas.jpg" alt="Cáritas parroquial" onerror="this.src='https://placehold.co/300x180/E5E5E5/4A4A4A?text=Cáritas'" >
+                            <h4 class="card-title">Cáritas parroquial y equipo arciprestal de Cáritas</h4>
+                            <p class="card-text">La labor que realiza Cáritas parroquial consiste en repartir alimentos, un día al mes, a varias docenas de familias. </p>
                         </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Cáritas parroquial y equipo arciprestal de Cáritas</h4>
-		                                    <p class="card-text">
-								         La labor que realiza Cáritas parroquial consiste en repartir alimentos, un día al mes, a varias docenas de familias. Se ha creado, además, un consejo de Cáritas, de ámbito Arciprestal, para poder unificar los criterios utilizados para determinar cuál es el modo más adecuado de proceder en cada caso. Dicho criterio se aplica, actualmente, en las diversas parroquias y colegios de religiosos del arciprestazgo. Finalmente, cabe destacar que el soporte técnico se recibe por parte de los responsables de cáritas diocesana de este distrito.
-                                            </p>
-
-									    
-
-                                    </ul>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card-body text-center mt-4">
+                            <h4 class="card-title">Cáritas parroquial y equipo arciprestal de Cáritas</h4>
+                            <p class="card-text">
+                                La labor que realiza Cáritas parroquial consiste en repartir alimentos, un día al mes, a varias docenas de familias. Se ha creado un consejo de Cáritas, de ámbito Arciprestal, para unificar criterios.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- ./Team member 3 -->
 
-
-
-
-
-            <!-- ./Team member -->
-            <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="../fotosdefinitivas/catequesis.png" alt="card image"></p>
-                                    <h4 class="card-title">Catequesis</h4>
-                                    <p class="card-text">Niños y adolescentes reciben, de forma periódica, una formación cristiana</p>
-                                </div>
-                            </div>
+            <!-- Equipo member 4: Catequesis -->
+            <div class="image-flip" onclick="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card-body text-center">
+                            <img src="../fotosdefinitivas/catequesis.png" alt="Catequesis" onerror="this.src='https://placehold.co/300x180/E5E5E5/4A4A4A?text=Catequesis'" >
+                            <h4 class="card-title">Catequesis</h4>
+                            <p class="card-text">Niños y adolescentes reciben, de forma periódica, una formación cristiana.</p>
                         </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Catequesis primera comunión y confirmación</h4>
-                                    <p class="card-text">Niños y adolescentes reciben, de forma periódica, una formación cristiana que les prepara para recibir el sacramento de la eucaristía y el de la confirmación (este último a partir de los 14 años).</p>
-                                    <ul class="list-inline">
-                       <!--          <a href="catequesis.html" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-                       -->
-                                    </ul>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card-body text-center mt-4">
+                            <h4 class="card-title">Catequesis primera comunión y confirmación</h4>
+                            <p class="card-text">Niños y adolescentes reciben, de forma periódica, una formación cristiana que les prepara para recibir el sacramento de la eucaristía y el de la confirmación (este último a partir de los 14 años).</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ./Team member -->
-            <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="../fotosdefinitivas/familia.jpg" alt="card image"></p>
-                                    <h4 class="card-title">Equipo de matrimonios y parejas</h4>
-                                    <p class="card-text">Cada 8 sábados, por la noche, un grupo de 6 o 7 matrimonios trabaja, con ayuda del rector</p>
-                                </div>
-                            </div>
+            <!-- ./Team member 4 -->
+            
+            <!-- Equipo member 5: Matrimonios -->
+            <div class="image-flip" onclick="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card-body text-center">
+                            <img src="../fotosdefinitivas/familia.jpg" alt="Equipo de matrimonios y parejas" onerror="this.src='https://placehold.co/300x180/E5E5E5/4A4A4A?text=Matrimonios'" >
+                            <h4 class="card-title">Equipo de matrimonios y parejas</h4>
+                            <p class="card-text">Cada 8 sábados, por la noche, un grupo de 6 o 7 matrimonios trabaja, con ayuda del rector, algún documento del papa.</p>
                         </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Equipo de matrimonios y parejas</h4>
-                                    <p class="card-text"><br>
-									Cada 8 sábados, por la noche, un grupo de 6 o 7 matrimonios trabaja, con ayuda del rector, algún documento del papa. La reunión dura 1h y se realiza un pequeño pica pica.</p>
-
-                                    </ul>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card-body text-center mt-4">
+                            <h4 class="card-title">Equipo de matrimonios y parejas</h4>
+                            <p class="card-text">
+                                Cada 8 sábados, por la noche, un grupo de 6 o 7 matrimonios trabaja, con ayuda del rector, algún documento del papa. La reunión dura 1h y se realiza un pequeño pica pica.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ./Team member -->
-            <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="../fotosdefinitivas/rezando.jpg" alt="card image"></p>
-                                    <h4 class="card-title">Atención pastoral a enfermos</h4>
-                                    <p class="card-text">Mn. Sols atiende a gente mayor en sus casas el domingo último de cada mes</p>
-                                </div>
-                            </div>
+            <!-- ./Team member 5 -->
+
+            <!-- Equipo member 6: Atención pastoral a enfermos -->
+            <div class="image-flip" onclick="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card-body text-center">
+                            <img src="../fotosdefinitivas/rezando.jpg" alt="Atención pastoral a enfermos" onerror="this.src='https://placehold.co/300x180/E5E5E5/4A4A4A?text=Enfermos'" >
+                            <h4 class="card-title">Atención pastoral a enfermos</h4>
+                            <p class="card-text">Mn. Sols atiende a gente mayor en sus casas el domingo último de cada mes, ayudado por un grupo de voluntarios.</p>
                         </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Atención pastoral a enfermos</h4>
-                                    <p class="card-text">Mn. Sols atiende a gente mayor en sus casas el domingo último de cada mes si estos asi lo solicitan medinate las vias de contacto de la web y es ayudado por un grupo de voluntarios que van a residencias de la tercera edad.</p>
-                                   
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card-body text-center mt-4">
+                            <h4 class="card-title">Atención pastoral a enfermos</h4>
+                            <p class="card-text">
+                                Mn. Sols atiende a gente mayor en sus casas el domingo último de cada mes si estos así lo solicitan mediante las vías de contacto de la web y es ayudado por un grupo de voluntarios que van a residencias de la tercera edad.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ./Team member -->
- <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="../fotosdefinitivas/IMG_5495.jpg" alt="card image"></p>
-                                    <h4 class="card-title">Equipo de jóvenes</h4>
-                                    <p class="card-text">Cada 8 sábados aproximadamente un pequeño grupo de jóvenes acompañados de algún matrimonio comentan con el rector el evangelio del domingo.
-                                    </p>
-                                </div>
-                            </div>
+            <!-- ./Team member 6 -->
+            
+            <!-- Equipo member 7: Equipo de jóvenes -->
+            <div class="image-flip" onclick="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card-body text-center">
+                            <img src="../fotosdefinitivas/IMG_5495.jpg" alt="Equipo de jóvenes" onerror="this.src='https://placehold.co/300x180/E5E5E5/4A4A4A?text=Jóvenes'" >
+                            <h4 class="card-title">Equipo de jóvenes</h4>
+                            <p class="card-text">Cada 8 sábados aproximadamente un pequeño grupo de jóvenes comentan con el rector el evangelio del domingo.</p>
                         </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Equipo de jóvenes</h4>
-                                    <br>
-                                    <p class="card-text">Por otro lado tambien  cada 8 sabados aproximadadmente un poequeño grupo de jovenes acompañados de algun matrimonio comentan con el rector el evangelio del domingo.</p>
-                                       
-                                    </ul>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card-body text-center mt-4">
+                            <h4 class="card-title">Equipo de jóvenes</h4>
+                            <p class="card-text">
+                                Por otro lado, cada 8 sábados aproximadamente, un pequeño grupo de jóvenes, acompañados de algún matrimonio, comentan con el rector el evangelio del domingo.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ./Team member -->
-             <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="../fotosdefinitivas/equipoespiritualidad.jpeg" alt="card image"></p>
-                                    <h4 class="card-title">Equipo de espiritualidad eucarística</h4>
-                                    <p class="card-text">Grupo de señoras que se reúne cada mes con una religiosa quien las enriquece en el fervor a la Eucaristía</p>
-                                </div>
-                            </div>
+            <!-- ./Team member 7 -->
+
+            <!-- Equipo member 8: Espiritualidad eucarística -->
+            <div class="image-flip" onclick="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card-body text-center">
+                            <img src="../fotosdefinitivas/equipoespiritualidad.jpeg" alt="Equipo de espiritualidad eucarística" onerror="this.src='https://placehold.co/300x180/E5E5E5/4A4A4A?text=Eucaristía'" >
+                            <h4 class="card-title">Equipo de espiritualidad eucarística</h4>
+                            <p class="card-text">Grupo de señoras que se reúne cada mes con una religiosa quien las enriquece en el fervor a la Eucaristía.</p>
                         </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Equipo de espiritualidad eucarística</h4>
-                                    <p class="card-text">Grupo de señoras que se reúne cada mes con una religiosa quien las enriquece en el fervor a la Eucaristía y cada miércoles, a las 19'30 horas, hay una media de hora de bendición con adoración al Santísimo.</p>
-                                   
-                                    </ul>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card-body text-center mt-4">
+                            <h4 class="card-title">Equipo de espiritualidad eucarística</h4>
+                            <p class="card-text">
+                                Grupo de señoras que se reúne cada mes con una religiosa quien las enriquece en el fervor a la Eucaristía y cada miércoles, a las 19:30 horas, hay una media hora de bendición con adoración al Santísimo.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ./Team member -->
-             <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="../fotosdefinitivas/limpieza.jpg" alt="card image"></p>
-                                    <h4 class="card-title">Voluntariado de limpieza</h4>
-                                    <p class="card-text"> 	<br>
-                                    Desde hace muchos años, un equipo de personas voluntarias limpia la iglesia una vez al mes.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Voluntariado limpieza</h4><br>
-                                    <p class="card-text">Una peculiaridad de nuestra parroquia es que un Un equipo de personas limpian la iglesia un día al mes,  lo hacen de manera voluntaria desde hace ya muchos años.
+            <!-- ./Team member 8 -->
 
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+            <!-- Equipo member 9: Voluntariado de limpieza -->
+            <div class="image-flip" onclick="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card-body text-center">
+                            <img src="../fotosdefinitivas/limpieza.jpg" alt="Voluntariado de limpieza" onerror="this.src='https://placehold.co/300x180/E5E5E5/4A4A4A?text=Limpieza'" >
+                            <h4 class="card-title">Voluntariado de limpieza</h4>
+                            <p class="card-text">
+                                Desde hace muchos años, un equipo de personas voluntarias limpia la iglesia una vez al mes.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card-body text-center mt-4">
+                            <h4 class="card-title">Voluntariado limpieza</h4>
+                            <p class="card-text">
+                                Una peculiaridad de nuestra parroquia es que un equipo de personas limpian la iglesia un día al mes; lo hacen de manera voluntaria desde hace ya muchos años.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ./Team member -->
+            <!-- ./Team member 9 -->
 
-             <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="../fotosdefinitivas/salidas.png" alt="card image"></p>
-                                    <h4 class="card-title">Salidas parroquiales</h4>
-                                    <p class="card-text">
-                                    	Cada año cuando es factible, hay una salida por Pascua: una jornada con Mn. Sols donde la convivencia y el descanso ayudan a consolidar la comunidad parroquial.                                    	
-                                    </p>
-                                </div>
-                            </div>
+            <!-- Equipo member 10: Salidas parroquiales -->
+            <div class="image-flip" onclick="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card-body text-center">
+                            <img src="../fotosdefinitivas/salidas.png" alt="Salidas parroquiales" onerror="this.src='https://placehold.co/300x180/E5E5E5/4A4A4A?text=Salidas'" >
+                            <h4 class="card-title">Salidas parroquiales</h4>
+                            <p class="card-text">
+                                Cada año cuando es factible, hay una salida por Pascua: una jornada con Mn. Sols para consolidar la comunidad.
+                            </p>
                         </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Salidas parroquiales</h4><br><br>
-                                    <p class="card-text">Cada año cuando es factible, hay una salida por Pascua: una jornada con Mn. Sols donde la convivencia y el descanso ayudan a consolidar la comunidad parroquial.</p>
-                                    
-                                </div>
-                            </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card-body text-center mt-4">
+                            <h4 class="card-title">Salidas parroquiales</h4>
+                            <p class="card-text">Cada año cuando es factible, hay una salida por Pascua: una jornada con Mn. Sols donde la convivencia y el descanso ayudan a consolidar la comunidad parroquial.</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ./Team member -->
-             <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="../fotosdefinitivas/DSC_0568.JPG" alt="card image"></p>
-                                    <h4 class="card-title">Despacho parroquial, bautizos y bodas.</h4>
-                                    <p class="card-text">
-                                   Por ultimo hay un despacho parroquial de 6 a 7 de la tarde donde toda persona se encuentre con Mn.Sols  para consultarle cosas diversas.
-                                  Contacta con nosotros aquí.
-                                    </p>
-                                </div>
-                            </div>
+            <!-- ./Team member 10 -->
+
+            <!-- Equipo member 11: Despacho parroquial -->
+            <div class="image-flip" onclick="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card-body text-center">
+                            <img src="../fotosdefinitivas/DSC_0568.JPG" alt="Despacho parroquial" onerror="this.src='https://placehold.co/300x180/E5E5E5/4A4A4A?text=Despacho'" >
+                            <h4 class="card-title">Despacho parroquial, bautizos y bodas.</h4>
+                            <p class="card-text">
+                                Hay un despacho parroquial de 6 a 7 de la tarde donde toda persona se encuentra con Mn. Sols para consultarle cosas diversas.
+                            </p>
                         </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Despacho parroquial</h4>
-                                    <p class="card-text">Los viernes por la tarde y de hecho un rato antes o después de todas las misas de la semana, el cura párroco atiende a gente para cualquier tipo de asuntos.</p>
-                                    <ul class="list-inline">
-                                        <li class="list-inline-item">
-                                      <a href="contacto.html" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card-body text-center mt-4">
+                            <h4 class="card-title">Despacho parroquial</h4>
+                            <p class="card-text">Los viernes por la tarde y de hecho un rato antes o después de todas las misas de la semana, el cura párroco atiende a gente para cualquier tipo de asuntos.</p>
+                            <a href="#" class="btn btn-primary btn-sm">Contacto</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ./Team member --> 
-            <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="../fotosdefinitivas/santateresa.jpg" alt="card image"></p>
-                                    <h4 class="card-title">Charlas semanales de formación</h4>
-                                    <p class="card-text">
-                                    Los viernes, al acabar la misa vespertina, se imparten charlas de formación sobre espiritualidad litúrgica, bíblica y moral católica.                                    	
-                                    </p>
-                                </div>
-                            </div>
+            <!-- ./Team member 11 -->
+
+            <!-- Equipo member 12: Charlas semanales de formación -->
+            <div class="image-flip" onclick="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card-body text-center">
+                            <img src="../fotosdefinitivas/santateresa.jpg" alt="Charlas semanales de formación" onerror="this.src='https://placehold.co/300x180/E5E5E5/4A4A4A?text=Charlas'" >
+                            <h4 class="card-title">Charlas semanales de formación</h4>
+                            <p class="card-text">
+                                Los viernes, al acabar la misa vespertina, se imparten charlas de formación sobre espiritualidad litúrgica, bíblica y moral católica.
+                            </p>
                         </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Charlas semanales de formación.</h4>
-                                    <p class="card-text"> <br><br>
-                                   Los viernes, al acabar la misa vespertina, se imparten charlas de formación sobre espiritualidad litúrgica, bíblica y moral católica.</p>
-                                    <ul class="list-inline">
-                                       
-                                    </ul>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card-body text-center mt-4">
+                            <h4 class="card-title">Charlas semanales de formación.</h4>
+                            <p class="card-text">
+                                Los viernes, al acabar la misa vespertina, se imparten charlas de formación sobre espiritualidad litúrgica, bíblica y moral católica.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ./Team member -->
-             <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="../fotosdefinitivas/colegio.jpeg" alt="card image"></p>
-                                    <h4 class="card-title">Colegio Santa Teresa</h4>
-                                    <p class="card-text">
-                                    	No es propiamente un centro educativo parroquial pero se respeta el humanismo cristiano en su didáctica escolar.
-                                    	
-                                    </p>
-                                </div>
-                            </div>
+            <!-- ./Team member 12 -->
+
+            <!-- Equipo member 13: Colegio Santa Teresa -->
+            <div class="image-flip" onclick="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card-body text-center">
+                            <img src="../fotosdefinitivas/colegio.jpeg" alt="Colegio Santa Teresa" onerror="this.src='https://placehold.co/300x180/E5E5E5/4A4A4A?text=Colegio'" >
+                            <h4 class="card-title">Colegio Santa Teresa</h4>
+                            <p class="card-text">
+                                No es propiamente un centro educativo parroquial pero se respeta el humanismo cristiano en su didáctica escolar.
+                            </p>
                         </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Colegio Santa Teresa</h4>
-                                    <p class="card-text">No es propiamente un centro educativo parroquial pero se respeta el humanismo cristiano en su didáctica escolar. Son arrendatarios del patrimonio parroquial. Entre el director-propietario del Colegio y el rector hay muy buena relación, hablan con frecuencia y se organiza alguna actividad conjunta.</p>
-                                    <ul class="list-inline">
-                                        <li class="list-inline-item">
-                                      <a href="https://agora.xtec.cat/colegiosantateresa" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card-body text-center mt-4">
+                            <h4 class="card-title">Colegio Santa Teresa</h4>
+                            <p class="card-text">No es propiamente un centro educativo parroquial pero se respeta el humanismo cristiano en su didáctica escolar. Son arrendatarios del patrimonio parroquial. Entre el director-propietario del Colegio y el rector hay muy buena relación.</p>
+                            <a href="https://agora.xtec.cat/colegiosantateresa" class="btn btn-primary btn-sm" target="_blank">Web del Colegio</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ./Team member -->
-             <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="../fotosdefinitivas/vidacreixent.jpg" alt="card image"></p>
-                                    <h4 class="card-title">"Vida Creixent"</h4>
-                                    <p class="card-text">
-                                    	Este conocido movimientos cristiano internacional para personas mayores de 55 años, que tanto bien está haciendo en todos los obispados de Europa, se haya presente en nuestra parroquia.
+            <!-- ./Team member 13 -->
 
-                                    	
-                                    </p>
-                                </div>
-                            </div>
+            <!-- Equipo member 14: "Vida Creixent" -->
+            <div class="image-flip" onclick="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card-body text-center">
+                            <img src="../fotosdefinitivas/vidacreixent.jpg" alt="Vida Creixent" onerror="this.src='https://placehold.co/300x180/E5E5E5/4A4A4A?text=Vida+Creixent'" >
+                            <h4 class="card-title">"Vida Creixent"</h4>
+                            <p class="card-text">
+                                El movimiento Vida Creixent es un grupo de personas mayores que se reúnen dos veces al mes.
+                            </p>
                         </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">"Vida Creixent"</h4>
-                                    <p class="card-text">
-                                    Este conocido movimientos cristiano internacional para personas mayores de 55 años, que tanto bien está haciendo en todos los obispados de Europa, se haya presente en nuestra parroquia.
-                                    </p>
-                                    <ul class="list-inline">
-                                        <li class="list-inline-item">
-                                      <a href="http://www.vidacreixent.org/" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card-body text-center mt-4">
+                            <h4 class="card-title">"Vida Creixent"</h4>
+                            <p class="card-text">
+                                El movimiento Vida Creixent es un grupo de personas mayores que se reúnen dos veces al mes. Está dirigido por una religiosa que guía su formación y convivencia.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ./Team member -->
-        
-  </div>
+            <!-- ./Team member 14 -->
+        </div>
+    </section>
 
-
-<!-- Aqui Acaba el carrusel de imagenes -->
-
-<!-- JQuery  Esto sigue siendo parte del Bosstrap menu-->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<!-- Bootstrap tooltips -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
-<!-- Bootstrap core JavaScript -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<!-- MDB core JavaScript -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.6/js/mdb.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script>
-    window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
-  </script>
-  <script src="../../dist/js/bootstrap.min.js"></script>
-  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-
-
-
-<div>
     <footer>
-        <hr>
-      <p>&copy; 2019 Parroquia Santa Teresa, Inc.</p>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Santa Teresa de Jesús</h4>
+                <p>Carrer del Llobregós, 132</p>
+                <p>08032 Barcelona</p>
+                <br>
+                <a href="https://goo.gl/maps/Y4SiUkiMGwp" style="color:var(--accent-color); font-size:0.8rem;" target="_blank">Ver en Google Maps &rarr;</a>
+            </div>
+
+            <div class="footer-col">
+                <h4>Enlaces de Interés</h4>
+                <ul class="footer-links">
+                    <li><a href="https://www.esglesiabarcelona.cat/" target="_blank">Arzobispado de Barcelona</a></li>
+                    <li><a href="https://caritas.barcelona" target="_blank">Cáritas Barcelona</a></li>
+                    <li><a href="https://www.esglesiabarcelona.cat/mapa/index.php?view=barcelona-santateresadejesus" target="_blank">Buscador de Parroquias</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Contactar</a></li>
+                    <li><a href="https://www.instagram.com/parroquiasantateresadejesusbcn/" target="_blank">Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div style="text-align: center; opacity: 0.5; font-size: 0.8rem;">
+            &copy; 2025 Parroquia Santa Teresa de Jesús.
+        </div>
     </footer>
-  </div>
 
+    <script>
+        /* Menú Móvil */
+        const hamburger = document.querySelector(".hamburger");
+        const navMenu = document.querySelector(".nav-menu");
+        hamburger.addEventListener("click", () => {
+            hamburger.classList.toggle("active");
+            navMenu.classList.toggle("active");
+        });
+        document.querySelectorAll(".nav-link").forEach(n => n.addEventListener("click", () => {
+            // Cierra el menú móvil al hacer clic en un enlace
+            hamburger.classList.remove("active");
+            navMenu.classList.remove("active");
+        }));
+        
+        // Simular el efecto hover de la tarjeta en dispositivos táctiles (clic)
+        document.querySelectorAll(".image-flip").forEach(card => {
+            card.addEventListener('click', function(event) {
+                // Previene que el clic se propague al documento (que podría cerrarla)
+                event.stopPropagation();
+            });
+        });
 
-</div>
-</section>
+    </script>
+
+    <!-- Scripts de terceros mantenidos para funcionalidad (cookieconsent, Tawk.to) -->
+    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+    <script>
+    window.cookieconsent.initialise({
+      "palette": { "popup": { "background": "#000000" }, "button": { "background": "#f1d600" } },
+      "theme": "red", "position": "bottom-left",
+      "content": { "message": "Utilizamos cookies para mejorar la calidad de nuestro servicio.", "dismiss": "OK" }
+    });
+    </script>
+
+    <script type="text/javascript">
+      var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+      (function(){
+      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+      s1.async=true; s1.src='https://embed.tawk.to/5e7d2de035bcbb0c9aaad04f/default';
+      s1.charset='UTF-8'; s1.setAttribute('crossorigin','*');
+      s0.parentNode.insertBefore(s1,s0);
+      })();
+    </script>
 
 </body>
-
-
-
-
-   <!-- Footer -->
-<footer class="page-footer font-small  pt-4">
-
-    <!-- Footer Links -->
-    <div class="container-fluid text-center text-md-left">
-
-      <!-- Grid row -->
-      <div class="row">
-
-        <!-- Grid column -->
-        <div class="col-md-6 mt-md-0 mt-3">
-
-          <!-- Content -->
-                        <h1 class="section-title h1"><u>Parroquia Santa Teresa de Jesús</u></h1>
-
-                        <h4>Carrer del Llobregós, 132, 08032 Barcelona</h4>
-        </div>
-        <!-- Grid column -->
-
-        <hr class="clearfix w-100 d-md-none pb-3">
-
-        <!-- Grid column -->
-        <div class="col-md-3 mb-md-0 mb-3">
-
-            <!-- Links -->
-            <h5 class="text-uppercase"><u>otros sitios</u></h5>
-
-            <ul class="list-unstyled">
-              <li>
-                <a href="html/contacto.html">Contacta con nosotros</a>
-              </li>
-              <li>
-                <a href="index.html#noticias">Noticias</a>
-              </li>
-              <li>
-                <a href="index.html#revista">Revista</a>
-              </li>
-           
-            </ul>
-
-          </div>
-          <!-- Grid column -->
-
-          <!-- Grid column -->
-          <div class="col-md-3 mb-md-0 mb-3">
-
-            <!-- Links -->
-            <h5 class="text-uppercase"><u>enlaces de interés</u> </h5>
-
-            <ul class="list-unstyled">
-              <li>
-                <a href="https://www.esglesiabarcelona.cat/">Arzobispado de Barcelona</a>
-              </li>
-              <li>
-                <a href="https://caritas.barcelona">Cáritas de Barcelona</a>
-              </li>
-              <li>
-                <a href="https://www.esglesiabarcelona.cat/mapa/index.php?view=barcelona-santateresadejesus">Encuentra tu parroquia más cercana</a>
-              </li>
-              
-            </ul>
-
-          </div>
-          <!-- Grid column -->
-
-
-
-
-</div>
-
-    </div>
-    <!-- Footer Links -->
-
-    <!-- Copyright -->
-    <div class="footer-copyright text-center py-3">© 2024 Copyright: 
-      <a href="http://parroquiasantateresabcn.org/">parroquiasantateresabarcelona.org</a>
-      
-<div id="google_translate_element"></div>
-<script type="text/javascript">
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'es',
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-    autoDisplay: false,
-  }, 'google_translate_element');
-}
-</script>
-<script type="text/javascript" src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<div class="clearbreak"></div></div></div></div><div class=" jsn-modulecontainer"><div class="jsn-modulecontainer_inner"><div class="jsn-modulecontent"><div class="bannergroup">
-</div>
-
-
-    </div>
-    <!-- Copyright -->
-
-  </footer>
-  <!-- Footer -->
 </html>
