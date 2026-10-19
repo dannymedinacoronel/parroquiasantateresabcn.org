@@ -527,6 +527,13 @@ TR = {
 "Reflexión dominical": ("Reflexió dominical", "Sunday reflection"),
 "Leer la reflexión completa": ("Llegir la reflexió completa", "Read the full reflection"),
 "Seguir leyendo": ("Continuar llegint", "Keep reading"),
+# --- páginas de reflexiones ---
+"Escuchar la reflexión": ("Escoltar la reflexió", "Listen to the reflection"),
+"Otras reflexiones": ("Altres reflexions", "Other reflections"),
+"Ver anteriores homilías": ("Veure homilies anteriors", "See earlier homilies"),
+"Mn. Albert Sols · Mayo de 2019": ("Mn. Albert Sols · Maig de 2019", "Fr Albert Sols · May 2019"),
+"Magdalena · III domingo de Pascua 2019": ("Magdalena · III diumenge de Pasqua 2019", "Magdalena · Third Sunday of Easter 2019"),
+"Reflexión del III domingo de Pascua 2019.": ("Reflexió del III diumenge de Pasqua 2019.", "Reflection for the Third Sunday of Easter 2019."),
 # --- noticias (formato revista) ---
 "Noticias del Vaticano y del Arzobispado": ("Notícies del Vaticà i de l'Arquebisbat", "News from the Vatican and the Archdiocese"),
 "Filtrar noticias": ("Filtrar notícies", "Filter news"),
