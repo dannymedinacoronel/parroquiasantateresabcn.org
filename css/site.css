@@ -923,7 +923,6 @@ header nav { display: flex; align-items: center; margin-left: auto; }
 /* Móvil: cabecera con más aire; los idiomas pasan al menú */
 @media (max-width: 600px) {
     header { padding: 0 1.25rem; }
-    header > .lang-switch { display: none; }
     .logo { font-size: 1.2rem; gap: 0.55rem; }
     .hamburger { padding: 11px 10px; margin-right: -10px; }
     .eyebrow { letter-spacing: 2.5px; font-size: 0.72rem; }
@@ -995,22 +994,39 @@ header nav { display: flex; align-items: center; margin-left: auto; }
     .mosaic { grid-auto-rows: 280px; }
     .cta-band { max-width: 1500px; margin-left: auto; margin-right: auto; }
 }
-@media (min-width: 2200px) {
-    html { font-size: 20px; }
-    section, .image-band { padding-left: calc((100% - 1800px) / 2); padding-right: calc((100% - 1800px) / 2); }
-    .mosaic { grid-auto-rows: 340px; }
-    .cta-band { max-width: 1800px; }
+/* Pantallas 2K, 4K y televisores: toda la página se amplía en bloque (cabecera, márgenes,
+   iconos, botones...) para conservar exactamente las proporciones del diseño a 1920 px.
+   Las alturas en vh se dividen entre el factor de zoom para seguir ocupando la pantalla. */
+@media (min-width: 2400px) {
+    html { zoom: 1.3333; }
+    .hero { height: 75vh; height: 75svh; min-height: 0; }
+    .page-hero { min-height: 39vh; }
 }
-@media (min-width: 3000px) {
-    html { font-size: 26px; }
-    section, .image-band { padding-left: calc((100% - 2400px) / 2); padding-right: calc((100% - 2400px) / 2); }
-    .mosaic { grid-auto-rows: 440px; }
-    .cta-band { max-width: 2400px; }
+@media (min-width: 3200px) {
+    html { zoom: 2; }
+    .hero { height: 50vh; height: 50svh; }
+    .page-hero { min-height: 26vh; }
 }
 
 @media (max-width: 1280px) {
     .lang-switch { order: 2; }
     .hamburger { order: 3; }
+}
+
+/* El nombre puede encogerse y partirse, pero nunca montarse sobre los idiomas */
+header { gap: 1.5rem; }
+.logo { min-width: 0; flex: 0 1 auto; }
+.logo span { min-width: 0; }
+.lang-switch, .hamburger { flex-shrink: 0; }
+@media (max-width: 1280px) {
+    .lang-switch { margin-left: auto; margin-right: 0.75rem; padding-left: 1.25rem; border-left: 1px solid rgba(0,0,0,0.12); }
+    .js header:not(.scrolled):not(.menu-open) .lang-switch { border-left-color: rgba(255,255,255,0.3); }
+}
+/* Por debajo de 720 px los idiomas se muestran dentro del menú */
+@media (max-width: 720px) {
+    header { padding: 0 1.25rem; }
+    header > .lang-switch { display: none; }
+    .hamburger { margin-left: auto; }
 }
 
 .lang-note { max-width: 760px; margin: 0 auto 1.5rem; padding: 0.6rem 1rem; font-size: 0.85rem; font-style: italic; color: var(--muted); background: var(--bg-warm); border-left: 2px solid var(--accent-color); }
