@@ -428,6 +428,35 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
             </div>
         </section>
 
+        <section id="reflexion" class="homily">
+            <div class="section-head">
+                <span class="subtitulo">La palabra del párroco</span>
+                <h2>Reflexión dominical</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            <div class="homily-grid">
+                <div class="priest-card">
+                    <div class="priest-photo"><img src="fotosdefinitivas/web/albertsols-retrato.jpg" alt="Mn. Albert Sols" loading="lazy"></div>
+                    <strong>Mn. Albert Sols</strong>
+                    <span>Rector de nuestra parroquia</span>
+                    <div class="btn-stack">
+                        <a href="html/humilias.html" class="btn btn-solid">Leer la reflexión completa</a>
+                        <a href="html/humiliasmenu.html" class="btn">Ver anteriores homilías &raquo;</a>
+                    </div>
+                </div>
+                <div class="book-page">
+                    <article class="homily-text">
+                        <span class="book-kicker">Tiempo de Pascua · Mayo de 2019</span>
+                        <h3>De contenido sublime el libro de los «Hechos de los Apóstoles»</h3>
+                        <p class="illuminated">Texto neotestamentario que la Iglesia fija como primera lectura a lo largo de los cincuenta días de Pascua. San Lucas narra con sentido eclesial, no tanto la vida detallada de cada Apóstol, sino el cómo vivía la primera comunidad cristiana, la ilusión y heroísmo de los primeros cristianos. Deja constancia de esa fe tan sólida en el Espíritu Santo quien comenzaba actuar en su Iglesia naciente por medio de ellos.</p>
+                        <p class="book-fade">Bien podría subtitularse este libro: «presencia del Espíritu en los primeros cristianos»…</p>
+                    </article>
+                    <a href="html/humilias.html" class="link-arrow book-more">Seguir leyendo <span>&rarr;</span></a>
+                    <span class="book-ornament" aria-hidden="true">&#10086;</span>
+                </div>
+            </div>
+        </section>
+
         <section id="vida" class="section-warm">
             <div class="section-head">
                 <span class="subtitulo">Dinámica pastoral</span>
@@ -949,19 +978,20 @@ PAGES["html/humilias.html"] = page(1, "Reflexión dominical", "Reflexión domini
         <section>
             <div class="two-col">
                 <div>
-                    <div class="author">
-                        <img src="""+img("albertsols.png")+""" alt="Mn. Albert Sols">
-                        <div><strong>Mn. Albert Sols</strong><span>Rector de nuestra parroquia</span></div>
+                    <div class="priest-card" style="margin-bottom:2.5rem;">
+                        <div class="priest-photo"><img src="../fotosdefinitivas/web/albertsols-retrato.jpg" alt="Mn. Albert Sols"></div>
+                        <strong>Mn. Albert Sols</strong>
+                        <span>Rector de nuestra parroquia</span>
                     </div>
                     <iframe title="Audio de la reflexión" width="100%" height="120" scrolling="no" frameborder="no" loading="lazy" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/630405192&color=%23bfa065&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
                     <div class="btn-group">
                         <a class="btn" href="humiliasmenu.html">Ver anteriores homilías &raquo;</a>
                     </div>
                 </div>
-                <article class="prose">
+                <article class="prose book-page">
                     <span class="subtitulo" style="text-align:left;">Mayo de 2019</span>
                     <h3>De contenido sublime el libro de los «Hechos de los Apóstoles»</h3>
-                    <p>Texto neotestamentario que la Iglesia fija como primera lectura a lo largo de los cincuenta días de Pascua. San Lucas narra con sentido eclesial, no tanto la vida detallada de cada Apóstol, sino el cómo vivía la primera comunidad cristiana, la ilusión y heroísmo de los primeros cristianos. Deja constancia de esa fe tan sólida en el Espíritu Santo quien comenzaba actuar en su Iglesia naciente por medio de ellos. Bien podría subtitularse este libro: «presencia del Espíritu en los primeros cristianos».</p>
+                    <p class="illuminated">Texto neotestamentario que la Iglesia fija como primera lectura a lo largo de los cincuenta días de Pascua. San Lucas narra con sentido eclesial, no tanto la vida detallada de cada Apóstol, sino el cómo vivía la primera comunidad cristiana, la ilusión y heroísmo de los primeros cristianos. Deja constancia de esa fe tan sólida en el Espíritu Santo quien comenzaba actuar en su Iglesia naciente por medio de ellos. Bien podría subtitularse este libro: «presencia del Espíritu en los primeros cristianos».</p>
                     <p>Aparecen no pocas alusiones a los ángeles siendo una realidad el trato natural que los primeros cristianos tenían con estos seres puros creados por Dios. De entre los apóstoles su autor se detiene en Pablo y Pedro. Cabe ver como dos ejes en los Hechos: uno horizontal el de la primitiva comunidad cristiana y otro vertical de las apariciones del Cristo Resucitado durante la cincuentena pascual que culmina con la Ascensión y la llegada del Consolador, Solemnidad de Pentecostés.</p>
                     <p>Que la vida heroica de los primeros cristianos suponga para nosotros un reclamo de cómo hemos de dar testimonio del Evangelio en una sociedad cada vez más paganizada.</p>
                 </article>
@@ -975,7 +1005,7 @@ PAGES["html/humiliasmenu.html"] = page(1, "Homilías anteriores", "Historial de 
             <h2>Reflexiones anteriores</h2>
             <div class="grid-container">
                 <a class="card" href="humilias.html">
-                    <img class="card-img" src="""+img("albertsols.png")+""" alt="Mn. Albert Sols" loading="lazy">
+                    <img class="card-img" src="../fotosdefinitivas/web/albertsols-retrato.jpg" alt="Mn. Albert Sols" loading="lazy">
                     <h3>Los Hechos de los Apóstoles</h3>
                     <p>Reflexión de Mn. Albert Sols para el tiempo de Pascua (mayo de 2019).</p>
                     <span class="flip-hint">Leer &rarr;</span>
@@ -1006,7 +1036,7 @@ PAGES["html/humiliasmagdalena3domingo.html"] = page(1, "Reflexión del III domin
                 </div>
                 <article class="prose">
                     <p class="lead">Queridos/as amigos/as:</p>
-                    <p>Es un privilegio para mí transmitiros esta reflexión del Evangelio de este domingo. Gracias Mn. Albert por su confianza en mí. En ningún momento esta reflexión quiere sustituir una homilía, sino que sea un complemento de lo que yo he descubierto al profundizar en la Palabra de Dios y lo comparto con todos vosotros.</p>
+                    <p class="illuminated">Es un privilegio para mí transmitiros esta reflexión del Evangelio de este domingo. Gracias Mn. Albert por su confianza en mí. En ningún momento esta reflexión quiere sustituir una homilía, sino que sea un complemento de lo que yo he descubierto al profundizar en la Palabra de Dios y lo comparto con todos vosotros.</p>
                     <p>Este domingo el Evangelio nos presenta la Pesca milagrosa… Yo lo he titulado <strong>REMAR MAR ADENTRO</strong>, en nuestra vida y en nuestra fe. No será tanto el explicar en qué consistió la pesca milagrosa sino cuál es el mensaje vigente y actual de lo que sucedió en aquel momento.</p>
                     <p><strong>En el Evangelio tenemos varios mensajes:</strong></p>
                     <ul>
@@ -1446,6 +1476,8 @@ for rel, base in PAGES.items():
             html = i18n.translate(html, rel, lang, TABLE, missing)
             html = html.replace('<html lang="es">', f'<html lang="{lang}">', 1)
             html = relocate_assets(html)
+            if '<article class="homily-text"' in html:
+                html = html.replace('<article class="homily-text">', f'<p class="lang-note">{HOMILY_NOTE[lang]}</p>\n                    <article class="homily-text">', 1)
             if rel in i18n.HOMILY_PAGES:
                 html = html.replace('<article class="prose', f'<p class="lang-note">{HOMILY_NOTE[lang]}</p>\n                <article class="prose', 1)
         html = (html.replace("__URL__", page_url(lang, rel))

@@ -522,6 +522,11 @@ TR = {
 "7. Cookies": ("7. Galetes", "7. Cookies"),
 "El designado por el Arzobispado de Barcelona, a través de": ("El designat per l'Arquebisbat de Barcelona, a través de", "The officer appointed by the Archdiocese of Barcelona, via"),
 "esglesia.barcelona": SAME,
+# --- reflexión dominical en la portada ---
+"La palabra del párroco": ("La paraula del rector", "A word from our parish priest"),
+"Reflexión dominical": ("Reflexió dominical", "Sunday reflection"),
+"Leer la reflexión completa": ("Llegir la reflexió completa", "Read the full reflection"),
+"Seguir leyendo": ("Continuar llegint", "Keep reading"),
 # --- noticias (formato revista) ---
 "Noticias del Vaticano y del Arzobispado": ("Notícies del Vaticà i de l'Arquebisbat", "News from the Vatican and the Archdiocese"),
 "Filtrar noticias": ("Filtrar notícies", "Filter news"),

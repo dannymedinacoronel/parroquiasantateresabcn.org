@@ -15,6 +15,8 @@ def _protect(html, rel):
         blocks.append(m.group(0))
         return f"\x00{len(blocks) - 1}\x00"
     html = SKIP_BLOCKS.sub(keep, html)
+    # extracto de la homilía en la portada: texto original en castellano en todos los idiomas
+    html = re.sub(r'<article class="homily-text"[^>]*>.*?</article>', keep, html, flags=re.S)
     if rel in HOMILY_PAGES:
         html = re.sub(r'<article class="prose[^"]*"[^>]*>.*?</article>', keep, html, flags=re.S)
     return html, blocks
