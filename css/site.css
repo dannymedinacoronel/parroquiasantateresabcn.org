@@ -759,6 +759,103 @@ mark.pendiente { background: #fff1c2; color: #7a5a00; padding: 0.1rem 0.35rem; b
 .news-empty { padding: 2rem 1.75rem; color: var(--muted); font-style: italic; }
 .news-updated { text-align: center; margin-top: 1.25rem; font-size: 0.82rem; color: var(--muted); font-style: italic; }
 
+/* --- PÁGINA DE NOTICIAS EN FORMATO REVISTA --- */
+.news-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem 2rem; margin-bottom: 1.75rem; }
+.news-toolbar .news-updated { margin: 0; }
+.news-filters { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.news-filters button {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.65rem 1.2rem; border: 1px solid var(--border); border-radius: 40px; background: var(--white);
+    font: 500 0.88rem var(--body-font); color: var(--text-color); cursor: pointer; transition: all .25s;
+}
+.news-filters button:hover { border-color: var(--accent-color); color: var(--accent-dark); }
+.news-filters button[aria-pressed="true"] { background: var(--heading-color); border-color: var(--heading-color); color: var(--white); }
+.news-filters .dot { width: 9px; height: 9px; border-radius: 50%; }
+.news-filters .dot.vatican { background: #c9a43a; }
+.news-filters .dot.diocese { background: #8a3434; }
+
+.news-photos-notice {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.5rem;
+    padding: 0.9rem 1.25rem; margin-bottom: 2rem; background: var(--bg-warm);
+    border-left: 3px solid var(--accent-color); border-radius: var(--radius); font-size: 0.9rem; color: var(--muted);
+}
+.news-photos-notice .btn { padding: 10px 18px; }
+.consent-embeds .news-photos-notice { display: none; }
+
+/* Imagen (o diseño de reserva) de cada noticia */
+.news-media { position: relative; overflow: hidden; background: #2a241c; }
+.news-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .6s, transform .8s var(--ease); }
+.news-media img.ok { opacity: 1; }
+.news-ph {
+    position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.7rem;
+    color: rgba(255,255,255,0.9); font-size: 0.72rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+}
+.news-ph svg { width: 34px; height: 44px; opacity: .85; }
+.news-media.vatican .news-ph { background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.25), transparent 55%), linear-gradient(135deg, #d6b45a, #8f7340 70%, #5e4a26); }
+.news-media.diocese .news-ph { background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.18), transparent 55%), linear-gradient(135deg, #a64545, #6d2525 70%, #3f1414); }
+
+.news-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.8rem; }
+.news-meta time { font-size: 0.78rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+.news-badge.vatican { background: #b8962e; }
+.news-badge.diocese { background: #7a2e2e; }
+
+/* Noticia destacada */
+.news-feature {
+    display: grid; grid-template-columns: 1.35fr 1fr; margin-bottom: 2rem;
+    background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+    text-decoration: none; color: inherit; box-shadow: var(--shadow-md);
+    transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.news-feature .news-media { min-height: 380px; }
+.news-feature .news-body { padding: 2.5rem 2.25rem; display: flex; flex-direction: column; justify-content: center; }
+.news-kicker { margin-top: 1.25rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-color); }
+.news-feature h3 { font-size: clamp(1.9rem, 3vw, 2.6rem); line-height: 1.12; margin: 0.4rem 0 1rem; }
+.news-feature p { color: var(--muted); font-size: 1rem; }
+.news-feature:hover { transform: translateY(-4px); }
+.news-feature:hover img.ok, .news-card:hover img.ok { transform: scale(1.05); }
+
+/* Cuadrícula de tarjetas */
+.news-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+.news-card {
+    display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden; text-decoration: none; color: inherit; box-shadow: var(--shadow-sm);
+    transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.news-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+.news-card .news-media { aspect-ratio: 16 / 9; }
+.news-card .news-body { padding: 1.4rem 1.5rem 1.6rem; display: flex; flex-direction: column; flex: 1; }
+.news-card h3 { font-size: 1.45rem; line-height: 1.22; margin: 0.75rem 0 0.5rem; }
+.news-card p { font-size: 0.9rem; color: var(--muted); flex: 1; }
+.news-card .news-more, .news-feature .news-more { margin-top: 1rem; }
+
+/* Enlaces a las fuentes */
+.news-sources { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+.news-source-card {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 1.75rem 2rem;
+    border-radius: var(--radius); text-decoration: none; color: var(--white); transition: transform .3s var(--ease);
+}
+.news-source-card strong { font-family: var(--header-font); font-size: 1.9rem; font-style: italic; font-weight: 500; }
+.news-source-card span:last-child { font-size: 0.9rem; opacity: .85; }
+.news-source-card .news-badge { background: rgba(255,255,255,0.18); }
+.news-source-card.vatican { background: linear-gradient(135deg, #c9a43a, #7a6230); }
+.news-source-card.diocese { background: linear-gradient(135deg, #8a3434, #4b1919); }
+.news-source-card:hover { transform: translateY(-4px); }
+
+@media (max-width: 1100px) {
+    .news-cards { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 860px) {
+    .news-feature { grid-template-columns: 1fr; }
+    .news-feature .news-media { min-height: 0; aspect-ratio: 16 / 10; }
+    .news-feature .news-body { padding: 1.75rem 1.5rem; }
+    .news-sources { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+    .news-cards { grid-template-columns: 1fr; gap: 1.25rem; }
+    .news-filters { width: 100%; }
+    .news-filters button { flex: 1 1 auto; justify-content: center; padding: 0.6rem 0.9rem; font-size: 0.82rem; }
+}
+
 /* --- SELECTOR DE IDIOMA --- */
 .lang-switch { display: flex; align-items: center; gap: 0.15rem; margin-left: 1.5rem; padding-left: 1.25rem; border-left: 1px solid rgba(0,0,0,0.12); }
 .lang-switch a {

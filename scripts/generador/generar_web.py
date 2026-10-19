@@ -350,7 +350,7 @@ def feature(photo, eyebrow, title, text, link):
 
 
 PAGES["index.html"] = page(0, "", "Parroquia Santa Teresa de Jesús, en el barrio del Carmel (Barcelona). Horarios de eucaristías, actividades pastorales y contacto.",
-full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extra_head=INDEX_HEAD + NEWS_HEAD_0, body="""        <section class="hero">
+full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extra_head=INDEX_HEAD, body="""        <section class="hero">
             <div class="hero-bg" aria-hidden="true"></div>
             <span class="eyebrow">Parroquia · El Carmel · Barcelona</span>
             <h1>Santa Teresa<br>de Jesús</h1>
@@ -477,24 +477,12 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
             </div>
         </section>
 
-        <section id="noticias">
-            <div class="section-head">
-                <span class="subtitulo">Actualidad de la Iglesia</span>
-                <h2>Noticias</h2>
-                <hr class="section-divider" style="margin-bottom:1.25rem;">
-                <p>Las últimas noticias del Vaticano y del Arzobispado de Barcelona, actualizadas cada día.</p>
-            </div>
-""" + news_columns(3, 0) + """
-            <div class="btn-group center" style="margin-top:2.5rem;">
-                <a href="html/noticias.html" class="btn">Ver todas las noticias</a>
-            </div>
-        </section>
-
         <section id="actualidad" class="section-alt">
             <div class="section-head" style="margin-bottom:0;">
                 <span class="subtitulo">Vida Parroquial</span>
                 <h2>Actualidad y Evangelio</h2>
-                <hr class="section-divider" style="margin-bottom:0;">
+                <hr class="section-divider" style="margin-bottom:1.5rem;">
+                <a href="html/noticias.html" class="link-arrow">Noticias del Vaticano y del Arzobispado <span>&rarr;</span></a>
             </div>
 
             <div class="grid-container">
@@ -1099,14 +1087,32 @@ PAGES["html/jovenes2alternativa.html"] = page(1, "Jóvenes", "Grupo de jóvenes 
 
 # ---------------------------------------------------------------- NOTICIAS
 PAGES["html/noticias.html"] = page(1, "Noticias", "Noticias del Vaticano y del Arzobispado de Barcelona, actualizadas cada día, en la web de la Parroquia Santa Teresa de Jesús.", active="noticias", extra_head=NEWS_HEAD_1, body=page_hero("Actualidad de la Iglesia", "Noticias", "web/dsc_0541.jpg") + """
-        <section>
-            <div class="section-head">
-                <span class="subtitulo">Actualizadas cada día</span>
-                <h2>Vaticano y Arzobispado de Barcelona</h2>
-                <hr class="section-divider" style="margin-bottom:1.25rem;">
-                <p>Titulares de Vatican News y del Arzobispado de Barcelona. Al pulsar una noticia se abre en la web original.</p>
+        <section class="news-page">
+            <div class="news-toolbar">
+                <div class="news-filters" role="group" aria-label="Filtrar noticias">
+                    <button type="button" data-filter="all" aria-pressed="true">Todas</button>
+                    <button type="button" data-filter="vaticano" aria-pressed="false"><span class="dot vatican"></span>Vaticano</button>
+                    <button type="button" data-filter="arzobispado" aria-pressed="false"><span class="dot diocese"></span>Arzobispado de Barcelona</button>
+                </div>
+                <p class="news-updated" data-news-updated></p>
             </div>
-""" + news_columns(8, 1) + """
+            <div class="news-photos-notice">
+                <p>Las fotos de las noticias se cargan desde Vatican News y el Arzobispado de Barcelona.</p>
+                <button type="button" class="btn btn-solid" data-consent-accept>Mostrar fotos</button>
+            </div>
+            <div class="news-board" data-news-page><p class="news-empty">Cargando noticias…</p></div>
+            <div class="news-sources">
+                <a href="https://www.vaticannews.va/es.html" target="_blank" rel="noopener" class="news-source-card vatican">
+                    <span class="news-badge vatican">Santa Sede</span>
+                    <strong>Vatican News</strong>
+                    <span>Todas las noticias del Papa y de la Santa Sede &rarr;</span>
+                </a>
+                <a href="https://esglesia.barcelona/es/" target="_blank" rel="noopener" class="news-source-card diocese">
+                    <span class="news-badge diocese">Diócesis</span>
+                    <strong>Arzobispado de Barcelona</strong>
+                    <span>Actualidad de la Iglesia en Barcelona &rarr;</span>
+                </a>
+            </div>
         </section>
 
         <section class="section-warm">
@@ -1163,6 +1169,7 @@ PAGES["html/cookies.html"] = page(1, "Política de cookies", "Qué cookies utili
                         <tr><td>SoundCloud</td><td>SoundCloud Global Ltd.</td><td>Homilías</td><td>Reproducir audios. <a href="https://soundcloud.com/pages/cookies" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>Cincopa</td><td>Cincopa Ltd.</td><td>Historia, Eucaristías, Imágenes</td><td>Galerías de fotos.</td></tr>
                         <tr><td>Evangeli.net</td><td>Evangeli.net</td><td>Inicio</td><td>Mostrar el Evangelio del día.</td></tr>
+                        <tr><td>Imágenes de noticias</td><td>Vatican News (Santa Sede) / Arzobispado de Barcelona</td><td>Noticias</td><td>Mostrar las fotos de las noticias.</td></tr>
                     </tbody>
                 </table></div>
 

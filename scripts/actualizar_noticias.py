@@ -11,6 +11,8 @@ import re
 import sys
 import urllib.request
 import xml.etree.ElementTree as ET
+
+MRSS = "{http://search.yahoo.com/mrss/}"
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 
@@ -50,22 +52,32 @@ def leer_rss(url):
             fecha = parsedate_to_datetime(fecha).astimezone(timezone.utc).isoformat()
         except (TypeError, ValueError):
             fecha = None
+        media = it.find(MRSS + "content")
+        imagen = media.get("url", "") if media is not None else ""
         items.append({
             "titulo": texto_plano(it.findtext("title"), 160),
             "enlace": (it.findtext("link") or "").strip(),
             "fecha": fecha,
             "resumen": texto_plano(it.findtext("description")),
+            "imagen": imagen if imagen.startswith("https://") else "",
         })
     return items
 
 
 def leer_wp(url):
-    datos = json.loads(descargar(url + "?per_page=%d&_fields=date_gmt,link,title,excerpt" % POR_FUENTE))
+    datos = json.loads(descargar(url + "?per_page=%d&_fields=date_gmt,link,title,excerpt,yoast_head_json.og_image" % POR_FUENTE))
+
+    def imagen(p):
+        og = (p.get("yoast_head_json") or {}).get("og_image") or [{}]
+        u = og[0].get("url", "")
+        return u if u.startswith("https://") else ""
+
     return [{
         "titulo": texto_plano(p["title"]["rendered"], 160),
         "enlace": p["link"],
         "fecha": p.get("date_gmt", "") + "+00:00" if p.get("date_gmt") else None,
         "resumen": texto_plano(p.get("excerpt", {}).get("rendered", "")),
+        "imagen": imagen(p),
     } for p in datos]
 
 

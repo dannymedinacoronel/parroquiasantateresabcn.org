@@ -10,6 +10,7 @@
             days: ["el domingo", "el lunes", "el martes", "el miércoles", "el jueves", "el viernes", "el sábado"],
             viewer: "Visor de fotos", close: "Cerrar", prev: "Anterior", next: "Siguiente",
             newsEmpty: "No se han podido cargar las noticias. Inténtalo más tarde.", readMore: "Leer en la web original", updated: "Actualizado:",
+            srcVatican: "Vaticano", srcDiocese: "Arzobispado", featured: "Noticia destacada",
             external: "Contenido externo",
             phText: "Este contenido lo proporciona un servicio externo que puede instalar cookies. Solo se mostrará si lo aceptas.",
             phAccept: "Aceptar y mostrar", moreInfo: "Más información",
@@ -17,7 +18,7 @@
             bannerText: "Usamos almacenamiento técnico necesario para que la web funcione. Con tu permiso, también cargaremos contenido de terceros (mapas, vídeos, Instagram, formularios) y el chat de atención, que pueden instalar sus propias cookies. No usamos cookies de publicidad ni de analítica.",
             policy: "Política de cookies",
             optNecessary: "<strong>Necesarias</strong> Guardan tu elección sobre cookies. Siempre activas.",
-            optEmbeds: "<strong>Contenido externo</strong> Google Maps, Calendar y Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa y Evangeli.net.",
+            optEmbeds: "<strong>Contenido externo</strong> Google Maps, Calendar y Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa, Evangeli.net y fotos de las noticias.",
             optChat: "<strong>Chat de atención</strong> Tawk.to, para hablar con la parroquia en directo.",
             reject: "Rechazar", configure: "Configurar", save: "Guardar selección", acceptAll: "Aceptar todas"
         },
@@ -28,6 +29,7 @@
             days: ["diumenge", "dilluns", "dimarts", "dimecres", "dijous", "divendres", "dissabte"],
             viewer: "Visor de fotos", close: "Tancar", prev: "Anterior", next: "Següent",
             newsEmpty: "No s'han pogut carregar les notícies. Torna-ho a provar més tard.", readMore: "Llegir al web original", updated: "Actualitzat:",
+            srcVatican: "Vaticà", srcDiocese: "Arquebisbat", featured: "Notícia destacada",
             external: "Contingut extern",
             phText: "Aquest contingut el proporciona un servei extern que pot instal·lar galetes. Només es mostrarà si ho acceptes.",
             phAccept: "Acceptar i mostrar", moreInfo: "Més informació",
@@ -35,7 +37,7 @@
             bannerText: "Fem servir emmagatzematge tècnic necessari perquè el web funcioni. Amb el teu permís, també carregarem contingut de tercers (mapes, vídeos, Instagram, formularis) i el xat d'atenció, que poden instal·lar les seves pròpies galetes. No fem servir galetes de publicitat ni d'analítica.",
             policy: "Política de galetes",
             optNecessary: "<strong>Necessàries</strong> Desen la teva elecció sobre galetes. Sempre actives.",
-            optEmbeds: "<strong>Contingut extern</strong> Google Maps, Calendar i Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa i Evangeli.net.",
+            optEmbeds: "<strong>Contingut extern</strong> Google Maps, Calendar i Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa, Evangeli.net i fotos de les notícies.",
             optChat: "<strong>Xat d'atenció</strong> Tawk.to, per parlar amb la parròquia en directe.",
             reject: "Rebutjar", configure: "Configurar", save: "Desar la selecció", acceptAll: "Acceptar-les totes"
         },
@@ -46,6 +48,7 @@
             days: ["on Sunday", "on Monday", "on Tuesday", "on Wednesday", "on Thursday", "on Friday", "on Saturday"],
             viewer: "Photo viewer", close: "Close", prev: "Previous", next: "Next",
             newsEmpty: "The news could not be loaded. Please try again later.", readMore: "Read on the original website", updated: "Updated:",
+            srcVatican: "Vatican", srcDiocese: "Archdiocese", featured: "Top story",
             external: "External content",
             phText: "This content is provided by an external service that may set cookies. It will only be shown if you accept.",
             phAccept: "Accept and show", moreInfo: "More information",
@@ -53,7 +56,7 @@
             bannerText: "We use essential technical storage for the website to work. With your permission, we will also load third-party content (maps, videos, Instagram, forms) and the support chat, which may set their own cookies. We do not use advertising or analytics cookies.",
             policy: "Cookie policy",
             optNecessary: "<strong>Essential</strong> Store your cookie choice. Always active.",
-            optEmbeds: "<strong>External content</strong> Google Maps, Calendar and Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa and Evangeli.net.",
+            optEmbeds: "<strong>External content</strong> Google Maps, Calendar and Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa, Evangeli.net and news photos.",
             optChat: "<strong>Support chat</strong> Tawk.to, to talk to the parish live.",
             reject: "Reject", configure: "Settings", save: "Save selection", acceptAll: "Accept all"
         }
@@ -233,19 +236,79 @@
         return dt.toLocaleDateString(LOCALE, opts);
     }
     var data = window.NOTICIAS;
-    document.querySelectorAll("[data-news]").forEach(function (list) {
-        var items = data && data[NEWS_KEYS[list.dataset.news][LANG]];
-        if (!items || !items.length) {
-            list.innerHTML = '<p class="news-empty">' + T("newsEmpty") + "</p>";
-            return;
+    var CROSS_SVG = '<svg viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round">' +
+        '<path d="M13 1.5v31M4.5 10.5h17" stroke-width="2"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.3"/></svg>';
+    var SOURCES = {
+        vaticano: { badge: "vatican", label: T("srcVatican") },
+        arzobispado: { badge: "diocese", label: T("srcDiocese") }
+    };
+
+    /* Imagen de la noticia: solo se pide al servidor externo si se aceptó el contenido externo.
+       Mientras tanto (o si se rechaza) se ve un diseño con la cruz y el color de la fuente. */
+    function newsMedia(n, src) {
+        var img = "";
+        if (n.imagen) {
+            img = embedsLoaded
+                ? '<img src="' + escapeHtml(n.imagen) + '" alt="" loading="lazy" onload="this.classList.add(\'ok\')" onerror="this.remove()">'
+                : '<img data-consent-src="' + escapeHtml(n.imagen) + '" alt="" loading="lazy" onload="this.classList.add(\'ok\')" onerror="this.remove()">';
         }
-        list.innerHTML = items.slice(0, +list.dataset.limit || 3).map(function (n) {
-            return '<a class="news-item" href="' + escapeHtml(n.enlace) + '" target="_blank" rel="noopener">' +
-                '<time datetime="' + escapeHtml(n.fecha) + '">' + fmtDate(n.fecha) + "</time>" +
-                "<h4>" + escapeHtml(n.titulo) + "</h4>" +
-                (n.resumen ? "<p>" + escapeHtml(n.resumen) + "</p>" : "") +
-                '<span class="news-more">' + T("readMore") + " &rarr;</span></a>";
-        }).join("");
+        return '<div class="news-media ' + SOURCES[src].badge + '"><div class="news-ph">' + CROSS_SVG +
+            "<span>" + SOURCES[src].label + "</span></div>" + img + "</div>";
+    }
+    function newsCard(n, featured) {
+        var src = n.src;
+        return '<a class="' + (featured ? "news-feature" : "news-card") + '" href="' + escapeHtml(n.enlace) + '" target="_blank" rel="noopener">' +
+            newsMedia(n, src) +
+            '<div class="news-body">' +
+            '<div class="news-meta"><span class="news-badge ' + SOURCES[src].badge + '">' + SOURCES[src].label + "</span>" +
+            '<time datetime="' + escapeHtml(n.fecha) + '">' + fmtDate(n.fecha) + "</time></div>" +
+            (featured ? '<span class="news-kicker">' + T("featured") + "</span>" : "") +
+            "<h3>" + escapeHtml(n.titulo) + "</h3>" +
+            (n.resumen ? "<p>" + escapeHtml(n.resumen) + "</p>" : "") +
+            '<span class="news-more">' + T("readMore") + " &rarr;</span></div></a>";
+    }
+    /* Noticias de ambas fuentes intercaladas (el Vaticano publica mucho más y, ordenando
+       solo por fecha, las del Arzobispado quedarían siempre al final) */
+    function allNews() {
+        if (!data) return [];
+        var bySource = Object.keys(NEWS_KEYS).map(function (src) {
+            return (data[NEWS_KEYS[src][LANG]] || []).map(function (n) {
+                var copy = {}; for (var k in n) copy[k] = n[k];
+                copy.src = src;
+                return copy;
+            }).sort(function (a, b) { return new Date(b.fecha) - new Date(a.fecha); });
+        });
+        /* empieza la fuente con la noticia más reciente */
+        bySource.sort(function (a, b) {
+            return new Date((b[0] || {}).fecha || 0) - new Date((a[0] || {}).fecha || 0);
+        });
+        var list = [];
+        for (var i = 0; i < Math.max(bySource[0].length, bySource[1].length); i++) {
+            if (bySource[0][i]) list.push(bySource[0][i]);
+            if (bySource[1][i]) list.push(bySource[1][i]);
+        }
+        return list;
+    }
+    document.querySelectorAll("[data-news-page]").forEach(function (board) {
+        var items = allNews();
+        function render(filter) {
+            var list = items.filter(function (n) { return filter === "all" || n.src === filter; });
+            if (!list.length) {
+                board.innerHTML = '<p class="news-empty">' + T("newsEmpty") + "</p>";
+                return;
+            }
+            board.innerHTML = newsCard(list[0], true) +
+                '<div class="news-cards">' + list.slice(1).map(function (n) { return newsCard(n, false); }).join("") + "</div>";
+        }
+        render("all");
+        document.querySelectorAll(".news-filters [data-filter]").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                document.querySelectorAll(".news-filters [data-filter]").forEach(function (b) {
+                    b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+                });
+                render(btn.dataset.filter);
+            });
+        });
     });
     document.querySelectorAll("[data-news-updated]").forEach(function (el) {
         if (data && data.actualizado) el.textContent = T("updated") + " " + fmtDate(data.actualizado, true);
@@ -283,7 +346,7 @@
     function loadEmbeds() {
         if (embedsLoaded) return;
         embedsLoaded = true;
-        document.querySelectorAll("iframe[data-consent-src]").forEach(function (f) {
+        document.querySelectorAll("iframe[data-consent-src], img[data-consent-src]").forEach(function (f) {
             f.src = f.getAttribute("data-consent-src");
             f.removeAttribute("data-consent-src");
         });
@@ -312,6 +375,15 @@
         box.insertBefore(ph, box.firstChild);
     });
 
+    /* Botones sueltos que aceptan el contenido externo (p. ej. "Mostrar fotos" en Noticias) */
+    document.querySelectorAll("[data-consent-accept]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            var c = readConsent() || {};
+            apply(saveConsent(true, c.chat));
+            hideBanner();
+        });
+    });
+
     /* Chat Tawk.to */
     var chatLoaded = false;
     function loadChat() {
@@ -328,6 +400,7 @@
     }
 
     function apply(c) {
+        document.documentElement.classList.toggle("consent-embeds", !!c.embeds);
         if (c.embeds) loadEmbeds();
         if (c.chat) loadChat();
         /* Retirar el consentimiento tiene que surtir efecto: recargamos sin terceros */

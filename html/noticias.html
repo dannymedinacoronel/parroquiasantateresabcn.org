@@ -68,24 +68,32 @@
             <nav class="breadcrumb" aria-label="Ruta"><a href="../index.html">Inicio</a><span>/</span>Noticias</nav>
         </section>
 
-        <section>
-            <div class="section-head">
-                <span class="subtitulo">Actualizadas cada día</span>
-                <h2>Vaticano y Arzobispado de Barcelona</h2>
-                <hr class="section-divider" style="margin-bottom:1.25rem;">
-                <p>Titulares de Vatican News y del Arzobispado de Barcelona. Al pulsar una noticia se abre en la web original.</p>
-            </div>
-            <div class="news-grid">
-                <div class="news-col">
-                    <div class="news-source"><span class="news-badge vatican">Santa Sede</span><h3>Vaticano</h3><a href="https://www.vaticannews.va/es.html" target="_blank" rel="noopener">vaticannews.va &rarr;</a></div>
-                    <div class="news-list" data-news="vaticano" data-limit="8"><p class="news-empty">Cargando noticias…</p></div>
+        <section class="news-page">
+            <div class="news-toolbar">
+                <div class="news-filters" role="group" aria-label="Filtrar noticias">
+                    <button type="button" data-filter="all" aria-pressed="true">Todas</button>
+                    <button type="button" data-filter="vaticano" aria-pressed="false"><span class="dot vatican"></span>Vaticano</button>
+                    <button type="button" data-filter="arzobispado" aria-pressed="false"><span class="dot diocese"></span>Arzobispado de Barcelona</button>
                 </div>
-                <div class="news-col">
-                    <div class="news-source"><span class="news-badge diocese">Diócesis</span><h3>Arzobispado de Barcelona</h3><a href="https://esglesia.barcelona/es/" target="_blank" rel="noopener">esglesia.barcelona &rarr;</a></div>
-                    <div class="news-list" data-news="arzobispado" data-limit="8"><p class="news-empty">Cargando noticias…</p></div>
-                </div>
+                <p class="news-updated" data-news-updated></p>
             </div>
-            <p class="news-updated" data-news-updated></p>
+            <div class="news-photos-notice">
+                <p>Las fotos de las noticias se cargan desde Vatican News y el Arzobispado de Barcelona.</p>
+                <button type="button" class="btn btn-solid" data-consent-accept>Mostrar fotos</button>
+            </div>
+            <div class="news-board" data-news-page><p class="news-empty">Cargando noticias…</p></div>
+            <div class="news-sources">
+                <a href="https://www.vaticannews.va/es.html" target="_blank" rel="noopener" class="news-source-card vatican">
+                    <span class="news-badge vatican">Santa Sede</span>
+                    <strong>Vatican News</strong>
+                    <span>Todas las noticias del Papa y de la Santa Sede &rarr;</span>
+                </a>
+                <a href="https://esglesia.barcelona/es/" target="_blank" rel="noopener" class="news-source-card diocese">
+                    <span class="news-badge diocese">Diócesis</span>
+                    <strong>Arzobispado de Barcelona</strong>
+                    <span>Actualidad de la Iglesia en Barcelona &rarr;</span>
+                </a>
+            </div>
         </section>
 
         <section class="section-warm">

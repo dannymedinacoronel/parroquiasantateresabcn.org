@@ -522,5 +522,17 @@ TR = {
 "7. Cookies": ("7. Galetes", "7. Cookies"),
 "El designado por el Arzobispado de Barcelona, a través de": ("El designat per l'Arquebisbat de Barcelona, a través de", "The officer appointed by the Archdiocese of Barcelona, via"),
 "esglesia.barcelona": SAME,
+# --- noticias (formato revista) ---
+"Noticias del Vaticano y del Arzobispado": ("Notícies del Vaticà i de l'Arquebisbat", "News from the Vatican and the Archdiocese"),
+"Filtrar noticias": ("Filtrar notícies", "Filter news"),
+"Todas": ("Totes", "All"),
+"Las fotos de las noticias se cargan desde Vatican News y el Arzobispado de Barcelona.": ("Les fotos de les notícies es carreguen des de Vatican News i l'Arquebisbat de Barcelona.", "News photos are loaded from Vatican News and the Archdiocese of Barcelona."),
+"Mostrar fotos": ("Mostrar fotos", "Show photos"),
+"Vatican News": SAME,
+"Todas las noticias del Papa y de la Santa Sede &rarr;": ("Totes les notícies del Papa i de la Santa Seu &rarr;", "All the news about the Pope and the Holy See &rarr;"),
+"Actualidad de la Iglesia en Barcelona &rarr;": ("Actualitat de l'Església a Barcelona &rarr;", "Church news in Barcelona &rarr;"),
+"Imágenes de noticias": ("Imatges de notícies", "News images"),
+"Vatican News (Santa Sede) / Arzobispado de Barcelona": ("Vatican News (Santa Seu) / Arquebisbat de Barcelona", "Vatican News (Holy See) / Archdiocese of Barcelona"),
+"Mostrar las fotos de las noticias.": ("Mostrar les fotos de les notícies.", "Shows the news photos."),
 "Consulta nuestra": ("Consulta la nostra", "See our"),
 }
