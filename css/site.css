@@ -149,7 +149,8 @@ header {
 .hero-bg {
     position: absolute; inset: 0; z-index: 0;
     background: url('../fotosdefinitivas/web/portada3.jpg') center / cover no-repeat;
-    animation: slowZoom 2.2s var(--ease) both, kenBurns 28s ease-in-out 2.2s infinite alternate;
+    animation: slowZoom 3.5s var(--ease) both, kenBurns 14s ease-in-out 3.5s infinite alternate;
+    will-change: transform;
 }
 .hero::after {
     content: ""; position: absolute; inset: 0; z-index: 0;
@@ -158,8 +159,8 @@ header {
         linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.6));
 }
 .hero > *:not(.hero-bg) { position: relative; z-index: 1; }
-@keyframes slowZoom { from { transform: scale(1.12); opacity: .6; } to { transform: scale(1); opacity: 1; } }
-@keyframes kenBurns { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.1) translate(-1.5%, -1%); } }
+@keyframes slowZoom { from { transform: scale(1.4); opacity: .4; } to { transform: scale(1); opacity: 1; } }
+@keyframes kenBurns { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.25) translate(-3%, -2%); } }
 .hero > *:not(.hero-bg):not(.scroll-cue) { animation: heroIn 1.2s var(--ease) both; }
 .hero > :nth-child(3) { animation-delay: .15s; } .hero > :nth-child(4) { animation-delay: .3s; } .hero > :nth-child(5) { animation-delay: .45s; } .hero > :nth-child(6) { animation-delay: .6s; } .hero > :nth-child(7) { animation-delay: .75s; }
 @keyframes heroIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
