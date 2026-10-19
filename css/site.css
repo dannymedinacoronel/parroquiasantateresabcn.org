@@ -738,6 +738,50 @@ mark.pendiente { background: #fff1c2; color: #7a5a00; padding: 0.1rem 0.35rem; b
     .cookie-banner { left: 0.75rem; bottom: 0.75rem; width: calc(100% - 1.5rem); padding: 1.25rem; }
 }
 
+/* --- NOTICIAS (Vaticano / Arzobispado) --- */
+.news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+.news-col { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; }
+.news-source { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.9rem; padding: 1.5rem 1.75rem; border-bottom: 1px solid var(--border); background: linear-gradient(180deg, var(--bg-warm), var(--white)); }
+.news-source h3 { font-size: 1.8rem; font-style: italic; flex: 1 1 auto; }
+.news-source a { font-size: 0.78rem; color: var(--accent-dark); text-decoration: none; }
+.news-badge { font-size: 0.68rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; padding: 0.25rem 0.6rem; border-radius: 2px; color: var(--white); }
+.news-badge.vatican { background: #b8962e; }
+.news-badge.diocese { background: #7a2e2e; }
+.news-item { display: block; padding: 1.4rem 1.75rem; text-decoration: none; color: inherit; border-bottom: 1px solid var(--border); transition: background .3s; }
+.news-item:last-child { border-bottom: 0; }
+.news-item:hover { background: #fdfaf4; }
+.news-item time { font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-dark); font-weight: 600; }
+.news-item h4 { font-family: var(--header-font); font-size: 1.45rem; line-height: 1.25; color: var(--heading-color); margin: 0.35rem 0 0.4rem; transition: color .3s; }
+.news-item:hover h4 { color: var(--accent-dark); }
+.news-item p { font-size: 0.92rem; color: var(--muted); }
+.news-more { display: inline-block; margin-top: 0.5rem; font-size: 0.74rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-color); }
+.news-empty { padding: 2rem 1.75rem; color: var(--muted); font-style: italic; }
+.news-updated { text-align: center; margin-top: 1.25rem; font-size: 0.82rem; color: var(--muted); font-style: italic; }
+
+/* --- SELECTOR DE IDIOMA --- */
+.lang-switch { display: flex; align-items: center; gap: 0.15rem; margin-left: 1.5rem; padding-left: 1.25rem; border-left: 1px solid rgba(0,0,0,0.12); }
+.lang-switch a {
+    font-size: 0.74rem; font-weight: 600; letter-spacing: 1px; text-decoration: none; color: #2c2c2c;
+    padding: 0.3rem 0.45rem; border-radius: 2px; transition: background .3s, color .3s;
+}
+.lang-switch a:hover { color: var(--accent-color); }
+.lang-switch a[aria-current="true"] { background: var(--accent-color); color: var(--white); }
+.js header:not(.scrolled):not(.menu-open) .lang-switch { border-left-color: rgba(255,255,255,0.3); }
+.js header:not(.scrolled):not(.menu-open) .lang-switch a:not([aria-current="true"]) { color: var(--white); }
+header nav { display: flex; align-items: center; margin-left: auto; }
+
+@media (max-width: 1280px) {
+    .lang-switch { margin-left: auto; margin-right: 1rem; padding-left: 0; border-left: 0; }
+    header nav { margin-left: 0; }
+}
+@media (max-width: 860px) {
+    .news-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+@media (max-width: 400px) {
+    .lang-switch a { padding: 0.25rem 0.3rem; font-size: 0.7rem; }
+    .lang-switch { margin-right: 0.5rem; }
+}
+
 /* --- ORNAMENTO --- */
 .ornament { display: block; width: 120px; height: 24px; margin: 0 auto 1rem; color: var(--accent-color); }
 
@@ -796,15 +840,15 @@ mark.pendiente { background: #fff1c2; color: #7a5a00; padding: 0.1rem 0.35rem; b
 }
 
 /* Pantallas medianas: menú más compacto para que no choque con el logo */
-@media (max-width: 1240px) and (min-width: 1025px) {
+@media (max-width: 1440px) and (min-width: 1281px) {
     header { padding: 0 3%; }
     .nav-menu { gap: 1rem; }
     .nav-link { letter-spacing: 1px; font-size: 0.76rem; }
     .logo { font-size: 1.3rem; }
 }
 
-/* El menú de 7 enlaces no cabe por debajo de ~1024px: pasa a hamburguesa */
-@media (max-width: 1024px) {
+/* El menú de 7 enlaces + idiomas no cabe por debajo de ~1280px: pasa a hamburguesa */
+@media (max-width: 1280px) {
     .hamburger { display: block; }
     .image-band { background-attachment: scroll; } /* "fixed" falla en iOS/tabletas */
     .nav-menu {
@@ -898,3 +942,10 @@ mark.pendiente { background: #fff1c2; color: #7a5a00; padding: 0.1rem 0.35rem; b
     .mosaic { grid-auto-rows: 440px; }
     .cta-band { max-width: 2400px; }
 }
+
+@media (max-width: 1280px) {
+    .lang-switch { order: 2; }
+    .hamburger { order: 3; }
+}
+
+.lang-note { max-width: 760px; margin: 0 auto 1.5rem; padding: 0.6rem 1rem; font-size: 0.85rem; font-style: italic; color: var(--muted); background: var(--bg-warm); border-left: 2px solid var(--accent-color); }

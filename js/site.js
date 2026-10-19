@@ -1,9 +1,68 @@
 /* Parroquia Santa Teresa de Jesús — JavaScript común a todas las páginas */
 (function () {
-    /* Ruta a la página de cookies, relativa a este script (sirve desde / y desde /html) */
-    var COOKIES_URL = document.currentScript
-        ? document.currentScript.src.replace(/js\/site\.js.*$/, "html/cookies.html")
-        : "html/cookies.html";
+    /* --- Idioma de la página y textos del JavaScript en es / ca / en --- */
+    var LANG = (document.documentElement.lang || "es").slice(0, 2);
+    var I18N = {
+        es: {
+            menuOpen: "Abrir menú", menuClose: "Cerrar menú",
+            massNow: "Eucaristía <strong>en curso</strong> · comenzó a las ", massNext: "Próxima eucaristía: ",
+            today: "hoy", tomorrow: "mañana", at: " a las ", hours: " h",
+            days: ["el domingo", "el lunes", "el martes", "el miércoles", "el jueves", "el viernes", "el sábado"],
+            viewer: "Visor de fotos", close: "Cerrar", prev: "Anterior", next: "Siguiente",
+            newsEmpty: "No se han podido cargar las noticias. Inténtalo más tarde.", readMore: "Leer en la web original", updated: "Actualizado:",
+            external: "Contenido externo",
+            phText: "Este contenido lo proporciona un servicio externo que puede instalar cookies. Solo se mostrará si lo aceptas.",
+            phAccept: "Aceptar y mostrar", moreInfo: "Más información",
+            bannerLabel: "Aviso de cookies", bannerTitle: "Tu privacidad",
+            bannerText: "Usamos almacenamiento técnico necesario para que la web funcione. Con tu permiso, también cargaremos contenido de terceros (mapas, vídeos, Instagram, formularios) y el chat de atención, que pueden instalar sus propias cookies. No usamos cookies de publicidad ni de analítica.",
+            policy: "Política de cookies",
+            optNecessary: "<strong>Necesarias</strong> Guardan tu elección sobre cookies. Siempre activas.",
+            optEmbeds: "<strong>Contenido externo</strong> Google Maps, Calendar y Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa y Evangeli.net.",
+            optChat: "<strong>Chat de atención</strong> Tawk.to, para hablar con la parroquia en directo.",
+            reject: "Rechazar", configure: "Configurar", save: "Guardar selección", acceptAll: "Aceptar todas"
+        },
+        ca: {
+            menuOpen: "Obrir menú", menuClose: "Tancar menú",
+            massNow: "Eucaristia <strong>en curs</strong> · ha començat a les ", massNext: "Propera eucaristia: ",
+            today: "avui", tomorrow: "demà", at: " a les ", hours: " h",
+            days: ["diumenge", "dilluns", "dimarts", "dimecres", "dijous", "divendres", "dissabte"],
+            viewer: "Visor de fotos", close: "Tancar", prev: "Anterior", next: "Següent",
+            newsEmpty: "No s'han pogut carregar les notícies. Torna-ho a provar més tard.", readMore: "Llegir al web original", updated: "Actualitzat:",
+            external: "Contingut extern",
+            phText: "Aquest contingut el proporciona un servei extern que pot instal·lar galetes. Només es mostrarà si ho acceptes.",
+            phAccept: "Acceptar i mostrar", moreInfo: "Més informació",
+            bannerLabel: "Avís de galetes", bannerTitle: "La teva privacitat",
+            bannerText: "Fem servir emmagatzematge tècnic necessari perquè el web funcioni. Amb el teu permís, també carregarem contingut de tercers (mapes, vídeos, Instagram, formularis) i el xat d'atenció, que poden instal·lar les seves pròpies galetes. No fem servir galetes de publicitat ni d'analítica.",
+            policy: "Política de galetes",
+            optNecessary: "<strong>Necessàries</strong> Desen la teva elecció sobre galetes. Sempre actives.",
+            optEmbeds: "<strong>Contingut extern</strong> Google Maps, Calendar i Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa i Evangeli.net.",
+            optChat: "<strong>Xat d'atenció</strong> Tawk.to, per parlar amb la parròquia en directe.",
+            reject: "Rebutjar", configure: "Configurar", save: "Desar la selecció", acceptAll: "Acceptar-les totes"
+        },
+        en: {
+            menuOpen: "Open menu", menuClose: "Close menu",
+            massNow: "Mass <strong>in progress</strong> · started at ", massNext: "Next Mass: ",
+            today: "today", tomorrow: "tomorrow", at: " at ", hours: "",
+            days: ["on Sunday", "on Monday", "on Tuesday", "on Wednesday", "on Thursday", "on Friday", "on Saturday"],
+            viewer: "Photo viewer", close: "Close", prev: "Previous", next: "Next",
+            newsEmpty: "The news could not be loaded. Please try again later.", readMore: "Read on the original website", updated: "Updated:",
+            external: "External content",
+            phText: "This content is provided by an external service that may set cookies. It will only be shown if you accept.",
+            phAccept: "Accept and show", moreInfo: "More information",
+            bannerLabel: "Cookie notice", bannerTitle: "Your privacy",
+            bannerText: "We use essential technical storage for the website to work. With your permission, we will also load third-party content (maps, videos, Instagram, forms) and the support chat, which may set their own cookies. We do not use advertising or analytics cookies.",
+            policy: "Cookie policy",
+            optNecessary: "<strong>Essential</strong> Store your cookie choice. Always active.",
+            optEmbeds: "<strong>External content</strong> Google Maps, Calendar and Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa and Evangeli.net.",
+            optChat: "<strong>Support chat</strong> Tawk.to, to talk to the parish live.",
+            reject: "Reject", configure: "Settings", save: "Save selection", acceptAll: "Accept all"
+        }
+    };
+    function T(key) { return (I18N[LANG] || I18N.es)[key]; }
+
+    /* Ruta a la página de cookies del idioma actual, relativa a este script (que está en /js) */
+    var SITE_ROOT = document.currentScript ? document.currentScript.src.replace(/js\/site\.js.*$/, "") : "";
+    var COOKIES_URL = SITE_ROOT + (LANG === "es" ? "" : LANG + "/") + "html/cookies.html";
 
     var header = document.querySelector("header");
 
@@ -25,7 +84,7 @@
         navMenu.classList.toggle("active", open);
         header.classList.toggle("menu-open", open);
         hamburger.setAttribute("aria-expanded", open ? "true" : "false");
-        hamburger.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+        hamburger.setAttribute("aria-label", open ? T("menuClose") : T("menuOpen"));
         document.body.classList.toggle("menu-open", open);
     }
 
@@ -40,7 +99,7 @@
             if (e.key === "Escape") setMenu(false);
         });
         window.addEventListener("resize", function () {
-            if (window.innerWidth > 1024) setMenu(false);
+            if (window.innerWidth > 1280) setMenu(false);
         });
     }
 
@@ -87,7 +146,6 @@
 
     /* --- Próxima eucaristía (según los horarios fijos de la parroquia) --- */
     var MISAS = { 0: ["11:00", "13:00"], 1: ["19:00"], 2: ["19:00"], 3: ["19:00"], 4: ["19:00"], 5: ["19:00"], 6: ["19:00"] };
-    var DIAS = ["el domingo", "el lunes", "el martes", "el miércoles", "el jueves", "el viernes", "el sábado"];
     document.querySelectorAll("[data-next-mass]").forEach(function (el) {
         var now = new Date();
         for (var off = 0; off < 8; off++) {
@@ -99,10 +157,10 @@
                 var mins = (now - start) / 60000;
                 var texto = null;
                 if (mins >= 0 && mins < 50) {
-                    texto = "Eucaristía <strong>en curso</strong> · comenzó a las " + horas[i];
+                    texto = T("massNow") + horas[i];
                 } else if (start > now) {
-                    var cuando = off === 0 ? "hoy" : off === 1 ? "mañana" : DIAS[day.getDay()];
-                    texto = "Próxima eucaristía: <strong>" + cuando + " a las " + horas[i] + " h</strong>";
+                    var cuando = off === 0 ? T("today") : off === 1 ? T("tomorrow") : T("days")[day.getDay()];
+                    texto = T("massNext") + "<strong>" + cuando + T("at") + horas[i] + T("hours") + "</strong>";
                 }
                 if (texto) {
                     el.innerHTML = '<span class="dot" aria-hidden="true"></span><span>' + texto + "</span>";
@@ -121,9 +179,9 @@
         box.className = "lightbox";
         box.setAttribute("role", "dialog");
         box.setAttribute("aria-modal", "true");
-        box.setAttribute("aria-label", "Visor de fotos");
-        box.innerHTML = '<img alt=""><button class="lb-close" aria-label="Cerrar">&times;</button>' +
-            '<button class="lb-prev" aria-label="Anterior">&#8249;</button><button class="lb-next" aria-label="Siguiente">&#8250;</button>' +
+        box.setAttribute("aria-label", T("viewer"));
+        box.innerHTML = '<img alt=""><button class="lb-close" aria-label="' + T("close") + '">&times;</button>' +
+            '<button class="lb-prev" aria-label="' + T("prev") + '">&#8249;</button><button class="lb-next" aria-label="' + T("next") + '">&#8250;</button>' +
             '<div class="lb-count"></div>';
         document.body.appendChild(box);
         var img = box.querySelector("img"), count = box.querySelector(".lb-count"), current = 0;
@@ -154,6 +212,43 @@
             if (e.key === "ArrowLeft") show(current - 1);
             if (e.key === "ArrowRight") show(current + 1);
         });
+    });
+
+    /* --- Noticias del Vaticano y del Arzobispado (data/noticias.js, actualizado a diario) --- */
+    var NEWS_KEYS = {
+        vaticano: { es: "vaticano_es", ca: "vaticano_es", en: "vaticano_en" },
+        arzobispado: { es: "arzobispado_es", ca: "arzobispado_ca", en: "arzobispado_es" }
+    };
+    var LOCALE = { es: "es-ES", ca: "ca-ES", en: "en-GB" }[LANG] || "es-ES";
+    function escapeHtml(s) {
+        return String(s || "").replace(/[&<>"']/g, function (c) {
+            return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+        });
+    }
+    function fmtDate(iso, withTime) {
+        var dt = new Date(iso);
+        if (isNaN(dt)) return "";
+        var opts = { day: "numeric", month: "long", year: "numeric" };
+        if (withTime) { opts.hour = "2-digit"; opts.minute = "2-digit"; }
+        return dt.toLocaleDateString(LOCALE, opts);
+    }
+    var data = window.NOTICIAS;
+    document.querySelectorAll("[data-news]").forEach(function (list) {
+        var items = data && data[NEWS_KEYS[list.dataset.news][LANG]];
+        if (!items || !items.length) {
+            list.innerHTML = '<p class="news-empty">' + T("newsEmpty") + "</p>";
+            return;
+        }
+        list.innerHTML = items.slice(0, +list.dataset.limit || 3).map(function (n) {
+            return '<a class="news-item" href="' + escapeHtml(n.enlace) + '" target="_blank" rel="noopener">' +
+                '<time datetime="' + escapeHtml(n.fecha) + '">' + fmtDate(n.fecha) + "</time>" +
+                "<h4>" + escapeHtml(n.titulo) + "</h4>" +
+                (n.resumen ? "<p>" + escapeHtml(n.resumen) + "</p>" : "") +
+                '<span class="news-more">' + T("readMore") + " &rarr;</span></a>";
+        }).join("");
+    });
+    document.querySelectorAll("[data-news-updated]").forEach(function (el) {
+        if (data && data.actualizado) el.textContent = T("updated") + " " + fmtDate(data.actualizado, true);
     });
 
     /* --- Año actual en el pie --- */
@@ -205,10 +300,10 @@
     document.querySelectorAll(".consent-embed").forEach(function (box) {
         var ph = document.createElement("div");
         ph.className = "consent-placeholder";
-        ph.innerHTML = '<p><strong>' + (box.dataset.service || "Contenido externo") + '</strong></p>' +
-            '<p>Este contenido lo proporciona un servicio externo que puede instalar cookies. Solo se mostrará si lo aceptas.</p>' +
-            '<button type="button" class="btn btn-solid">Aceptar y mostrar</button> ' +
-            '<a href="' + COOKIES_URL + '">Más información</a>';
+        ph.innerHTML = '<p><strong>' + (box.dataset.service || T("external")) + '</strong></p>' +
+            '<p>' + T("phText") + '</p>' +
+            '<button type="button" class="btn btn-solid">' + T("phAccept") + '</button> ' +
+            '<a href="' + COOKIES_URL + '">' + T("moreInfo") + '</a>';
         ph.querySelector("button").addEventListener("click", function () {
             var c = readConsent() || {};
             apply(saveConsent(true, c.chat));
@@ -244,22 +339,22 @@
     banner.className = "cookie-banner";
     banner.setAttribute("role", "dialog");
     banner.setAttribute("aria-live", "polite");
-    banner.setAttribute("aria-label", "Aviso de cookies");
+    banner.setAttribute("aria-label", T("bannerLabel"));
     banner.innerHTML =
         '<div class="cookie-main">' +
-            '<p class="cookie-title">Tu privacidad</p>' +
-            '<p>Usamos almacenamiento técnico necesario para que la web funcione. Con tu permiso, también cargaremos contenido de terceros (mapas, vídeos, Instagram, formularios) y el chat de atención, que pueden instalar sus propias cookies. No usamos cookies de publicidad ni de analítica. <a href="' + COOKIES_URL + '">Política de cookies</a></p>' +
+            '<p class="cookie-title">' + T("bannerTitle") + '</p>' +
+            '<p>' + T("bannerText") + ' <a href="' + COOKIES_URL + '">' + T("policy") + '</a></p>' +
         '</div>' +
         '<div class="cookie-settings" hidden>' +
-            '<label class="cookie-option"><input type="checkbox" checked disabled><span><strong>Necesarias</strong> Guardan tu elección sobre cookies. Siempre activas.</span></label>' +
-            '<label class="cookie-option"><input type="checkbox" data-cat="embeds"><span><strong>Contenido externo</strong> Google Maps, Calendar y Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa y Evangeli.net.</span></label>' +
-            '<label class="cookie-option"><input type="checkbox" data-cat="chat"><span><strong>Chat de atención</strong> Tawk.to, para hablar con la parroquia en directo.</span></label>' +
+            '<label class="cookie-option"><input type="checkbox" checked disabled><span>' + T("optNecessary") + '</span></label>' +
+            '<label class="cookie-option"><input type="checkbox" data-cat="embeds"><span>' + T("optEmbeds") + '</span></label>' +
+            '<label class="cookie-option"><input type="checkbox" data-cat="chat"><span>' + T("optChat") + '</span></label>' +
         '</div>' +
         '<div class="cookie-actions">' +
-            '<button type="button" class="btn" data-act="reject">Rechazar</button>' +
-            '<button type="button" class="btn" data-act="config">Configurar</button>' +
-            '<button type="button" class="btn" data-act="save" hidden>Guardar selección</button>' +
-            '<button type="button" class="btn" data-act="accept">Aceptar todas</button>' +
+            '<button type="button" class="btn" data-act="reject">' + T("reject") + '</button>' +
+            '<button type="button" class="btn" data-act="config">' + T("configure") + '</button>' +
+            '<button type="button" class="btn" data-act="save" hidden>' + T("save") + '</button>' +
+            '<button type="button" class="btn" data-act="accept">' + T("acceptAll") + '</button>' +
         '</div>';
     document.body.appendChild(banner);
 

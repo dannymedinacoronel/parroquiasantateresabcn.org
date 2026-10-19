@@ -7,6 +7,11 @@
     <title>Parroquia Santa Teresa de Jesús | Barcelona</title>
     <meta name="description" content="Parroquia Santa Teresa de Jesús, en el barrio del Carmel (Barcelona). Horarios de eucaristías, actividades pastorales y contacto.">
     <link rel="canonical" href="https://parroquiasantateresabcn.org/">
+    <link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.org/">
+    <link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.org/ca/">
+    <link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.org/en/">
+    <link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.org/">
+
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Parroquia Santa Teresa de Jesús">
     <meta property="og:title" content="Parroquia Santa Teresa de Jesús | Barcelona">
@@ -15,7 +20,10 @@
     <meta property="og:image" content="https://parroquiasantateresabcn.org/fotosdefinitivas/web/portada3.jpg">
     <meta property="og:locale" content="es_ES">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" type="image/x-icon" href="fotosdefinitivas/portada/faviconico.ico">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="favicon-48.png" sizes="48x48" type="image/png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
 
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/site.css">
@@ -26,8 +34,14 @@
     {
       "@context": "https://schema.org",
       "@type": "Church",
+      "@id": "https://parroquiasantateresabcn.org/#parroquia",
       "name": "Parroquia Santa Teresa de Jesús",
+      "alternateName": ["Parròquia de Santa Teresa de Jesús", "Parroquia de Santa Teresa de Jesús de Barcelona", "Santa Teresa de Jesús (El Carmel)"],
+      "description": "Parroquia católica del barrio del Carmel, en Barcelona, perteneciente al Arzobispado de Barcelona.",
       "url": "https://parroquiasantateresabcn.org/",
+      "logo": "https://parroquiasantateresabcn.org/favicon-512.png",
+      "hasMap": "https://goo.gl/maps/Y4SiUkiMGwp",
+      "parentOrganization": { "@type": "Organization", "name": "Arzobispado de Barcelona", "url": "https://esglesia.barcelona/" },
       "image": "https://parroquiasantateresabcn.org/fotosdefinitivas/web/portada3.jpg",
       "email": "parroquisantateresabarcelona@gmail.com",
       "address": {
@@ -40,6 +54,8 @@
       "sameAs": ["https://www.instagram.com/parroquiasantateresadejesusbcn/"]
     }
     </script>
+    <script src="data/noticias.js"></script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "Parroquia Santa Teresa de Jesús", "alternateName": ["Parròquia de Santa Teresa de Jesús", "Parroquia Santa Teresa de Jesús Barcelona"], "url": "https://parroquiasantateresabcn.org/", "inLanguage": "es", "publisher": {"@id": "https://parroquiasantateresabcn.org/#parroquia"}}</script>
 </head>
 <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -55,13 +71,14 @@
             <ul class="nav-menu" id="menu-principal">
             <li class="nav-item"><a href="index.html" class="nav-link active" aria-current="page">Inicio</a></li>
             <li class="nav-item"><a href="#horarios" class="nav-link">Eucaristías</a></li>
-            <li class="nav-item"><a href="#actualidad" class="nav-link">Noticias</a></li>
+            <li class="nav-item"><a href="html/noticias.html" class="nav-link">Noticias</a></li>
             <li class="nav-item"><a href="html/dinamicapastoral.html" class="nav-link">Dinámica Pastoral</a></li>
             <li class="nav-item"><a href="html/organigramaparroquial.html" class="nav-link">Organigrama</a></li>
             <li class="nav-item"><a href="html/historia.html" class="nav-link">Historia</a></li>
             <li class="nav-item"><a href="html/contacto.html" class="nav-link">Contacto</a></li>
             </ul>
         </nav>
+        <div class="lang-switch" role="navigation" aria-label="Idioma / Language"><a href="index.html" hreflang="es" lang="es" title="Español" aria-current="true">ES</a><a href="ca/index.html" hreflang="ca" lang="ca" title="Català">CA</a><a href="en/index.html" hreflang="en" lang="en" title="English">EN</a></div>
     </header>
 
     <main id="contenido">
@@ -241,6 +258,29 @@
             </div>
         </section>
 
+        <section id="noticias">
+            <div class="section-head">
+                <span class="subtitulo">Actualidad de la Iglesia</span>
+                <h2>Noticias</h2>
+                <hr class="section-divider" style="margin-bottom:1.25rem;">
+                <p>Las últimas noticias del Vaticano y del Arzobispado de Barcelona, actualizadas cada día.</p>
+            </div>
+            <div class="news-grid">
+                <div class="news-col">
+                    <div class="news-source"><span class="news-badge vatican">Santa Sede</span><h3>Vaticano</h3><a href="https://www.vaticannews.va/es.html" target="_blank" rel="noopener">vaticannews.va &rarr;</a></div>
+                    <div class="news-list" data-news="vaticano" data-limit="3"><p class="news-empty">Cargando noticias…</p></div>
+                </div>
+                <div class="news-col">
+                    <div class="news-source"><span class="news-badge diocese">Diócesis</span><h3>Arzobispado de Barcelona</h3><a href="https://esglesia.barcelona/es/" target="_blank" rel="noopener">esglesia.barcelona &rarr;</a></div>
+                    <div class="news-list" data-news="arzobispado" data-limit="3"><p class="news-empty">Cargando noticias…</p></div>
+                </div>
+            </div>
+            <p class="news-updated" data-news-updated></p>
+            <div class="btn-group center" style="margin-top:2.5rem;">
+                <a href="html/noticias.html" class="btn">Ver todas las noticias</a>
+            </div>
+        </section>
+
         <section id="actualidad" class="section-alt">
             <div class="section-head" style="margin-bottom:0;">
                 <span class="subtitulo">Vida Parroquial</span>
@@ -317,7 +357,7 @@
             <div class="footer-col">
                 <h4>Enlaces de Interés</h4>
                 <ul class="footer-links">
-                    <li><a href="https://www.esglesiabarcelona.cat/" target="_blank" rel="noopener">Arzobispado de Barcelona</a></li>
+                    <li><a href="https://esglesia.barcelona/es/" target="_blank" rel="noopener">Arzobispado de Barcelona</a></li>
                     <li><a href="https://caritas.barcelona" target="_blank" rel="noopener">Cáritas Barcelona</a></li>
                     <li><a href="https://www.esglesiabarcelona.cat/mapa/index.php?view=barcelona-santateresadejesus" target="_blank" rel="noopener">Buscador de Parroquias</a></li>
                 </ul>

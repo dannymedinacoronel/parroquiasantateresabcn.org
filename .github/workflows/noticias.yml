@@ -1,0 +1,35 @@
+name: Actualizar noticias
+
+on:
+  schedule:
+    - cron: "15 5 * * *"   # cada día a las 05:15 UTC (07:15 en Barcelona en verano)
+    - cron: "15 15 * * *"  # y otra vez por la tarde
+  workflow_dispatch:        # permite lanzarlo a mano desde la pestaña Actions
+
+permissions:
+  contents: write
+
+jobs:
+  noticias:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Descargar noticias
+        run: python scripts/actualizar_noticias.py
+
+      - name: Guardar cambios
+        run: |
+          if git diff --quiet -- data/noticias.js; then
+            echo "Sin noticias nuevas."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add data/noticias.js
+          git commit -m "Noticias actualizadas automáticamente"
+          git push
