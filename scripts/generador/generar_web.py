@@ -132,7 +132,7 @@ __HREFLANG__
         <nav aria-label="Menú principal">
             <ul class="nav-menu" id="menu-principal">
 {nav}
-            </ul>
+__MENU_EXTRA__            </ul>
         </nav>
 __LANGSWITCH__    </header>
 
@@ -1363,6 +1363,30 @@ def lang_switch(lang, rel):
     return f'        <div class="lang-switch" role="navigation" aria-label="Idioma / Language">{links}</div>\n'
 
 
+MENU_TEXT = {
+    "es": ("Horarios de misa", "Laborables y sábados · 19:00 h", "Domingos · 11:00 y 13:00 h", "Idioma"),
+    "ca": ("Horaris de missa", "Feiners i dissabtes · 19:00 h", "Diumenges · 11:00 i 13:00 h", "Idioma"),
+    "en": ("Mass times", "Weekdays and Saturdays · 19:00", "Sundays · 11:00 and 13:00", "Language"),
+}
+
+
+def menu_extra(lang, rel, with_lang=True):
+    """Bloque que solo se ve en el menú del móvil: horarios de misa y selector de idioma grande."""
+    title, weekdays, sundays, lang_label = MENU_TEXT[lang]
+    langs = ""
+    if with_lang:
+        cur = out_path(lang, rel)
+        links = "".join(
+            f'<a href="{relurl(cur, out_path(l, rel))}" hreflang="{l}" lang="{l}"'
+            f'{" aria-current=\"true\"" if l == lang else ""}>{name}</a>'
+            for l, label, name in LANG_NAMES)
+        langs = f'<div class="nav-lang" role="group" aria-label="{lang_label}">{links}</div>'
+    return (f'            <li class="nav-extra">\n'
+            f'                <div class="nav-mass"><span class="nav-mass-title">{title}</span>'
+            f'<span>{weekdays}</span><span>{sundays}</span></div>\n'
+            f'                {langs}\n            </li>\n')
+
+
 def hreflang_links(rel):
     out = "".join(f'    <link rel="alternate" hreflang="{l}" href="{page_url(l, rel)}">\n' for l in LANGS)
     return out + f'    <link rel="alternate" hreflang="x-default" href="{page_url("es", rel)}">\n'
@@ -1404,7 +1428,7 @@ for rel, base in PAGES.items():
         html = base.replace('    <link rel="canonical" href="__URL__">\n__HREFLANG__', '    <meta name="robots" content="noindex">\n')
         html = html.replace("__URL__", SITE).replace("__LOCALE__", "es_ES")
         html = re.sub(r'(href|src)="(?!https?:|//|mailto:|/|#contenido")([^"]*)"', r'\1="/\2"', html)
-        html = html.replace("__LANGSWITCH__", "")
+        html = html.replace("__LANGSWITCH__", "").replace("__MENU_EXTRA__", menu_extra("es", rel, with_lang=False))
         with open(os.path.join(ROOT, rel), "w", encoding="utf-8", newline="\n") as fh:
             fh.write(html)
         continue
@@ -1420,7 +1444,8 @@ for rel, base in PAGES.items():
         html = (html.replace("__URL__", page_url(lang, rel))
                     .replace("__HREFLANG__", hreflang_links(rel))
                     .replace("__LOCALE__", LOCALES[lang])
-                    .replace("__LANGSWITCH__", lang_switch(lang, rel)))
+                    .replace("__LANGSWITCH__", lang_switch(lang, rel))
+                    .replace("__MENU_EXTRA__", menu_extra(lang, rel)))
         html = structured_data(html, lang, rel)
         path = os.path.join(ROOT, out_path(lang, rel))
         os.makedirs(os.path.dirname(path), exist_ok=True)
