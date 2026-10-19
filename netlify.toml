@@ -1,0 +1,88 @@
+# Configuración de Netlify para parroquiasantateresabcn.org
+# Web estática: no hay paso de compilación, se publica la raíz del repositorio tal cual.
+
+[build]
+  publish = "."
+  command = ""
+
+# --- Direcciones antiguas -> nuevas (301 conserva el posicionamiento en Google) ---
+# El menú antiguo enlazaba a /HTML/ en mayúsculas
+[[redirects]]
+  from = "/HTML/*"
+  to = "/html/:splat"
+  status = 301
+
+# Páginas antiguas eliminadas
+[[redirects]]
+  from = "/index2*"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/index25082020*"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/index%20*"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/original.cetuscloud*"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/html/indexcuentaatrasestrenodelawebcontador*"
+  to = "/"
+  status = 301
+
+# --- Cabeceras de seguridad ---
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+
+# --- Caché ---
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/fotosdefinitivas/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, must-revalidate"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, must-revalidate"
+
+# Las noticias cambian dos veces al día
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=1800, must-revalidate"
+
+# Herramientas internas: no se publican
+[[redirects]]
+  from = "/scripts/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.github/*"
+  to = "/404.html"
+  status = 404
+  force = true

@@ -520,5 +520,7 @@ TR = {
 "6. Seguridad": ("6. Seguretat", "6. Security"),
 "Aplicamos medidas técnicas y organizativas adecuadas para proteger los datos frente a pérdidas, accesos no autorizados o alteraciones.": ("Apliquem mesures tècniques i organitzatives adequades per protegir les dades davant de pèrdues, accessos no autoritzats o alteracions.", "We apply appropriate technical and organisational measures to protect data against loss, unauthorised access or alteration."),
 "7. Cookies": ("7. Galetes", "7. Cookies"),
+"El designado por el Arzobispado de Barcelona, a través de": ("El designat per l'Arquebisbat de Barcelona, a través de", "The officer appointed by the Archdiocese of Barcelona, via"),
+"esglesia.barcelona": SAME,
 "Consulta nuestra": ("Consulta la nostra", "See our"),
 }

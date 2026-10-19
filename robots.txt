@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /scripts/
 
-Sitemap: https://parroquiasantateresabcn.org/sitemap.xml
+Sitemap: https://www.parroquiasantateresabcn.org/sitemap.xml

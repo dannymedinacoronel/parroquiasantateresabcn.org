@@ -22,17 +22,16 @@ PARROQUIA_LINKS = [
 ]
 
 
-SITE = "https://parroquiasantateresabcn.org/"
+SITE = "https://www.parroquiasantateresabcn.org/"
 
 # Datos del titular para Aviso legal y Privacidad.
 # Los marcados como PENDIENTE deben completarse con los datos reales de la parroquia.
 LEGAL = {
     "titular": "Parroquia de Santa Teresa de Jesús (Arzobispado de Barcelona)",
-    "nif": '<mark class="pendiente">PENDIENTE: NIF/CIF de la parroquia</mark>',
-    "registro": '<mark class="pendiente">PENDIENTE: n.º de inscripción en el Registro de Entidades Religiosas del Ministerio de Justicia</mark>',
     "domicilio": "Carrer del Llobregós, 132, 08032 Barcelona",
     "email": "parroquisantateresabarcelona@gmail.com",
-    "dpd": '<mark class="pendiente">PENDIENTE: contacto del Delegado de Protección de Datos del Arzobispado de Barcelona</mark>',
+    "dpd": 'El designado por el Arzobispado de Barcelona, a través de <a href="https://esglesia.barcelona/es/" target="_blank" rel="noopener">esglesia.barcelona</a>',
+    # Si se conoce el NIF de la parroquia, añadir aquí "nif" y su línea en el Aviso legal y la Privacidad.
     "actualizado": "20 de octubre de 2026",
 }
 
@@ -310,15 +309,15 @@ INDEX_HEAD = """    <link rel="preload" as="image" href="fotosdefinitivas/web/po
     {
       "@context": "https://schema.org",
       "@type": "Church",
-      "@id": "https://parroquiasantateresabcn.org/#parroquia",
+      "@id": "https://www.parroquiasantateresabcn.org/#parroquia",
       "name": "Parroquia Santa Teresa de Jesús",
       "alternateName": ["Parròquia de Santa Teresa de Jesús", "Parroquia de Santa Teresa de Jesús de Barcelona", "Santa Teresa de Jesús (El Carmel)"],
       "description": "Parroquia católica del barrio del Carmel, en Barcelona, perteneciente al Arzobispado de Barcelona.",
-      "url": "https://parroquiasantateresabcn.org/",
-      "logo": "https://parroquiasantateresabcn.org/favicon-512.png",
+      "url": "https://www.parroquiasantateresabcn.org/",
+      "logo": "https://www.parroquiasantateresabcn.org/favicon-512.png",
       "hasMap": "https://goo.gl/maps/Y4SiUkiMGwp",
       "parentOrganization": { "@type": "Organization", "name": "Arzobispado de Barcelona", "url": "https://esglesia.barcelona/" },
-      "image": "https://parroquiasantateresabcn.org/fotosdefinitivas/web/portada3.jpg",
+      "image": "https://www.parroquiasantateresabcn.org/fotosdefinitivas/web/portada3.jpg",
       "email": "parroquisantateresabarcelona@gmail.com",
       "address": {
         "@type": "PostalAddress",
@@ -1192,10 +1191,8 @@ PAGES["html/aviso-legal.html"] = page(1, "Aviso legal", "Aviso legal e informaci
                 <p>En cumplimiento del artículo 10 de la Ley 34/2002, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se informa:</p>
                 <ul class="info-list">
                     <li><strong>Titular</strong>""" + LEGAL["titular"] + """</li>
-                    <li><strong>NIF</strong>""" + LEGAL["nif"] + """</li>
                     <li><strong>Domicilio</strong>""" + LEGAL["domicilio"] + """</li>
                     <li><strong>Correo electrónico</strong><a href="mailto:""" + LEGAL["email"] + """">""" + LEGAL["email"] + """</a></li>
-                    <li><strong>Registro</strong>""" + LEGAL["registro"] + """</li>
                 </ul>
 
                 <h3>2. Objeto</h3>
@@ -1234,7 +1231,6 @@ PAGES["html/privacidad.html"] = page(1, "Política de privacidad", "Cómo trata 
                 <h3>1. Responsable del tratamiento</h3>
                 <ul class="info-list">
                     <li><strong>Responsable</strong>""" + LEGAL["titular"] + """</li>
-                    <li><strong>NIF</strong>""" + LEGAL["nif"] + """</li>
                     <li><strong>Domicilio</strong>""" + LEGAL["domicilio"] + """</li>
                     <li><strong>Correo electrónico</strong><a href="mailto:""" + LEGAL["email"] + """">""" + LEGAL["email"] + """</a></li>
                     <li><strong>Delegado de Protección de Datos</strong>""" + LEGAL["dpd"] + """</li>
@@ -1349,7 +1345,9 @@ def out_path(lang, rel):
 
 def page_url(lang, rel):
     p = out_path(lang, rel)
-    return SITE + (p[:-len("index.html")] if p.endswith("index.html") else p)
+    if p.endswith("index.html"):
+        return SITE + p[:-len("index.html")]
+    return SITE + (p[:-len(".html")] if p.endswith(".html") else p)
 
 
 def relurl(from_path, to_path):
@@ -1380,7 +1378,7 @@ def structured_data(html, lang, rel):
         extra += jsonld({"@context": "https://schema.org", "@type": "WebSite", "name": "Parroquia Santa Teresa de Jesús",
                          "alternateName": ["Parròquia de Santa Teresa de Jesús", "Parroquia Santa Teresa de Jesús Barcelona"],
                          "url": page_url(lang, rel), "inLanguage": lang,
-                         "publisher": {"@id": "https://parroquiasantateresabcn.org/#parroquia"}})
+                         "publisher": {"@id": "https://www.parroquiasantateresabcn.org/#parroquia"}})
     else:
         m = re.search(r'<nav class="breadcrumb"[^>]*><a [^>]*>(.*?)</a><span>/</span>(.*?)</nav>', html)
         if m:
