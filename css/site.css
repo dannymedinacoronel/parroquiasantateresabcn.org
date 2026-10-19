@@ -856,6 +856,93 @@ mark.pendiente { background: #fff1c2; color: #7a5a00; padding: 0.1rem 0.35rem; b
     .news-filters button { flex: 1 1 auto; justify-content: center; padding: 0.6rem 0.9rem; font-size: 0.82rem; }
 }
 
+/* ==========================================================================
+   INTERACTIVIDAD
+   ========================================================================== */
+/* Cifras animadas: ancho fijo de dígitos para que no "bailen" mientras cuentan */
+[data-count] { font-variant-numeric: lining-nums tabular-nums; }
+[data-count].counted { animation: countPop .5s var(--ease); }
+@keyframes countPop { 40% { transform: scale(1.12); color: var(--accent-color); } }
+.badge [data-count].counted { animation-name: countPopLight; }
+@keyframes countPopLight { 40% { transform: scale(1.12); } }
+
+/* Horario: el día de hoy */
+.schedule-item.is-today, .card.is-today { background: linear-gradient(180deg, #fbf5e8, var(--white)); }
+.schedule-item.is-today::after {
+    content: ""; position: absolute; left: 20%; right: 20%; bottom: 0; height: 3px; background: var(--accent-color);
+}
+.card.is-today { border-color: var(--accent-color); box-shadow: 0 10px 30px rgba(191,160,101,0.18); }
+.today-tag {
+    display: inline-block; margin-bottom: 0.6rem; padding: 0.2rem 0.65rem; border-radius: 20px;
+    background: var(--accent-color); color: var(--white);
+    font: 600 0.66rem var(--body-font); letter-spacing: 2px; text-transform: uppercase;
+    animation: todayPulse 2.4s ease-in-out infinite;
+}
+.schedule-item .today-tag { position: absolute; top: 0.5rem; left: 50%; transform: translateX(-50%); margin: 0; }
+@keyframes todayPulse { 50% { box-shadow: 0 0 0 6px rgba(191,160,101,0.18); } }
+
+/* Barra de progreso de lectura */
+.scroll-progress {
+    position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 1200;
+    background: linear-gradient(90deg, var(--accent-dark), var(--accent-color), #e6cf98);
+    transform: scaleX(0); transform-origin: 0 50%; pointer-events: none;
+}
+
+/* Botón "volver arriba" */
+.to-top {
+    position: fixed; right: 1.25rem; bottom: 6.25rem; z-index: 950;
+    width: 48px; height: 48px; border-radius: 50%; border: 0; cursor: pointer;
+    display: grid; place-items: center;
+    background: var(--heading-color); color: var(--white); box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    opacity: 0; visibility: hidden; transform: translateY(16px) scale(.9);
+    transition: opacity .35s, visibility .35s, transform .35s var(--ease), background .3s;
+}
+.to-top svg { width: 20px; height: 20px; }
+.to-top.show { opacity: 1; visibility: visible; transform: none; }
+.to-top:hover { background: var(--accent-color); transform: translateY(-3px); }
+body.menu-open .to-top { opacity: 0; visibility: hidden; }
+
+/* Línea del tiempo que se dibuja al bajar */
+.timeline::after {
+    content: ""; position: absolute; left: 50%; top: 0; width: 3px; margin-left: -1px;
+    height: calc(var(--fill, 0) * 100%); background: linear-gradient(var(--accent-color), var(--accent-dark));
+    border-radius: 2px; transition: height .15s linear;
+}
+@media (max-width: 860px) { .timeline::after { left: 7px; } }
+
+/* Cita palabra a palabra */
+.quote blockquote.words .w { display: inline-block; opacity: 0; transform: translateY(12px); filter: blur(4px); transition: opacity .6s, transform .6s var(--ease), filter .6s; }
+.quote.in blockquote.words .w { opacity: 1; transform: none; filter: none; }
+
+/* Separadores dorados que se despliegan */
+.js .reveal .section-divider, .js .reveal.section-divider { transform: scaleX(0); transition: transform 1s var(--ease) .25s; }
+.js .reveal.in .section-divider, .js .reveal.in.section-divider { transform: none; }
+
+/* Tarjetas con inclinación 3D y brillo que sigue al ratón */
+.tilt { transform-style: preserve-3d; will-change: transform; }
+.tilt.in, .tilt:not(.reveal) { transition: transform .18s ease-out, box-shadow .4s var(--ease), opacity .9s var(--ease); }
+.tilt::before {
+    content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; border-radius: inherit;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.22), transparent 45%);
+    opacity: 0; transition: opacity .3s;
+}
+.tilt:hover::before { opacity: 1; }
+.news-card.tilt, .news-feature.tilt, .info-card.tilt, .org-node.tilt, .icon-card.tilt { position: relative; }
+
+/* Botones con brillo al pasar */
+.btn { position: relative; overflow: hidden; }
+.btn::after {
+    content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,0.35), transparent);
+    transform: skewX(-20deg); transition: left .6s var(--ease); pointer-events: none;
+}
+.btn:hover::after { left: 120%; }
+
+@media (prefers-reduced-motion: reduce) {
+    .today-tag, [data-count].counted { animation: none; }
+    .timeline::after { transition: none; }
+}
+
 /* --- SELECTOR DE IDIOMA --- */
 .lang-switch { display: flex; align-items: center; gap: 0.15rem; margin-left: 1.5rem; padding-left: 1.25rem; border-left: 1px solid rgba(0,0,0,0.12); }
 .lang-switch a {

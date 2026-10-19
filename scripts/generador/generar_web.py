@@ -366,25 +366,25 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
 
         <section id="horarios" class="schedule-section">
             <div class="schedule-card">
-                <div class="schedule-item">
+                <div class="schedule-item" data-days="1,2,3,4,5">
                     """ + ICON_SUN + """
                     <h3>Laborables</h3>
                     <div class="time">19:00 <small>h</small></div>
                     <p>Eucaristía</p>
                 </div>
-                <div class="schedule-item">
+                <div class="schedule-item" data-days="6">
                     """ + ICON_MOON + """
                     <h3>Sábados</h3>
                     <div class="time">19:00 <small>h</small></div>
                     <p>Eucaristía</p>
                 </div>
-                <div class="schedule-item">
+                <div class="schedule-item" data-days="0">
                     """ + ICON_CROSS + """
                     <h3>Domingos</h3>
                     <div class="time">11:00 <small>·</small> 13:00</div>
                     <p>Eucaristía · 11:00 h con coro góspel</p>
                 </div>
-                <div class="schedule-item">
+                <div class="schedule-item" data-days="6">
                     """ + ICON_HEART + """
                     <h3>Confesiones</h3>
                     <div class="time">18:30 <small>h</small></div>
@@ -400,7 +400,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
             <div class="two-col center">
                 <div class="framed-img">
                     <img src=\"""" + img("nuevalife.jpeg", 0) + """\" alt="Campanario y fachada de la Parroquia Santa Teresa de Jesús" loading="lazy">
-                    <div class="badge"><span>Desde</span><strong>1924</strong></div>
+                    <div class="badge"><span>Desde</span><strong data-count="1924" data-from="1850">1924</strong></div>
                 </div>
                 <div>
                     <span class="subtitulo text-left">Bienvenidos</span>
@@ -408,9 +408,9 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
                     <hr class="section-divider" style="margin-left:0;">
                     <p>La iglesia se construyó en 1924 en terrenos de la antigua finca de Can Grau, y desde un primer momento estuvo muy integrada en el barrio: fue sede de una de las primeras cooperativas obreras y de una escuela para niños y adultos.</p>
                     <div class="stats">
-                        <div><strong>1928</strong><span>Bendición del templo</span></div>
-                        <div><strong>+100</strong><span>Años en el barrio</span></div>
-                        <div><strong>14</strong><span>Grupos y servicios</span></div>
+                        <div><strong data-count="1928" data-from="1850">1928</strong><span>Bendición del templo</span></div>
+                        <div><strong data-count="100" data-prefix="+">+100</strong><span>Años en el barrio</span></div>
+                        <div><strong data-count="14">14</strong><span>Grupos y servicios</span></div>
                     </div>
                     <div class="btn-group">
                         <a href="html/historia.html" class="btn">Nuestra historia</a>
@@ -701,22 +701,22 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
             </div>
             <div class="timeline">
                 <div class="timeline-item">
-                    <div class="year">1923</div>
+                    <div class="year" data-count="1923" data-from="1900">1923</div>
                     <h3>La primera piedra</h3>
                     <p>Hemos localizado unas fotografías pertenecientes a la colocación de la 1ª piedra de nuestra querida parroquia, fechadas en 1923 (posiblemente en el mes de mayo).</p>
                 </div>
                 <div class="timeline-item">
-                    <div class="year">1924</div>
+                    <div class="year" data-count="1924" data-from="1900">1924</div>
                     <h3>Construcción de la iglesia</h3>
                     <p>La iglesia se construyó en terrenos de la antigua finca de Can Grau (actual cruce entre Llobregós y Conca de Tremp) y era tenencia parroquial de Sant Joan d'Horta.</p>
                 </div>
                 <div class="timeline-item">
-                    <div class="year">1928</div>
+                    <div class="year" data-count="1928" data-from="1900">1928</div>
                     <h3>Bendición del templo</h3>
                     <p>Su bendición se produjo en octubre de 1928, tal como recoge la reseña de La Vanguardia del día 20.</p>
                 </div>
                 <div class="timeline-item">
-                    <div class="year">2005</div>
+                    <div class="year" data-count="2005" data-from="1900">2005</div>
                     <h3>El hundimiento del túnel</h3>
                     <p>En febrero de 2005 la parroquia se situó en el centro de las miradas, al estar afectada por el desgraciado hundimiento del túnel de maniobra durante las obras del metro. El patio de la iglesia está situado justo enfrente, al otro lado de la calle, de donde se formó el agujero.</p>
                 </div>
@@ -784,15 +784,15 @@ PAGES["html/misas.html"] = page(1, "Eucaristías", "Horarios de misas y calendar
             <h2>Horarios de Eucaristía</h2>
             <div style="text-align:center;"><div class="next-mass light" data-next-mass hidden></div></div>
             <div class="grid-container">
-                <div class="card">
+                <div class="card" data-days="1,2,3,4,5">
                     <h3>Laborables</h3>
                     <ul><li>19:00 h — Eucaristía</li></ul>
                 </div>
-                <div class="card">
+                <div class="card" data-days="6">
                     <h3>Sábados</h3>
                     <ul><li>19:00 h — Eucaristía</li></ul>
                 </div>
-                <div class="card">
+                <div class="card" data-days="0">
                     <h3>Domingos</h3>
                     <ul><li>11:00 h — Eucaristía</li><li>13:00 h — Eucaristía</li></ul>
                 </div>

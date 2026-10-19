@@ -11,6 +11,7 @@
             viewer: "Visor de fotos", close: "Cerrar", prev: "Anterior", next: "Siguiente",
             newsEmpty: "No se han podido cargar las noticias. Inténtalo más tarde.", readMore: "Leer en la web original", updated: "Actualizado:",
             srcVatican: "Vaticano", srcDiocese: "Arzobispado", featured: "Noticia destacada",
+            todayBadge: "Hoy", backTop: "Volver arriba",
             external: "Contenido externo",
             phText: "Este contenido lo proporciona un servicio externo que puede instalar cookies. Solo se mostrará si lo aceptas.",
             phAccept: "Aceptar y mostrar", moreInfo: "Más información",
@@ -30,6 +31,7 @@
             viewer: "Visor de fotos", close: "Tancar", prev: "Anterior", next: "Següent",
             newsEmpty: "No s'han pogut carregar les notícies. Torna-ho a provar més tard.", readMore: "Llegir al web original", updated: "Actualitzat:",
             srcVatican: "Vaticà", srcDiocese: "Arquebisbat", featured: "Notícia destacada",
+            todayBadge: "Avui", backTop: "Tornar a dalt",
             external: "Contingut extern",
             phText: "Aquest contingut el proporciona un servei extern que pot instal·lar galetes. Només es mostrarà si ho acceptes.",
             phAccept: "Acceptar i mostrar", moreInfo: "Més informació",
@@ -49,6 +51,7 @@
             viewer: "Photo viewer", close: "Close", prev: "Previous", next: "Next",
             newsEmpty: "The news could not be loaded. Please try again later.", readMore: "Read on the original website", updated: "Updated:",
             srcVatican: "Vatican", srcDiocese: "Archdiocese", featured: "Top story",
+            todayBadge: "Today", backTop: "Back to top",
             external: "External content",
             phText: "This content is provided by an external service that may set cookies. It will only be shown if you accept.",
             phAccept: "Accept and show", moreInfo: "More information",
@@ -313,6 +316,112 @@
     document.querySelectorAll("[data-news-updated]").forEach(function (el) {
         if (data && data.actualizado) el.textContent = T("updated") + " " + fmtDate(data.actualizado, true);
     });
+
+    /* ======================================================================
+       INTERACTIVIDAD
+       ====================================================================== */
+    var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var FINE_POINTER = window.matchMedia && window.matchMedia("(any-hover: hover) and (pointer: fine)").matches;
+
+    /* --- Cifras que cuentan hacia arriba al aparecer en pantalla --- */
+    var counters = document.querySelectorAll("[data-count]");
+    function runCounter(el) {
+        var to = +el.dataset.count, from = +(el.dataset.from || 0), prefix = el.dataset.prefix || "";
+        var start = null, dur = 1800 + Math.min(Math.abs(to - from), 200) * 3;
+        function step(t) {
+            if (!start) start = t;
+            var p = Math.min((t - start) / dur, 1);
+            var eased = 1 - Math.pow(1 - p, 4);
+            el.textContent = prefix + Math.round(from + (to - from) * eased);
+            if (p < 1) requestAnimationFrame(step);
+            else el.classList.add("counted");
+        }
+        requestAnimationFrame(step);
+    }
+    if (counters.length && "IntersectionObserver" in window && !REDUCED) {
+        var countIO = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) { runCounter(entry.target); countIO.unobserve(entry.target); }
+            });
+        }, { threshold: 0.6 });
+        counters.forEach(function (el) {
+            el.textContent = (el.dataset.prefix || "") + (el.dataset.from || 0);
+            countIO.observe(el);
+        });
+    }
+
+    /* --- Horario: resaltar el día de hoy --- */
+    var todayIdx = new Date().getDay();
+    document.querySelectorAll("[data-days]").forEach(function (el) {
+        if (el.dataset.days.split(",").indexOf(String(todayIdx)) === -1) return;
+        el.classList.add("is-today");
+        var tag = document.createElement("span");
+        tag.className = "today-tag";
+        tag.textContent = T("todayBadge");
+        el.insertBefore(tag, el.firstChild);
+    });
+
+    /* --- Barra de progreso de lectura y botón "volver arriba" --- */
+    var progress = document.createElement("div");
+    progress.className = "scroll-progress";
+    progress.setAttribute("aria-hidden", "true");
+    document.body.appendChild(progress);
+    var toTop = document.createElement("button");
+    toTop.type = "button";
+    toTop.className = "to-top";
+    toTop.setAttribute("aria-label", T("backTop"));
+    toTop.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+    toTop.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: REDUCED ? "auto" : "smooth" }); });
+    document.body.appendChild(toTop);
+
+    /* --- Línea del tiempo que se dibuja al bajar --- */
+    var timeline = document.querySelector(".timeline");
+
+    var ticking = false;
+    function onScrollFx() {
+        ticking = false;
+        var doc = document.documentElement;
+        var max = doc.scrollHeight - window.innerHeight;
+        var ratio = max > 0 ? window.scrollY / max : 0;
+        progress.style.transform = "scaleX(" + ratio + ")";
+        toTop.classList.toggle("show", window.scrollY > window.innerHeight * 0.8);
+        if (timeline) {
+            var r = timeline.getBoundingClientRect();
+            var fill = (window.innerHeight * 0.65 - r.top) / r.height;
+            timeline.style.setProperty("--fill", Math.max(0, Math.min(1, fill)));
+        }
+    }
+    window.addEventListener("scroll", function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(onScrollFx); }
+    }, { passive: true });
+    onScrollFx();
+
+    /* --- La cita de Santa Teresa aparece palabra a palabra --- */
+    document.querySelectorAll(".quote blockquote").forEach(function (q) {
+        if (REDUCED) return;
+        var words = q.textContent.trim().split(/\s+/);
+        q.innerHTML = words.map(function (w, i) {
+            return '<span class="w" style="transition-delay:' + (i * 55) + 'ms">' + escapeHtml(w) + "</span>";
+        }).join(" ");
+        q.classList.add("words");
+    });
+
+    /* --- Tarjetas que se inclinan siguiendo el ratón (solo ordenador) --- */
+    if (FINE_POINTER && !REDUCED) {
+        document.querySelectorAll(".feature, .icon-card, .news-card, .news-feature, .info-card, .org-node").forEach(function (card) {
+            card.classList.add("tilt");
+            card.addEventListener("pointermove", function (e) {
+                var r = card.getBoundingClientRect();
+                var x = (e.clientX - r.left) / r.width - 0.5;
+                var y = (e.clientY - r.top) / r.height - 0.5;
+                card.style.transitionDelay = "0ms"; /* sin el retardo de la animación de entrada */
+                card.style.transform = "perspective(900px) rotateX(" + (-y * 6) + "deg) rotateY(" + (x * 6) + "deg) translateY(-4px)";
+                card.style.setProperty("--mx", (x + 0.5) * 100 + "%");
+                card.style.setProperty("--my", (y + 0.5) * 100 + "%");
+            });
+            card.addEventListener("pointerleave", function () { card.style.transform = ""; });
+        });
+    }
 
     /* --- Año actual en el pie --- */
     document.querySelectorAll(".js-year").forEach(function (el) {
