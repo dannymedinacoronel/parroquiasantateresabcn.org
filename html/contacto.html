@@ -17,11 +17,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/x-icon" href="../fotosdefinitivas/portada/faviconico.ico">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-
+    <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/site.css">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
@@ -89,18 +85,22 @@
                     <h2 class="text-left">Contacta con nosotros</h2>
                     <hr class="section-divider" style="margin-left:0;">
                     <div class="embed-frame" style="padding:0.5rem;">
-                        <div class="typeform-widget" data-url="https://parroquisantateresabarcelona.typeform.com/to/kceJJ6" style="width: 100%; height: 520px;"></div>
+                        <div class="consent-embed" data-service="Typeform (formulario)"><div class="typeform-widget" data-url="https://parroquisantateresabarcelona.typeform.com/to/kceJJ6" style="width: 100%; height: 520px;"></div></div>
                     </div>
-                    <script> (function() { var qs,js,q,s,d=document, gi=d.getElementById, ce=d.createElement, gt=d.getElementsByTagName, id="typef_orm", b="https://embed.typeform.com/"; if(!gi.call(d,id)) { js=ce.call(d,"script"); js.id=id; js.src=b+"embed.js"; q=gt.call(d,"script")[0]; q.parentNode.insertBefore(js,q) } })() </script>
+                    <script type="text/plain" data-consent="embeds"> (function() { var qs,js,q,s,d=document, gi=d.getElementById, ce=d.createElement, gt=d.getElementsByTagName, id="typef_orm", b="https://embed.typeform.com/"; if(!gi.call(d,id)) { js=ce.call(d,"script"); js.id=id; js.src=b+"embed.js"; q=gt.call(d,"script")[0]; q.parentNode.insertBefore(js,q) } })() </script>
                     <p class="caption" style="text-align:left;">¿No carga el formulario? Escríbenos directamente a <a href="mailto:parroquisantateresabarcelona@gmail.com">parroquisantateresabarcelona@gmail.com</a>.</p>
+                    <div class="data-notice">
+                        <strong>Información básica sobre protección de datos</strong>
+                        <p><b>Responsable:</b> Parroquia de Santa Teresa de Jesús. <b>Finalidad:</b> atender tu consulta. <b>Legitimación:</b> tu consentimiento. <b>Destinatarios:</b> no se ceden datos a terceros, salvo obligación legal; el formulario lo presta Typeform. <b>Derechos:</b> acceso, rectificación, supresión y otros, escribiendo a nuestro correo. <a href="privacidad.html">Más información en la Política de privacidad</a>.</p>
+                    </div>
                 </div>
                 <div>
                     <span class="subtitulo text-left">¿Dónde estamos?</span>
                     <h2 class="text-left">Visítanos</h2>
                     <hr class="section-divider" style="margin-left:0;">
                     <div class="embed-frame">
-                        <iframe title="Mapa de la Parroquia Santa Teresa de Jesús" height="536" loading="lazy" allowfullscreen
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11966.759774653801!2d2.1558072908873487!3d41.42424881242464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4bd4d9ae3237b%3A0xd805a433a983f974!2sParr%C3%B2quia+Santa+Teresa+de+Jes%C3%BAs!5e0!3m2!1sca!2ses!4v1555520866181!5m2!1sca!2ses"></iframe>
+                        <div class="consent-embed" data-service="Google Maps"><iframe title="Mapa de la Parroquia Santa Teresa de Jesús" height="536" loading="lazy" allowfullscreen
+                            data-consent-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11966.759774653801!2d2.1558072908873487!3d41.42424881242464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4bd4d9ae3237b%3A0xd805a433a983f974!2sParr%C3%B2quia+Santa+Teresa+de+Jes%C3%BAs!5e0!3m2!1sca!2ses!4v1555520866181!5m2!1sca!2ses"></iframe></div>
                     </div>
                 </div>
             </div>
@@ -148,17 +148,21 @@
                 <ul class="footer-links">
                     <li><a href="contacto.html">Contactar</a></li>
                     <li><a href="https://www.instagram.com/parroquiasantateresadejesusbcn/" target="_blank" rel="noopener">Instagram</a></li>
-                    <li><a href="cookies.html">Política de cookies</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
             <span>&copy; <span class="js-year">2026</span> Parroquia Santa Teresa de Jesús. Carrer del Llobregós, 132 · Barcelona</span>
-            <a href="#">Volver arriba &uarr;</a>
+            <nav class="legal-links" aria-label="Información legal">
+                <a href="aviso-legal.html">Aviso legal</a>
+                <a href="privacidad.html">Privacidad</a>
+                <a href="cookies.html">Cookies</a>
+                <button type="button" class="link-button" data-cookie-settings>Configurar cookies</button>
+                <a href="#">Volver arriba &uarr;</a>
+            </nav>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
     <script src="../js/site.js"></script>
 
 </body>

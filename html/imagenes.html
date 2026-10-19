@@ -17,11 +17,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/x-icon" href="../fotosdefinitivas/portada/faviconico.ico">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-
+    <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/site.css">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
@@ -85,10 +81,10 @@
                     <h2>Nuestros últimos vídeos</h2>
                     <hr class="section-divider">
                     <div class="embed-16x9">
-                        <iframe title="Vídeo de la parroquia" src="https://www.youtube-nocookie.com/embed/nMkDxLVOVzA" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="consent-embed" data-service="YouTube"><iframe title="Vídeo de la parroquia" data-consent-src="https://www.youtube-nocookie.com/embed/nMkDxLVOVzA" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
                     </div>
                     <div class="embed-16x9">
-                        <iframe title="Vídeo de la parroquia" src="https://www.youtube-nocookie.com/embed/_vj1fue9nnY" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="consent-embed" data-service="YouTube"><iframe title="Vídeo de la parroquia" data-consent-src="https://www.youtube-nocookie.com/embed/_vj1fue9nnY" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
                     </div>
                 </div>
                 <div>
@@ -100,15 +96,15 @@
                         <a href="https://mega.nz/#F!mkNRDaKA!9RB9WIL2ftWbm_vEexp94g" class="btn" target="_blank" rel="noopener">Fotografías de la Eucaristía dominical</a>
                         <a href="https://mega.nz/#F!TptljabY!fkMjK3iNmVxgv42GxhD-Wg" class="btn" target="_blank" rel="noopener">Fotografías del Domingo de Ramos 2019</a>
                     </div>
-                    <div id="cp_widget_7e90e2d4-db4c-443c-9da2-f0eae76a49a0">...</div>
-                <script type="text/javascript">
+                    <div class="consent-embed" data-service="Cincopa (galería de fotos)"><div id="cp_widget_7e90e2d4-db4c-443c-9da2-f0eae76a49a0">...</div>
+                <script type="text/plain" data-consent="embeds">
                     var cpo = []; cpo["_object"] = "cp_widget_7e90e2d4-db4c-443c-9da2-f0eae76a49a0"; cpo["_fid"] = "AUKA6f-1tvEd";
                     var _cpmp = _cpmp || []; _cpmp.push(cpo);
                     (function() { var cp = document.createElement("script"); cp.type = "text/javascript";
                     cp.async = true; cp.src = "//www.cincopa.com/media-platform/runtime/libasync.js";
                     var c = document.getElementsByTagName("script")[0];
                     c.parentNode.insertBefore(cp, c); })();
-                </script>
+                </script></div>
                 </div>
             </div>
         </section>
@@ -167,17 +163,21 @@
                 <ul class="footer-links">
                     <li><a href="contacto.html">Contactar</a></li>
                     <li><a href="https://www.instagram.com/parroquiasantateresadejesusbcn/" target="_blank" rel="noopener">Instagram</a></li>
-                    <li><a href="cookies.html">Política de cookies</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
             <span>&copy; <span class="js-year">2026</span> Parroquia Santa Teresa de Jesús. Carrer del Llobregós, 132 · Barcelona</span>
-            <a href="#">Volver arriba &uarr;</a>
+            <nav class="legal-links" aria-label="Información legal">
+                <a href="aviso-legal.html">Aviso legal</a>
+                <a href="privacidad.html">Privacidad</a>
+                <a href="cookies.html">Cookies</a>
+                <button type="button" class="link-button" data-cookie-settings>Configurar cookies</button>
+                <a href="#">Volver arriba &uarr;</a>
+            </nav>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
     <script src="../js/site.js"></script>
 
 </body>

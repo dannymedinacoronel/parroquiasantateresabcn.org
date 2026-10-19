@@ -161,28 +161,134 @@
         el.textContent = new Date().getFullYear();
     });
 
-    /* --- Aviso de cookies --- */
-    if (window.cookieconsent) {
-        window.cookieconsent.initialise({
-            palette: { popup: { background: "#111111", text: "#e8e2d6" }, button: { background: "#bfa065", text: "#ffffff" } },
-            theme: "classic",
-            position: "bottom-left",
-            content: {
-                message: "Utilizamos cookies para mejorar la calidad de nuestro servicio.",
-                dismiss: "Aceptar",
-                link: "Más información",
-                href: COOKIES_URL
-            }
-        });
+    /* ======================================================================
+       CONSENTIMIENTO DE COOKIES (LSSI art. 22.2 y Guía de cookies de la AEPD)
+       - Nada de terceros se carga hasta que el visitante lo acepta.
+       - "Aceptar" y "Rechazar" tienen el mismo peso visual.
+       - La elección se guarda 12 meses y se puede cambiar desde el pie.
+       ====================================================================== */
+    var CONSENT_KEY = "pst-consent";
+    var CONSENT_DAYS = 365;
+
+    function readConsent() {
+        try {
+            var c = JSON.parse(localStorage.getItem(CONSENT_KEY));
+            if (c && c.v === 1 && (Date.now() - c.date) < CONSENT_DAYS * 864e5) return c;
+        } catch (e) { /* almacenamiento no disponible */ }
+        return null;
+    }
+    function saveConsent(embeds, chat) {
+        var c = { v: 1, date: Date.now(), embeds: !!embeds, chat: !!chat };
+        try { localStorage.setItem(CONSENT_KEY, JSON.stringify(c)); } catch (e) { }
+        return c;
     }
 
-    /* --- Chat Tawk.to --- */
-    window.Tawk_API = window.Tawk_API || {};
-    window.Tawk_LoadStart = new Date();
-    var s1 = document.createElement("script");
-    s1.async = true;
-    s1.src = "https://embed.tawk.to/5e7d2de035bcbb0c9aaad04f/default";
-    s1.charset = "UTF-8";
-    s1.setAttribute("crossorigin", "*");
-    document.body.appendChild(s1);
+    /* Contenido externo: iframes y scripts bloqueados */
+    var embedsLoaded = false;
+    function loadEmbeds() {
+        if (embedsLoaded) return;
+        embedsLoaded = true;
+        document.querySelectorAll("iframe[data-consent-src]").forEach(function (f) {
+            f.src = f.getAttribute("data-consent-src");
+            f.removeAttribute("data-consent-src");
+        });
+        document.querySelectorAll('script[type="text/plain"][data-consent="embeds"]').forEach(function (old) {
+            var s = document.createElement("script");
+            if (old.dataset.src) { s.src = old.dataset.src; s.async = true; }
+            else { s.text = old.text; }
+            old.parentNode.replaceChild(s, old);
+        });
+        document.querySelectorAll(".consent-embed").forEach(function (box) { box.classList.add("loaded"); });
+    }
+
+    /* Aviso dentro de cada contenido bloqueado, con botón para cargarlo */
+    document.querySelectorAll(".consent-embed").forEach(function (box) {
+        var ph = document.createElement("div");
+        ph.className = "consent-placeholder";
+        ph.innerHTML = '<p><strong>' + (box.dataset.service || "Contenido externo") + '</strong></p>' +
+            '<p>Este contenido lo proporciona un servicio externo que puede instalar cookies. Solo se mostrará si lo aceptas.</p>' +
+            '<button type="button" class="btn btn-solid">Aceptar y mostrar</button> ' +
+            '<a href="' + COOKIES_URL + '">Más información</a>';
+        ph.querySelector("button").addEventListener("click", function () {
+            var c = readConsent() || {};
+            apply(saveConsent(true, c.chat));
+            hideBanner();
+        });
+        box.insertBefore(ph, box.firstChild);
+    });
+
+    /* Chat Tawk.to */
+    var chatLoaded = false;
+    function loadChat() {
+        if (chatLoaded) return;
+        chatLoaded = true;
+        window.Tawk_API = window.Tawk_API || {};
+        window.Tawk_LoadStart = new Date();
+        var s1 = document.createElement("script");
+        s1.async = true;
+        s1.src = "https://embed.tawk.to/5e7d2de035bcbb0c9aaad04f/default";
+        s1.charset = "UTF-8";
+        s1.setAttribute("crossorigin", "*");
+        document.body.appendChild(s1);
+    }
+
+    function apply(c) {
+        if (c.embeds) loadEmbeds();
+        if (c.chat) loadChat();
+        /* Retirar el consentimiento tiene que surtir efecto: recargamos sin terceros */
+        if ((!c.embeds && embedsLoaded) || (!c.chat && chatLoaded)) location.reload();
+    }
+
+    /* Aviso y panel de configuración */
+    var banner = document.createElement("div");
+    banner.className = "cookie-banner";
+    banner.setAttribute("role", "dialog");
+    banner.setAttribute("aria-live", "polite");
+    banner.setAttribute("aria-label", "Aviso de cookies");
+    banner.innerHTML =
+        '<div class="cookie-main">' +
+            '<p class="cookie-title">Tu privacidad</p>' +
+            '<p>Usamos almacenamiento técnico necesario para que la web funcione. Con tu permiso, también cargaremos contenido de terceros (mapas, vídeos, Instagram, formularios) y el chat de atención, que pueden instalar sus propias cookies. No usamos cookies de publicidad ni de analítica. <a href="' + COOKIES_URL + '">Política de cookies</a></p>' +
+        '</div>' +
+        '<div class="cookie-settings" hidden>' +
+            '<label class="cookie-option"><input type="checkbox" checked disabled><span><strong>Necesarias</strong> Guardan tu elección sobre cookies. Siempre activas.</span></label>' +
+            '<label class="cookie-option"><input type="checkbox" data-cat="embeds"><span><strong>Contenido externo</strong> Google Maps, Calendar y Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa y Evangeli.net.</span></label>' +
+            '<label class="cookie-option"><input type="checkbox" data-cat="chat"><span><strong>Chat de atención</strong> Tawk.to, para hablar con la parroquia en directo.</span></label>' +
+        '</div>' +
+        '<div class="cookie-actions">' +
+            '<button type="button" class="btn" data-act="reject">Rechazar</button>' +
+            '<button type="button" class="btn" data-act="config">Configurar</button>' +
+            '<button type="button" class="btn" data-act="save" hidden>Guardar selección</button>' +
+            '<button type="button" class="btn" data-act="accept">Aceptar todas</button>' +
+        '</div>';
+    document.body.appendChild(banner);
+
+    var settings = banner.querySelector(".cookie-settings");
+    var boxEmbeds = banner.querySelector('[data-cat="embeds"]');
+    var boxChat = banner.querySelector('[data-cat="chat"]');
+    var btnConfig = banner.querySelector('[data-act="config"]');
+    var btnSave = banner.querySelector('[data-act="save"]');
+
+    function showBanner(openSettings) {
+        var c = readConsent() || { embeds: false, chat: false };
+        boxEmbeds.checked = c.embeds;
+        boxChat.checked = c.chat;
+        settings.hidden = !openSettings;
+        btnSave.hidden = !openSettings;
+        btnConfig.hidden = !!openSettings;
+        banner.classList.add("open");
+    }
+    function hideBanner() { banner.classList.remove("open"); }
+
+    banner.querySelector('[data-act="accept"]').addEventListener("click", function () { hideBanner(); apply(saveConsent(true, true)); });
+    banner.querySelector('[data-act="reject"]').addEventListener("click", function () { hideBanner(); apply(saveConsent(false, false)); });
+    btnConfig.addEventListener("click", function () { showBanner(true); });
+    btnSave.addEventListener("click", function () { hideBanner(); apply(saveConsent(boxEmbeds.checked, boxChat.checked)); });
+    document.querySelectorAll("[data-cookie-settings]").forEach(function (b) {
+        b.addEventListener("click", function () { showBanner(true); });
+    });
+
+    var stored = readConsent();
+    if (stored) apply(stored);
+    else showBanner(false);
 })();

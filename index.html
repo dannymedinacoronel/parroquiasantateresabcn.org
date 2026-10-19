@@ -17,11 +17,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/x-icon" href="fotosdefinitivas/portada/faviconico.ico">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-
+    <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/site.css">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
@@ -255,13 +251,13 @@
             <div class="grid-container">
                 <div class="widget-container">
                     <h3>Evangelio de Hoy</h3>
-                    <iframe title="Evangelio de hoy" width="100%" height="450" frameborder="0" loading="lazy" src="https://evangeli.net/evangelio/widget/web"></iframe>
+                    <div class="consent-embed" data-service="Evangeli.net (Evangelio del día)"><iframe title="Evangelio de hoy" width="100%" height="450" frameborder="0" loading="lazy" data-consent-src="https://evangeli.net/evangelio/widget/web"></iframe></div>
                 </div>
 
                 <div class="widget-container">
                     <h3>@parroquiasantateresadejesusbcn</h3>
-                    <script src="https://elfsightcdn.com/platform.js" async></script>
-                    <div class="elfsight-app-8b9a40bb-7d76-4b43-bf12-9ed787fa24e2" data-elfsight-app-lazy></div>
+                    <script type="text/plain" data-consent="embeds" data-src="https://elfsightcdn.com/platform.js"></script>
+                    <div class="consent-embed" data-service="Instagram (Elfsight)"><div class="elfsight-app-8b9a40bb-7d76-4b43-bf12-9ed787fa24e2" data-elfsight-app-lazy></div></div>
                 </div>
             </div>
         </section>
@@ -332,17 +328,21 @@
                 <ul class="footer-links">
                     <li><a href="html/contacto.html">Contactar</a></li>
                     <li><a href="https://www.instagram.com/parroquiasantateresadejesusbcn/" target="_blank" rel="noopener">Instagram</a></li>
-                    <li><a href="html/cookies.html">Política de cookies</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
             <span>&copy; <span class="js-year">2026</span> Parroquia Santa Teresa de Jesús. Carrer del Llobregós, 132 · Barcelona</span>
-            <a href="#">Volver arriba &uarr;</a>
+            <nav class="legal-links" aria-label="Información legal">
+                <a href="html/aviso-legal.html">Aviso legal</a>
+                <a href="html/privacidad.html">Privacidad</a>
+                <a href="html/cookies.html">Cookies</a>
+                <button type="button" class="link-button" data-cookie-settings>Configurar cookies</button>
+                <a href="#">Volver arriba &uarr;</a>
+            </nav>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
     <script src="js/site.js"></script>
 
 </body>
