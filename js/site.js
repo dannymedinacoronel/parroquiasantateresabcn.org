@@ -13,7 +13,7 @@
             srcVatican: "Vaticano", srcDiocese: "Arzobispado", featured: "Noticia destacada",
             todayBadge: "Hoy", backTop: "Volver arriba",
             external: "Contenido externo",
-            formSending: "Enviando…", formOk: "¡Inscripción recibida! Gracias. La parroquia se pondrá en contacto con vosotros muy pronto.",
+            formSending: "Enviando…", formOkContact: "¡Mensaje enviado! Gracias por escribirnos. Te responderemos lo antes posible.", formOk: "¡Inscripción recibida! Gracias. La parroquia se pondrá en contacto con vosotros muy pronto.",
             formErr: "No se ha podido enviar. Inténtalo de nuevo en unos minutos o llámanos al +34 619 040 913.",
             phText: "Este contenido lo proporciona un servicio externo que puede instalar cookies. Solo se mostrará si lo aceptas.",
             phAccept: "Aceptar y mostrar", moreInfo: "Más información",
@@ -35,7 +35,7 @@
             srcVatican: "Vaticà", srcDiocese: "Arquebisbat", featured: "Notícia destacada",
             todayBadge: "Avui", backTop: "Tornar a dalt",
             external: "Contingut extern",
-            formSending: "S'està enviant…", formOk: "Inscripció rebuda! Gràcies. La parròquia es posarà en contacte amb vosaltres molt aviat.",
+            formSending: "S'està enviant…", formOkContact: "Missatge enviat! Gràcies per escriure'ns. Et respondrem al més aviat possible.", formOk: "Inscripció rebuda! Gràcies. La parròquia es posarà en contacte amb vosaltres molt aviat.",
             formErr: "No s'ha pogut enviar. Torna-ho a provar d'aquí a uns minuts o truca'ns al +34 619 040 913.",
             phText: "Aquest contingut el proporciona un servei extern que pot instal·lar galetes. Només es mostrarà si ho acceptes.",
             phAccept: "Acceptar i mostrar", moreInfo: "Més informació",
@@ -57,7 +57,7 @@
             srcVatican: "Vatican", srcDiocese: "Archdiocese", featured: "Top story",
             todayBadge: "Today", backTop: "Back to top",
             external: "External content",
-            formSending: "Sending…", formOk: "Registration received! Thank you. The parish will get in touch with you very soon.",
+            formSending: "Sending…", formOkContact: "Message sent! Thank you for writing to us. We will reply as soon as possible.", formOk: "Registration received! Thank you. The parish will get in touch with you very soon.",
             formErr: "It could not be sent. Please try again in a few minutes or call us on +34 619 040 913.",
             phText: "This content is provided by an external service that may set cookies. It will only be shown if you accept.",
             phAccept: "Accept and show", moreInfo: "More information",
@@ -508,8 +508,27 @@
     /* --- Formularios que se envían por correo (FormSubmit → albertsols@gmail.com) ---
        Sin JavaScript el formulario se envía igualmente con su «action»; con JavaScript se envía
        sin salir de la página y se muestra la confirmación. */
+    /* Métricas anónimas de los formularios (panel /admin/metricas.html): solo se cuenta que el
+       formulario se ha visto, empezado, enviado o ha fallado, y su motivo. Sin cookies ni datos personales. */
+    function trackForm(form, type) {
+        if (location.protocol !== "https:" && location.hostname !== "localhost") return;   // no desde archivos sueltos
+        var pf = form.querySelector("[data-purpose]");
+        var payload = JSON.stringify({ form: form.getAttribute("data-form-id"), type: type, purpose: pf ? pf.value : "", lang: LANG });
+        try {
+            if (navigator.sendBeacon && navigator.sendBeacon("/api/form-event", new Blob([payload], { type: "text/plain" }))) return;
+        } catch (err) { }
+        fetch("/api/form-event", { method: "POST", body: payload, keepalive: true }).catch(function () { });
+    }
     document.querySelectorAll("form[data-mail-form]").forEach(function (form) {
         var status = form.querySelector(".form-status");
+        /* visto (una vez, cuando al menos un tercio entra en pantalla) y empezado (primer campo tocado) */
+        if ("IntersectionObserver" in window) {
+            var seenObs = new IntersectionObserver(function (es) {
+                if (es[0].isIntersecting) { trackForm(form, "view"); seenObs.disconnect(); }
+            }, { threshold: 0.33 });
+            seenObs.observe(form);
+        }
+        form.addEventListener("input", function once() { trackForm(form, "start"); form.removeEventListener("input", once); });
         form.addEventListener("submit", function (e) {
             e.preventDefault();
             var btn = form.querySelector("button[type=submit]");
@@ -517,7 +536,10 @@
             new FormData(form).forEach(function (v, k) { data[k] = v; });
             if (data._honey) return;                        // casilla trampa para robots
             var mail = form.querySelector("input[type=email]");
-            if (mail && mail.value) data._replyto = mail.value; // responder directamente a la familia
+            if (mail && mail.value) data._replyto = mail.value; // responder directamente a quien escribe
+            /* asunto del correo con el motivo, para saber de un vistazo de qué se trata */
+            var pf = form.querySelector("[data-purpose]");
+            if (form.getAttribute("data-subject")) data._subject = form.getAttribute("data-subject") + (pf && pf.value ? " — " + pf.value : "");
             btn.disabled = true;
             status.className = "form-status";
             status.textContent = T("formSending");
@@ -528,13 +550,15 @@
             }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return r.ok && String(j.success) !== "false"; }); })
               .then(function (ok) {
                   if (!ok) throw new Error("envío");
+                  trackForm(form, "submit");
                   form.classList.add("sent");
                   status.className = "form-status ok";
-                  status.textContent = T("formOk");
+                  status.textContent = T(form.getAttribute("data-ok") || "formOk");
                   form.reset();
                   status.scrollIntoView({ behavior: "smooth", block: "center" });
               })
               .catch(function () {
+                  trackForm(form, "error");
                   status.className = "form-status err";
                   status.textContent = T("formErr");
                   btn.disabled = false;

@@ -26,7 +26,7 @@
     <link rel="manifest" href="../../site.webmanifest">
 
     <link rel="stylesheet" href="../../css/fonts.css?v=818b49f2ed">
-    <link rel="stylesheet" href="../../css/site.css?v=7bef782390">
+    <link rel="stylesheet" href="../../css/site.css?v=3afb777988">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
     <script type="speculationrules">{"prerender":[{"where":{"selector_matches":"a[hreflang]"},"eagerness":"eager"},{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}}]},"eagerness":"moderate"}]}</script>
@@ -172,14 +172,49 @@
                     <span class="subtitulo text-left">Escriu-nos</span>
                     <h2 class="text-left">Contacta amb nosaltres</h2>
                     <hr class="section-divider" style="margin-left:0;">
-                    <div class="embed-frame" style="padding:0.5rem;">
-                        <div class="consent-embed" data-service="Typeform (formulari)"><div class="typeform-widget" data-url="https://parroquisantateresabarcelona.typeform.com/to/kceJJ6" style="width: 100%; height: 520px;"></div></div>
-                    </div>
-                    <script type="text/plain" data-consent="embeds"> (function() { var qs,js,q,s,d=document, gi=d.getElementById, ce=d.createElement, gt=d.getElementsByTagName, id="typef_orm", b="https://embed.typeform.com/"; if(!gi.call(d,id)) { js=ce.call(d,"script"); js.id=id; js.src=b+"embed.js"; q=gt.call(d,"script")[0]; q.parentNode.insertBefore(js,q) } })() </script>
-                    <p class="caption" style="text-align:left;">No es carrega el formulari? Escriu-nos directament a <a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a> o truca'ns al <a href="tel:+34619040913">+34 619 040 913</a>.</p>
+                    <form class="mail-form form-contact" action="https://formsubmit.co/albertsols@gmail.com" method="POST" data-form-id="contacto" data-ok="formOkContact" data-subject="Nuevo mensaje desde la web" data-mail-form="https://formsubmit.co/ajax/albertsols@gmail.com">
+                        <div class="form-head">
+                            <span class="form-head-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="M3.5 6.5l8.5 7 8.5-7"/></svg></span>
+                            <div>
+                                <span class="form-head-kicker">Formulari de contacte</span>
+                                <strong>Escriu a la parròquia</strong>
+                                <small>Consultes, sagraments, visites o qualsevol altra cosa</small>
+                            </div>
+                        </div>
+                        <input type="hidden" name="Formulario" value="Contacto desde la web">
+                        <input type="hidden" name="_subject" value="Nuevo mensaje desde la web">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+                        <label>Motiu *
+                            <select name="Motivo" required data-purpose>
+                                <option value="">Selecciona…</option>
+                                <option value="Consulta general">Consulta general</option>
+                                <option value="Bautizo">Bateig</option>
+                                <option value="Boda">Casament</option>
+                                <option value="Primera Comunión">Primera Comunió</option>
+                                <option value="Confirmación">Confirmació</option>
+                                <option value="Visita a enfermos">Visita a malalts</option>
+                                <option value="Funeral">Funeral</option>
+                                <option value="Cáritas">Càritas</option>
+                                <option value="Otro">Altre</option>
+                            </select>
+                        </label>
+                        <div class="form-grid">
+                            <label>Nom *<input type="text" name="Nombre" required autocomplete="name"></label>
+                            <label>Telèfon<input type="tel" name="Teléfono" autocomplete="tel" inputmode="tel"></label>
+                        </div>
+                        <label>Correu electrònic *<input type="email" name="Correo electrónico" required autocomplete="email"></label>
+                        <label>Missatge *<textarea name="Mensaje" rows="5" required placeholder="Explica'ns en què et podem ajudar"></textarea></label>
+                        <label class="consent"><input type="checkbox" name="Consentimiento" value="Sí, acepto la política de privacidad" required>
+                            <span>Accepto la <a href="privacidad.html" target="_blank">política de privacitat</a>. *</span></label>
+                        <button type="submit" class="btn btn-solid">Envia el missatge</button>
+                        <p class="form-status" role="status" aria-live="polite"></p>
+                    </form>
+                    <p class="caption" style="text-align:left;">També pots escriure a <a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a> o trucar al <a href="tel:+34619040913">+34 619 040 913</a>.</p>
                     <div class="data-notice">
                         <strong>Informació bàsica sobre protecció de dades</strong>
-                        <p><b>Responsable:</b> Parròquia de Santa Teresa de Jesús. <b>Finalitat:</b> atendre la teva consulta. <b>Legitimació:</b> el teu consentiment. <b>Destinataris:</b> no es cedeixen dades a tercers, llevat d'obligació legal; el formulari el proporciona Typeform. <b>Drets:</b> accés, rectificació, supressió i altres, escrivint al nostre correu. <a href="privacidad.html">Més informació a la Política de privacitat</a>.</p>
+                        <p><b>Responsable:</b> Parròquia de Santa Teresa de Jesús. <b>Finalitat:</b> atendre la teva consulta. <b>Legitimació:</b> el teu consentiment. <b>Destinataris:</b> no se cedeixen dades a tercers, llevat d'obligació legal; l'enviament per correu el gestiona FormSubmit. <b>Drets:</b> accés, rectificació, supressió i altres, escrivint a <a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a>. <a href="privacidad.html">Més informació a la Política de privacitat</a>.</p>
                     </div>
                 </div>
                 <div>
@@ -263,7 +298,7 @@
         </div>
     </template>
     <script src="../../data/avisos.js?v=d53051e813"></script>
-    <script src="../../js/site.js?v=379fc3862d"></script>
+    <script src="../../js/site.js?v=282a563bbd"></script>
 
 </body>
 </html>

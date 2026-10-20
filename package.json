@@ -1,0 +1,9 @@
+{
+  "name": "parroquiasantateresabcn",
+  "private": true,
+  "description": "Funciones de Netlify para las métricas anónimas de los formularios (la web en sí es estática).",
+  "type": "module",
+  "dependencies": {
+    "@netlify/blobs": "11.1.5"
+  }
+}

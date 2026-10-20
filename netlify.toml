@@ -148,6 +148,19 @@
   status = 404
   force = true
 
+# Código de las funciones de métricas (se ejecutan en /api/form-event y /api/form-stats)
+[[redirects]]
+  from = "/netlify/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
 [[redirects]]
   from = "/.github/*"
   to = "/404.html"

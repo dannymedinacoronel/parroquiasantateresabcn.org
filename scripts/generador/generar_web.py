@@ -123,6 +123,9 @@ SITE = "https://parroquiasantateresabcn.netlify.app/"
 EMAIL = "albertsols@gmail.com"
 TEL = "+34619040913"            # para el enlace tel: (se puede pulsar para llamar)
 TEL_TXT = "+34 619 040 913"     # tal como se muestra
+# Formularios (contacto y Primera Comunión): se envían por correo a EMAIL a través de FormSubmit.
+# La primera vez que alguien envía uno, FormSubmit manda a ese correo un mensaje para ACTIVARLO.
+FORM_MAIL = "https://formsubmit.co/" + EMAIL
 
 # Datos del titular para Aviso legal y Privacidad.
 # Los marcados como PENDIENTE deben completarse con los datos reales de la parroquia.
@@ -1101,14 +1104,49 @@ PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia San
                     <span class="subtitulo text-left">Escríbenos</span>
                     <h2 class="text-left">Contacta con nosotros</h2>
                     <hr class="section-divider" style="margin-left:0;">
-                    <div class="embed-frame" style="padding:0.5rem;">
-                        <div class="typeform-widget" data-url="https://parroquisantateresabarcelona.typeform.com/to/kceJJ6" style="width: 100%; height: 520px;"></div>
-                    </div>
-                    <script> (function() { var qs,js,q,s,d=document, gi=d.getElementById, ce=d.createElement, gt=d.getElementsByTagName, id="typef_orm", b="https://embed.typeform.com/"; if(!gi.call(d,id)) { js=ce.call(d,"script"); js.id=id; js.src=b+"embed.js"; q=gt.call(d,"script")[0]; q.parentNode.insertBefore(js,q) } })() </script>
-                    <p class="caption" style="text-align:left;">¿No carga el formulario? Escríbenos directamente a <a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a> o llámanos al <a href=\"tel:""" + TEL + """\">""" + TEL_TXT + """</a>.</p>
+                    <form class="mail-form form-contact" action=\"""" + FORM_MAIL + """\" method="POST" data-form-id="contacto" data-ok="formOkContact" data-subject="Nuevo mensaje desde la web" data-mail-form=\"""" + FORM_MAIL.replace("formsubmit.co/", "formsubmit.co/ajax/") + """\">
+                        <div class="form-head">
+                            <span class="form-head-icon">""" + SAC_ICONS["mail"] + """</span>
+                            <div>
+                                <span class="form-head-kicker">Formulario de contacto</span>
+                                <strong>Escribe a la parroquia</strong>
+                                <small>Consultas, sacramentos, visitas o cualquier otra cosa</small>
+                            </div>
+                        </div>
+                        <input type="hidden" name="Formulario" value="Contacto desde la web">
+                        <input type="hidden" name="_subject" value="Nuevo mensaje desde la web">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+                        <label>Motivo *
+                            <select name="Motivo" required data-purpose>
+                                <option value="">Selecciona…</option>
+                                <option value="Consulta general">Consulta general</option>
+                                <option value="Bautizo">Bautizo</option>
+                                <option value="Boda">Boda</option>
+                                <option value="Primera Comunión">Primera Comunión</option>
+                                <option value="Confirmación">Confirmación</option>
+                                <option value="Visita a enfermos">Visita a enfermos</option>
+                                <option value="Funeral">Funeral</option>
+                                <option value="Cáritas">Cáritas</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </label>
+                        <div class="form-grid">
+                            <label>Nombre *<input type="text" name="Nombre" required autocomplete="name"></label>
+                            <label>Teléfono<input type="tel" name="Teléfono" autocomplete="tel" inputmode="tel"></label>
+                        </div>
+                        <label>Correo electrónico *<input type="email" name="Correo electrónico" required autocomplete="email"></label>
+                        <label>Mensaje *<textarea name="Mensaje" rows="5" required placeholder="Cuéntanos en qué podemos ayudarte"></textarea></label>
+                        <label class="consent"><input type="checkbox" name="Consentimiento" value="Sí, acepto la política de privacidad" required>
+                            <span>Acepto la <a href="privacidad.html" target="_blank">política de privacidad</a>. *</span></label>
+                        <button type="submit" class="btn btn-solid">Enviar mensaje</button>
+                        <p class="form-status" role="status" aria-live="polite"></p>
+                    </form>
+                    <p class="caption" style="text-align:left;">También puedes escribir a <a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a> o llamar al <a href=\"tel:""" + TEL + """\">""" + TEL_TXT + """</a>.</p>
                     <div class="data-notice">
                         <strong>Información básica sobre protección de datos</strong>
-                        <p><b>Responsable:</b> Parroquia de Santa Teresa de Jesús. <b>Finalidad:</b> atender tu consulta. <b>Legitimación:</b> tu consentimiento. <b>Destinatarios:</b> no se ceden datos a terceros, salvo obligación legal; el formulario lo presta Typeform. <b>Derechos:</b> acceso, rectificación, supresión y otros, escribiendo a nuestro correo. <a href="privacidad.html">Más información en la Política de privacidad</a>.</p>
+                        <p><b>Responsable:</b> Parroquia de Santa Teresa de Jesús. <b>Finalidad:</b> atender tu consulta. <b>Legitimación:</b> tu consentimiento. <b>Destinatarios:</b> no se ceden datos a terceros, salvo obligación legal; el envío por correo lo gestiona FormSubmit. <b>Derechos:</b> acceso, rectificación, supresión y otros, escribiendo a <a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a>. <a href="privacidad.html">Más información en la Política de privacidad</a>.</p>
                     </div>
                 </div>
                 <div>
@@ -1247,7 +1285,6 @@ PAGES["html/catequesis.html"] = page(1, "Catequesis", "Inscripciones a la catequ
 # ---------------------------------------------------------------- PRIMERA COMUNIÓN
 # El formulario se envía por correo a la parroquia a través de FormSubmit (sin cuentas ni claves).
 # La primera vez que alguien lo use, FormSubmit envía a ese correo un mensaje para ACTIVARLO.
-FORM_MAIL = "https://formsubmit.co/" + EMAIL
 PAGES["html/comuniones.html"] = page(1, "Primera Comunión", "Preparación e inscripción a la Primera Comunión en la Parroquia Santa Teresa de Jesús (El Carmel, Barcelona).", active="eucaristias", body=page_hero("Catequesis de infancia", "Primera Comunión", "web/dsc_0546.jpg", "Primera Comunión") + """
         <section>
             <div class="section-head">
@@ -1271,7 +1308,16 @@ PAGES["html/comuniones.html"] = page(1, "Primera Comunión", "Preparación e ins
                 <hr class="section-divider" style="margin-bottom:1rem;">
                 <p>La inscripción llega directamente por correo a la parroquia. Los campos con * son obligatorios.</p>
             </div>
-            <form class="mail-form" action=\"""" + FORM_MAIL + """\" method="POST" data-mail-form=\"""" + FORM_MAIL.replace("formsubmit.co/", "formsubmit.co/ajax/") + """\">
+            <form class="mail-form form-communion" action=\"""" + FORM_MAIL + """\" method="POST" data-form-id="comuniones" data-mail-form=\"""" + FORM_MAIL.replace("formsubmit.co/", "formsubmit.co/ajax/") + """\">
+                <div class="form-head">
+                    <span class="form-head-icon">""" + SAC_ICONS["caliz"] + """</span>
+                    <div>
+                        <span class="form-head-kicker">Formulario de inscripción</span>
+                        <strong>Primera Comunión</strong>
+                        <small>Para inscribir a un niño o una niña en la catequesis de Primera Comunión</small>
+                    </div>
+                </div>
+                <input type="hidden" name="Formulario" value="Inscripción a la Primera Comunión">
                 <input type="hidden" name="_subject" value="Nueva inscripción a la Primera Comunión">
                 <input type="hidden" name="_template" value="table">
                 <input type="hidden" name="_captcha" value="false">
@@ -1283,7 +1329,7 @@ PAGES["html/comuniones.html"] = page(1, "Primera Comunión", "Preparación e ins
                         <label>Apellidos *<input type="text" name="Apellidos" required autocomplete="off"></label>
                         <label>Fecha de nacimiento *<input type="date" name="Fecha de nacimiento" required></label>
                         <label>Curso escolar
-                            <select name="Curso escolar">
+                            <select name="Curso escolar" data-purpose>
                                 <option value="">Selecciona…</option>
                                 <option value="2º de Primaria">2º de Primaria</option>
                                 <option value="3º de Primaria">3º de Primaria</option>
@@ -1694,7 +1740,6 @@ PAGES["html/cookies.html"] = page(1, "Política de cookies", "Qué cookies utili
                         <tr><td>Google Maps y Calendar</td><td>Google Ireland Ltd.</td><td>Inicio, Contacto, Eucaristías</td><td>Mapa y calendario. <a href="https://policies.google.com/technologies/cookies?hl=es" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>YouTube (modo de privacidad mejorada)</td><td>Google Ireland Ltd.</td><td>Imágenes y vídeos</td><td>Reproducir vídeos. <a href="https://policies.google.com/privacy?hl=es" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>Instagram</td><td>Elfsight LLC / Meta Platforms Ireland Ltd.</td><td>Inicio</td><td>Mostrar publicaciones de nuestro Instagram. <a href="https://elfsight.com/privacy-policy/" target="_blank" rel="noopener">Política</a></td></tr>
-                        <tr><td>Typeform</td><td>Typeform S.L. (España)</td><td>Contacto</td><td>Formulario de contacto. <a href="https://www.typeform.com/help/a/typeform-cookies-360042093071/" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>SoundCloud</td><td>SoundCloud Global Ltd.</td><td>Homilías</td><td>Reproducir audios. <a href="https://soundcloud.com/pages/cookies" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>Cincopa</td><td>Cincopa Ltd.</td><td>Historia, Eucaristías, Imágenes</td><td>Galerías de fotos.</td></tr>
                         <tr><td>Evangeli.net</td><td>Evangeli.net</td><td>Inicio</td><td>Mostrar el Evangelio del día.</td></tr>
@@ -1788,7 +1833,8 @@ PAGES["html/privacidad.html"] = page(1, "Política de privacidad", "Cómo trata 
                 <p>Los datos de contacto y del chat, el tiempo necesario para atender tu consulta. Los de catequesis, mientras dure la formación y, después, durante los plazos que exija la normativa civil o canónica aplicable. En cualquier caso, mientras no solicites su supresión cuando proceda.</p>
 
                 <h3>4. Destinatarios</h3>
-                <p>No cedemos datos a terceros salvo obligación legal. Para prestar algunos servicios usamos proveedores que tratan datos por nuestra cuenta (encargados del tratamiento): Google (calendario y mapas), FormSubmit (envía por correo a la parroquia el formulario de inscripción a la Primera Comunión; no instala cookies), Typeform (formulario de contacto) y Tawk.to (chat). Algunos están en Estados Unidos; las transferencias se amparan en el Marco de Privacidad de Datos UE-EE. UU. cuando el proveedor está adherido o, en su defecto, en las cláusulas contractuales tipo aprobadas por la Comisión Europea.</p>
+                <p>No cedemos datos a terceros salvo obligación legal. Para prestar algunos servicios usamos proveedores que tratan datos por nuestra cuenta (encargados del tratamiento): Google (calendario y mapas), FormSubmit (envía por correo a la parroquia los formularios de contacto y de inscripción a la Primera Comunión; no instala cookies), Netlify (alojamiento de la web) y Tawk.to (chat). Algunos están en Estados Unidos; las transferencias se amparan en el Marco de Privacidad de Datos UE-EE. UU. cuando el proveedor está adherido o, en su defecto, en las cláusulas contractuales tipo aprobadas por la Comisión Europea.</p>
+                <p>Para saber cómo se usan los formularios, la web cuenta de forma anónima cuántas veces se ven, se empiezan a rellenar y se envían, y el motivo elegido. No se guardan nombres, correos, mensajes ni direcciones IP, y no se usan cookies.</p>
 
                 <h3>5. Tus derechos</h3>
                 <p>Puedes ejercer en cualquier momento tus derechos de <strong>acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad</strong>, así como <strong>retirar tu consentimiento</strong>, escribiendo a <a href="mailto:""" + LEGAL["email"] + """">""" + LEGAL["email"] + """</a> o por correo postal a la dirección de la parroquia, indicando el derecho que ejerces.</p>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Métricas de los formularios · Parroquia Santa Teresa de Jesús</title>
+    <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
+    <style>
+        :root { --bg: #f4eee3; --card: #fffdf8; --ink: #1d1a16; --muted: #857a68; --gold: #bfa065; --gold-d: #8f7340; --line: #e6dac2; --wine: #7a2e2e; --green: #2f6b45; --blue: #3b6a8f; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+        header { display: flex; align-items: center; gap: 1rem; padding: 1.1rem clamp(1rem, 4vw, 2.5rem); background: #1b1610; color: #f0d79a; }
+        header svg { width: 24px; height: 32px; flex-shrink: 0; }
+        header h1 { margin: 0; font: italic 400 1.45rem/1.2 Georgia, "Times New Roman", serif; color: #fff; }
+        header span { display: block; font-size: .7rem; letter-spacing: 2.5px; text-transform: uppercase; color: #bfa065; }
+        header a { margin-left: auto; color: #f0d79a; font-size: .85rem; text-decoration: none; border: 1px solid rgba(240,215,154,.4); padding: .45rem .9rem; border-radius: 20px; }
+        main { max-width: 1180px; margin: 0 auto; padding: 1.75rem clamp(1rem, 4vw, 2.5rem) 4rem; }
+        .bar { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-bottom: 1.5rem; }
+        .bar b { font-weight: 600; margin-right: .3rem; }
+        .bar button { border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: .45rem .9rem; border-radius: 20px; cursor: pointer; font: inherit; font-size: .85rem; }
+        .bar button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+        .bar .sp { flex: 1; }
+        .bar small { color: var(--muted); }
+        .forms { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 1.25rem; }
+        .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1.3rem 1.4rem 1.4rem; box-shadow: 0 10px 28px rgba(60,40,10,.07); }
+        .card h2 { margin: 0 0 .2rem; font: italic 400 1.5rem/1.2 Georgia, serif; }
+        .card .sub { font-size: .78rem; color: var(--muted); margin-bottom: 1rem; }
+        .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; }
+        .kpi { padding: .75rem .7rem; border-radius: 8px; background: #f7f1e5; text-align: center; }
+        .kpi b { display: block; font: 600 1.7rem/1.1 Georgia, serif; color: var(--ink); }
+        .kpi span { font-size: .7rem; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+        .kpi.main { background: #1d1a16; } .kpi.main b { color: #f0d79a; } .kpi.main span { color: #cbbd9f; }
+        .note { margin: .8rem 0 0; font-size: .8rem; color: var(--muted); }
+        .note.err b { color: var(--wine); }
+        .wide { margin-top: 1.25rem; }
+        .chart { width: 100%; height: 260px; display: block; }
+        .legend { display: flex; flex-wrap: wrap; gap: 1rem; font-size: .8rem; color: var(--muted); margin-top: .4rem; }
+        .legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: .35rem; }
+        .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 1.25rem; margin-top: 1.25rem; }
+        .hbars { list-style: none; margin: .5rem 0 0; padding: 0; }
+        .hbars li { display: grid; grid-template-columns: minmax(0, 11rem) 1fr 2.5rem; align-items: center; gap: .7rem; margin: .45rem 0; font-size: .88rem; }
+        .hbars .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .hbars .b { height: 12px; border-radius: 6px; background: #efe6d4; overflow: hidden; }
+        .hbars .b i { display: block; height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--gold-d), var(--gold)); }
+        .hbars .n { text-align: right; font-weight: 600; }
+        .empty { padding: 1.2rem; text-align: center; color: var(--muted); font-style: italic; }
+        .gate { max-width: 520px; margin: 4rem auto; text-align: center; }
+        .gate a { color: var(--gold-d); font-weight: 600; }
+        .help { margin-top: 1.5rem; font-size: .82rem; color: var(--muted); line-height: 1.6; }
+        @media (max-width: 520px) { .kpis { grid-template-columns: repeat(2, 1fr); } header a { display: none; } }
+    </style>
+</head>
+<body>
+    <header>
+        <svg viewBox="0 0 26 34" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.3"/></svg>
+        <div><span>Parroquia Santa Teresa de Jesús</span><h1>Métricas de los formularios</h1></div>
+        <a href="/admin/">← Volver al panel</a>
+    </header>
+    <main id="app"><p class="empty">Cargando…</p></main>
+
+<script>
+(function () {
+    var FORMS = { contacto: "Contacto", comuniones: "Primera Comunión" };
+    var FORM_SUB = { contacto: "Página de Contacto · mensajes a albertsols@gmail.com", comuniones: "Página Primera Comunión · inscripciones a albertsols@gmail.com" };
+    var PURPOSE_TITLE = { contacto: "Mensajes por motivo", comuniones: "Inscripciones por curso escolar" };
+    var NAMES = {
+        "consulta-general": "Consulta general", "bautizo": "Bautizo", "boda": "Boda", "primera-comunion": "Primera Comunión",
+        "confirmacion": "Confirmación", "visita-a-enfermos": "Visita a enfermos", "funeral": "Funeral", "caritas": "Cáritas", "otro": "Otro",
+        "2-de-primaria": "2º de Primaria", "3-de-primaria": "3º de Primaria", "4-de-primaria": "4º de Primaria",
+        "5-de-primaria": "5º de Primaria", "6-de-primaria": "6º de Primaria", "-": "Sin indicar"
+    };
+    var LANGS = { es: "Castellano", ca: "Català", en: "English" };
+    var app = document.getElementById("app");
+    var days = 30, data = null;
+
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+    function nice(p) { return NAMES[p] || (p.charAt(0).toUpperCase() + p.slice(1)).replace(/-/g, " "); }
+
+    /* Solo para quien ha entrado en el panel (las cifras son anónimas, pero no son para el público) */
+    var user = null;
+    try { user = JSON.parse(localStorage.getItem("decap-cms-user") || "null"); } catch (e) { }
+    if (!user) {
+        app.innerHTML = '<div class="gate card"><h2>Entra primero en el panel</h2><p>Las métricas solo se muestran a quien ha iniciado sesión en el panel de la parroquia.</p><p><a href="/admin/">Ir al panel e iniciar sesión →</a></p></div>';
+        return;
+    }
+
+    function load() {
+        app.innerHTML = '<p class="empty">Cargando…</p>';
+        fetch("/api/form-stats?days=" + days + "&t=" + Date.now(), { cache: "no-store" })
+            .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+            .then(function (j) { data = j; render(); })
+            .catch(function (e) {
+                app.innerHTML = '<div class="card"><h2>No se han podido cargar las métricas</h2><p class="note err"><b>' + esc(e.message) +
+                    '</b>. Si la web se acaba de publicar, espera un par de minutos y vuelve a intentarlo.</p><p><button onclick="location.reload()">Reintentar</button></p></div>';
+            });
+    }
+
+    function tally() {
+        var t = {}, daysList = [], d0 = new Date(data.since + "T12:00:00Z");
+        for (var i = 0; i < data.days; i++) daysList.push(new Date(d0.getTime() + i * 864e5).toISOString().slice(0, 10));
+        Object.keys(FORMS).forEach(function (f) {
+            t[f] = { view: 0, start: 0, submit: 0, error: 0, daily: {}, purpose: {}, lang: {} };
+            daysList.forEach(function (d) { t[f].daily[d] = { view: 0, submit: 0 }; });
+        });
+        Object.keys(data.counts || {}).forEach(function (k) {
+            var p = k.split("|"), n = data.counts[k], f = t[p[1]];
+            if (!f || !(p[2] in f)) return;
+            f[p[2]] += n;
+            if (f.daily[p[0]] && (p[2] === "view" || p[2] === "submit")) f.daily[p[0]][p[2]] += n;
+            if (p[2] === "submit") { f.purpose[p[3]] = (f.purpose[p[3]] || 0) + n; f.lang[p[4]] = (f.lang[p[4]] || 0) + n; }
+        });
+        return { t: t, daysList: daysList };
+    }
+
+    function hbars(obj, names) {
+        var keys = Object.keys(obj).sort(function (a, b) { return obj[b] - obj[a]; });
+        if (!keys.length) return '<p class="empty">Todavía no hay envíos en este periodo.</p>';
+        var max = obj[keys[0]];
+        return '<ul class="hbars">' + keys.map(function (k) {
+            return '<li><span class="t">' + esc(names ? (names[k] || k) : nice(k)) + '</span><span class="b"><i style="width:' + Math.max(3, obj[k] / max * 100) + '%"></i></span><span class="n">' + obj[k] + "</span></li>";
+        }).join("") + "</ul>";
+    }
+
+    /* Gráfico de líneas en SVG: envíos (línea gruesa) y visitas (línea fina) de cada formulario */
+    function chart(r) {
+        var W = 1000, H = 260, L = 34, B = 26, T = 12, R = 10, days = r.daysList, n = days.length;
+        var series = [
+            { f: "contacto", k: "view", c: "#3b6a8f", w: 1.6, dash: "5 4" }, { f: "contacto", k: "submit", c: "#3b6a8f", w: 3 },
+            { f: "comuniones", k: "view", c: "#bfa065", w: 1.6, dash: "5 4" }, { f: "comuniones", k: "submit", c: "#8f7340", w: 3 }
+        ];
+        var max = 1;
+        series.forEach(function (s) { days.forEach(function (d) { max = Math.max(max, r.t[s.f].daily[d][s.k]); }); });
+        var x = function (i) { return L + (n === 1 ? (W - L - R) / 2 : i * (W - L - R) / (n - 1)); };
+        var y = function (v) { return T + (H - T - B) * (1 - v / max); };
+        var g = "";
+        for (var i = 0; i <= 4; i++) {
+            var v = Math.round(max * i / 4), yy = y(v);
+            g += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy + '" y2="' + yy + '" stroke="#ece3d1"/><text x="' + (L - 6) + '" y="' + (yy + 4) + '" text-anchor="end" font-size="11" fill="#9a8e78">' + v + "</text>";
+        }
+        var step = Math.max(1, Math.ceil(n / 8));
+        days.forEach(function (d, i) {
+            if (i % step === 0 || i === n - 1) g += '<text x="' + x(i) + '" y="' + (H - 6) + '" text-anchor="middle" font-size="11" fill="#9a8e78">' + d.slice(8, 10) + "/" + d.slice(5, 7) + "</text>";
+        });
+        series.forEach(function (s) {
+            var pts = days.map(function (d, i) { return x(i).toFixed(1) + "," + y(r.t[s.f].daily[d][s.k]).toFixed(1); }).join(" ");
+            g += '<polyline points="' + pts + '" fill="none" stroke="' + s.c + '" stroke-width="' + s.w + '" stroke-linejoin="round"' + (s.dash ? ' stroke-dasharray="' + s.dash + '"' : "") + "/>";
+        });
+        return '<svg class="chart" viewBox="0 0 ' + W + " " + H + '" preserveAspectRatio="none">' + g + "</svg>" +
+            '<div class="legend"><span><i style="background:#3b6a8f"></i>Contacto · envíos</span><span><i style="background:repeating-linear-gradient(90deg,#3b6a8f 0 5px,transparent 5px 9px)"></i>Contacto · visitas</span>' +
+            '<span><i style="background:#8f7340"></i>Primera Comunión · envíos</span><span><i style="background:repeating-linear-gradient(90deg,#bfa065 0 5px,transparent 5px 9px)"></i>Primera Comunión · visitas</span></div>';
+    }
+
+    function render() {
+        var r = tally(), html = "";
+        html += '<div class="bar"><b>Periodo:</b>' + [7, 30, 90, 365].map(function (d) {
+            return '<button data-days="' + d + '" aria-pressed="' + (d === days) + '">' + (d === 365 ? "1 año" : "Últimos " + d + " días") + "</button>";
+        }).join("") + '<span class="sp"></span><small>Actualizado: ' + new Date(data.generated).toLocaleString("es-ES") + '</small><button id="csv">⬇ Descargar CSV</button><button id="reload">↻ Actualizar</button></div>';
+
+        html += '<div class="forms">' + Object.keys(FORMS).map(function (f) {
+            var s = r.t[f], conv = s.view ? Math.round(s.submit / s.view * 1000) / 10 : 0;
+            var started = s.view ? Math.round(s.start / s.view * 100) : 0;
+            return '<section class="card"><h2>' + FORMS[f] + '</h2><div class="sub">' + FORM_SUB[f] + "</div>" +
+                '<div class="kpis"><div class="kpi"><b>' + s.view + '</b><span>Visto</span></div><div class="kpi"><b>' + s.start + '</b><span>Empezado</span></div>' +
+                '<div class="kpi main"><b>' + s.submit + '</b><span>Enviado</span></div><div class="kpi"><b>' + conv + '%</b><span>Conversión</span></div></div>' +
+                '<p class="note' + (s.error ? " err" : "") + '">' + (s.view ? started + "% de quienes lo ven empiezan a rellenarlo. " : "") +
+                (s.error ? "<b>" + s.error + " envío(s) con error</b> (revisad que FormSubmit está activado)." : "Sin errores de envío.") + "</p></section>";
+        }).join("") + "</div>";
+
+        html += '<section class="card wide"><h2>Evolución diaria</h2><div class="sub">Visitas al formulario (línea discontinua) y envíos (línea continua)</div>' + chart(r) + "</section>";
+
+        html += '<div class="two">' + Object.keys(FORMS).map(function (f) {
+            return '<section class="card"><h2>' + PURPOSE_TITLE[f] + "</h2>" + hbars(r.t[f].purpose) + "</section>";
+        }).join("") + "</div>";
+
+        var langs = {};
+        Object.keys(FORMS).forEach(function (f) { Object.keys(r.t[f].lang).forEach(function (l) { langs[l] = (langs[l] || 0) + r.t[f].lang[l]; }); });
+        html += '<div class="two"><section class="card"><h2>Envíos por idioma de la web</h2>' + hbars(langs, LANGS) + "</section>" +
+            '<section class="card"><h2>Cómo leer estas cifras</h2><p class="help"><b>Visto:</b> el formulario apareció en pantalla. <b>Empezado:</b> alguien escribió en algún campo. ' +
+            "<b>Enviado:</b> el mensaje o la inscripción salió hacia el correo. <b>Conversión:</b> enviados ÷ vistos.<br>Las cifras son anónimas: no se guarda ningún nombre, correo, mensaje ni dirección IP. " +
+            "El contenido de cada mensaje solo llega por correo a albertsols@gmail.com.</p></section></div>";
+
+        app.innerHTML = html;
+        app.querySelectorAll("[data-days]").forEach(function (b) { b.onclick = function () { days = +b.getAttribute("data-days"); load(); }; });
+        document.getElementById("reload").onclick = load;
+        document.getElementById("csv").onclick = function () {
+            var rows = [["fecha", "formulario", "evento", "motivo", "idioma", "cantidad"]];
+            Object.keys(data.counts).sort().forEach(function (k) { rows.push(k.split("|").concat(data.counts[k])); });
+            var blob = new Blob(["﻿" + rows.map(function (r) { return r.join(";"); }).join("\n")], { type: "text/csv;charset=utf-8" });
+            var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "metricas-formularios-" + data.since + ".csv"; a.click();
+        };
+    }
+
+    load();
+    setInterval(function () { if (!document.hidden) load(); }, 5 * 60 * 1000);
+})();
+</script>
+</body>
+</html>
