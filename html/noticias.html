@@ -26,7 +26,7 @@
     <link rel="manifest" href="../site.webmanifest">
 
     <link rel="stylesheet" href="../css/fonts.css?v=818b49f2ed">
-    <link rel="stylesheet" href="../css/site.css?v=f169f1264d">
+    <link rel="stylesheet" href="../css/site.css?v=5a91c6d25a">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
     <script type="speculationrules">{"prerender":[{"where":{"selector_matches":"a[hreflang]"},"eagerness":"eager"},{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}}]},"eagerness":"moderate"}]}</script>
@@ -206,31 +206,40 @@
             </div>
         </section>
 
-        <section class="section-warm">
+        <section class="section-warm" id="homilias">
             <div class="section-head" style="margin-bottom:2.5rem;">
                 <span class="subtitulo">De nuestra parroquia</span>
                 <h2>Reflexiones y homilías</h2>
                 <hr class="section-divider" style="margin-bottom:0;">
             </div>
-            <div class="reflection-list">
+            <div class="reflection-list news-reflections">
                 <a class="reflection-card" href="reflexiones/2026-10-20-reflexión-de-el-evangelio.html">
                     <div class="priest-photo"><img src="../fotosdefinitivas/web/albertsols-retrato.jpg" alt="Mn. Albert Sols" loading="lazy"></div>
+                    <span class="new-badge" data-new="2026-10-20" hidden>Nueva</span>
                     <span class="book-kicker">Mn. Albert Sols</span>
                     <h3>Reflexión de el Evangelio</h3>
+                    <span class="reflection-date"><time datetime="2026-10-20" data-fmt="long">20 de octubre de 2026</time></span>
                     <span class="flip-hint">Leer &rarr;</span>
                 </a>
                 <a class="reflection-card" href="reflexiones/2019-05-12-hechos-de-los-apostoles.html">
                     <div class="priest-photo"><img src="../fotosdefinitivas/web/albertsols-retrato.jpg" alt="Mn. Albert Sols" loading="lazy"></div>
+                    <span class="new-badge" data-new="2019-05-12" hidden>Nueva</span>
                     <span class="book-kicker">Mn. Albert Sols</span>
                     <h3>De contenido sublime el libro de los «Hechos de los Apóstoles»</h3>
+                    <span class="reflection-date"><time datetime="2019-05-12" data-fmt="long">12 de mayo de 2019</time></span>
                     <span class="flip-hint">Leer &rarr;</span>
                 </a>
                 <a class="reflection-card" href="reflexiones/2019-05-05-remar-mar-adentro.html">
                     <div class="priest-photo"><img src="../fotosdefinitivas/web/magdalena-retrato.jpg" alt="Magdalena" loading="lazy"></div>
+                    <span class="new-badge" data-new="2019-05-05" hidden>Nueva</span>
                     <span class="book-kicker">Magdalena</span>
                     <h3>Remar mar adentro</h3>
+                    <span class="reflection-date"><time datetime="2019-05-05" data-fmt="long">5 de mayo de 2019</time></span>
                     <span class="flip-hint">Leer &rarr;</span>
                 </a>
+            </div>
+            <div class="btn-group center" style="margin-top:2.5rem;">
+                <a href="humiliasmenu.html" class="btn btn-solid">Ver todas las reflexiones</a>
             </div>
         </section>
 
@@ -314,7 +323,7 @@
         </div>
     </template>
     <script src="../data/avisos.js?v=d53051e813"></script>
-    <script src="../js/site.js?v=51a40fb5df"></script>
+    <script src="../js/site.js?v=547e7f72c3"></script>
 
 </body>
 </html>

@@ -756,6 +756,16 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
                     <div class="elfsight-app-8b9a40bb-7d76-4b43-bf12-9ed787fa24e2" data-elfsight-app-lazy></div>
                 </div>
             </div>
+
+            <a class="family-entry" href="html/evangelio-familia.html">
+                <span class="family-entry-img" style="background-image:url('fotosdefinitivas/web/familia.jpg')" aria-hidden="true"></span>
+                <span class="family-entry-body">
+                    <span class="subtitulo">Para leer en casa</span>
+                    <strong>El Evangelio para la familia</strong>
+                    <span class="family-entry-text">Cada día, el Evangelio explicado para los niños: texto, comentario, ilustración y juegos para leerlo juntos.</span>
+                    <span class="btn btn-solid">Leer en familia</span>
+                </span>
+            </a>
         </section>
 
         <section class="visit">
@@ -1505,19 +1515,24 @@ PAGES["html/noticias.html"] = page(1, "Noticias", "Noticias de la Parroquia Sant
             </div>
         </section>
 
-        <section class="section-warm">
+        <section class="section-warm" id="homilias">
             <div class="section-head" style="margin-bottom:2.5rem;">
                 <span class="subtitulo">De nuestra parroquia</span>
                 <h2>Reflexiones y homilías</h2>
                 <hr class="section-divider" style="margin-bottom:0;">
             </div>
-            <div class="reflection-list">""" + "".join(f"""
+            <div class="reflection-list news-reflections">""" + "".join(f"""
                 <a class="reflection-card" href="reflexiones/{h["slug"]}.html">
                     {_portrait(h, 1)}
+                    {new_badge(h)}
                     <span class="book-kicker">{esc(h["autor_nombre"])}</span>
                     <h3>{esc(h["titulo"])}</h3>
+                    <span class="reflection-date">{date_long(h)}</span>
                     <span class="flip-hint">Leer &rarr;</span>
-                </a>""" for h in HOMILIAS[:3]) + """
+                </a>""" for h in HOMILIAS[:6]) + """
+            </div>
+            <div class="btn-group center" style="margin-top:2.5rem;">
+                <a href="humiliasmenu.html" class="btn btn-solid">Ver todas las reflexiones</a>
             </div>
         </section>
 """)

@@ -1805,6 +1805,41 @@ body > header { view-transition-name: site-header; }
 .tl-more p { margin-bottom: .75rem; }
 .tl-more .tl-source { font-size: .78rem; color: var(--muted); font-style: italic; }
 
+/* Portada: entrada al Evangelio para la familia */
+.family-entry {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); max-width: 1100px; margin: 3rem auto 0;
+    background: #fffaf0; border: 1px solid #e2d1ad; border-radius: 8px; overflow: hidden; text-decoration: none; color: inherit;
+    box-shadow: 0 25px 55px rgba(60,40,10,.14); transition: transform .35s var(--ease), box-shadow .35s;
+}
+.family-entry:hover { transform: translateY(-4px); box-shadow: 0 32px 65px rgba(60,40,10,.2); }
+.family-entry-img { min-height: 280px; background: center 30% / cover no-repeat; transition: transform .8s var(--ease); }
+.family-entry:hover .family-entry-img { transform: scale(1.04); }
+.family-entry-body { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: .55rem; padding: 2.5rem 2.75rem; }
+.family-entry-body .subtitulo { margin: 0; }
+.family-entry-body strong { font-family: var(--header-font); font-size: clamp(1.9rem, 3vw, 2.5rem); font-weight: 500; line-height: 1.1; color: var(--heading-color); }
+.family-entry-text { color: var(--text-color); line-height: 1.7; margin-bottom: .8rem; }
+@media (max-width: 760px) {
+    .family-entry { grid-template-columns: minmax(0, 1fr); }
+    .family-entry-img { min-height: 200px; }
+    .family-entry-body { padding: 1.9rem 1.5rem; }
+}
+
+/* Visítanos más compacto */
+.visit { padding-top: clamp(3rem, 6vw, 4.5rem); padding-bottom: clamp(3rem, 6vw, 4.5rem); }
+.visit .two-col { max-width: 980px; margin: 0 auto; gap: clamp(2rem, 5vw, 3.5rem); align-items: center; }
+.visit-img img { max-height: 380px; }
+.visit-img figcaption { font-size: 1rem; margin-top: .6rem; }
+.visit h2 { font-size: clamp(2rem, 3.5vw, 2.6rem); }
+.visit .section-divider { margin-bottom: 1.25rem !important; }
+.visit .info-list { margin: 1rem 0 1.5rem !important; }
+.visit .info-list li { padding: .55rem 0; }
+@media (min-width: 901px) { .visit .two-col { grid-template-columns: 300px minmax(0, 1fr); } }
+
+/* Noticias: reflexiones de la parroquia al final */
+.news-reflections { max-width: 1100px; }
+.reflection-card .new-badge { margin: 0 0 .5rem; }
+.reflection-date { display: block; margin: -.2rem 0 .8rem; font-family: var(--header-font); font-style: italic; color: var(--muted); }
+
 /* ==========================================================================
    EVANGELIO PARA LA FAMILIA (evangeli.net insertado)
    ========================================================================== */

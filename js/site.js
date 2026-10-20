@@ -299,6 +299,7 @@
     }
     /* Noticias de ambas fuentes intercaladas (el Vaticano publica mucho más y, ordenando
        solo por fecha, las del Arzobispado quedarían siempre al final) */
+    var NEWS_PER_SOURCE = 3;  // solo las 3 más recientes del Vaticano y las 3 del Arzobispado
     function allNews() {
         if (!data) return [];
         var bySource = Object.keys(NEWS_KEYS).map(function (src) {
@@ -306,7 +307,7 @@
                 var copy = {}; for (var k in n) copy[k] = n[k];
                 copy.src = src;
                 return copy;
-            }).sort(function (a, b) { return new Date(b.fecha) - new Date(a.fecha); });
+            }).sort(function (a, b) { return new Date(b.fecha) - new Date(a.fecha); }).slice(0, NEWS_PER_SOURCE);
         });
         /* empieza la fuente con la noticia más reciente */
         bySource.sort(function (a, b) {
