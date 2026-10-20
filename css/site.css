@@ -1543,3 +1543,84 @@ footer { background: linear-gradient(180deg, #4a3c2b, #3b2f22); color: #e2d6c2; 
 @media (max-width: 600px) {
     .gospel-frame iframe { height: 560px; }
 }
+
+/* ==========================================================================
+   AVISOS DE LA PARROQUIA (tarjeta al entrar)
+   ========================================================================== */
+.notice-card {
+    position: fixed; right: 1.5rem; bottom: 1.5rem; z-index: 2500;
+    width: min(400px, calc(100% - 3rem));
+    display: flex; gap: 0; overflow: hidden;
+    background: #fffaf0; border: 1px solid #e2d1ad; border-radius: 6px;
+    box-shadow: 0 25px 60px rgba(40,25,5,0.25), 0 0 0 5px rgba(255,250,240,0.6);
+    opacity: 0; visibility: hidden; transform: translateY(30px) scale(.97);
+    transition: opacity .5s var(--ease), transform .6s var(--ease), visibility .5s;
+}
+.notice-card.open { opacity: 1; visibility: visible; transform: none; }
+.notice-card::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent-dark), var(--accent-color), #e9d29a);
+}
+.notice-photo { flex: 0 0 112px; position: relative; background: #f3e8d2; }
+.notice-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.notice-body { padding: 1.4rem 1.5rem 1.4rem 1.3rem; }
+.notice-tag {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    font-size: 0.68rem; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: #7a2e2e;
+}
+.notice-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-color); animation: pulse 2s infinite; }
+.notice-card h3 { font-family: var(--header-font); font-size: 1.6rem; font-style: italic; font-weight: 500; line-height: 1.15; margin: 0.35rem 1.4rem 0.45rem 0; color: var(--heading-color); }
+.notice-card p { font-size: 0.88rem; line-height: 1.6; color: var(--text-color); margin-bottom: 1rem; }
+.notice-go { padding: 10px 16px; font-size: 0.72rem; }
+.notice-close {
+    position: absolute; top: 0.55rem; right: 0.6rem; z-index: 2;
+    width: 30px; height: 30px; border-radius: 50%; border: 0; cursor: pointer;
+    background: rgba(255,255,255,0.85); color: var(--muted); font-size: 1.25rem; line-height: 1;
+    transition: background .2s, color .2s;
+}
+.notice-close:hover { background: var(--accent-color); color: var(--white); }
+body.menu-open .notice-card { opacity: 0; visibility: hidden; }
+
+@media (max-width: 600px) {
+    .notice-card { right: 0.75rem; left: 0.75rem; bottom: 0.75rem; width: auto; }
+    .notice-photo { flex-basis: 92px; }
+    .notice-body { padding: 1.15rem 1.1rem 1.15rem 1rem; }
+    .notice-card h3 { font-size: 1.35rem; }
+    .notice-card p { font-size: 0.84rem; }
+}
+@media (prefers-reduced-motion: reduce) { .notice-dot { animation: none; } }
+
+/* ==========================================================================
+   SUBMENÚ DE NOTICIAS: encabezados y reflexiones de la parroquia diferenciadas
+   ========================================================================== */
+.sub-heading {
+    padding: 0.7rem 1.5rem 0.35rem; font-size: 0.64rem; font-weight: 600; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--muted);
+}
+.sub-heading.parish {
+    margin-top: 0.4rem; padding-top: 0.85rem; border-top: 1px solid var(--border); color: #7a2e2e;
+}
+.parish-item { background: linear-gradient(90deg, rgba(243,232,210,0.9), rgba(255,250,240,0.4)); }
+.parish-link {
+    display: flex !important; align-items: center; gap: 0.6rem;
+    font-family: var(--header-font) !important; font-style: italic; font-size: 1.05rem !important; color: var(--heading-color) !important;
+}
+.parish-ico { width: 11px; height: 15px; color: var(--accent-color); flex-shrink: 0; }
+@media (min-width: 1281px) {
+    .parish-link::before { display: none; }
+    .parish-link:hover { padding-left: 1.75rem !important; }
+}
+@media (max-width: 1280px) {
+    .sub-heading { padding: 0.75rem 0.5rem 0.3rem 1.1rem; margin-left: 0.3rem; border-left: 2px solid var(--border); }
+    .sub-heading.parish { border-top: 0; margin-top: 0.4rem; }
+    .parish-item { background: none; }
+    .parish-link { border-left-color: var(--accent-color) !important; font-size: 1.1rem !important; }
+}
+/* Aviso: retrato redondo en lugar de franja recortada */
+.notice-photo { flex: 0 0 auto; padding: 1.5rem 0 0 1.35rem; background: none; }
+.notice-photo img {
+    position: static; display: block; width: 66px; height: 66px; border-radius: 50%; object-fit: cover; object-position: 50% 35%;
+    border: 2px solid var(--accent-color); padding: 2px; background: #fff;
+    box-shadow: 0 0 0 4px #fffaf0, 0 0 0 5px rgba(191,160,101,0.4);
+}
+@media (max-width: 600px) { .notice-photo { flex-basis: auto; padding: 1.2rem 0 0 1rem; } .notice-photo img { width: 54px; height: 54px; } }

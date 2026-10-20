@@ -254,6 +254,9 @@ TR = {
 "Propia (almacenamiento local)": ("Pròpia (emmagatzematge local)", "First-party (local storage)"),
 "Recordar tus preferencias de cookies.": ("Recordar les teves preferències de galetes.", "Remembers your cookie preferences."),
 "12 meses": ("12 mesos", "12 months"),
+"pst-aviso-*": SAME,
+"Recordar que ya has visto un aviso de la parroquia para no repetírtelo.": ("Recordar que ja has vist un avís de la parròquia per no repetir-te'l.", "Remembers that you have already seen a parish notice so it is not shown again."),
+"Hasta que borres los datos del navegador": ("Fins que esborris les dades del navegador", "Until you clear your browser data"),
 "2. De terceros (solo si las aceptas)": ("2. De tercers (només si les acceptes)", "2. Third-party (only if you accept them)"),
 "Algunas páginas muestran contenido de otros servicios. Ese contenido": ("Algunes pàgines mostren contingut d'altres serveis. Aquest contingut", "Some pages show content from other services. That content"),
 "no se carga hasta que lo aceptas": ("no es carrega fins que l'acceptes", "is not loaded until you accept it"),
@@ -527,6 +530,8 @@ TR = {
 "Reflexión dominical": ("Reflexió dominical", "Sunday reflection"),
 "Leer la reflexión completa": ("Llegir la reflexió completa", "Read the full reflection"),
 "Seguir leyendo": ("Continuar llegint", "Keep reading"),
+"Reflexión dominical · Mn. Albert Sols": ("Reflexió dominical · Mn. Albert Sols", "Sunday reflection · Fr Albert Sols"),
+"Remar mar adentro · Magdalena": ("Remar mar endins · Magdalena", "Put out into the deep · Magdalena"),
 "Leer el Evangelio completo &rarr;": ("Llegir l'Evangeli complet &rarr;", "Read the full Gospel &rarr;"),
 # --- submenús ---
 "Dirección y horarios": ("Adreça i horaris", "Address and opening times"),

@@ -595,4 +595,67 @@
     var stored = readConsent();
     if (stored) apply(stored);
     else showBanner(false);
+
+    /* ======================================================================
+       AVISOS DE LA PARROQUIA (data/avisos.js)
+       Tarjeta que aparece al entrar con la novedad del momento. Cada aviso se
+       muestra una sola vez por visitante y espera a que se cierre el aviso de cookies.
+       ====================================================================== */
+    (function () {
+        var list = window.AVISOS || [];
+        var today = new Date().toISOString().slice(0, 10);
+        function seen(id) { try { return localStorage.getItem("pst-aviso-" + id) === "1"; } catch (e) { return false; } }
+        function markSeen(id) { try { localStorage.setItem("pst-aviso-" + id, "1"); } catch (e) { } }
+        function txt(obj) { return obj ? (obj[LANG] || obj.es || "") : ""; }
+        var aviso = null;
+        for (var i = 0; i < list.length; i++) {
+            var a = list[i];
+            if (!a || !a.id || seen(a.id)) continue;
+            if (a.desde && today < a.desde) continue;
+            if (a.hasta && today > a.hasta) continue;
+            aviso = a; break;
+        }
+        if (!aviso) return;
+
+        /* no repetir el aviso en la propia página a la que enlaza */
+        var target = (aviso.enlace || "").replace(/^\/+/, "");
+        if (target && location.pathname.replace(/\.html$/, "").slice(-target.replace(/\.html$/, "").length) === target.replace(/\.html$/, "")) {
+            markSeen(aviso.id);
+            return;
+        }
+
+        var base = SITE_ROOT + (LANG === "es" ? "" : LANG + "/");
+        var card = document.createElement("aside");
+        card.className = "notice-card";
+        card.setAttribute("role", "dialog");
+        card.setAttribute("aria-live", "polite");
+        card.setAttribute("aria-label", txt(aviso.titulo));
+        card.innerHTML =
+            '<button type="button" class="notice-close" aria-label="' + T("close") + '">&times;</button>' +
+            (aviso.imagen ? '<div class="notice-photo"><img src="' + escapeHtml(SITE_ROOT + aviso.imagen) + '" alt=""></div>' : "") +
+            '<div class="notice-body">' +
+                '<span class="notice-tag"><span class="notice-dot" aria-hidden="true"></span>' + escapeHtml(txt(aviso.etiqueta)) + "</span>" +
+                "<h3>" + escapeHtml(txt(aviso.titulo)) + "</h3>" +
+                "<p>" + escapeHtml(txt(aviso.texto)) + "</p>" +
+                (aviso.enlace ? '<a class="btn btn-solid notice-go" href="' + escapeHtml(base + target) + '">' + escapeHtml(txt(aviso.boton)) + " &rarr;</a>" : "") +
+            "</div>";
+        document.body.appendChild(card);
+
+        function close() {
+            markSeen(aviso.id);
+            card.classList.remove("open");
+            setTimeout(function () { card.remove(); }, 600);
+        }
+        card.querySelector(".notice-close").addEventListener("click", close);
+        var go = card.querySelector(".notice-go");
+        if (go) go.addEventListener("click", function () { markSeen(aviso.id); });
+        document.addEventListener("keydown", function (e) { if (e.key === "Escape" && card.classList.contains("open")) close(); });
+
+        /* espera a que el aviso de cookies esté cerrado */
+        function tryShow() {
+            if (banner.classList.contains("open")) { setTimeout(tryShow, 800); return; }
+            card.classList.add("open");
+        }
+        setTimeout(tryShow, 1600);
+    })();
 })();

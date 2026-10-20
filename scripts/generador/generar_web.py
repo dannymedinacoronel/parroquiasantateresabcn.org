@@ -20,10 +20,12 @@ NAV = [
         ("Catequesis", "html/catequesis.html"),
     ]),
     ("noticias", "Noticias", "html/noticias.html", [
+        ("§", "Actualidad de la Iglesia"),
         ("Vaticano y Arzobispado de Barcelona", "html/noticias.html"),
-        ("Reflexión dominical", "html/humilias.html"),
-        ("Remar mar adentro", "html/humiliasmagdalena3domingo.html"),
-        ("Homilías anteriores", "html/humiliasmenu.html"),
+        ("§parish", "De nuestra parroquia"),
+        ("+Reflexión dominical · Mn. Albert Sols", "html/humilias.html"),
+        ("+Remar mar adentro · Magdalena", "html/humiliasmagdalena3domingo.html"),
+        ("+Homilías anteriores", "html/humiliasmenu.html"),
     ]),
     ("dinamica", "Dinámica Pastoral", "html/dinamicapastoral.html", [
         ("Grupos y servicios", "html/dinamicapastoral.html"),
@@ -55,11 +57,24 @@ CHEVRON = ('<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="curr
            'stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>')
 
 
+PARISH_ICON = ('<svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round">'
+               '<path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg>')
+
+
 def nav_items(depth, active):
     out = []
     for key, label, path, children in NAV:
         cur = key == active
-        subs = "\n".join(f'                    <li><a href="{href(p, depth)}" class="sub-link">{l}</a></li>' for l, p in children)
+        rows = []
+        for l, p in children:
+            if l.startswith("§"):   # encabezado de grupo dentro del submenú
+                cls = "sub-heading" + (" parish" if l == "§parish" else "")
+                rows.append(f'                    <li class="{cls}" aria-hidden="true">{p}</li>')
+            elif l.startswith("+"):  # contenido propio de la parroquia: estilo diferenciado
+                rows.append(f'                    <li class="parish-item"><a href="{href(p, depth)}" class="sub-link parish-link">{PARISH_ICON}<span>{l[1:]}</span></a></li>')
+            else:
+                rows.append(f'                    <li><a href="{href(p, depth)}" class="sub-link">{l}</a></li>')
+        subs = "\n".join(rows)
         out.append(
             f'            <li class="nav-item has-sub">\n'
             f'                <a href="{href(path, depth)}" class="nav-link{" active" if cur else ""}"{" aria-current=\"page\"" if cur else ""}>{label}</a>\n'
@@ -242,6 +257,7 @@ __LANGSWITCH__    </header>
         </div>
     </footer>
 
+    <script src="{p}data/avisos.js"></script>
     <script src="{p}js/site.js"></script>
 {extra_scripts}
 </body>
@@ -1112,7 +1128,7 @@ PAGES["html/humiliasmagdalena3domingo.html"] = page(1, "Reflexión del III domin
         <section class="reading">
             <div class="reading-wrap">
 """ + reading_author("magdalena-retrato.jpg", "Magdalena", "Feligresa de nuestra parroquia") + """
-""" + reading_audio("616092222") + """
+""" + reading_audio("2422385796") + """
                 <div class="btn-group center reading-actions">
                     <a class="btn" href="https://drive.google.com/drive/folders/1IBMzDnk5hvzVKMxUR3poi81uYXse4xWX?usp=sharing" target="_blank" rel="noopener">Descarga la presentación &raquo;</a>
                 </div>
@@ -1266,6 +1282,7 @@ PAGES["html/cookies.html"] = page(1, "Política de cookies", "Qué cookies utili
                     <thead><tr><th>Nombre</th><th>Titular</th><th>Finalidad</th><th>Duración</th></tr></thead>
                     <tbody>
                         <tr><td>pst-consent</td><td>Propia (almacenamiento local)</td><td>Recordar tus preferencias de cookies.</td><td>12 meses</td></tr>
+                        <tr><td>pst-aviso-*</td><td>Propia (almacenamiento local)</td><td>Recordar que ya has visto un aviso de la parroquia para no repetírtelo.</td><td>Hasta que borres los datos del navegador</td></tr>
                     </tbody>
                 </table></div>
 
@@ -1452,7 +1469,9 @@ def _load(name):
 
 
 i18n = _load("i18n")
-TABLE = {es: {"ca": (v[0] if v else es), "en": (v[1] if v else es)} for es, v in _load("translations").TR.items()}
+_ALL_TR = dict(_load("translations").TR)
+_ALL_TR.update(_load("translations_homilias").TR_HOMILIAS)
+TABLE = {es: {"ca": (v[0] if v else es), "en": (v[1] if v else es)} for es, v in _ALL_TR.items()}
 LANGS = ["es", "ca", "en"]
 LOCALES = {"es": "es_ES", "ca": "ca_ES", "en": "en_GB"}
 LANG_NAMES = [("es", "ES", "Español"), ("ca", "CA", "Català"), ("en", "EN", "English")]
@@ -1559,10 +1578,6 @@ for rel, base in PAGES.items():
             html = i18n.translate(html, rel, lang, TABLE, missing)
             html = html.replace('<html lang="es">', f'<html lang="{lang}">', 1)
             html = relocate_assets(html)
-            if '<article class="homily-text"' in html:
-                html = html.replace('<article class="homily-text">', f'<p class="lang-note">{HOMILY_NOTE[lang]}</p>\n                    <article class="homily-text">', 1)
-            if rel in i18n.HOMILY_PAGES:
-                html = html.replace('<article class="prose', f'<p class="lang-note">{HOMILY_NOTE[lang]}</p>\n                <article class="prose', 1)
         html = (html.replace("__URL__", page_url(lang, rel))
                     .replace("__HREFLANG__", hreflang_links(rel))
                     .replace("__LOCALE__", LOCALES[lang])

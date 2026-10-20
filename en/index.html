@@ -96,10 +96,12 @@
                 <a href="html/noticias.html" class="nav-link">News</a>
                 <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenu"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
                 <ul class="sub-menu">
+                    <li class="sub-heading" aria-hidden="true">Church news</li>
                     <li><a href="html/noticias.html" class="sub-link">Vatican and Archdiocese of Barcelona</a></li>
-                    <li><a href="html/humilias.html" class="sub-link">Sunday reflection</a></li>
-                    <li><a href="html/humiliasmagdalena3domingo.html" class="sub-link">Put out into the deep</a></li>
-                    <li><a href="html/humiliasmenu.html" class="sub-link">Earlier homilies</a></li>
+                    <li class="sub-heading parish" aria-hidden="true">From our parish</li>
+                    <li class="parish-item"><a href="html/humilias.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Sunday reflection · Fr Albert Sols</span></a></li>
+                    <li class="parish-item"><a href="html/humiliasmagdalena3domingo.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Put out into the deep · Magdalena</span></a></li>
+                    <li class="parish-item"><a href="html/humiliasmenu.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Earlier homilies</span></a></li>
                 </ul>
             </li>
             <li class="nav-item has-sub">
@@ -247,12 +249,11 @@
                     </div>
                 </div>
                 <div class="book-page">
-                    <p class="lang-note">Original text in Spanish.</p>
                     <article class="homily-text">
-                        <span class="book-kicker">Tiempo de Pascua · Mayo de 2019</span>
-                        <h3>De contenido sublime el libro de los «Hechos de los Apóstoles»</h3>
-                        <p class="illuminated">Texto neotestamentario que la Iglesia fija como primera lectura a lo largo de los cincuenta días de Pascua. San Lucas narra con sentido eclesial, no tanto la vida detallada de cada Apóstol, sino el cómo vivía la primera comunidad cristiana, la ilusión y heroísmo de los primeros cristianos. Deja constancia de esa fe tan sólida en el Espíritu Santo quien comenzaba actuar en su Iglesia naciente por medio de ellos.</p>
-                        <p class="book-fade">Bien podría subtitularse este libro: «presencia del Espíritu en los primeros cristianos»…</p>
+                        <span class="book-kicker">Eastertide · May 2019</span>
+                        <h3>The sublime book of the «Acts of the Apostles»</h3>
+                        <p class="illuminated">A New Testament text that the Church sets as the first reading throughout the fifty days of Easter. Saint Luke writes with an ecclesial sense, not so much about the detailed life of each Apostle, but about how the first Christian community lived, the enthusiasm and heroism of the first Christians. He bears witness to their firm faith in the Holy Spirit, who was beginning to act through them in his newborn Church.</p>
+                        <p class="book-fade">This book could well be subtitled: «the presence of the Spirit in the first Christians»…</p>
                     </article>
                     <a href="html/humilias.html" class="link-arrow book-more">Keep reading <span>&rarr;</span></a>
                     <span class="book-ornament" aria-hidden="true"><svg class="logo-mark" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.3"/></svg></span>
@@ -464,6 +465,7 @@
         </div>
     </footer>
 
+    <script src="../data/avisos.js"></script>
     <script src="../js/site.js"></script>
 
 </body>
