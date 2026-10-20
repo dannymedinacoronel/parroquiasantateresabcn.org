@@ -98,8 +98,32 @@
         hamburger.addEventListener("click", function () {
             setMenu(!navMenu.classList.contains("active"));
         });
-        navMenu.querySelectorAll(".nav-link").forEach(function (link) {
+        navMenu.querySelectorAll(".nav-link, .sub-link").forEach(function (link) {
             link.addEventListener("click", function () { setMenu(false); });
+        });
+
+        /* Submenús: botón ⌄ (acordeón en móvil; también abre el panel con teclado en ordenador) */
+        navMenu.querySelectorAll(".sub-toggle").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                var item = btn.parentNode;
+                var open = !item.classList.contains("open");
+                navMenu.querySelectorAll(".nav-item.open").forEach(function (other) {
+                    if (other !== item) {
+                        other.classList.remove("open");
+                        other.querySelector(".sub-toggle").setAttribute("aria-expanded", "false");
+                    }
+                });
+                item.classList.toggle("open", open);
+                btn.setAttribute("aria-expanded", open ? "true" : "false");
+            });
+        });
+        document.addEventListener("click", function (e) {
+            if (window.innerWidth > 1280 && !e.target.closest(".nav-item.has-sub")) {
+                navMenu.querySelectorAll(".nav-item.open").forEach(function (item) {
+                    item.classList.remove("open");
+                    item.querySelector(".sub-toggle").setAttribute("aria-expanded", "false");
+                });
+            }
         });
         document.addEventListener("keydown", function (e) {
             if (e.key === "Escape") setMenu(false);

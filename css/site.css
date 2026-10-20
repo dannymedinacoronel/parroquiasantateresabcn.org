@@ -1100,6 +1100,83 @@ body.menu-open .to-top { opacity: 0; visibility: hidden; }
     .illuminated::first-letter { font-size: 3.8em; }
 }
 
+/* ==========================================================================
+   SUBMENÚS
+   ========================================================================== */
+.sub-toggle {
+    background: none; border: 0; cursor: pointer; color: #2c2c2c;
+    display: inline-flex; align-items: center; justify-content: center; padding: 4px 2px 4px 3px;
+    transition: color .3s;
+}
+.sub-toggle svg { width: 13px; height: 13px; transition: transform .3s var(--ease); }
+.js header:not(.scrolled):not(.menu-open) .sub-toggle { color: var(--white); }
+.sub-menu { list-style: none; }
+.sub-link { display: block; text-decoration: none; color: var(--text-color); }
+
+/* Ordenador: panel desplegable al pasar el ratón o al llegar con el teclado */
+@media (min-width: 1281px) {
+    .nav-item.has-sub { position: relative; display: flex; align-items: center; }
+    .nav-item.has-sub:hover .sub-toggle svg, .nav-item.has-sub:focus-within .sub-toggle svg { transform: rotate(180deg); }
+    .sub-menu {
+        position: absolute; top: calc(100% + 16px); left: 50%; z-index: 1100;
+        min-width: 260px; padding: 0.6rem 0;
+        background: var(--white); border-top: 3px solid var(--accent-color); border-radius: 0 0 var(--radius) var(--radius);
+        box-shadow: 0 20px 45px rgba(20,15,8,0.16);
+        opacity: 0; visibility: hidden; transform: translate(-50%, 10px);
+        transition: opacity .25s, transform .3s var(--ease), visibility .25s;
+    }
+    /* puente invisible para no perder el hover al bajar el ratón */
+    .sub-menu::before { content: ""; position: absolute; left: 0; right: 0; top: -20px; height: 20px; }
+    /* pequeño rombo dorado que apunta a la sección */
+    .sub-menu::after {
+        content: ""; position: absolute; top: -8px; left: 50%; width: 11px; height: 11px; margin-left: -5px;
+        background: var(--accent-color); transform: rotate(45deg); z-index: -1;
+    }
+    .nav-item.has-sub:hover .sub-menu, .nav-item.has-sub:focus-within .sub-menu, .nav-item.open .sub-menu {
+        opacity: 1; visibility: visible; transform: translate(-50%, 0);
+    }
+    /* las dos últimas secciones abren hacia la izquierda para no salirse de la pantalla */
+    .nav-item.has-sub:nth-last-child(-n+2) .sub-menu { left: auto; right: -1rem; transform: translateY(10px); }
+    .nav-item.has-sub:nth-last-child(-n+2):hover .sub-menu,
+    .nav-item.has-sub:nth-last-child(-n+2):focus-within .sub-menu,
+    .nav-item.has-sub:nth-last-child(-n+2).open .sub-menu { transform: none; }
+    .nav-item.has-sub:nth-last-child(-n+2) .sub-menu::after { left: auto; right: 1.6rem; }
+    .sub-link {
+        position: relative; padding: 0.65rem 1.5rem; font-size: 0.88rem; white-space: nowrap;
+        transition: background .2s, color .2s, padding-left .25s var(--ease);
+    }
+    .sub-link::before {
+        content: ""; position: absolute; left: 1.1rem; top: 50%; width: 5px; height: 5px; margin-top: -2px;
+        background: var(--accent-color); transform: rotate(45deg) scale(0); transition: transform .25s var(--ease);
+    }
+    .sub-link:hover, .sub-link:focus-visible { background: var(--bg-warm); color: var(--accent-dark); padding-left: 1.95rem; }
+    .sub-link:hover::before, .sub-link:focus-visible::before { transform: rotate(45deg) scale(1); }
+}
+
+/* Móvil y tableta: acordeón dentro del menú */
+@media (max-width: 1280px) {
+    .nav-item.has-sub { display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: 0.75rem; }
+    .has-sub .nav-link::after { display: none; }
+    .sub-toggle {
+        width: 42px; height: 42px; border: 1px solid var(--border); border-radius: 50%;
+        color: var(--accent-dark) !important; background: var(--white);
+    }
+    .sub-toggle svg { width: 16px; height: 16px; }
+    .nav-item.open .sub-toggle { background: var(--accent-color); border-color: var(--accent-color); color: var(--white) !important; }
+    .nav-item.open .sub-toggle svg { transform: rotate(180deg); }
+    .sub-menu {
+        grid-column: 1 / -1; max-height: 0; overflow: hidden;
+        transition: max-height .4s var(--ease), padding .3s;
+    }
+    .nav-item.open .sub-menu { max-height: 600px; padding-bottom: 0.9rem; }
+    .sub-link {
+        padding: 0.55rem 0.5rem 0.55rem 1.1rem; margin-left: 0.3rem;
+        border-left: 2px solid var(--border); font-size: 0.98rem; color: var(--text-color);
+        transition: color .2s, border-color .2s;
+    }
+    .sub-link:hover, .sub-link:focus-visible { color: var(--accent-dark); border-left-color: var(--accent-color); }
+}
+
 /* --- SELECTOR DE IDIOMA --- */
 .lang-switch { display: flex; align-items: center; gap: 0.15rem; margin-left: 1.5rem; padding-left: 1.25rem; border-left: 1px solid rgba(0,0,0,0.12); }
 .lang-switch a {
@@ -1183,8 +1260,9 @@ header nav { display: flex; align-items: center; margin-left: auto; }
 
 /* Pantallas medianas: menú más compacto para que no choque con el logo */
 @media (max-width: 1440px) and (min-width: 1281px) {
-    header { padding: 0 3%; }
-    .nav-menu { gap: 1rem; }
+    header { padding: 0 2.5%; }
+    .nav-menu { gap: 0.7rem; }
+    .sub-toggle { padding: 4px 0 4px 2px; }
     .nav-link { letter-spacing: 1px; font-size: 0.76rem; }
     .logo { font-size: 1.3rem; }
 }

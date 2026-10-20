@@ -38,13 +38,80 @@
 
         <nav aria-label="Menú principal">
             <ul class="nav-menu" id="menu-principal">
-            <li class="nav-item"><a href="/index.html" class="nav-link">Inicio</a></li>
-            <li class="nav-item"><a href="/#horarios" class="nav-link">Eucaristías</a></li>
-            <li class="nav-item"><a href="/html/noticias.html" class="nav-link">Noticias</a></li>
-            <li class="nav-item"><a href="/html/dinamicapastoral.html" class="nav-link">Dinámica Pastoral</a></li>
-            <li class="nav-item"><a href="/html/organigramaparroquial.html" class="nav-link">Organigrama</a></li>
-            <li class="nav-item"><a href="/html/historia.html" class="nav-link">Historia</a></li>
-            <li class="nav-item"><a href="/html/contacto.html" class="nav-link">Contacto</a></li>
+            <li class="nav-item has-sub">
+                <a href="/index.html" class="nav-link">Inicio</a>
+                <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenú"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+                <ul class="sub-menu">
+                    <li><a href="/#horarios" class="sub-link">Horarios de misa</a></li>
+                    <li><a href="/#bienvenida" class="sub-link">Bienvenidos</a></li>
+                    <li><a href="/#reflexion" class="sub-link">Reflexión dominical</a></li>
+                    <li><a href="/#vida" class="sub-link">Vida parroquial</a></li>
+                    <li><a href="/#sacramentos" class="sub-link">Sacramentos</a></li>
+                    <li><a href="/#galeria" class="sub-link">La parroquia en imágenes</a></li>
+                    <li><a href="/#actualidad" class="sub-link">Evangelio de hoy</a></li>
+                </ul>
+            </li>
+            <li class="nav-item has-sub">
+                <a href="/html/misas.html" class="nav-link">Eucaristías</a>
+                <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenú"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+                <ul class="sub-menu">
+                    <li><a href="/html/misas.html#horarios" class="sub-link">Horarios de Eucaristía</a></li>
+                    <li><a href="/html/misas.html#gospel" class="sub-link">Misa con coro góspel</a></li>
+                    <li><a href="/html/misas.html#calendario" class="sub-link">Calendario de eucaristías y actividades</a></li>
+                    <li><a href="/html/adminsacra.html" class="sub-link">Sacramentos</a></li>
+                    <li><a href="/html/catequesis.html" class="sub-link">Catequesis</a></li>
+                </ul>
+            </li>
+            <li class="nav-item has-sub">
+                <a href="/html/noticias.html" class="nav-link">Noticias</a>
+                <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenú"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+                <ul class="sub-menu">
+                    <li><a href="/html/noticias.html" class="sub-link">Vaticano y Arzobispado de Barcelona</a></li>
+                    <li><a href="/html/humilias.html" class="sub-link">Reflexión dominical</a></li>
+                    <li><a href="/html/humiliasmagdalena3domingo.html" class="sub-link">Remar mar adentro</a></li>
+                    <li><a href="/html/humiliasmenu.html" class="sub-link">Homilías anteriores</a></li>
+                </ul>
+            </li>
+            <li class="nav-item has-sub">
+                <a href="/html/dinamicapastoral.html" class="nav-link">Dinámica Pastoral</a>
+                <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenú"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+                <ul class="sub-menu">
+                    <li><a href="/html/dinamicapastoral.html" class="sub-link">Grupos y servicios</a></li>
+                    <li><a href="/html/catequesis.html" class="sub-link">Catequesis</a></li>
+                    <li><a href="/html/jovenes2alternativa.html" class="sub-link">Jóvenes</a></li>
+                    <li><a href="/html/adminsacra.html" class="sub-link">Sacramentos</a></li>
+                    <li><a href="/html/imagenes.html" class="sub-link">Imágenes y vídeos</a></li>
+                </ul>
+            </li>
+            <li class="nav-item has-sub">
+                <a href="/html/organigramaparroquial.html" class="nav-link">Organigrama</a>
+                <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenú"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+                <ul class="sub-menu">
+                    <li><a href="/html/organigramaparroquial.html#estructura" class="sub-link">Nuestra estructura</a></li>
+                    <li><a href="/html/organigramaparroquial.html#consejos" class="sub-link">Consejo parroquial</a></li>
+                    <li><a href="/html/organigramaparroquial.html#consejos" class="sub-link">Consejo económico</a></li>
+                </ul>
+            </li>
+            <li class="nav-item has-sub">
+                <a href="/html/historia.html" class="nav-link">Historia</a>
+                <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenú"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+                <ul class="sub-menu">
+                    <li><a href="/html/historia.html#parroquia" class="sub-link">Nuestra historia</a></li>
+                    <li><a href="/html/historia.html#linea-del-tiempo" class="sub-link">Línea del tiempo</a></li>
+                    <li><a href="/html/historia.html#archivo" class="sub-link">Archivo histórico</a></li>
+                    <li><a href="/html/imagenes.html" class="sub-link">Imágenes y vídeos</a></li>
+                </ul>
+            </li>
+            <li class="nav-item has-sub">
+                <a href="/html/contacto.html" class="nav-link">Contacto</a>
+                <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenú"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+                <ul class="sub-menu">
+                    <li><a href="/html/contacto.html#datos" class="sub-link">Dirección y horarios</a></li>
+                    <li><a href="/html/contacto.html#escribenos" class="sub-link">Contacta con nosotros</a></li>
+                    <li><a href="/html/adminsacra.html#despacho" class="sub-link">Despacho parroquial</a></li>
+                    <li><a href="/html/privacidad.html" class="sub-link">Política de privacidad</a></li>
+                </ul>
+            </li>
             <li class="nav-extra">
                 <div class="nav-mass"><span class="nav-mass-title">Horarios de misa</span><span>Laborables y sábados · 19:00 h</span><span>Domingos · 11:00 y 13:00 h</span></div>
                 

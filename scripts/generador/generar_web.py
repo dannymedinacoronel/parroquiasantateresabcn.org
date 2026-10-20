@@ -3,14 +3,70 @@ import sys, os
 ROOT = sys.argv[1]
 
 NAV = [
-    ("inicio", "Inicio", "index.html"),
-    ("eucaristias", "Eucaristías", "index.html#horarios"),
-    ("noticias", "Noticias", "html/noticias.html"),
-    ("dinamica", "Dinámica Pastoral", "html/dinamicapastoral.html"),
-    ("organigrama", "Organigrama", "html/organigramaparroquial.html"),
-    ("historia", "Historia", "html/historia.html"),
-    ("contacto", "Contacto", "html/contacto.html"),
+    ("inicio", "Inicio", "index.html", [
+        ("Horarios de misa", "index.html#horarios"),
+        ("Bienvenidos", "index.html#bienvenida"),
+        ("Reflexión dominical", "index.html#reflexion"),
+        ("Vida parroquial", "index.html#vida"),
+        ("Sacramentos", "index.html#sacramentos"),
+        ("La parroquia en imágenes", "index.html#galeria"),
+        ("Evangelio de hoy", "index.html#actualidad"),
+    ]),
+    ("eucaristias", "Eucaristías", "html/misas.html", [
+        ("Horarios de Eucaristía", "html/misas.html#horarios"),
+        ("Misa con coro góspel", "html/misas.html#gospel"),
+        ("Calendario de eucaristías y actividades", "html/misas.html#calendario"),
+        ("Sacramentos", "html/adminsacra.html"),
+        ("Catequesis", "html/catequesis.html"),
+    ]),
+    ("noticias", "Noticias", "html/noticias.html", [
+        ("Vaticano y Arzobispado de Barcelona", "html/noticias.html"),
+        ("Reflexión dominical", "html/humilias.html"),
+        ("Remar mar adentro", "html/humiliasmagdalena3domingo.html"),
+        ("Homilías anteriores", "html/humiliasmenu.html"),
+    ]),
+    ("dinamica", "Dinámica Pastoral", "html/dinamicapastoral.html", [
+        ("Grupos y servicios", "html/dinamicapastoral.html"),
+        ("Catequesis", "html/catequesis.html"),
+        ("Jóvenes", "html/jovenes2alternativa.html"),
+        ("Sacramentos", "html/adminsacra.html"),
+        ("Imágenes y vídeos", "html/imagenes.html"),
+    ]),
+    ("organigrama", "Organigrama", "html/organigramaparroquial.html", [
+        ("Nuestra estructura", "html/organigramaparroquial.html#estructura"),
+        ("Consejo parroquial", "html/organigramaparroquial.html#consejos"),
+        ("Consejo económico", "html/organigramaparroquial.html#consejos"),
+    ]),
+    ("historia", "Historia", "html/historia.html", [
+        ("Nuestra historia", "html/historia.html#parroquia"),
+        ("Línea del tiempo", "html/historia.html#linea-del-tiempo"),
+        ("Archivo histórico", "html/historia.html#archivo"),
+        ("Imágenes y vídeos", "html/imagenes.html"),
+    ]),
+    ("contacto", "Contacto", "html/contacto.html", [
+        ("Dirección y horarios", "html/contacto.html#datos"),
+        ("Contacta con nosotros", "html/contacto.html#escribenos"),
+        ("Despacho parroquial", "html/adminsacra.html#despacho"),
+        ("Política de privacidad", "html/privacidad.html"),
+    ]),
 ]
+
+CHEVRON = ('<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" '
+           'stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>')
+
+
+def nav_items(depth, active):
+    out = []
+    for key, label, path, children in NAV:
+        cur = key == active
+        subs = "\n".join(f'                    <li><a href="{href(p, depth)}" class="sub-link">{l}</a></li>' for l, p in children)
+        out.append(
+            f'            <li class="nav-item has-sub">\n'
+            f'                <a href="{href(path, depth)}" class="nav-link{" active" if cur else ""}"{" aria-current=\"page\"" if cur else ""}>{label}</a>\n'
+            f'                <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenú">{CHEVRON}</button>\n'
+            f'                <ul class="sub-menu">\n{subs}\n                </ul>\n'
+            f'            </li>')
+    return "\n".join(out)
 
 PARROQUIA_LINKS = [
     ("Eucaristías y calendario", "html/misas.html"),
@@ -79,11 +135,7 @@ def href(path, depth):
 
 def page(depth, title, desc, body, active=None, extra_head="", extra_scripts="", full_title=None, cta=None):
     p = "../" * depth
-    nav = "\n".join(
-        '            <li class="nav-item"><a href="%s" class="nav-link%s"%s>%s</a></li>'
-        % (href(path, depth), " active" if key == active else "",
-           ' aria-current="page"' if key == active else "", label)
-        for key, label, path in NAV)
+    nav = nav_items(depth, active)
     parroquia = "\n".join(
         '                    <li><a href="%s">%s</a></li>' % (href(path, depth), label)
         for label, path in PARROQUIA_LINKS)
@@ -665,7 +717,7 @@ PAGES["html/dinamicapastoral.html"] = page(1, "Dinámica Pastoral", "Grupos, ser
 
 # ---------------------------------------------------------------- ORGANIGRAMA
 PAGES["html/organigramaparroquial.html"] = page(1, "Organigrama Parroquial", "Estructura, consejo parroquial y consejo económico de la Parroquia Santa Teresa de Jesús.", active="organigrama", body=page_hero("Cómo nos organizamos", "Organigrama Parroquial") + """
-        <section>
+        <section id="estructura">
             <div class="section-head">
                 <span class="subtitulo">Nuestra estructura</span>
                 <h2>Organigrama</h2>
@@ -692,7 +744,7 @@ PAGES["html/organigramaparroquial.html"] = page(1, "Organigrama Parroquial", "Es
             </div>
         </section>
 
-        <section class="section-warm">
+        <section class="section-warm" id="consejos">
             <div class="two-col">
                 <div class="prose">
                     <h3>Consejo parroquial</h3>
@@ -709,7 +761,7 @@ PAGES["html/organigramaparroquial.html"] = page(1, "Organigrama Parroquial", "Es
 
 # ---------------------------------------------------------------- HISTORIA
 PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfico de la Parroquia Santa Teresa de Jesús, en el Carmel (Barcelona), desde 1924.", active="historia", body=page_hero("Desde 1924", "Nuestra Historia", "web/nuevalife.jpg", "Historia", "center 15%") + """
-        <section>
+        <section id="parroquia">
             <div class="two-col center">
                 <div class="prose">
                     <span class="subtitulo text-left">El Carmel, Barcelona</span>
@@ -722,7 +774,7 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
             </div>
         </section>
 
-        <section class="section-warm">
+        <section class="section-warm" id="linea-del-tiempo">
             <div class="section-head">
                 <span class="subtitulo">Un siglo de historia</span>
                 <h2>Línea del tiempo</h2>
@@ -752,7 +804,7 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
             </div>
         </section>
 
-        <section>
+        <section id="archivo">
             <div class="section-head" style="margin-bottom:2rem;">
                 <span class="subtitulo">Archivo histórico</span>
                 <h2>Imágenes</h2>
@@ -766,7 +818,7 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
 
 # ---------------------------------------------------------------- CONTACTO
 PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia Santa Teresa de Jesús: Carrer del Llobregós, 132, 08032 Barcelona.", active="contacto", body=page_hero("Estamos para ayudarte", "Contacto", "web/portada1.jpg") + """
-        <section class="schedule-section">
+        <section class="schedule-section" id="datos">
             <div class="info-cards">
 """ + "\n".join([
     info_card("pin", "Dirección", 'Carrer del Llobregós, 132<br>08032 Barcelona<br><a href="https://goo.gl/maps/Y4SiUkiMGwp" target="_blank" rel="noopener">Cómo llegar &rarr;</a>'),
@@ -777,7 +829,7 @@ PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia San
             </div>
         </section>
 
-        <section style="padding-top:2rem;">
+        <section style="padding-top:2rem;" id="escribenos">
             <div class="two-col">
                 <div>
                     <span class="subtitulo text-left">Escríbenos</span>
@@ -808,7 +860,7 @@ PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia San
 
 # ---------------------------------------------------------------- MISAS
 PAGES["html/misas.html"] = page(1, "Eucaristías", "Horarios de misas y calendario de eucaristías y actividades de la Parroquia Santa Teresa de Jesús.", active="eucaristias", body=page_hero("Celebraciones litúrgicas", "Eucaristías", "eucaristia.jpeg") + """
-        <section>
+        <section id="horarios">
             <span class="subtitulo">Horarios</span>
             <h2>Horarios de Eucaristía</h2>
             <div style="text-align:center;"><div class="next-mass light" data-next-mass hidden></div></div>
@@ -828,7 +880,7 @@ PAGES["html/misas.html"] = page(1, "Eucaristías", "Horarios de misas y calendar
             </div>
         </section>
 
-        <section class="section-alt">
+        <section class="section-alt" id="gospel">
             <div class="two-col">
                 <div>
                     <span class="subtitulo">Con coro góspel</span>
@@ -839,7 +891,7 @@ PAGES["html/misas.html"] = page(1, "Eucaristías", "Horarios de misas y calendar
                     </div>
                     """ + cincopa("5053ed90-a7d4-4b43-af71-bfb01383be44", "AwFALeeQzr7a") + """
                 </div>
-                <div>
+                <div id="calendario">
                     <span class="subtitulo">Agrégalo a tu calendario</span>
                     <h2>Calendario de eucaristías y actividades</h2>
                     <hr class="section-divider">
@@ -871,7 +923,7 @@ PAGES["html/adminsacra.html"] = page(1, "Sacramentos", "Sacramento del Perdón, 
             </div>
         </section>
 
-        <section class="section-warm">
+        <section class="section-warm" id="despacho">
             <div class="two-col center">
                 <div class="framed-img">
                     <img src="../fotosdefinitivas/web/img_5434.jpg" alt="Celebración de la eucaristía" loading="lazy">
