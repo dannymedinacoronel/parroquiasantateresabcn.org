@@ -583,7 +583,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
         <section class="visit">
             <div class="two-col center">
                 <figure class="visit-img">
-                    <img src="fotosdefinitivas/web/dsc_0568.jpg" alt="Vidriera de Santa Teresa de Jesús con el Niño" loading="lazy">
+                    <img src="fotosdefinitivas/web/vidriera.jpg" alt="Vidriera de Santa Teresa de Jesús con el Niño" loading="lazy">
                     <figcaption>Vidriera de Santa Teresa con el Niño Jesús</figcaption>
                 </figure>
                 <div>

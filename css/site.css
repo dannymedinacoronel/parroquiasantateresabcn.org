@@ -1490,3 +1490,37 @@ header { gap: 1.5rem; }
     header.scrolled, header.menu-open { background-color: var(--white); }
 }
 header.menu-open { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+
+/* ==========================================================================
+   Final de página más luminoso: "Visítanos" en claro y pie en marrón cálido
+   ========================================================================== */
+.visit {
+    background:
+        radial-gradient(ellipse at 85% 0%, rgba(191,160,101,0.25), transparent 55%),
+        radial-gradient(ellipse at 0% 100%, rgba(191,160,101,0.15), transparent 50%),
+        #f6eedf;
+    color: var(--text-color);
+}
+.visit::before { display: none; }
+.visit h2 { color: var(--heading-color); }
+.visit .info-list li { border-color: rgba(143,115,64,0.22); }
+.visit .info-list a { color: var(--accent-dark); }
+.visit .btn-light { color: var(--heading-color); border-color: var(--heading-color); }
+.visit .btn-light:hover { background: var(--heading-color); color: var(--white); }
+.visit-img img {
+    aspect-ratio: auto; object-fit: contain; max-height: 640px; width: auto; margin: 0 auto;
+    background: #1d1812; padding: 10px; border: 1px solid var(--accent-color);
+    box-shadow: 0 0 0 6px #f6eedf, 0 0 0 7px rgba(191,160,101,0.5), 0 30px 60px rgba(60,40,10,0.28);
+}
+.visit-img figcaption { color: var(--muted); }
+
+footer { background: linear-gradient(180deg, #4a3c2b, #3b2f22); color: #e2d6c2; }
+.footer-col h4 { color: #fff8ea; }
+.footer-links a { color: #e2d6c2; }
+.footer-links a:hover { color: #f0d79a; }
+.footer-brand strong { color: #fff8ea; }
+.footer-brand span, .footer-map { color: #f0d79a; }
+.footer-grid { border-bottom-color: rgba(255,248,234,0.15); }
+.footer-bottom { color: #cbbda6; }
+.footer-bottom a, .link-button { color: #e2d6c2; }
+.footer-bottom a:hover, .link-button:hover { color: #f0d79a; }
