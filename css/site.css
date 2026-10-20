@@ -1524,3 +1524,22 @@ footer { background: linear-gradient(180deg, #4a3c2b, #3b2f22); color: #e2d6c2; 
 .footer-bottom { color: #cbbda6; }
 .footer-bottom a, .link-button { color: #e2d6c2; }
 .footer-bottom a:hover, .link-button:hover { color: #f0d79a; }
+
+/* --- Evangelio de hoy: marco de lectura con desplazamiento y fundido --- */
+#actualidad .grid-container { align-items: stretch; }
+#actualidad .widget-container { min-height: 0; justify-content: flex-start; }
+.gospel-frame {
+    position: relative; width: 100%; border: 1px solid var(--border); border-radius: var(--radius);
+    background: #fff; overflow: hidden;
+}
+.gospel-frame iframe { display: block; width: 100%; height: 680px; border: 0; }
+.gospel-frame::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 70px; pointer-events: none;
+    background: linear-gradient(rgba(255,255,255,0), #fff 85%);
+}
+.gospel-frame .consent-placeholder { min-height: 380px; border: 0; border-radius: 0; }
+.gospel-frame:has(.consent-embed:not(.loaded))::after { display: none; }
+.gospel-more { align-self: center; width: auto !important; margin-top: 1.25rem; }
+@media (max-width: 600px) {
+    .gospel-frame iframe { height: 560px; }
+}

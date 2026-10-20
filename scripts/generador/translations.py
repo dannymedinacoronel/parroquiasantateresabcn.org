@@ -527,6 +527,7 @@ TR = {
 "Reflexión dominical": ("Reflexió dominical", "Sunday reflection"),
 "Leer la reflexión completa": ("Llegir la reflexió completa", "Read the full reflection"),
 "Seguir leyendo": ("Continuar llegint", "Keep reading"),
+"Leer el Evangelio completo &rarr;": ("Llegir l'Evangeli complet &rarr;", "Read the full Gospel &rarr;"),
 # --- submenús ---
 "Dirección y horarios": ("Adreça i horaris", "Address and opening times"),
 "Homilías anteriores": ("Homilies anteriors", "Earlier homilies"),

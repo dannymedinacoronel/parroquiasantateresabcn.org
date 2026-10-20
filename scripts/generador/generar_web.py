@@ -569,7 +569,10 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
             <div class="grid-container">
                 <div class="widget-container">
                     <h3>Evangelio de Hoy</h3>
-                    <iframe title="Evangelio de hoy" width="100%" height="450" frameborder="0" loading="lazy" src="https://evangeli.net/evangelio/widget/web"></iframe>
+                    <div class="gospel-frame">
+                        <iframe title="Evangelio de hoy" width="100%" height="680" frameborder="0" loading="lazy" src="https://evangeli.net/evangelio/widget/web"></iframe>
+                    </div>
+                    <a href="https://evangeli.net/evangelio" class="btn gospel-more" target="_blank" rel="noopener">Leer el Evangelio completo &rarr;</a>
                 </div>
 
                 <div class="widget-container">
