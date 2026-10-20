@@ -1824,6 +1824,13 @@ body > header { view-transition-name: site-header; }
     .family-entry-body { padding: 1.9rem 1.5rem; }
 }
 
+/* Botón de llamar (enlace tel:) */
+.btn-call { display: inline-flex; align-items: center; gap: .55rem; }
+.btn-call .icon, .btn-call svg { width: 18px; height: 18px; flex-shrink: 0; }
+.btn-small { padding: 9px 16px; font-size: .7rem; margin-top: .6rem; }
+.tel-link { color: var(--heading-color); text-decoration: none; }
+.tel-link:hover { color: var(--accent-dark); }
+
 /* Visítanos más compacto */
 .visit { padding-top: clamp(3rem, 6vw, 4.5rem); padding-bottom: clamp(3rem, 6vw, 4.5rem); }
 .visit .two-col { max-width: 980px; margin: 0 auto; gap: clamp(2rem, 5vw, 3.5rem); align-items: center; }

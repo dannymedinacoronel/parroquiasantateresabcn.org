@@ -117,12 +117,17 @@ PARROQUIA_LINKS = [
 
 SITE = "https://parroquiasantateresabcn.netlify.app/"
 
+# Contacto de la parroquia
+EMAIL = "albertsols@gmail.com"
+TEL = "+34619040913"            # para el enlace tel: (se puede pulsar para llamar)
+TEL_TXT = "+34 619 040 913"     # tal como se muestra
+
 # Datos del titular para Aviso legal y Privacidad.
 # Los marcados como PENDIENTE deben completarse con los datos reales de la parroquia.
 LEGAL = {
     "titular": "Parroquia de Santa Teresa de Jesús (Arzobispado de Barcelona)",
     "domicilio": "Carrer del Llobregós, 132, 08032 Barcelona",
-    "email": "parroquisantateresabarcelona@gmail.com",
+    "email": "albertsols@gmail.com",
     "dpd": 'El designado por el Arzobispado de Barcelona, a través de <a href="https://esglesia.barcelona/es/" target="_blank" rel="noopener">esglesia.barcelona</a>',
     # Si se conoce el NIF de la parroquia, añadir aquí "nif" y su línea en el Aviso legal y la Privacidad.
     "actualizado": "20 de octubre de 2026",
@@ -204,9 +209,9 @@ __HREFLANG__
     <meta property="og:image" content="{SITE}fotosdefinitivas/web/portada3.jpg">
     <meta property="og:locale" content="__LOCALE__">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" href="{p}favicon.svg" type="image/svg+xml">
-    <link rel="icon" href="{p}favicon-48.png" sizes="48x48" type="image/png">
-    <link rel="apple-touch-icon" href="{p}apple-touch-icon.png">
+    <link rel="icon" href="{p}favicon.svg?v=2" type="image/svg+xml">
+    <link rel="icon" href="{p}favicon-48.png?v=2" sizes="48x48" type="image/png">
+    <link rel="apple-touch-icon" href="{p}apple-touch-icon.png?v=2">
     <link rel="manifest" href="{p}site.webmanifest">
 
     <link rel="stylesheet" href="{p}css/fonts.css?v={V["css/fonts.css"]}">
@@ -270,6 +275,7 @@ __LANGSWITCH__    </header>
                 <h4>Contacto</h4>
                 <ul class="footer-links">
                     <li><a href="{href('html/contacto.html', depth)}">Contactar</a></li>
+                    <li><a href="tel:{TEL}">Llamar: {TEL_TXT}</a></li>
                     <li><a href="https://www.instagram.com/parroquiasantateresadejesusbcn/" target="_blank" rel="noopener">Instagram</a></li>
                 </ul>
             </div>
@@ -335,6 +341,7 @@ SAC_ICONS = {
 SAC_ICONS.update({
     "pin": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
     "mail": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="M3.5 6.5l8.5 7 8.5-7"/></svg>',
+    "phone": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11 11 0 0 0 5.2 5.2l1.4-2.1 4.2 1.6V17a2.5 2.5 0 0 1-2.5 2.5A15.5 15.5 0 0 1 2.5 6 2.5 2.5 0 0 1 5 3.5z"/></svg>',
     "reloj": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
     "insta": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".8" fill="currentColor"/></svg>',
     "libro": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/></svg>',
@@ -411,6 +418,7 @@ _SVG = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
 ICON_PIN = _SVG + '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>'
 ICON_METRO = _SVG + '<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M8 21l2-4M16 21l-2-4M5 11h14"/><circle cx="9" cy="14" r=".6" fill="currentColor"/><circle cx="15" cy="14" r=".6" fill="currentColor"/></svg>'
 ICON_CLOCK = _SVG + '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'
+ICON_PHONE = _SVG + '<path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11 11 0 0 0 5.2 5.2l1.4-2.1 4.2 1.6V17a2.5 2.5 0 0 1-2.5 2.5A15.5 15.5 0 0 1 2.5 6 2.5 2.5 0 0 1 5 3.5z"/></svg>'
 
 # Fotos del pase de la portada (fotosdefinitivas/web/portada/portada-N-1920.jpg y -1280.jpg).
 # Cada una se descarga justo antes de mostrarse; la primera, enseguida.
@@ -438,7 +446,8 @@ INDEX_HEAD = """    <link rel="preload" as="image" href="fotosdefinitivas/web/po
       "hasMap": "https://goo.gl/maps/Y4SiUkiMGwp",
       "parentOrganization": { "@type": "Organization", "name": "Arzobispado de Barcelona", "url": "https://esglesia.barcelona/" },
       "image": "https://parroquiasantateresabcn.netlify.app/fotosdefinitivas/web/portada3.jpg",
-      "email": "parroquisantateresabarcelona@gmail.com",
+      "email": "albertsols@gmail.com",
+      "telephone": "+34 619 040 913",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Carrer del Llobregós, 132",
@@ -782,11 +791,10 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
                     <ul class="info-list" style="margin:1.5rem 0 2rem;">
                         <li><strong>Dirección</strong>Carrer del Llobregós, 132 — 08032 Barcelona</li>
                         <li><strong>Despacho parroquial</strong>Viernes por la tarde, y antes o después de cada misa</li>
-                        <li><strong>Correo electrónico</strong><a href="mailto:parroquisantateresabarcelona@gmail.com">parroquisantateresabarcelona@gmail.com</a></li>
                     </ul>
                     <div class="btn-group">
-                        <a href="html/contacto.html" class="btn btn-solid">Contactar</a>
-                        <a href="#ubicacion" class="btn btn-light">Cómo llegar</a>
+                        <a href="html/contacto.html#escribenos" class="btn btn-solid">Escríbenos</a>
+                        <a href=\"tel:""" + TEL + """\" class="btn btn-light btn-call">""" + ICON_PHONE + """<span>Llamar a la parroquia</span></a>
                     </div>
                 </div>
             </div>
@@ -813,6 +821,10 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
                     <li>
                         """ + ICON_CLOCK + """
                         <div><strong>Misas</strong><span>Laborables y sábados 19:00 h · Domingos 11:00 y 13:00 h</span></div>
+                    </li>
+                    <li>
+                        """ + ICON_PHONE + """
+                        <div><strong><a class="tel-link" href=\"tel:""" + TEL + """\">""" + TEL_TXT + """</a></strong><span>Pulsa para llamar a la parroquia</span></div>
                     </li>
                 </ul>
                 <div class="btn-group">
@@ -1074,7 +1086,7 @@ PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia San
             <div class="info-cards">
 """ + "\n".join([
     info_card("pin", "Dirección", 'Carrer del Llobregós, 132<br>08032 Barcelona<br><a href="https://goo.gl/maps/Y4SiUkiMGwp" target="_blank" rel="noopener">Cómo llegar &rarr;</a>'),
-    info_card("mail", "Correo electrónico", '<a href="mailto:parroquisantateresabarcelona@gmail.com">parroquisantateresabarcelona<wbr>@gmail.com</a>'),
+    info_card("phone", "Teléfono", f'<a href="tel:{TEL}">{TEL_TXT}</a><br><a class="btn btn-solid btn-call btn-small" href="tel:{TEL}">{ICON_PHONE}<span>Llamar</span></a>'),
     info_card("reloj", "Despacho parroquial", "Viernes por la tarde, y un rato antes o después de cada misa"),
     info_card("insta", "Instagram", '<a href="https://www.instagram.com/parroquiasantateresadejesusbcn/" target="_blank" rel="noopener">@parroquiasantateresadejesusbcn</a>'),
 ]) + """
@@ -1091,7 +1103,7 @@ PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia San
                         <div class="typeform-widget" data-url="https://parroquisantateresabarcelona.typeform.com/to/kceJJ6" style="width: 100%; height: 520px;"></div>
                     </div>
                     <script> (function() { var qs,js,q,s,d=document, gi=d.getElementById, ce=d.createElement, gt=d.getElementsByTagName, id="typef_orm", b="https://embed.typeform.com/"; if(!gi.call(d,id)) { js=ce.call(d,"script"); js.id=id; js.src=b+"embed.js"; q=gt.call(d,"script")[0]; q.parentNode.insertBefore(js,q) } })() </script>
-                    <p class="caption" style="text-align:left;">¿No carga el formulario? Escríbenos directamente a <a href="mailto:parroquisantateresabarcelona@gmail.com">parroquisantateresabarcelona@gmail.com</a>.</p>
+                    <p class="caption" style="text-align:left;">¿No carga el formulario? Escríbenos directamente a <a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a> o llámanos al <a href=\"tel:""" + TEL + """\">""" + TEL_TXT + """</a>.</p>
                     <div class="data-notice">
                         <strong>Información básica sobre protección de datos</strong>
                         <p><b>Responsable:</b> Parroquia de Santa Teresa de Jesús. <b>Finalidad:</b> atender tu consulta. <b>Legitimación:</b> tu consentimiento. <b>Destinatarios:</b> no se ceden datos a terceros, salvo obligación legal; el formulario lo presta Typeform. <b>Derechos:</b> acceso, rectificación, supresión y otros, escribiendo a nuestro correo. <a href="privacidad.html">Más información en la Política de privacidad</a>.</p>

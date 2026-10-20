@@ -589,6 +589,16 @@ TR = {
 "Contenido de evangeli.net (Associació Cultural M&amp;M Euroeditors), que se actualiza cada día.": ("Contingut d'evangeli.net (Associació Cultural M&amp;M Euroeditors), que s'actualitza cada dia.", "Content from evangeli.net (Associació Cultural M&amp;M Euroeditors), updated every day."),
 "Cada día, el Evangelio explicado para los niños: texto, comentario, ilustración y juegos para leerlo juntos.": ("Cada dia, l'Evangeli explicat per als infants: text, comentari, il·lustració i jocs per llegir-lo junts.", "Every day, the Gospel explained for children: text, commentary, illustration and games to read it together."),
 "Leer en familia": ("Llegir en família", "Read as a family"),
+# --- contacto: teléfono ---
+"Escríbenos": ("Escriu-nos", "Write to us"),
+"Llamar a la parroquia": ("Truca a la parròquia", "Call the parish"),
+"Llamar": ("Truca", "Call"),
+"Teléfono": ("Telèfon", "Phone"),
+"+34 619 040 913": SAME,
+"Llamar: +34 619 040 913": ("Truca: +34 619 040 913", "Call: +34 619 040 913"),
+"Pulsa para llamar a la parroquia": ("Prem per trucar a la parròquia", "Tap to call the parish"),
+"albertsols@gmail.com": SAME,
+"o llámanos al": ("o truca'ns al", "or call us on"),
 # --- Historia: 1927 ---
 "Un templo sencillo y su campanario": ("Un temple senzill i el seu campanar", "A simple church and its bell tower"),
 "Terminan las obras levantadas desde 1923: una iglesia de una sola nave y, a su lado, el campanario de 17,82 metros que todavía hoy marca la silueta del barrio.": ("Acaben les obres començades el 1923: una església d'una sola nau i, al costat, el campanar de 17,82 metres que encara avui marca la silueta del barri.", "The works begun in 1923 are completed: a single-nave church and, beside it, the 17.82-metre bell tower that still shapes the neighbourhood's skyline."),
