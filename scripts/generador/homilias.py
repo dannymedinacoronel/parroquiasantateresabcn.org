@@ -13,6 +13,9 @@ import os
 import re
 from datetime import date
 
+# Huecos de la plantilla «Reflexión del Evangelio de hoy» del panel: mientras queden, no se publica
+PENDIENTE = re.compile(r"\[(Escribe|Cita del Evangelio|Frase del Evangelio)")
+
 MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto",
          "septiembre", "octubre", "noviembre", "diciembre"]
 
@@ -102,6 +105,9 @@ def load(root):
             print("AVISO: no se pudo leer", os.path.basename(path), e)
             continue
         if not h.get("titulo") or h.get("publicado") is False:
+            continue
+        if PENDIENTE.search((h.get("titulo") or "") + (h.get("texto") or "")):
+            print("AVISO: no se publica", os.path.basename(path), "- aún tiene huecos [entre corchetes] de la plantilla")
             continue
         h["fecha"] = (h.get("fecha") or "")[:10]
         h["slug"] = os.path.splitext(os.path.basename(path))[0]

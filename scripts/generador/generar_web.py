@@ -13,7 +13,7 @@ esc = lambda t: _html.escape(t or "", quote=False)
 # dirección (site.css?v=...) y ningún navegador puede seguir usando una copia antigua.
 import hashlib as _hashlib
 V = {}
-for _f in ("css/fonts.css", "css/site.css", "js/site.js", "data/avisos.js"):
+for _f in ("css/fonts.css", "css/site.css", "js/site.js", "js/liturgia.js", "data/avisos.js"):
     with open(os.path.join(ROOT, _f), "rb") as _fh:
         V[_f] = _hashlib.md5(_fh.read()).hexdigest()[:10]
 
@@ -667,6 +667,12 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
             <div class="grid-container">
                 <div class="widget-container">
                     <h3>Evangelio de Hoy</h3>
+                    <div class="gospel-day">
+                        <span class="gospel-date" data-hoy>Hoy</span>
+                        <strong class="gospel-liturgia" data-liturgia>Evangelio del día</strong>
+                        <p class="gospel-sign">Una invitación diaria de la Parroquia Santa Teresa de Jesús a leer y orar con la Palabra de Dios.</p>
+                    </div>
+                    <script src="js/liturgia.js?v=""" + V["js/liturgia.js"] + """" defer></script>
                     <div class="gospel-frame">
                         <iframe title="Evangelio de hoy" width="100%" height="680" frameborder="0" loading="lazy" src="https://evangeli.net/evangelio/widget/web"></iframe>
                     </div>

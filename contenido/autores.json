@@ -11,6 +11,12 @@
       "nombre": "Magdalena",
       "cargo": "Feligresa de nuestra parroquia",
       "foto": "/fotosdefinitivas/web/magdalena-retrato.jpg"
+    },
+    {
+      "id": "parroquia",
+      "nombre": "Parroquia Santa Teresa de Jesús",
+      "cargo": "Comunidad parroquial · El Carmel",
+      "foto": "/fotosdefinitivas/web/vidriera.jpg"
     }
   ]
 }

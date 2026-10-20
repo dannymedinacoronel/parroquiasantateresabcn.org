@@ -18,6 +18,25 @@
         #pst-loading strong { font-size: 1.6rem; font-style: italic; font-weight: 400; }
         #pst-loading span { font-family: system-ui, sans-serif; font-size: .8rem; letter-spacing: 3px; text-transform: uppercase; color: #8f7340; }
         @keyframes pst-pulse { 50% { opacity: .4; } }
+
+        /* Tarjeta «Evangelio de hoy» con el botón para preparar la reflexión del día */
+        #pst-hoy {
+            position: fixed; right: 22px; bottom: 22px; z-index: 300; width: 300px; display: none;
+            padding: 1.1rem 1.2rem 1.15rem; background: #fffaf0; border: 1px solid #e2d1ad; border-top: 4px solid #7a2e2e;
+            border-radius: 6px; box-shadow: 0 18px 40px rgba(40,25,5,.22); font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #3a3226;
+        }
+        #pst-hoy.on { display: block; animation: pst-in .35s ease-out; }
+        #pst-hoy.min > :not(.pst-hoy-top) { display: none; }
+        @keyframes pst-in { from { opacity: 0; transform: translateY(12px); } }
+        .pst-hoy-top { display: flex; justify-content: space-between; align-items: center; font-size: .68rem; font-weight: 700; letter-spacing: 2.2px; text-transform: uppercase; color: #7a2e2e; }
+        .pst-hoy-top button { border: 0; background: none; cursor: pointer; font-size: 1rem; color: #8f7340; padding: 0 .2rem; }
+        #pst-hoy strong { display: block; margin: .45rem 0 .2rem; font-family: Georgia, "Times New Roman", serif; font-size: 1.2rem; font-style: italic; font-weight: 400; line-height: 1.25; color: #1a1a1a; }
+        #pst-hoy small { display: block; font-size: .78rem; color: #8a7e6c; }
+        #pst-hoy .pst-go { display: block; width: 100%; margin: .9rem 0 .55rem; padding: .75rem; border: 0; border-radius: 4px; cursor: pointer;
+            background: #bfa065; color: #fff; font-size: .74rem; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; }
+        #pst-hoy .pst-go:hover { background: #8f7340; }
+        #pst-hoy a { font-size: .78rem; color: #8f7340; font-weight: 600; }
+        #pst-hoy p { margin: .6rem 0 0; font-size: .75rem; line-height: 1.45; color: #8a7e6c; }
     </style>
 </head>
 <body>
@@ -27,6 +46,17 @@
         <span>Panel de homilías</span>
     </div>
 
+    <aside id="pst-hoy" aria-label="Evangelio de hoy">
+        <div class="pst-hoy-top"><span>✝ Evangelio de hoy</span><button type="button" id="pst-hoy-min" title="Plegar / desplegar">–</button></div>
+        <strong id="pst-hoy-dia"></strong>
+        <small id="pst-hoy-fecha"></small>
+        <button type="button" class="pst-go" id="pst-hoy-go">✚ Preparar la reflexión de hoy</button>
+        <a href="https://evangeli.net/evangelio" target="_blank" rel="noopener">Leer el Evangelio de hoy ↗</a>
+        <p>Se abre ya firmada por la parroquia, con la fecha y el día litúrgico. Escribe la reflexión donde pone [entre corchetes] y pulsa «Publicar».</p>
+    </aside>
+
+    <!-- Calendario litúrgico (el mismo que usa la web) -->
+    <script src="/js/liturgia.js"></script>
     <!-- Panel de edición (Decap CMS). La configuración está en /admin/config.yml -->
     <script src="https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js"></script>
     <script>
@@ -36,6 +66,44 @@
         new MutationObserver(function (m, obs) {
             if (document.getElementById("nc-root")) { loading.remove(); obs.disconnect(); }
         }).observe(document.body, { childList: true });
+
+        /* ------------------------------------------------------------------
+           «Preparar la reflexión de hoy»: abre una reflexión nueva ya rellena
+           (firma de la parroquia, fecha, día litúrgico y plantilla del texto).
+           Decap admite valores iniciales en la dirección: #/collections/x/new?campo=valor
+           (sin comillas ni < > porque el panel los escapa).
+           ------------------------------------------------------------------ */
+        var hoyCard = document.getElementById("pst-hoy");
+        var hoy = new Date();
+        var hoyISO = hoy.getFullYear() + "-" + String(hoy.getMonth() + 1).padStart(2, "0") + "-" + String(hoy.getDate()).padStart(2, "0");
+        var diaLit = window.PSTLiturgia ? window.PSTLiturgia.dia(hoy, "es") : "";
+        document.getElementById("pst-hoy-dia").textContent = diaLit || "Evangelio del día";
+        document.getElementById("pst-hoy-fecha").textContent = hoy.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+        document.getElementById("pst-hoy-go").addEventListener("click", function () {
+            var q = new URLSearchParams({
+                titulo: "El Evangelio de hoy",
+                autor: "parroquia",
+                fecha: hoyISO,
+                tiempo: diaLit + " · " + hoy.getFullYear(),
+                saludo: "Queridos hermanos y hermanas:",
+                texto: "### [Cita del Evangelio de hoy, por ejemplo: Lc 12, 35-38]\n\n" +
+                    "[Escribe aquí la reflexión sobre el Evangelio de hoy. Separa los párrafos con una línea en blanco. " +
+                    "Para destacar una frase en grande, selecciónala y pulsa «Cita».]\n\n" +
+                    "Que el Señor nos acompañe en este día. Unidos en la oración.",
+                publicado: "true"
+            });
+            location.hash = "#/collections/homilias/new?" + q.toString();
+        });
+        document.getElementById("pst-hoy-min").addEventListener("click", function () {
+            hoyCard.classList.toggle("min");
+            this.textContent = hoyCard.classList.contains("min") ? "+" : "–";
+        });
+        function hoyVisible() {
+            // Solo en la lista de reflexiones (con sesión iniciada), no mientras se edita
+            hoyCard.classList.toggle("on", /^#\/collections\/homilias\/?(\?|$|filter|search)/.test(location.hash) || location.hash === "#/");
+        }
+        window.addEventListener("hashchange", hoyVisible);
+        hoyVisible();
 
         /* ------------------------------------------------------------------
            Vista previa: usa los estilos reales de la web para que lo que se
@@ -134,6 +202,8 @@
                 if (!titulo) tips.push("Falta el título.");
                 if (!get("autor")) tips.push("Elige quién la escribe en «Escrita por».");
                 if (!texto) tips.push("Pega o escribe el texto de la reflexión.");
+                if (/\[(Escribe|Cita del Evangelio|Frase del Evangelio)/.test(titulo + texto))
+                    tips.push("Aún quedan huecos [entre corchetes] de la plantilla: rellénalos o bórralos. Mientras estén, la reflexión no saldrá en la web.");
                 if (get("publicado") === false) tips.push("Está marcada como borrador: no aparecerá en la web hasta activar «Publicada».");
 
                 return h("div", { className: "pv" },
