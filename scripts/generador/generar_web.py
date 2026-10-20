@@ -888,14 +888,30 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
             </div>
         </section>
 
-        <section id="archivo">
-            <div class="section-head" style="margin-bottom:2rem;">
-                <span class="subtitulo">Archivo histórico</span>
-                <h2>Imágenes</h2>
-                <hr class="section-divider" style="margin-bottom:0;">
+        <section id="archivo" class="archive-section">
+            <div class="section-head">
+                <span class="subtitulo">Álbum de la parroquia</span>
+                <h2>Nuestra iglesia en imágenes</h2>
+                <hr class="section-divider" style="margin-bottom:1.25rem;">
+                <p>Rincones, celebraciones y detalles de un templo que acompaña al barrio desde hace un siglo. Pulsa una foto para verla en grande.</p>
             </div>
-            <div style="max-width:900px; margin:0 auto;">
-                """ + cincopa("4a71dbc3-848c-4ff6-9651-3d1a31fe69b1", "AQHAfde8sLP-") + """
+            <div class="mosaic archive-album">
+                <a href="../fotosdefinitivas/web/nuevalife.jpg" class="print tall"><img src="../fotosdefinitivas/web/nuevalife.jpg" alt="El campanario y la fachada de la iglesia" loading="lazy"><span class="print-caption">El campanario</span></a>
+                <a href="../fotosdefinitivas/web/dsc_0541.jpg" class="print wide"><img src="../fotosdefinitivas/web/dsc_0541.jpg" alt="Interior de la iglesia durante la eucaristía" loading="lazy"><span class="print-caption">La nave durante la eucaristía</span></a>
+                <a href="../fotosdefinitivas/web/vidriera.jpg" class="print tall"><img src="../fotosdefinitivas/web/vidriera.jpg" alt="Vidriera de Santa Teresa con el Niño Jesús" loading="lazy"><span class="print-caption">La vidriera de Santa Teresa</span></a>
+                <a href="../fotosdefinitivas/web/dsc_0574.jpg" class="print"><img src="../fotosdefinitivas/web/dsc_0574.jpg" alt="Imágenes del presbiterio" loading="lazy"><span class="print-caption">El presbiterio</span></a>
+                <a href="../fotosdefinitivas/web/img_5493.jpg" class="print"><img src="../fotosdefinitivas/web/img_5493.jpg" alt="Capilla del Santísimo" loading="lazy"><span class="print-caption">La capilla del Santísimo</span></a>
+                <a href="../fotosdefinitivas/web/dsc_0599webog.jpg" class="print"><img src="../fotosdefinitivas/web/dsc_0599webog.jpg" alt="El campanario durante el Domingo de Ramos" loading="lazy"><span class="print-caption">Domingo de Ramos</span></a>
+                <a href="../fotosdefinitivas/web/dsc_0546.jpg" class="print wide"><img src="../fotosdefinitivas/web/dsc_0546.jpg" alt="La iglesia llena durante una celebración" loading="lazy"><span class="print-caption">La comunidad reunida</span></a>
+                <a href="../fotosdefinitivas/web/dsc_0589.jpg" class="print"><img src="../fotosdefinitivas/web/dsc_0589.jpg" alt="Bendición de ramos en el Domingo de Ramos" loading="lazy"><span class="print-caption">La bendición de los ramos</span></a>
+            </div>
+            <div class="archive-invite">
+                <span class="archive-invite-icon" aria-hidden="true">""" + LOGO_MARK + """</span>
+                <div>
+                    <strong>¿Guardas fotos antiguas de la parroquia?</strong>
+                    <p>Estamos recuperando el archivo histórico: la colocación de la primera piedra en 1923, la bendición de 1928 y la vida del barrio. Si tienes fotografías, escríbenos y las incorporaremos.</p>
+                </div>
+                <a href="contacto.html" class="btn">Compartir fotos</a>
             </div>
         </section>
 """)

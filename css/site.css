@@ -1714,3 +1714,50 @@ body.menu-open .notice-card { opacity: 0; visibility: hidden; }
 .reading-next .reading-next-photo img { border: 0; padding: 0; width: 100%; height: 100%; }
 .book-ribbon { left: auto; right: 4.5rem; }
 @media (max-width: 900px) { .book-ribbon { right: 2rem; } }
+
+/* ==========================================================================
+   HISTORIA: álbum de fotos como copias impresas
+   ========================================================================== */
+.archive-section {
+    background:
+        radial-gradient(ellipse at 20% 0%, rgba(191,160,101,0.18), transparent 55%),
+        radial-gradient(ellipse at 90% 100%, rgba(122,46,46,0.06), transparent 50%),
+        #f3e8d2;
+}
+.archive-album { max-width: 1150px; margin: 0 auto; grid-auto-rows: 250px; gap: 22px; }
+.archive-album .print {
+    background: #fffdf8; padding: 10px 10px 40px; border-radius: 2px; overflow: visible;
+    box-shadow: 0 1px 2px rgba(60,40,10,0.15), 0 14px 30px rgba(60,40,10,0.14);
+    transition: transform .5s var(--ease), box-shadow .5s var(--ease);
+}
+.archive-album .print:nth-child(odd) { transform: rotate(-0.8deg); }
+.archive-album .print:nth-child(even) { transform: rotate(0.7deg); }
+.archive-album .print img {
+    height: calc(100% - 0px); filter: sepia(.35) saturate(.85) contrast(1.03);
+    transition: filter .6s, transform .8s var(--ease);
+}
+.archive-album .print:hover { transform: rotate(0) translateY(-6px) scale(1.015); box-shadow: 0 2px 4px rgba(60,40,10,0.15), 0 26px 50px rgba(60,40,10,0.22); z-index: 2; }
+.archive-album .print:hover img { filter: none; transform: none; }
+.archive-album .print::after { inset: 10px 10px 40px; font-size: 2.6rem; }
+.print-caption {
+    position: absolute; left: 0; right: 0; bottom: 9px; text-align: center;
+    font-family: var(--header-font); font-style: italic; font-size: 1.1rem; color: #5a4632;
+}
+.archive-invite {
+    display: flex; align-items: center; gap: 1.75rem; max-width: 900px; margin: 3.5rem auto 0;
+    padding: 1.75rem 2rem; background: #fffaf0; border: 1px solid #e2d1ad; border-left: 3px solid var(--accent-color);
+    border-radius: var(--radius); box-shadow: var(--shadow-sm);
+}
+.archive-invite-icon { flex: 0 0 auto; width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; background: #f3e8d2; color: var(--accent-dark); }
+.archive-invite-icon svg { width: 20px; height: 26px; }
+.archive-invite strong { display: block; font-family: var(--header-font); font-size: 1.5rem; font-style: italic; font-weight: 500; color: var(--heading-color); margin-bottom: 0.25rem; }
+.archive-invite p { font-size: 0.92rem; color: var(--muted); margin: 0; }
+.archive-invite .btn { flex: 0 0 auto; }
+@media (max-width: 768px) {
+    .archive-album { grid-auto-rows: 190px; gap: 14px; }
+    .archive-album .print { padding: 6px 6px 30px; }
+    .archive-album .print::after { inset: 6px 6px 30px; }
+    .print-caption { font-size: 0.92rem; bottom: 6px; }
+    .archive-invite { flex-direction: column; text-align: center; padding: 1.5rem 1.25rem; }
+}
+@media (prefers-reduced-motion: reduce) { .archive-album .print { transform: none !important; } }
