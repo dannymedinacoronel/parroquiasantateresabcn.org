@@ -26,11 +26,12 @@
     <link rel="manifest" href="../site.webmanifest">
 
     <link rel="stylesheet" href="../css/fonts.css?v=818b49f2ed">
-    <link rel="stylesheet" href="../css/site.css?v=0bf2380cd3">
+    <link rel="stylesheet" href="../css/site.css?v=1d69d8458c">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
     <script type="speculationrules">{"prerender":[{"where":{"selector_matches":"a[hreflang]"},"eagerness":"eager"},{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}}]},"eagerness":"moderate"}]}</script>
-    <link rel="preload" as="image" href="../fotosdefinitivas/web/portada3.jpg">
+    <link rel="preload" as="image" href="../fotosdefinitivas/web/portada/portada-1-1920.jpg" media="(min-width: 1281px)" fetchpriority="high">
+    <link rel="preload" as="image" href="../fotosdefinitivas/web/portada/portada-1-1280.jpg" media="(max-width: 1280px)" fetchpriority="high">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -98,8 +99,9 @@
                 <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenu"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
                 <ul class="sub-menu">
                     <li class="sub-heading" aria-hidden="true">Church news</li>
-                    <li><a href="html/noticias.html" class="sub-link">Vatican and Archdiocese of Barcelona</a></li>
+                    <li><a href="html/noticias.html#actualidad-iglesia" class="sub-link">Vatican and Archdiocese of Barcelona</a></li>
                     <li class="sub-heading parish" aria-hidden="true">From our parish</li>
+                    <li class="parish-item"><a href="html/noticias.html#parroquia" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Parish news</span></a></li>
                     <li class="parish-item"><a href="html/reflexiones/1901-10-01-hola.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Latest reflection</span></a></li>
                     <li class="parish-item"><a href="html/humiliasmenu.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>All reflections</span></a></li>
                 </ul>
@@ -154,8 +156,15 @@
     </header>
 
     <main id="contenido">
-        <section class="hero">
-            <div class="hero-bg" aria-hidden="true"></div>
+        <section class="hero hero-slider">
+            <div class="hero-bg hero-slides" aria-hidden="true">
+                <span class="hero-slide is-on ready"><em>Sunday Eucharist</em></span>
+                <span class="hero-slide"><em>Our bell tower</em></span>
+                <span class="hero-slide"><em>Palm Sunday</em></span>
+                <span class="hero-slide"><em>The community in the square</em></span>
+                <span class="hero-slide"><em>Blessing of the palms</em></span>
+                <span class="hero-slide"><em>A living parish</em></span>
+            </div>
             <span class="eyebrow">Parish · El Carmel · Barcelona</span>
             <h1>Santa Teresa<br>de Jesús</h1>
             <div class="hero-divider"></div>
@@ -166,6 +175,10 @@
                 <a href="#bienvenida" class="btn btn-light">About us</a>
             </div>
             <a href="#horarios" class="scroll-cue" aria-label="Scroll to Mass times"></a>
+            <div class="hero-slider-ui" aria-hidden="true">
+                <span class="hero-caption" data-hero-caption></span>
+                <span class="hero-dots"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            </div>
         </section>
 
         <section id="horarios" class="schedule-section">
@@ -496,7 +509,7 @@
         </div>
     </template>
     <script src="../data/avisos.js?v=d53051e813"></script>
-    <script src="../js/site.js?v=a0b64a3698"></script>
+    <script src="../js/site.js?v=80318007b6"></script>
 
 </body>
 </html>

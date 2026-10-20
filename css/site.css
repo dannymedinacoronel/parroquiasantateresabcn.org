@@ -1613,6 +1613,162 @@ body > header { view-transition-name: site-header; }
 .rf-tag + .new-badge { margin-left: .75rem; }
 @keyframes new-glow { 50% { box-shadow: 0 4px 18px rgba(122,46,46,.55); } }
 @media (prefers-reduced-motion: reduce) { .new-badge { animation: none; } }
+
+/* ==========================================================================
+   PORTADA: PASE DE FOTOS (se mantiene la entrada con zoom y cada foto
+   entra con un fundido lento y su propio movimiento de cámara)
+   ========================================================================== */
+.hero-bg.hero-slides { background: #2a241c; animation: none; transform: none; }
+.hero-slide {
+    position: absolute; inset: 0; opacity: 0;
+    background: #2a241c center / cover no-repeat;
+    transition: opacity 2s ease-in-out;
+    will-change: opacity, transform;
+}
+.hero-slide em { display: none; }
+.hero-slide.is-on { opacity: 1; z-index: 1; }
+.hero-slide.was-on { z-index: 0; }
+/* movimiento de cámara alterno: acercar / alejar */
+.hero-slide:nth-child(odd).is-on, .hero-slide:nth-child(odd).was-on { animation: kbIn 9.5s ease-out both; }
+.hero-slide:nth-child(even).is-on, .hero-slide:nth-child(even).was-on { animation: kbOut 9.5s ease-out both; }
+/* la primera vez, la entrada de siempre: zoom grande que se asienta y sigue moviéndose */
+.hero-slide.intro.is-on, .hero-slide.intro.was-on { animation: slowZoom 3.5s var(--ease) both, kbIn 9.5s ease-out 3.5s both; }
+@keyframes kbIn { from { transform: scale(1.02) translate(0, 0); } to { transform: scale(1.16) translate(-2.5%, -1.5%); } }
+@keyframes kbOut { from { transform: scale(1.18) translate(2%, 1.5%); } to { transform: scale(1.03) translate(0, 0); } }
+.hero-slide.ready:nth-child(1) { background-image: url('../fotosdefinitivas/web/portada/portada-1-1280.jpg'); background-position: center 38%; }
+.hero-slide.ready:nth-child(2) { background-image: url('../fotosdefinitivas/web/portada/portada-2-1280.jpg'); background-position: center 30%; }
+.hero-slide.ready:nth-child(3) { background-image: url('../fotosdefinitivas/web/portada/portada-3-1280.jpg'); }
+.hero-slide.ready:nth-child(4) { background-image: url('../fotosdefinitivas/web/portada/portada-4-1280.jpg'); }
+.hero-slide.ready:nth-child(5) { background-image: url('../fotosdefinitivas/web/portada/portada-5-1280.jpg'); background-position: center 35%; }
+.hero-slide.ready:nth-child(6) { background-image: url('../fotosdefinitivas/web/portada/portada-6-1280.jpg'); }
+@media (min-width: 1281px) {
+    .hero-slide.ready:nth-child(1) { background-image: url('../fotosdefinitivas/web/portada/portada-1-1920.jpg'); }
+    .hero-slide.ready:nth-child(2) { background-image: url('../fotosdefinitivas/web/portada/portada-2-1920.jpg'); }
+    .hero-slide.ready:nth-child(3) { background-image: url('../fotosdefinitivas/web/portada/portada-3-1920.jpg'); }
+    .hero-slide.ready:nth-child(4) { background-image: url('../fotosdefinitivas/web/portada/portada-4-1920.jpg'); }
+    .hero-slide.ready:nth-child(5) { background-image: url('../fotosdefinitivas/web/portada/portada-5-1920.jpg'); }
+    .hero-slide.ready:nth-child(6) { background-image: url('../fotosdefinitivas/web/portada/portada-6-1920.jpg'); }
+}
+/* pie de foto y progreso, discretos, abajo a la derecha */
+.hero > .hero-slider-ui {
+    position: absolute; right: clamp(1.25rem, 4vw, 3.5rem); bottom: 2.1rem; z-index: 2;
+    display: flex; align-items: center; gap: 1.1rem; animation: heroIn 1.2s var(--ease) 1s both;
+}
+.hero-caption {
+    font-family: var(--header-font); font-style: italic; font-size: 1.1rem; letter-spacing: .02em;
+    color: rgba(255,255,255,.85); text-shadow: 0 1px 10px rgba(0,0,0,.4);
+    transition: opacity .6s ease;
+}
+.hero-caption.fade { opacity: 0; }
+.hero-dots { display: flex; gap: 6px; }
+.hero-dots i { position: relative; display: block; width: 26px; height: 2px; overflow: hidden; background: rgba(255,255,255,.3); border-radius: 2px; }
+.hero-dots i::after { content: ""; position: absolute; inset: 0; background: var(--accent-light); transform: scaleX(0); transform-origin: left; }
+.hero-dots i.done::after { transform: scaleX(1); }
+.hero-dots i.on::after { animation: dotFill var(--slide-ms, 7000ms) linear both; }
+@keyframes dotFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (max-width: 768px) {
+    .hero > .hero-slider-ui { left: 0; right: 0; bottom: 1.1rem; justify-content: center; }
+    .hero-caption { display: none; }
+    .hero-dots i { width: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .hero-slide, .hero-slide.is-on, .hero-slide.was-on { animation: none !important; transform: none; }
+    .hero-dots i.on::after { animation: none; transform: scaleX(1); }
+}
+
+/* ==========================================================================
+   MENÚ PRINCIPAL: tipografía más fina y elegante
+   ========================================================================== */
+@media (min-width: 1281px) {
+    .nav-menu { gap: 1.55rem; }
+    .nav-link {
+        font-size: .78rem; font-weight: 600; letter-spacing: .17em;
+        padding: 9px 0 8px; font-kerning: normal; text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    }
+    /* sobre la foto: sombra suave para que se lea sin recuadros */
+    .js header:not(.scrolled):not(.menu-open) .nav-link,
+    .js header:not(.scrolled):not(.menu-open) .logo { text-shadow: 0 1px 14px rgba(0,0,0,.35); }
+    /* subrayado dorado que se desvanece en los extremos y rombo en la sección actual */
+    .nav-link::after {
+        height: 1px; bottom: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent-color) 18%, var(--accent-color) 82%, transparent);
+    }
+    .nav-link.active::before {
+        content: ""; position: absolute; left: 50%; bottom: -5px; width: 4px; height: 4px; margin-left: -2px;
+        background: var(--accent-color); transform: rotate(45deg);
+    }
+    /* desplegables: la serif de los títulos para que se distingan del menú */
+    .sub-link {
+        font-family: var(--header-font); font-size: 1.13rem; font-weight: 500; letter-spacing: .01em;
+        line-height: 1.25; padding: .55rem 1.6rem; color: #2c2620;
+    }
+    .sub-link:hover, .sub-link:focus-visible { padding-left: 2.05rem; }
+    .sub-menu { padding: .75rem 0 .85rem; min-width: 280px; }
+    .logo { font-weight: 600; letter-spacing: .01em; }
+}
+@media (max-width: 1440px) and (min-width: 1281px) {
+    .nav-menu { gap: .85rem; }
+    .nav-link { font-size: .72rem; letter-spacing: .12em; }
+}
+
+/* ==========================================================================
+   NOTICIAS DE NUESTRA PARROQUIA (Instagram)
+   ========================================================================== */
+.parish-news { background: linear-gradient(180deg, var(--bg-warm), var(--bg-color)); }
+.parish-news-grid {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: clamp(2.5rem, 6vw, 5.5rem);
+    align-items: center; max-width: 1100px; margin: 0 auto;
+}
+.parish-news-text h2 { font-size: clamp(2.2rem, 4vw, 3.2rem); line-height: 1.08; margin: .4rem 0 1.25rem; }
+.section-divider.left { margin: 0 0 1.75rem; }
+.parish-news-text .lead { font-size: 1.15rem; line-height: 1.7; margin-bottom: 1.25rem; }
+.parish-news-list { list-style: none; margin: 0 0 1.75rem; padding: 0; }
+.parish-news-list li { position: relative; padding: .35rem 0 .35rem 1.5rem; color: var(--text-color); }
+.parish-news-list li::before {
+    content: ""; position: absolute; left: .25rem; top: .95rem; width: 6px; height: 6px;
+    background: var(--accent-color); transform: rotate(45deg);
+}
+.ig-handle {
+    display: inline-flex; align-items: center; gap: .6rem; margin-bottom: 1.75rem;
+    font-weight: 600; font-size: .95rem; color: var(--heading-color); text-decoration: none; word-break: break-all;
+}
+.ig-handle:hover { color: var(--accent-dark); }
+.ig-icon { flex-shrink: 0; width: 30px; height: 30px; padding: 5px; border-radius: 9px; color: #fff;
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+/* marco de móvil con la vista previa del perfil */
+.ig-phone {
+    position: relative; width: 100%; max-width: 400px; justify-self: center;
+    padding: 14px; border-radius: 42px; background: #1d1a16;
+    box-shadow: 0 40px 80px rgba(40,25,5,.28), inset 0 0 0 2px #3a332a;
+}
+.ig-phone::before { content: ""; position: absolute; top: 22px; left: 50%; width: 90px; height: 22px; margin-left: -45px; border-radius: 20px; background: #000; z-index: 2; }
+.ig-phone-top {
+    display: flex; align-items: center; gap: .75rem; padding: 46px 16px 14px;
+    background: #fff; border-radius: 30px 30px 0 0; border-bottom: 1px solid #eee;
+}
+.ig-phone-top img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; padding: 2px;
+    background: linear-gradient(45deg, #fdf497, #fd5949, #d6249f, #285AEB); }
+.ig-phone-top div { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ig-phone-top strong { font-size: .82rem; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ig-phone-top span { font-size: .72rem; color: #777; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ig-phone-top a { padding: .45rem .9rem; border-radius: 8px; background: #0095f6; color: #fff; font-size: .75rem; font-weight: 600; text-decoration: none; }
+.ig-phone-top a:hover { background: #1877f2; }
+.ig-phone-feed {
+    height: 520px; overflow-y: auto; overscroll-behavior: contain; background: #fff; border-radius: 0 0 30px 30px;
+    scrollbar-width: thin;
+}
+.ig-phone-feed .consent-embed { min-height: 100%; }
+.ig-phone-feed .consent-placeholder { min-height: 100%; border: 0; border-radius: 0 0 30px 30px; }
+.news-church-head { padding: clamp(3.5rem, 7vw, 5.5rem) 1.25rem 0; }
+@media (max-width: 900px) {
+    .parish-news-grid { grid-template-columns: minmax(0, 1fr); }
+    .parish-news-text { text-align: center; }
+    .section-divider.left { margin: 0 auto 1.75rem; }
+    .parish-news-list { display: inline-block; text-align: left; }
+    .parish-news-text .btn-group { justify-content: center; }
+    .ig-phone-feed { height: 460px; }
+}
 body.menu-open .notice-card { opacity: 0; visibility: hidden; }
 
 @media (max-width: 600px) {

@@ -36,8 +36,9 @@ NAV = [
     ]),
     ("noticias", "Noticias", "html/noticias.html", [
         ("§", "Actualidad de la Iglesia"),
-        ("Vaticano y Arzobispado de Barcelona", "html/noticias.html"),
+        ("Vaticano y Arzobispado de Barcelona", "html/noticias.html#actualidad-iglesia"),
         ("§parish", "De nuestra parroquia"),
+        ("+Noticias de la parroquia", "html/noticias.html#parroquia"),
         ("+Última reflexión", "__ULTIMA__"),
         ("+Todas las reflexiones", "html/humiliasmenu.html"),
     ]),
@@ -398,7 +399,19 @@ GALLERY = [
     ("dsc_0512.jpg", "La comunidad reunida en la iglesia", "wide"),
 ]
 
-INDEX_HEAD = """    <link rel="preload" as="image" href="fotosdefinitivas/web/portada3.jpg">
+# Fotos del pase de la portada (fotosdefinitivas/web/portada/portada-N-1920.jpg y -1280.jpg).
+# Cada una se descarga justo antes de mostrarse; la primera, enseguida.
+HERO_SLIDES = [
+    "Eucaristía dominical",
+    "Nuestro campanario",
+    "Domingo de Ramos",
+    "La comunidad en la plaza",
+    "Bendición de los ramos",
+    "Una parroquia viva",
+]
+
+INDEX_HEAD = """    <link rel="preload" as="image" href="fotosdefinitivas/web/portada/portada-1-1920.jpg" media="(min-width: 1281px)" fetchpriority="high">
+    <link rel="preload" as="image" href="fotosdefinitivas/web/portada/portada-1-1280.jpg" media="(max-width: 1280px)" fetchpriority="high">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -559,8 +572,11 @@ def feature(photo, eyebrow, title, text, link):
 
 
 PAGES["index.html"] = page(0, "", "Parroquia Santa Teresa de Jesús, en el barrio del Carmel (Barcelona). Horarios de eucaristías, actividades pastorales y contacto.",
-full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extra_head=INDEX_HEAD, body="""        <section class="hero">
-            <div class="hero-bg" aria-hidden="true"></div>
+full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extra_head=INDEX_HEAD, body="""        <section class="hero hero-slider">
+            <div class="hero-bg hero-slides" aria-hidden="true">""" + "".join(
+    f'\n                <span class="hero-slide{" is-on ready" if i == 1 else ""}"><em>{cap}</em></span>'
+    for i, cap in enumerate(HERO_SLIDES, 1)) + """
+            </div>
             <span class="eyebrow">Parroquia · El Carmel · Barcelona</span>
             <h1>Santa Teresa<br>de Jesús</h1>
             <div class="hero-divider"></div>
@@ -571,6 +587,10 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
                 <a href="#bienvenida" class="btn btn-light">Conócenos</a>
             </div>
             <a href="#horarios" class="scroll-cue" aria-label="Bajar a los horarios"></a>
+            <div class="hero-slider-ui" aria-hidden="true">
+                <span class="hero-caption" data-hero-caption></span>
+                <span class="hero-dots">""" + "".join('<i></i>' for _ in HERO_SLIDES) + """</span>
+            </div>
         </section>
 
         <section id="horarios" class="schedule-section">
@@ -1352,7 +1372,49 @@ PAGES["html/jovenes2alternativa.html"] = page(1, "Jóvenes", "Grupo de jóvenes 
 """)
 
 # ---------------------------------------------------------------- NOTICIAS
-PAGES["html/noticias.html"] = page(1, "Noticias", "Noticias del Vaticano y del Arzobispado de Barcelona, actualizadas cada día, en la web de la Parroquia Santa Teresa de Jesús.", active="noticias", extra_head=NEWS_HEAD_1, body=page_hero("Actualidad de la Iglesia", "Noticias", "web/dsc_0541.jpg") + """
+IG_URL = "https://www.instagram.com/parroquiasantateresadejesusbcn/"
+ICON_IG = ('<svg class="ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">'
+           '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>')
+
+PAGES["html/noticias.html"] = page(1, "Noticias", "Noticias de la Parroquia Santa Teresa de Jesús, del Vaticano y del Arzobispado de Barcelona.", active="noticias", extra_head=NEWS_HEAD_1, body=page_hero("Actualidad de la Iglesia", "Noticias", "web/dsc_0541.jpg") + f"""
+        <section id="parroquia" class="parish-news">
+            <div class="parish-news-grid">
+                <div class="parish-news-text">
+                    <span class="subtitulo">Noticias de nuestra parroquia</span>
+                    <h2>Lo más reciente, en nuestro Instagram</h2>
+                    <hr class="section-divider left">
+                    <p class="lead">Las noticias más recientes de la parroquia —celebraciones, actividades, avisos y fotos de la comunidad— las publicamos en nuestro perfil de Instagram.</p>
+                    <ul class="parish-news-list">
+                        <li>Avisos y horarios especiales</li>
+                        <li>Fotos de las celebraciones y fiestas</li>
+                        <li>Actividades de catequesis, jóvenes y Cáritas</li>
+                    </ul>
+                    <a class="ig-handle" href="{IG_URL}" target="_blank" rel="noopener">{ICON_IG}<span>@parroquiasantateresadejesusbcn</span></a>
+                    <div class="btn-group">
+                        <a class="btn btn-solid" href="{IG_URL}" target="_blank" rel="noopener">Seguir en Instagram</a>
+                        <a class="btn" href="#actualidad-iglesia">Noticias de la Iglesia</a>
+                    </div>
+                </div>
+                <div class="ig-phone" aria-label="Vista previa de nuestro Instagram">
+                    <div class="ig-phone-top">
+                        <img src="../fotosdefinitivas/web/santateresa-retrato.jpg" alt="" loading="lazy">
+                        <div><strong>parroquiasantateresadejesusbcn</strong><span>Parroquia Santa Teresa de Jesús · Barcelona</span></div>
+                        <a href="{IG_URL}" target="_blank" rel="noopener">Seguir</a>
+                    </div>
+                    <div class="ig-phone-feed">
+                        <script src="https://elfsightcdn.com/platform.js" async></script>
+                        <div class="elfsight-app-8b9a40bb-7d76-4b43-bf12-9ed787fa24e2" data-elfsight-app-lazy></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="actualidad-iglesia" class="section-head news-church-head">
+            <span class="subtitulo">Actualidad de la Iglesia</span>
+            <h2>Vaticano y Arzobispado de Barcelona</h2>
+            <hr class="section-divider" style="margin-bottom:0;">
+        </div>
+""" + """
         <section class="news-page">
             <div class="news-toolbar">
                 <div class="news-filters" role="group" aria-label="Filtrar noticias">

@@ -498,6 +498,81 @@
         });
     });
 
+    /* --- Portada: pase de fotos ---
+       La primera foto entra con el zoom de siempre; luego cada 7 s otra foto entra con un
+       fundido y su propio movimiento. Cada foto se descarga antes de su turno y el pase se
+       detiene si la portada no se ve o la pestaña está en segundo plano. */
+    (function () {
+        var box = document.querySelector(".hero-slides");
+        if (!box) return;
+        var slides = box.querySelectorAll(".hero-slide");
+        if (slides.length < 2) return;
+        var dots = document.querySelectorAll(".hero-dots i");
+        var cap = document.querySelector("[data-hero-caption]");
+        var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var SLIDE = 7000, FIRST = 9500;
+        var cur = 0, timer = null, waiting = false, visible = true, loaded = [true];
+
+        slides[0].classList.add("intro");
+        function preload(i) {
+            var s = slides[i];
+            if (!s || s.classList.contains("ready")) return;
+            s.classList.add("ready");
+            var m = /url\(["']?(.*?)["']?\)/.exec(getComputedStyle(s).backgroundImage || "");
+            if (!m) { loaded[i] = true; return; }
+            var im = new Image();
+            im.onload = im.onerror = function () { loaded[i] = true; };
+            im.src = m[1];
+        }
+        function caption(i) {
+            if (!cap) return;
+            var txt = (slides[i].textContent || "").trim();
+            if (!cap.textContent) { cap.textContent = txt; return; }
+            cap.classList.add("fade");
+            setTimeout(function () { cap.textContent = txt; cap.classList.remove("fade"); }, 600);
+        }
+        function setDots(i, ms) {
+            dots.forEach(function (d, k) { d.classList.remove("on"); d.classList.toggle("done", k < i); });
+            if (!dots[i]) return;
+            dots[i].style.setProperty("--slide-ms", ms + "ms");
+            void dots[i].offsetWidth; // reinicia la barra
+            dots[i].classList.add("on");
+        }
+        function schedule(ms) {
+            clearTimeout(timer);
+            timer = setTimeout(next, ms);
+        }
+        function next() {
+            var n = (cur + 1) % slides.length;
+            if (!visible || document.hidden) { waiting = true; return; }
+            if (!loaded[n]) { preload(n); timer = setTimeout(next, 400); return; }
+            var prev = slides[cur], el = slides[n];
+            prev.classList.remove("is-on");
+            prev.classList.add("was-on");
+            el.classList.remove("was-on", "intro");
+            el.classList.add("is-on");
+            setTimeout(function () { prev.classList.remove("was-on", "intro"); }, 2200);
+            cur = n;
+            caption(n);
+            setDots(n, SLIDE);
+            preload((n + 1) % slides.length);
+            schedule(SLIDE);
+        }
+        function resume() {
+            if (waiting && visible && !document.hidden) { waiting = false; next(); }
+        }
+
+        caption(0);
+        if (reduce) { var ui = document.querySelector(".hero-slider-ui"); if (ui) ui.hidden = true; return; }
+        setDots(0, FIRST);
+        setTimeout(function () { preload(1); }, 2500);
+        schedule(FIRST);
+        document.addEventListener("visibilitychange", resume);
+        if ("IntersectionObserver" in window) {
+            new IntersectionObserver(function (es) { visible = es[0].isIntersecting; resume(); }).observe(box);
+        }
+    })();
+
     /* --- Cambio de idioma sin perder el sitio ---
        Las otras versiones de idioma se preparan en segundo plano (speculationrules en el <head>),
        así que el cambio es instantáneo; aquí se recuerda hasta dónde se había bajado. */
