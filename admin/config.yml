@@ -84,7 +84,8 @@ collections:
         date_format: "DD/MM/YYYY"
         time_format: false
         picker_utc: true
-        hint: "La reflexión más reciente es la que sale en la portada."
+        default: "{{now}}"
+        hint: "Se rellena con el día de hoy. La reflexión con la fecha más reciente es la que sale primera en la portada y en el archivo."
       - label: Tiempo litúrgico
         name: tiempo
         widget: string

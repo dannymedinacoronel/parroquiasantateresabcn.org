@@ -1714,6 +1714,7 @@ body.menu-open .notice-card { opacity: 0; visibility: hidden; }
 .reading-next .reading-next-photo img { border: 0; padding: 0; width: 100%; height: 100%; }
 .book-ribbon { left: auto; right: 4.5rem; }
 @media (max-width: 900px) { .book-ribbon { right: 2rem; } }
+.book-right h3, .book-right > .book-kicker { padding-right: 2.75rem; }
 
 /* ==========================================================================
    HISTORIA: álbum de fotos como copias impresas
@@ -1761,3 +1762,85 @@ body.menu-open .notice-card { opacity: 0; visibility: hidden; }
     .archive-invite { flex-direction: column; text-align: center; padding: 1.5rem 1.25rem; }
 }
 @media (prefers-reduced-motion: reduce) { .archive-album .print { transform: none !important; } }
+
+/* ==========================================================================
+   REFLEXIONES v2: fechas, foto corregida, destacada e historial
+   ========================================================================== */
+/* La foto de "otras reflexiones" ya no se estira: tamaño fijo y redonda */
+.reading-next > .reading-next-photo { flex: 0 0 84px; width: 84px; height: 84px; }
+.reading-next > .reading-next-text { flex: 1 1 auto; min-width: 0; }
+.reading-next-text p { display: flex; flex-wrap: wrap; gap: 0 .35rem; }
+.reading-nav .reading-next + .reading-next { margin-top: -0.5rem; }
+
+/* Fecha larga bajo el autor */
+.reading-date, .book-date { display: block; margin-top: .45rem; font-size: .82rem; color: var(--muted); font-style: italic; font-family: var(--header-font); font-size: 1.05rem; }
+.book-left .book-date { margin: .2rem 0 0; }
+
+/* Calendario de fecha */
+.date-badge {
+    display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 62px; padding: .35rem 0 .3rem; flex-shrink: 0; text-align: center;
+    background: #fffaf0; border: 1px solid #e2d1ad; border-top: 4px solid #7a2e2e; border-radius: 4px;
+    box-shadow: 0 6px 14px rgba(60,40,10,.12); font-family: var(--body-font); line-height: 1;
+}
+.db-d { font-family: var(--header-font); font-size: 1.75rem; font-weight: 600; color: var(--heading-color); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; line-height: 1.05; padding-bottom: .1rem; }
+.db-m { margin-top: .15rem; font-size: .66rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: #7a2e2e; }
+.db-y { margin-top: .2rem; font-size: .62rem; color: var(--muted); letter-spacing: 1px; }
+.reading-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.reading-head .book-kicker:empty { display: none; }
+
+/* Reflexión destacada del archivo */
+.reflections-archive { padding-top: 4.5rem; }
+.reflection-featured {
+    position: relative; display: grid; grid-template-columns: 320px 1fr; gap: 3rem; align-items: center;
+    max-width: 1050px; margin: 0 auto; padding: 3rem 3.25rem;
+    background: #fffaf0; border: 1px solid #e2d1ad; border-radius: 4px;
+    box-shadow: 0 30px 60px rgba(60,40,10,.16);
+}
+.reflection-featured::before { content: ""; position: absolute; inset: 12px; border: 1px solid rgba(191,160,101,.45); pointer-events: none; }
+.rf-photo { position: relative; display: block; justify-self: center; text-decoration: none; }
+.rf-photo .priest-photo { width: 240px; height: 240px; margin: 0; }
+.rf-photo .date-badge { position: absolute; right: -6px; bottom: 6px; width: 70px; }
+.rf-tag { display: inline-flex; align-items: center; gap: .5rem; font-size: .7rem; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: #7a2e2e; margin-bottom: .6rem; }
+.reflection-featured h3 { font-size: clamp(2rem, 3.4vw, 2.8rem); font-style: italic; font-weight: 500; line-height: 1.12; margin: .3rem 0 .6rem; }
+.reflection-featured h3 a { color: var(--heading-color); text-decoration: none; }
+.reflection-featured h3 a:hover { color: var(--accent-dark); }
+.rf-meta { color: var(--muted); font-size: .92rem; margin-bottom: 1.1rem; }
+.rf-meta strong { color: var(--heading-color); font-weight: 600; }
+.rf-quote { margin: 0 0 1.25rem; padding: .3rem 0 .3rem 1.2rem; border-left: 2px solid var(--accent-color); font-family: var(--header-font); font-size: 1.4rem; font-style: italic; line-height: 1.45; color: #4a2f22; }
+.rf-excerpt { color: var(--text-color); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 1.25rem; }
+.rf-audio { align-self: center; font-size: .8rem; color: var(--accent-dark); font-weight: 600; letter-spacing: 1px; }
+
+/* Historial */
+.rf-older-head { margin-top: 5rem; margin-bottom: 2rem; }
+.rf-filters { justify-content: center; }
+.rf-list { list-style: none; max-width: 860px; margin: 0 auto; padding: 0; }
+.rf-year { display: flex; align-items: center; gap: 1rem; margin: 2rem 0 1rem; font-family: var(--header-font); font-size: 1.6rem; font-style: italic; color: var(--accent-dark); }
+.rf-year::before, .rf-year::after { content: ""; flex: 1; height: 1px; background: rgba(191,160,101,.45); }
+.rf-row a {
+    display: flex; align-items: center; gap: 1.25rem; padding: 1rem 1.25rem; margin-bottom: .9rem;
+    background: #fffaf0; border: 1px solid #e2d1ad; border-radius: 6px; text-decoration: none; color: inherit;
+    box-shadow: var(--shadow-sm); transition: transform .3s var(--ease), box-shadow .3s, border-color .3s;
+}
+.rf-row a:hover { transform: translateX(6px); box-shadow: var(--shadow-md); border-color: var(--accent-color); }
+.rf-avatar { width: 56px; height: 56px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 2px solid var(--accent-color); padding: 2px; background: #fff; }
+.rf-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.rf-avatar.no-photo { display: grid; place-items: center; }
+.rf-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.rf-text .book-kicker:empty { display: none; }
+.rf-text strong { font-family: var(--header-font); font-size: 1.45rem; font-style: italic; font-weight: 500; color: var(--heading-color); line-height: 1.2; }
+.rf-text em { font-style: normal; font-size: .82rem; color: var(--muted); }
+.rf-row[hidden], .rf-year[hidden] { display: none; }
+
+@media (max-width: 800px) {
+    .reflection-featured { grid-template-columns: 1fr; text-align: center; padding: 2.5rem 1.5rem; gap: 1.75rem; }
+    .rf-photo .priest-photo { width: 190px; height: 190px; }
+    .rf-quote { text-align: left; }
+    .reflection-featured .btn-group { justify-content: center; }
+}
+@media (max-width: 600px) {
+    .rf-row a { gap: .8rem; padding: .85rem .9rem; }
+    .rf-avatar { display: none; }
+    .date-badge { width: 54px; }
+    .db-d { font-size: 1.45rem; }
+}

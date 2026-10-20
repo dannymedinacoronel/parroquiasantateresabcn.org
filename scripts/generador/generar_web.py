@@ -436,6 +436,28 @@ def _portrait(h, depth, cls="priest-photo"):
     return f'<div class="{cls} no-photo">{LOGO_MARK}</div>'
 
 
+MES_CORTO = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
+
+
+def date_long(h, cls=""):
+    """Fecha larga; el JavaScript la escribe en el idioma de la página (no la toca el traductor)."""
+    if not h.get("fecha"):
+        return ""
+    c = f' class="{cls}"' if cls else ""
+    return f'<time{c} datetime="{h["fecha"]}" data-fmt="long">{HOM.fecha_larga(h["fecha"])}</time>'
+
+
+def date_badge(h):
+    """Calendario pequeño con día, mes y año."""
+    try:
+        y, m, d = h["fecha"].split("-")
+        m = int(m)
+    except (ValueError, KeyError):
+        return ""
+    return (f'<time class="date-badge" datetime="{h["fecha"]}" data-fmt="badge">'
+            f'<span class="db-d">{int(d)}</span><span class="db-m">{MES_CORTO[m - 1]}</span><span class="db-y">{y}</span></time>')
+
+
 def home_homily():
     if not HOMILIAS:
         return ""
@@ -446,7 +468,7 @@ def home_homily():
         f"""
                 <a class="homily-chip" href="{o["url"]}">
                     {_portrait(o, 0, "chip-photo")}
-                    <span><strong>{esc(o["titulo"])}</strong><em>{esc(o["autor_nombre"])}</em></span>
+                    <span><strong>{esc(o["titulo"])}</strong><em><span>{esc(o["autor_nombre"])}</span> · {date_long(o)}</em></span>
                 </a>""" for o in HOMILIAS[1:3])
     return f"""        <section id="reflexion" class="homily">
             <div class="section-head">
@@ -460,13 +482,14 @@ def home_homily():
                     {_portrait(h, 0)}
                     <strong class="book-author">{esc(h["autor_nombre"])}</strong>
                     <span class="book-role">{esc(h["autor_cargo"])}</span>
+                    <span class="book-date">{date_long(h)}</span>
                     {ORNAMENT}
                     {quote_html}
                     <a href="{h["url"]}" class="btn btn-solid">Leer la reflexión completa</a>
                 </div>
                 <div class="book-leaf book-right">
                     <article class="homily-text">
-                        <span class="book-kicker">{esc(h["kicker"])}</span>
+                        <span class="book-kicker">{esc(h["kicker"]) or date_long(h)}</span>
                         <h3>{esc(h["titulo"])}</h3>
                         <p class="illuminated">{esc(h["extracto"])}</p>
                     </article>
@@ -1134,27 +1157,37 @@ def reading_audio(src):
 
 
 def homily_page(i, h):
-    nxt = HOMILIAS[i + 1] if i + 1 < len(HOMILIAS) else (HOMILIAS[i - 1] if i > 0 else None)
+    newer = HOMILIAS[i - 1] if i > 0 else None
+    older = HOMILIAS[i + 1] if i + 1 < len(HOMILIAS) else None
     audio = reading_audio(HOM.audio_src(h.get("audio"))) if h.get("audio") else ""
     pres = (f"""
                 <div class="btn-group center reading-actions">
                     <a class="btn" href="{esc(h["presentacion"])}" target="_blank" rel="noopener">Descarga la presentación &raquo;</a>
                 </div>""" if h.get("presentacion") else "")
     saludo = f'\n                    <p class="lead">{esc(h["saludo"])}</p>' if h.get("saludo") else ""
+
+    def nav_card(o, rel_label):
+        return f"""
+                    <a class="reading-next" href="{o["slug"]}.html">
+                        {_portrait(o, 2, "reading-next-photo")}
+                        <div class="reading-next-text"><span class="book-kicker">{rel_label}</span><strong>{esc(o["titulo"])}</strong><p><span>{esc(o["autor_nombre"])}</span> · {date_long(o)}</p></div>
+                        <span class="reading-arrow" aria-hidden="true">&rarr;</span>
+                    </a>"""
+    cards = ""
+    if newer:
+        cards += nav_card(newer, "Reflexión más reciente")
+    if older:
+        cards += nav_card(older, "Reflexión anterior")
     other = ""
-    if nxt:
+    if cards:
         other = f"""
                 <nav class="reading-nav" aria-label="Otras reflexiones">
-                    <span class="subtitulo">Otras reflexiones</span>
-                    <a class="reading-next" href="{nxt["slug"]}.html">
-                        {_portrait(nxt, 2, "reading-next-photo")}
-                        <div><span class="book-kicker">{esc(nxt["autor_nombre"])}</span><strong>{esc(nxt["titulo"])}</strong><p>{esc(nxt["kicker"])}</p></div>
-                        <span class="reading-arrow" aria-hidden="true">&rarr;</span>
-                    </a>
+                    <span class="subtitulo">Sigue leyendo</span>{cards}
                     <a class="link-arrow" href="../humiliasmenu.html">Ver todas las reflexiones <span>&rarr;</span></a>
                 </nav>"""
     desc = f"{h['titulo']} — reflexión de {h['autor_nombre']} en la Parroquia Santa Teresa de Jesús."
-    body = page_hero(esc(h["kicker"]), esc(h["titulo"]), crumb="Homilías").replace('href="../index.html"', 'href="../../index.html"').replace("url('../fotosdefinitivas/", "url('../../fotosdefinitivas/") + f"""
+    eyebrow = esc(h["kicker"]) if h["kicker"] else date_long(h)
+    body = page_hero(eyebrow, esc(h["titulo"]), crumb="Homilías").replace('href="../index.html"', 'href="../../index.html"').replace("url('../fotosdefinitivas/", "url('../../fotosdefinitivas/") + f"""
         <section class="reading">
             <div class="reading-wrap">
                 <div class="reading-author">
@@ -1162,11 +1195,15 @@ def homily_page(i, h):
                     <div class="reading-author-text">
                         <span class="book-kicker">{esc(h["autor_cargo"])}</span>
                         <strong>{esc(h["autor_nombre"])}</strong>
+                        <span class="reading-date">{date_long(h)}</span>
                     </div>
                 </div>
 {audio}{pres}
                 <article class="prose book-page reading-book">
-                    <span class="book-kicker">{esc(h["kicker"])}</span>
+                    <div class="reading-head">
+                        <span class="book-kicker">{esc(h["kicker"])}</span>
+                        {date_badge(h)}
+                    </div>
                     <h2 class="reading-title">{esc(h["titulo"])}</h2>
                     {ORNAMENT}{saludo}
 {HOM.markdown(h.get("texto", ""))}
@@ -1182,24 +1219,75 @@ def homily_page(i, h):
 for _i, _h in enumerate(HOMILIAS):
     PAGES[_h["url"]] = homily_page(_i, _h)
 
-_cards = "".join(f"""
-                <a class="reflection-card" href="reflexiones/{h["slug"]}.html">
-                    {_portrait(h, 1)}
-                    <span class="book-kicker"><span>{esc(h["autor_nombre"])}</span> · <span>{esc(h["kicker"])}</span></span>
-                    <h3>{esc(h["titulo"])}</h3>
-                    <p class="clamp">{esc(h["extracto"])}</p>
-                    <span class="flip-hint">Leer &rarr;</span>
-                </a>""" for h in HOMILIAS)
+
+def archive_body():
+    if not HOMILIAS:
+        return ""
+    top = HOMILIAS[0]
+    quote = _first_quote(top.get("texto"))
+    featured = f"""
+            <article class="reflection-featured">
+                <a class="rf-photo" href="reflexiones/{top["slug"]}.html" aria-hidden="true" tabindex="-1">
+                    {_portrait(top, 1)}
+                    {date_badge(top)}
+                </a>
+                <div class="rf-body">
+                    <span class="rf-tag"><span class="notice-dot" aria-hidden="true"></span>Última reflexión</span>
+                    <span class="book-kicker">{esc(top["kicker"])}</span>
+                    <h3><a href="reflexiones/{top["slug"]}.html">{esc(top["titulo"])}</a></h3>
+                    <p class="rf-meta"><strong>{esc(top["autor_nombre"])}</strong> · {date_long(top)}</p>
+                    {f'<blockquote class="rf-quote">{esc(quote)}</blockquote>' if quote else f'<p class="rf-excerpt">{esc(top["extracto"])}</p>'}
+                    <div class="btn-group">
+                        <a class="btn btn-solid" href="reflexiones/{top["slug"]}.html">Leer la reflexión</a>
+                        {'<span class="rf-audio">🎧 Con audio</span>' if top.get("audio") else ''}
+                    </div>
+                </div>
+            </article>"""
+    autores = []
+    for h in HOMILIAS:
+        if h["autor_nombre"] not in autores:
+            autores.append(h["autor_nombre"])
+    filters = ""
+    if len(autores) > 1 and len(HOMILIAS) > 2:
+        filters = ('<div class="news-filters rf-filters" role="group" aria-label="Filtrar por autor">'
+                   '<button type="button" data-author="" aria-pressed="true">Todas</button>' +
+                   "".join(f'<button type="button" data-author="{esc(a)}" aria-pressed="false">{esc(a)}</button>' for a in autores) +
+                   "</div>")
+    rows, year = [], None
+    for h in HOMILIAS[1:]:
+        y = h["fecha"][:4]
+        if y != year:
+            year = y
+            rows.append(f'<li class="rf-year" aria-hidden="true"><span>{y}</span></li>')
+        rows.append(f"""
+                <li class="rf-row" data-author="{esc(h["autor_nombre"])}">
+                    <a href="reflexiones/{h["slug"]}.html">
+                        {date_badge(h)}
+                        {_portrait(h, 1, "rf-avatar")}
+                        <span class="rf-text">
+                            <span class="book-kicker">{esc(h["kicker"])}</span>
+                            <strong>{esc(h["titulo"])}</strong>
+                            <em>{esc(h["autor_nombre"])}</em>
+                        </span>
+                        <span class="reading-arrow" aria-hidden="true">&rarr;</span>
+                    </a>
+                </li>""")
+    older = ""
+    if rows:
+        older = f"""
+            <div class="section-head rf-older-head">
+                <span class="subtitulo">Historial</span>
+                <h2>Reflexiones anteriores</h2>
+                <hr class="section-divider" style="margin-bottom:1.25rem;">
+                {filters}
+            </div>
+            <ol class="rf-list">{"".join(rows)}
+            </ol>"""
+    return featured + older
+
 
 PAGES["html/humiliasmenu.html"] = page(1, "Reflexiones", "Reflexiones y comentarios del Evangelio de la Parroquia Santa Teresa de Jesús.", active="noticias", body=page_hero("De nuestra parroquia", "Reflexiones del Evangelio", crumb="Homilías") + """
-        <section class="reading">
-            <div class="section-head">
-                <span class="subtitulo">Historial</span>
-                <h2>Todas las reflexiones</h2>
-                <hr class="section-divider" style="margin-bottom:0;">
-            </div>
-            <div class="reflection-list">""" + _cards + """
-            </div>
+        <section class="reading reflections-archive">""" + archive_body() + """
         </section>
 """)
 
@@ -1480,6 +1568,12 @@ i18n = _load("i18n")
 _ALL_TR = dict(_load("translations").TR)
 _ALL_TR.update(_load("translations_homilias").TR_HOMILIAS)
 TABLE = {es: {"ca": (v[0] if v else es), "en": (v[1] if v else es)} for es, v in _ALL_TR.items()}
+# Textos de las reflexiones subidas desde el panel: si no tienen traducción, se muestran tal cual
+for _h in HOMILIAS:
+    for _k in (_h.get("titulo"), _h.get("kicker"), _h.get("extracto"), _h.get("saludo"), _h.get("autor_nombre"),
+               _h.get("autor_cargo"), _first_quote(_h.get("texto"))):
+        if _k:
+            TABLE.setdefault(_k.strip(), {"ca": _k.strip(), "en": _k.strip()})
 LANGS = ["es", "ca", "en"]
 LOCALES = {"es": "es_ES", "ca": "ca_ES", "en": "en_GB"}
 LANG_NAMES = [("es", "ES", "Español"), ("ca", "CA", "Català"), ("en", "EN", "English")]
@@ -1626,4 +1720,4 @@ print(len(written), "páginas escritas en", len(LANGS), "idiomas;", len(urls), "
 if missing:
     print("SIN TRADUCIR:", len(missing))
     for m_ in sorted(missing):
-        print("  -", m_[:110])
+        print("  -", m_[:110].encode("ascii", "replace").decode())

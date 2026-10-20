@@ -298,6 +298,33 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/reflexiones/2019-05-05-remar-mar-adentro"/>
   </url>
   <url>
+    <loc>https://parroquiasantateresabcn.netlify.app/html/reflexiones/1901-10-01-hola</loc>
+    <lastmod>2026-10-20</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.netlify.app/html/reflexiones/1901-10-01-hola"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.netlify.app/ca/html/reflexiones/1901-10-01-hola"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.netlify.app/en/html/reflexiones/1901-10-01-hola"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/reflexiones/1901-10-01-hola"/>
+  </url>
+  <url>
+    <loc>https://parroquiasantateresabcn.netlify.app/ca/html/reflexiones/1901-10-01-hola</loc>
+    <lastmod>2026-10-20</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.netlify.app/html/reflexiones/1901-10-01-hola"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.netlify.app/ca/html/reflexiones/1901-10-01-hola"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.netlify.app/en/html/reflexiones/1901-10-01-hola"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/reflexiones/1901-10-01-hola"/>
+  </url>
+  <url>
+    <loc>https://parroquiasantateresabcn.netlify.app/en/html/reflexiones/1901-10-01-hola</loc>
+    <lastmod>2026-10-20</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.netlify.app/html/reflexiones/1901-10-01-hola"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.netlify.app/ca/html/reflexiones/1901-10-01-hola"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.netlify.app/en/html/reflexiones/1901-10-01-hola"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/reflexiones/1901-10-01-hola"/>
+  </url>
+  <url>
     <loc>https://parroquiasantateresabcn.netlify.app/html/humiliasmenu</loc>
     <lastmod>2026-10-20</lastmod>
     <priority>0.7</priority>

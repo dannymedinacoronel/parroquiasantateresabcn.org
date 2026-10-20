@@ -26,7 +26,7 @@
     <link rel="manifest" href="../../site.webmanifest">
 
     <link rel="stylesheet" href="../../css/fonts.css?v=818b49f2ed">
-    <link rel="stylesheet" href="../../css/site.css?v=52d5a74626">
+    <link rel="stylesheet" href="../../css/site.css?v=b7ab851d23">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Inici", "item": "https://parroquiasantateresabcn.netlify.app/ca/"}, {"@type": "ListItem", "position": 2, "name": "Homilies", "item": "https://parroquiasantateresabcn.netlify.app/ca/html/humiliasmenu"}]}</script>
@@ -135,28 +135,56 @@
             <nav class="breadcrumb" aria-label="Ruta"><a href="../index.html">Inici</a><span>/</span>Homilies</nav>
         </section>
 
-        <section class="reading">
-            <div class="section-head">
-                <span class="subtitulo">Recull</span>
-                <h2>Totes les reflexions</h2>
-                <hr class="section-divider" style="margin-bottom:0;">
-            </div>
-            <div class="reflection-list">
-                <a class="reflection-card" href="reflexiones/2019-05-12-hechos-de-los-apostoles.html">
+        <section class="reading reflections-archive">
+            <article class="reflection-featured">
+                <a class="rf-photo" href="reflexiones/2019-05-12-hechos-de-los-apostoles.html" aria-hidden="true" tabindex="-1">
                     <div class="priest-photo"><img src="../../fotosdefinitivas/web/albertsols-retrato.jpg" alt="Mn. Albert Sols" loading="lazy"></div>
-                    <span class="book-kicker"><span>Mn. Albert Sols</span> · <span>Temps de Pasqua · Maig de 2019</span></span>
-                    <h3>De contingut sublim, el llibre dels «Fets dels Apòstols»</h3>
-                    <p class="clamp">Text del Nou Testament que l'Església fixa com a primera lectura al llarg dels cinquanta dies de Pasqua. Sant Lluc narra amb sentit eclesial, no tant la vida detallada de cada Apòstol, sinó com vivia la primera comunitat cristiana, la il·lusió i l'heroisme dels primers cristians. Deixa constància d'aquella fe tan sòlida en l'Esperit Sant, que començava a actuar en la seva Església naixent per mitjà d'ells. Aquest llibre bé podria portar per subtítol: «presència de l'Esperit en els primers cristians».</p>
-                    <span class="flip-hint">Llegir &rarr;</span>
+                    <time class="date-badge" datetime="2019-05-12" data-fmt="badge"><span class="db-d">12</span><span class="db-m">may</span><span class="db-y">2019</span></time>
                 </a>
-                <a class="reflection-card" href="reflexiones/2019-05-05-remar-mar-adentro.html">
-                    <div class="priest-photo"><img src="../../fotosdefinitivas/web/magdalena-retrato.jpg" alt="Magdalena" loading="lazy"></div>
-                    <span class="book-kicker"><span>Magdalena</span> · <span>III diumenge de Pasqua · 2019</span></span>
-                    <h3>Remar mar endins</h3>
-                    <p class="clamp">És un privilegi per a mi transmetre-us aquesta reflexió de l'Evangeli d'aquest diumenge. Gràcies, Mn. Albert, per la confiança que m'ha fet. En cap moment aquesta reflexió no vol substituir una homilia, sinó ser un complement del que he descobert en aprofundir en la Paraula de Déu i que comparteixo amb tots vosaltres.</p>
-                    <span class="flip-hint">Llegir &rarr;</span>
-                </a>
+                <div class="rf-body">
+                    <span class="rf-tag"><span class="notice-dot" aria-hidden="true"></span>Última reflexió</span>
+                    <span class="book-kicker">Temps de Pasqua · Maig de 2019</span>
+                    <h3><a href="reflexiones/2019-05-12-hechos-de-los-apostoles.html">De contingut sublim, el llibre dels «Fets dels Apòstols»</a></h3>
+                    <p class="rf-meta"><strong>Mn. Albert Sols</strong> · <time datetime="2019-05-12" data-fmt="long">12 de mayo de 2019</time></p>
+                    <blockquote class="rf-quote">Que la vida heroica dels primers cristians sigui per a nosaltres una crida a donar testimoni de l'Evangeli en una societat cada vegada més paganitzada.</blockquote>
+                    <div class="btn-group">
+                        <a class="btn btn-solid" href="reflexiones/2019-05-12-hechos-de-los-apostoles.html">Llegir la reflexió</a>
+                        <span class="rf-audio">🎧 Amb àudio</span>
+                    </div>
+                </div>
+            </article>
+            <div class="section-head rf-older-head">
+                <span class="subtitulo">Recull</span>
+                <h2>Reflexions anteriors</h2>
+                <hr class="section-divider" style="margin-bottom:1.25rem;">
+                <div class="news-filters rf-filters" role="group" aria-label="Filtrar per autor"><button type="button" data-author="" aria-pressed="true">Totes</button><button type="button" data-author="Mn. Albert Sols" aria-pressed="false">Mn. Albert Sols</button><button type="button" data-author="Magdalena" aria-pressed="false">Magdalena</button></div>
             </div>
+            <ol class="rf-list"><li class="rf-year" aria-hidden="true"><span>2019</span></li>
+                <li class="rf-row" data-author="Magdalena">
+                    <a href="reflexiones/2019-05-05-remar-mar-adentro.html">
+                        <time class="date-badge" datetime="2019-05-05" data-fmt="badge"><span class="db-d">5</span><span class="db-m">may</span><span class="db-y">2019</span></time>
+                        <div class="rf-avatar"><img src="../../fotosdefinitivas/web/magdalena-retrato.jpg" alt="Magdalena" loading="lazy"></div>
+                        <span class="rf-text">
+                            <span class="book-kicker">III diumenge de Pasqua · 2019</span>
+                            <strong>Remar mar endins</strong>
+                            <em>Magdalena</em>
+                        </span>
+                        <span class="reading-arrow" aria-hidden="true">&rarr;</span>
+                    </a>
+                </li><li class="rf-year" aria-hidden="true"><span>1901</span></li>
+                <li class="rf-row" data-author="Mn. Albert Sols">
+                    <a href="reflexiones/1901-10-01-hola.html">
+                        <time class="date-badge" datetime="1901-10-01" data-fmt="badge"><span class="db-d">1</span><span class="db-m">oct</span><span class="db-y">1901</span></time>
+                        <div class="rf-avatar"><img src="../../fotosdefinitivas/web/albertsols-retrato.jpg" alt="Mn. Albert Sols" loading="lazy"></div>
+                        <span class="rf-text">
+                            <span class="book-kicker">1</span>
+                            <strong>Hola</strong>
+                            <em>Mn. Albert Sols</em>
+                        </span>
+                        <span class="reading-arrow" aria-hidden="true">&rarr;</span>
+                    </a>
+                </li>
+            </ol>
         </section>
 
         <section class="cta-band">
@@ -229,7 +257,7 @@
     </footer>
 
     <script src="../../data/avisos.js?v=325670bb6a"></script>
-    <script src="../../js/site.js?v=65e0a851e5"></script>
+    <script src="../../js/site.js?v=f14d640149"></script>
 
 </body>
 </html>

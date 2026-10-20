@@ -450,6 +450,38 @@
         });
     }
 
+    /* --- Fechas de las reflexiones en el idioma de la página --- */
+    document.querySelectorAll("time[data-fmt]").forEach(function (t) {
+        var p = (t.getAttribute("datetime") || "").split("-");
+        if (p.length < 3) return;
+        var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+        if (isNaN(d)) return;
+        if (t.dataset.fmt === "long") {
+            t.textContent = d.toLocaleDateString(LOCALE, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+        } else if (t.dataset.fmt === "badge") {
+            var m = t.querySelector(".db-m");
+            if (m) m.textContent = d.toLocaleDateString(LOCALE, { month: "short", timeZone: "UTC" }).replace(".", "");
+        }
+    });
+
+    /* --- Archivo de reflexiones: filtro por autor --- */
+    document.querySelectorAll(".rf-filters [data-author]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            var who = btn.dataset.author;
+            document.querySelectorAll(".rf-filters [data-author]").forEach(function (b) {
+                b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+            });
+            document.querySelectorAll(".rf-row").forEach(function (row) {
+                row.hidden = !!who && row.dataset.author !== who;
+            });
+            document.querySelectorAll(".rf-year").forEach(function (y) {
+                var n = y.nextElementSibling, any = false;
+                while (n && !n.classList.contains("rf-year")) { if (!n.hidden) any = true; n = n.nextElementSibling; }
+                y.hidden = !any;
+            });
+        });
+    });
+
     /* --- Año actual en el pie --- */
     document.querySelectorAll(".js-year").forEach(function (el) {
         el.textContent = new Date().getFullYear();

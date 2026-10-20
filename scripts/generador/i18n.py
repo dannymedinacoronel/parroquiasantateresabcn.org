@@ -15,6 +15,7 @@ def _protect(html, rel):
         blocks.append(m.group(0))
         return f"\x00{len(blocks) - 1}\x00"
     html = SKIP_BLOCKS.sub(keep, html)
+    html = re.sub(r"<time\b[^>]*>.*?</time>", keep, html, flags=re.S)
     return html, blocks
 
 

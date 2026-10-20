@@ -111,7 +111,7 @@ def load(root):
         h["autor_cargo"] = a.get("cargo", "")
         foto = (a.get("foto") or "").lstrip("/")
         h["autor_foto"] = foto if foto and os.path.exists(os.path.join(root, foto)) else ""
-        h["kicker"] = h.get("tiempo") or fecha_larga(h["fecha"])
+        h["kicker"] = (h.get("tiempo") or "").strip()
         h["extracto"] = first_paragraph(h.get("texto", ""))
         items.append(h)
     items.sort(key=lambda x: x["fecha"], reverse=True)
