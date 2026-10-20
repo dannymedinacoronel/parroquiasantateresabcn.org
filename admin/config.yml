@@ -3,12 +3,16 @@
 # Al publicar, Netlify vuelve a generar la web y la reflexión aparece sola en la portada,
 # en el menú y en el archivo.
 
+# ---------------------------------------------------------------------------
+# ACCESO CON CORREO Y CONTRASEÑA (DecapBridge, sin cuenta de GitHub)
+# Al dar de alta la web en https://decapbridge.com, DecapBridge muestra su
+# propio bloque "backend:". Sustituye las líneas de "backend:" de abajo por
+# ese bloque, manteniendo "branch: main" y "commit_messages".
+# ---------------------------------------------------------------------------
 backend:
   name: github
   repo: dannymedinacoronel/parroquiasantateresabcn.org
   branch: main
-  base_url: https://api.netlify.com
-  auth_endpoint: auth
   commit_messages:
     create: "Nueva reflexión: {{slug}}"
     update: "Reflexión actualizada: {{slug}}"

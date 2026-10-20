@@ -3,11 +3,9 @@
 
 [build]
   publish = "."
-  # Regenera todas las páginas (también las homilías publicadas desde /admin/)
-  command = "python3 scripts/generador/generar_web.py ."
-
-[build.environment]
-  PYTHON_VERSION = "3.12"
+  # Sin compilación: las páginas ya vienen generadas en el repositorio
+  # (GitHub las regenera con .github/workflows/generar-web.yml)
+  command = ""
 
 # --- Direcciones antiguas -> nuevas (301 conserva el posicionamiento en Google) ---
 # El menú antiguo enlazaba a /HTML/ en mayúsculas

@@ -1,0 +1,46 @@
+name: Generar la web
+
+# Se ejecuta cuando se publica o edita una homilía desde el panel (/admin/),
+# o cuando cambian el generador, las traducciones o los avisos.
+# Genera todas las páginas y las guarda en el repositorio, de modo que el
+# alojamiento (Netlify u otro) solo tiene que servir los archivos.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "contenido/**"
+      - "scripts/generador/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: generar-web
+  cancel-in-progress: false
+
+jobs:
+  generar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generar páginas
+        run: python scripts/generador/generar_web.py .
+
+      - name: Guardar cambios
+        run: |
+          git add -A -- '*.html' sitemap.xml robots.txt
+          if git diff --cached --quiet; then
+            echo "Sin cambios en las páginas."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Web regenerada automáticamente"
+          git pull --rebase origin main
+          git push
