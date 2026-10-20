@@ -217,6 +217,33 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/catequesis"/>
   </url>
   <url>
+    <loc>https://parroquiasantateresabcn.netlify.app/html/comuniones</loc>
+    <lastmod>2026-10-21</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.netlify.app/html/comuniones"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.netlify.app/ca/html/comuniones"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.netlify.app/en/html/comuniones"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/comuniones"/>
+  </url>
+  <url>
+    <loc>https://parroquiasantateresabcn.netlify.app/ca/html/comuniones</loc>
+    <lastmod>2026-10-21</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.netlify.app/html/comuniones"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.netlify.app/ca/html/comuniones"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.netlify.app/en/html/comuniones"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/comuniones"/>
+  </url>
+  <url>
+    <loc>https://parroquiasantateresabcn.netlify.app/en/html/comuniones</loc>
+    <lastmod>2026-10-21</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.netlify.app/html/comuniones"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.netlify.app/ca/html/comuniones"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.netlify.app/en/html/comuniones"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/comuniones"/>
+  </url>
+  <url>
     <loc>https://parroquiasantateresabcn.netlify.app/html/imagenes</loc>
     <lastmod>2026-10-21</lastmod>
     <priority>0.7</priority>

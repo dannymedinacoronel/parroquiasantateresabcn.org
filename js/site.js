@@ -13,6 +13,8 @@
             srcVatican: "Vaticano", srcDiocese: "Arzobispado", featured: "Noticia destacada",
             todayBadge: "Hoy", backTop: "Volver arriba",
             external: "Contenido externo",
+            formSending: "Enviando…", formOk: "¡Inscripción recibida! Gracias. La parroquia se pondrá en contacto con vosotros muy pronto.",
+            formErr: "No se ha podido enviar. Inténtalo de nuevo en unos minutos o llámanos al +34 619 040 913.",
             phText: "Este contenido lo proporciona un servicio externo que puede instalar cookies. Solo se mostrará si lo aceptas.",
             phAccept: "Aceptar y mostrar", moreInfo: "Más información",
             bannerLabel: "Aviso de cookies", bannerTitle: "Tu privacidad",
@@ -33,6 +35,8 @@
             srcVatican: "Vaticà", srcDiocese: "Arquebisbat", featured: "Notícia destacada",
             todayBadge: "Avui", backTop: "Tornar a dalt",
             external: "Contingut extern",
+            formSending: "S'està enviant…", formOk: "Inscripció rebuda! Gràcies. La parròquia es posarà en contacte amb vosaltres molt aviat.",
+            formErr: "No s'ha pogut enviar. Torna-ho a provar d'aquí a uns minuts o truca'ns al +34 619 040 913.",
             phText: "Aquest contingut el proporciona un servei extern que pot instal·lar galetes. Només es mostrarà si ho acceptes.",
             phAccept: "Acceptar i mostrar", moreInfo: "Més informació",
             bannerLabel: "Avís de galetes", bannerTitle: "La teva privacitat",
@@ -53,6 +57,8 @@
             srcVatican: "Vatican", srcDiocese: "Archdiocese", featured: "Top story",
             todayBadge: "Today", backTop: "Back to top",
             external: "External content",
+            formSending: "Sending…", formOk: "Registration received! Thank you. The parish will get in touch with you very soon.",
+            formErr: "It could not be sent. Please try again in a few minutes or call us on +34 619 040 913.",
             phText: "This content is provided by an external service that may set cookies. It will only be shown if you accept.",
             phAccept: "Accept and show", moreInfo: "More information",
             bannerLabel: "Cookie notice", bannerTitle: "Your privacy",
@@ -499,6 +505,43 @@
         });
     });
 
+    /* --- Formularios que se envían por correo (FormSubmit → albertsols@gmail.com) ---
+       Sin JavaScript el formulario se envía igualmente con su «action»; con JavaScript se envía
+       sin salir de la página y se muestra la confirmación. */
+    document.querySelectorAll("form[data-mail-form]").forEach(function (form) {
+        var status = form.querySelector(".form-status");
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            var btn = form.querySelector("button[type=submit]");
+            var data = {};
+            new FormData(form).forEach(function (v, k) { data[k] = v; });
+            if (data._honey) return;                        // casilla trampa para robots
+            var mail = form.querySelector("input[type=email]");
+            if (mail && mail.value) data._replyto = mail.value; // responder directamente a la familia
+            btn.disabled = true;
+            status.className = "form-status";
+            status.textContent = T("formSending");
+            fetch(form.getAttribute("data-mail-form"), {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                body: JSON.stringify(data)
+            }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return r.ok && String(j.success) !== "false"; }); })
+              .then(function (ok) {
+                  if (!ok) throw new Error("envío");
+                  form.classList.add("sent");
+                  status.className = "form-status ok";
+                  status.textContent = T("formOk");
+                  form.reset();
+                  status.scrollIntoView({ behavior: "smooth", block: "center" });
+              })
+              .catch(function () {
+                  status.className = "form-status err";
+                  status.textContent = T("formErr");
+                  btn.disabled = false;
+              });
+        });
+    });
+
     /* --- Portada: pase de fotos ---
        La primera foto entra con el zoom de siempre; luego cada 7 s otra foto entra con un
        fundido y su propio movimiento. Cada foto se descarga antes de su turno y el pase se
@@ -564,10 +607,27 @@
         }
 
         caption(0);
-        if (reduce) { var ui = document.querySelector(".hero-slider-ui"); if (ui) ui.hidden = true; return; }
-        setDots(0, FIRST);
-        setTimeout(function () { preload(1); }, 2500);
-        schedule(FIRST);
+        /* La entrada con zoom empieza cuando la primera foto ya está descargada (antes arrancaba
+           sobre el fondo vacío y parecía que se quedaba parada). Como mucho se espera 2,5 s. */
+        var started = false;
+        function start() {
+            if (started) return;
+            started = true;
+            box.classList.add("loaded");
+            if (reduce) { var ui = document.querySelector(".hero-slider-ui"); if (ui) ui.hidden = true; return; }
+            setDots(0, FIRST);
+            setTimeout(function () { preload(1); }, 2500);
+            schedule(FIRST);
+        }
+        var m0 = /url\(["']?(.*?)["']?\)/.exec(getComputedStyle(slides[0]).backgroundImage || "");
+        if (m0) {
+            var im0 = new Image();
+            im0.onload = im0.onerror = start;
+            im0.src = m0[1];
+            if (im0.complete) start();
+        } else start();
+        setTimeout(start, 2500);
+        if (reduce) return;
         document.addEventListener("visibilitychange", resume);
         if ("IntersectionObserver" in window) {
             new IntersectionObserver(function (es) { visible = es[0].isIntersecting; resume(); }).observe(box);

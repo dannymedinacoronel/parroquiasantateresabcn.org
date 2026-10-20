@@ -34,6 +34,7 @@ NAV = [
         ("Misa con coro góspel", "html/misas.html#gospel"),
         ("Calendario de eucaristías y actividades", "html/misas.html#calendario"),
         ("Sacramentos", "html/adminsacra.html"),
+        ("Primera Comunión", "html/comuniones.html"),
         ("Catequesis", "html/catequesis.html"),
     ]),
     ("noticias", "Noticias", "html/noticias.html", [
@@ -47,6 +48,7 @@ NAV = [
     ("dinamica", "Dinámica Pastoral", "html/dinamicapastoral.html", [
         ("Grupos y servicios", "html/dinamicapastoral.html"),
         ("Catequesis", "html/catequesis.html"),
+        ("Primera Comunión", "html/comuniones.html"),
         ("Jóvenes", "html/jovenes2alternativa.html"),
         ("Sacramentos", "html/adminsacra.html"),
         ("Imágenes y vídeos", "html/imagenes.html"),
@@ -1230,19 +1232,95 @@ PAGES["html/catequesis.html"] = page(1, "Catequesis", "Inscripciones a la catequ
         </section>
 
         <section class="section-warm">
+            <a class="family-entry" href="comuniones.html#inscripcion">
+                <span class="family-entry-img" style="background-image:url('../fotosdefinitivas/web/dsc_0546.jpg')" aria-hidden="true"></span>
+                <span class="family-entry-body">
+                    <span class="subtitulo">Inscripciones abiertas</span>
+                    <strong>Primera Comunión</strong>
+                    <span class="family-entry-text">Rellena la inscripción en línea en un par de minutos: llega directamente a la parroquia y os llamaremos para empezar.</span>
+                    <span class="btn btn-solid">Inscribirse a la Primera Comunión</span>
+                </span>
+            </a>
+        </section>
+""")
+
+# ---------------------------------------------------------------- PRIMERA COMUNIÓN
+# El formulario se envía por correo a la parroquia a través de FormSubmit (sin cuentas ni claves).
+# La primera vez que alguien lo use, FormSubmit envía a ese correo un mensaje para ACTIVARLO.
+FORM_MAIL = "https://formsubmit.co/" + EMAIL
+PAGES["html/comuniones.html"] = page(1, "Primera Comunión", "Preparación e inscripción a la Primera Comunión en la Parroquia Santa Teresa de Jesús (El Carmel, Barcelona).", active="eucaristias", body=page_hero("Catequesis de infancia", "Primera Comunión", "web/dsc_0546.jpg", "Primera Comunión") + """
+        <section>
+            <div class="section-head">
+                <span class="subtitulo">Un paso muy especial</span>
+                <h2>Preparamos juntos la Primera Comunión</h2>
+                <hr class="section-divider" style="margin-bottom:1.25rem;">
+                <p>Durante el curso, los niños y niñas se preparan en la catequesis de la parroquia para recibir por primera vez a Jesús en la Eucaristía, acompañados por sus catequistas y por sus familias.</p>
+            </div>
+            <ol class="communion-steps">
+                <li>""" + SAC_ICONS["caliz"] + """<strong>Inscripción</strong><span>Rellenad el formulario de esta página.</span></li>
+                <li>""" + ICON_PHONE + """<strong>Os llamamos</strong><span>La parroquia se pone en contacto con la familia.</span></li>
+                <li>""" + SAC_ICONS["paloma"] + """<strong>Catequesis</strong><span>Encuentros periódicos durante el curso.</span></li>
+                <li>""" + ICON_CROSS + """<strong>Celebración</strong><span>La Primera Comunión, en familia y en comunidad.</span></li>
+            </ol>
+        </section>
+
+        <section class="section-warm" id="inscripcion">
             <div class="section-head" style="margin-bottom:2rem;">
                 <span class="subtitulo">Inscripciones</span>
-                <h2>Inscríbete a las comuniones del próximo curso</h2>
-                <hr class="section-divider" style="margin-bottom:0;">
+                <h2>Inscripción a la Primera Comunión</h2>
+                <hr class="section-divider" style="margin-bottom:1rem;">
+                <p>La inscripción llega directamente por correo a la parroquia. Los campos con * son obligatorios.</p>
             </div>
-            <div class="embed-frame" style="max-width:760px; margin:0 auto;">
-                <iframe title="Formulario de inscripción a la catequesis" height="1170" loading="lazy"
-                    src="https://docs.google.com/forms/d/e/1FAIpQLSeCFdrkvI7w7rS46NBc6cYaN5BYVMH_pc0huZAPHk1Q-MiCXQ/viewform?embedded=true">Cargando…</iframe>
-            </div>
-            <div class="data-notice" style="max-width:760px; margin:1.5rem auto 0;">
+            <form class="mail-form" action=\"""" + FORM_MAIL + """\" method="POST" data-mail-form=\"""" + FORM_MAIL.replace("formsubmit.co/", "formsubmit.co/ajax/") + """\">
+                <input type="hidden" name="_subject" value="Nueva inscripción a la Primera Comunión">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <fieldset>
+                    <legend>Datos del niño o de la niña</legend>
+                    <div class="form-grid">
+                        <label>Nombre *<input type="text" name="Nombre del niño o niña" required autocomplete="off"></label>
+                        <label>Apellidos *<input type="text" name="Apellidos" required autocomplete="off"></label>
+                        <label>Fecha de nacimiento *<input type="date" name="Fecha de nacimiento" required></label>
+                        <label>Curso escolar
+                            <select name="Curso escolar">
+                                <option value="">Selecciona…</option>
+                                <option value="2º de Primaria">2º de Primaria</option>
+                                <option value="3º de Primaria">3º de Primaria</option>
+                                <option value="4º de Primaria">4º de Primaria</option>
+                                <option value="5º de Primaria">5º de Primaria</option>
+                                <option value="6º de Primaria">6º de Primaria</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="form-choice">
+                        <span>¿Está bautizado o bautizada? *</span>
+                        <label class="inline"><input type="radio" name="Bautizado/a" value="Sí" required> Sí</label>
+                        <label class="inline"><input type="radio" name="Bautizado/a" value="No"> No</label>
+                        <label class="inline"><input type="radio" name="Bautizado/a" value="No lo sé"> No lo sé</label>
+                    </div>
+                    <label>Parroquia donde fue bautizado/a<input type="text" name="Parroquia de bautismo" placeholder="Si lo sabéis"></label>
+                </fieldset>
+                <fieldset>
+                    <legend>Datos de la familia</legend>
+                    <div class="form-grid">
+                        <label>Nombre del padre, madre o tutor *<input type="text" name="Padre, madre o tutor" required autocomplete="name"></label>
+                        <label>Teléfono *<input type="tel" name="Teléfono" required autocomplete="tel" inputmode="tel"></label>
+                    </div>
+                    <label>Correo electrónico *<input type="email" name="Correo electrónico" required autocomplete="email"></label>
+                    <label>Observaciones<textarea name="Observaciones" rows="4" placeholder="Alergias, necesidades especiales, horarios que os van mejor…"></textarea></label>
+                </fieldset>
+                <label class="consent"><input type="checkbox" name="Consentimiento" value="Sí, soy el padre, la madre o el tutor legal y acepto la política de privacidad" required>
+                    <span>Soy el padre, la madre o el tutor legal y acepto la <a href="privacidad.html" target="_blank">política de privacidad</a>. *</span></label>
+                <button type="submit" class="btn btn-solid">Enviar inscripción</button>
+                <p class="form-status" role="status" aria-live="polite"></p>
+            </form>
+            <div class="data-notice" style="max-width:820px; margin:1.5rem auto 0;">
                 <strong>Información básica sobre protección de datos</strong>
-                <p><b>Responsable:</b> Parroquia de Santa Teresa de Jesús. <b>Finalidad:</b> gestionar la inscripción y la participación en la catequesis. <b>Legitimación:</b> consentimiento del padre, madre o tutor legal (los datos de menores de 14 años solo pueden facilitarlos ellos). <b>Destinatarios:</b> no se ceden a terceros, salvo obligación legal; el formulario lo presta Google. <b>Derechos:</b> acceso, rectificación, supresión y otros, escribiendo a nuestro correo. <a href="privacidad.html">Más información en la Política de privacidad</a>.</p>
+                <p><b>Responsable:</b> Parroquia de Santa Teresa de Jesús. <b>Finalidad:</b> gestionar la inscripción y la preparación a la Primera Comunión. <b>Legitimación:</b> consentimiento del padre, madre o tutor legal (los datos de menores de 14 años solo pueden facilitarlos ellos). <b>Destinatarios:</b> no se ceden a terceros, salvo obligación legal; el envío por correo lo gestiona FormSubmit. <b>Derechos:</b> acceso, rectificación, supresión y otros, escribiendo a <a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a>. <a href="privacidad.html">Más información en la Política de privacidad</a>.</p>
             </div>
+            <p class="form-alt">¿Prefieres hacerlo por teléfono? <a href=\"tel:""" + TEL + """\" class="tel-link"><b>""" + TEL_TXT + """</b></a></p>
         </section>
 """)
 
@@ -1613,7 +1691,7 @@ PAGES["html/cookies.html"] = page(1, "Política de cookies", "Qué cookies utili
                     <thead><tr><th>Servicio</th><th>Proveedor</th><th>Dónde se usa</th><th>Finalidad</th></tr></thead>
                     <tbody>
                         <tr><td>Chat de atención</td><td>Tawk.to Inc. (EE. UU.)</td><td>Todas las páginas</td><td>Chat en directo con la parroquia. <a href="https://www.tawk.to/privacy-policy/" target="_blank" rel="noopener">Política</a></td></tr>
-                        <tr><td>Google Maps, Calendar y Forms</td><td>Google Ireland Ltd.</td><td>Contacto, Eucaristías, Catequesis</td><td>Mapa, calendario y formulario de inscripción. <a href="https://policies.google.com/technologies/cookies?hl=es" target="_blank" rel="noopener">Política</a></td></tr>
+                        <tr><td>Google Maps y Calendar</td><td>Google Ireland Ltd.</td><td>Inicio, Contacto, Eucaristías</td><td>Mapa y calendario. <a href="https://policies.google.com/technologies/cookies?hl=es" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>YouTube (modo de privacidad mejorada)</td><td>Google Ireland Ltd.</td><td>Imágenes y vídeos</td><td>Reproducir vídeos. <a href="https://policies.google.com/privacy?hl=es" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>Instagram</td><td>Elfsight LLC / Meta Platforms Ireland Ltd.</td><td>Inicio</td><td>Mostrar publicaciones de nuestro Instagram. <a href="https://elfsight.com/privacy-policy/" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>Typeform</td><td>Typeform S.L. (España)</td><td>Contacto</td><td>Formulario de contacto. <a href="https://www.typeform.com/help/a/typeform-cookies-360042093071/" target="_blank" rel="noopener">Política</a></td></tr>
@@ -1699,7 +1777,7 @@ PAGES["html/privacidad.html"] = page(1, "Política de privacidad", "Cómo trata 
                     <thead><tr><th>Origen</th><th>Datos</th><th>Finalidad</th><th>Base legal</th></tr></thead>
                     <tbody>
                         <tr><td>Formulario de contacto y correo electrónico</td><td>Nombre, correo y lo que nos escribas</td><td>Responder a tu consulta</td><td>Tu consentimiento (art. 6.1.a RGPD)</td></tr>
-                        <tr><td>Formulario de inscripción a la catequesis</td><td>Datos del menor y de su padre, madre o tutor</td><td>Gestionar la inscripción y la catequesis</td><td>Consentimiento del padre, madre o tutor (art. 6.1.a RGPD y art. 7 LOPDGDD) y actividad legítima de una entidad religiosa con sus fieles (art. 9.2.d RGPD)</td></tr>
+                        <tr><td>Formulario de inscripción a la Primera Comunión</td><td>Datos del menor y de su padre, madre o tutor</td><td>Gestionar la inscripción y la catequesis</td><td>Consentimiento del padre, madre o tutor (art. 6.1.a RGPD y art. 7 LOPDGDD) y actividad legítima de una entidad religiosa con sus fieles (art. 9.2.d RGPD)</td></tr>
                         <tr><td>Chat de atención</td><td>Nombre, correo y mensajes que escribas</td><td>Atender tu consulta en directo</td><td>Tu consentimiento (art. 6.1.a RGPD)</td></tr>
                         <tr><td>Fotografías de actividades</td><td>Imagen de las personas que aparecen</td><td>Dar a conocer la vida de la parroquia</td><td>Consentimiento de los interesados o de sus representantes legales</td></tr>
                     </tbody>
@@ -1710,7 +1788,7 @@ PAGES["html/privacidad.html"] = page(1, "Política de privacidad", "Cómo trata 
                 <p>Los datos de contacto y del chat, el tiempo necesario para atender tu consulta. Los de catequesis, mientras dure la formación y, después, durante los plazos que exija la normativa civil o canónica aplicable. En cualquier caso, mientras no solicites su supresión cuando proceda.</p>
 
                 <h3>4. Destinatarios</h3>
-                <p>No cedemos datos a terceros salvo obligación legal. Para prestar algunos servicios usamos proveedores que tratan datos por nuestra cuenta (encargados del tratamiento): Google (formularios, calendario y mapas), Typeform (formulario de contacto) y Tawk.to (chat). Algunos están en Estados Unidos; las transferencias se amparan en el Marco de Privacidad de Datos UE-EE. UU. cuando el proveedor está adherido o, en su defecto, en las cláusulas contractuales tipo aprobadas por la Comisión Europea.</p>
+                <p>No cedemos datos a terceros salvo obligación legal. Para prestar algunos servicios usamos proveedores que tratan datos por nuestra cuenta (encargados del tratamiento): Google (calendario y mapas), FormSubmit (envía por correo a la parroquia el formulario de inscripción a la Primera Comunión; no instala cookies), Typeform (formulario de contacto) y Tawk.to (chat). Algunos están en Estados Unidos; las transferencias se amparan en el Marco de Privacidad de Datos UE-EE. UU. cuando el proveedor está adherido o, en su defecto, en las cláusulas contractuales tipo aprobadas por la Comisión Europea.</p>
 
                 <h3>5. Tus derechos</h3>
                 <p>Puedes ejercer en cualquier momento tus derechos de <strong>acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad</strong>, así como <strong>retirar tu consentimiento</strong>, escribiendo a <a href="mailto:""" + LEGAL["email"] + """">""" + LEGAL["email"] + """</a> o por correo postal a la dirección de la parroquia, indicando el derecho que ejerces.</p>
