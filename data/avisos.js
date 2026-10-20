@@ -14,25 +14,23 @@
 
    Cada visitante ve cada aviso una sola vez: al cerrarlo o pulsar el botón
    ya no vuelve a aparecerle.
-   ========================================================================== */
-window.AVISOS = [
+
+   SI LA LISTA ESTÁ VACÍA (lo normal): la web muestra sola un aviso con la
+   ÚLTIMA REFLEXIÓN publicada desde el panel, con la etiqueta «Nueva
+   reflexión» durante sus primeros 30 días. Al publicar otra, el aviso cambia
+   y vuelve a salir a todos los visitantes. Un aviso escrito aquí tiene
+   prioridad sobre el automático mientras esté activo.
+
+   Ejemplo de aviso escrito a mano:
     {
-        id: "reflexiones-2026-10",
-        desde: "2026-10-20",
-        hasta: "2026-12-31",
-        imagen: "fotosdefinitivas/web/magdalena-retrato.jpg",
-        enlace: "html/reflexiones/2019-05-05-remar-mar-adentro.html",
-        etiqueta: { es: "Ya disponible", ca: "Ja disponible", en: "Now available" },
-        titulo: {
-            es: "Reflexiones del Evangelio",
-            ca: "Reflexions de l'Evangeli",
-            en: "Gospel reflections"
-        },
-        texto: {
-            es: "Escucha la reflexión «Remar mar adentro» de Magdalena, ahora con el audio restaurado, y lee también la de Mn. Albert Sols.",
-            ca: "Escolta la reflexió «Remar mar endins» de la Magdalena, ara amb l'àudio restaurat, i llegeix també la de Mn. Albert Sols.",
-            en: "Listen to Magdalena's reflection «Put out into the deep», now with restored audio, and read Fr Albert Sols' reflection too."
-        },
-        boton: { es: "Leer y escuchar", ca: "Llegir i escoltar", en: "Read and listen" }
+        id: "fiesta-2026",
+        desde: "2026-10-01", hasta: "2026-10-15",
+        imagen: "fotosdefinitivas/web/santateresa.jpg",
+        enlace: "html/contacto.html",
+        etiqueta: { es: "Fiesta", ca: "Festa", en: "Feast" },
+        titulo: { es: "Fiesta de Santa Teresa", ca: "Festa de Santa Teresa", en: "Feast of Saint Teresa" },
+        texto: { es: "...", ca: "...", en: "..." },
+        boton: { es: "Más información", ca: "Més informació", en: "More information" }
     }
-];
+   ========================================================================== */
+window.AVISOS = [];

@@ -26,9 +26,10 @@
     <link rel="manifest" href="../site.webmanifest">
 
     <link rel="stylesheet" href="../css/fonts.css?v=818b49f2ed">
-    <link rel="stylesheet" href="../css/site.css?v=29f5902e83">
+    <link rel="stylesheet" href="../css/site.css?v=0bf2380cd3">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
+    <script type="speculationrules">{"prerender":[{"where":{"selector_matches":"a[hreflang]"},"eagerness":"eager"},{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}}]},"eagerness":"moderate"}]}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://parroquiasantateresabcn.netlify.app/"}, {"@type": "ListItem", "position": 2, "name": "Catequesis", "item": "https://parroquiasantateresabcn.netlify.app/html/catequesis"}]}</script>
 </head>
 <body>
@@ -74,7 +75,7 @@
                     <li class="sub-heading" aria-hidden="true">Actualidad de la Iglesia</li>
                     <li><a href="noticias.html" class="sub-link">Vaticano y Arzobispado de Barcelona</a></li>
                     <li class="sub-heading parish" aria-hidden="true">De nuestra parroquia</li>
-                    <li class="parish-item"><a href="reflexiones/2019-05-12-hechos-de-los-apostoles.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Última reflexión</span></a></li>
+                    <li class="parish-item"><a href="reflexiones/1901-10-01-hola.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Última reflexión</span></a></li>
                     <li class="parish-item"><a href="humiliasmenu.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Todas las reflexiones</span></a></li>
                 </ul>
             </li>
@@ -241,8 +242,18 @@
         </div>
     </footer>
 
-    <script src="../data/avisos.js?v=325670bb6a"></script>
-    <script src="../js/site.js?v=f14d640149"></script>
+    <template id="pst-ultima" data-id="reflexion-1901-10-01-hola" data-fecha="2026-10-20" data-slug="1901-10-01-hola">
+        <div class="notice-photo"><img src="../fotosdefinitivas/web/vidriera.jpg" alt=""></div>
+        <div class="notice-body">
+            <span class="notice-tag"><span class="notice-dot" aria-hidden="true"></span><span data-when="new">Nueva reflexión</span><span data-when="old">Última reflexión</span></span>
+            <h3>Hola prueba</h3>
+            <p class="notice-meta"><span>Parroquia Santa Teresa de Jesús</span> · <time datetime="2026-10-20" data-fmt="long">20 de octubre de 2026</time></p>
+            <p class="notice-quote">Hola esto es un ejemplo</p>
+            <a class="btn btn-solid notice-go" href="../html/reflexiones/1901-10-01-hola.html">Leer la reflexión <span aria-hidden="true">&rarr;</span></a>
+        </div>
+    </template>
+    <script src="../data/avisos.js?v=d53051e813"></script>
+    <script src="../js/site.js?v=a0b64a3698"></script>
 
 </body>
 </html>

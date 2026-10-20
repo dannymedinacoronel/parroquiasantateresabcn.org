@@ -1588,6 +1588,31 @@ footer { background: linear-gradient(180deg, #4a3c2b, #3b2f22); color: #e2d6c2; 
     transition: background .2s, color .2s;
 }
 .notice-close:hover { background: var(--accent-color); color: var(--white); }
+/* Aviso automático de la última reflexión */
+.notice-reflection .notice-photo { flex: 0 0 120px; display: flex; align-items: flex-start; justify-content: center; padding: 1.5rem 0 0; background: linear-gradient(180deg, #f3e8d2, #fffaf0); }
+.notice-reflection .notice-photo img { position: static; width: 84px; height: 84px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); padding: 2px; background: #fff; box-shadow: 0 8px 18px rgba(60,40,10,.18); }
+.notice-reflection .notice-photo.no-photo { color: var(--accent-color); }
+.notice-reflection .notice-photo.no-photo svg { width: 40px; height: auto; margin-top: .6rem; }
+.notice-reflection .notice-tag { color: #7a2e2e; }
+.notice-reflection .notice-tag [hidden] { display: none; }
+.notice-reflection .notice-meta { margin: 0 0 .5rem; font-size: .78rem; color: var(--muted); }
+.notice-reflection .notice-meta span { font-weight: 600; color: var(--heading-color); }
+.notice-reflection .notice-quote { font-family: var(--header-font); font-style: italic; font-size: 1.05rem; line-height: 1.45; color: #4a2f22; margin-bottom: 1rem; }
+/* Paso entre páginas e idiomas sin pantallazo: fundido suave y la cabecera se queda quieta */
+@view-transition { navigation: auto; }
+body > header { view-transition-name: site-header; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .28s; }
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+/* Etiqueta «Nueva» */
+.new-badge { display: inline-block; margin: 0 .6rem .5rem 0; padding: .28rem .7rem .25rem; border-radius: 30px; background: #7a2e2e; color: #fff;
+    font-family: var(--body-font); font-size: .62rem; font-weight: 700; font-style: normal; letter-spacing: 2px; text-transform: uppercase; vertical-align: middle;
+    box-shadow: 0 4px 12px rgba(122,46,46,.3); animation: new-glow 2.4s ease-in-out infinite; }
+.new-badge[hidden] { display: none; }
+.rf-tag + .new-badge { margin-left: .75rem; }
+@keyframes new-glow { 50% { box-shadow: 0 4px 18px rgba(122,46,46,.55); } }
+@media (prefers-reduced-motion: reduce) { .new-badge { animation: none; } }
 body.menu-open .notice-card { opacity: 0; visibility: hidden; }
 
 @media (max-width: 600px) {

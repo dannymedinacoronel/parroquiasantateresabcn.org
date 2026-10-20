@@ -561,6 +561,8 @@ TR = {
 "Cien años después de su construcción, la parroquia sigue siendo un punto de encuentro del barrio: la misa dominical con coro góspel, la catequesis de niños y adolescentes, Cáritas, los grupos de jóvenes y de matrimonios, y una comunidad que continúa abierta a todos.": ("Cent anys després de la seva construcció, la parròquia continua sent un punt de trobada del barri: la missa dominical amb cor gòspel, la catequesi d'infants i adolescents, Càritas, els grups de joves i de matrimonis, i una comunitat que segueix oberta a tothom.", "A hundred years after it was built, the parish is still a meeting place for the neighbourhood: the Sunday Mass with gospel choir, catechesis for children and teenagers, Caritas, the youth and married couples' groups, and a community that remains open to everyone."),
 "Conoce la vida parroquial": ("Coneix la vida parroquial", "Discover parish life"),
 "Última reflexión": ("Última reflexió", "Latest reflection"),
+"Nueva": ("Nova", "New"),
+"Nueva reflexión": ("Nova reflexió", "New reflection"),
 "Todas las reflexiones": ("Totes les reflexions", "All reflections"),
 "Ver todas las reflexiones": ("Veure totes les reflexions", "See all reflections"),
 "Reflexiones del Evangelio": ("Reflexions de l'Evangeli", "Gospel reflections"),

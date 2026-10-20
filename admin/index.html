@@ -63,6 +63,10 @@
         #pst-ev-tab { position: fixed; left: 22px; bottom: 22px; z-index: 399; display: none; padding: .65rem 1rem; border: 0; border-radius: 30px; cursor: pointer;
             background: #2a1d17; color: #f0d79a; font: 700 .72rem system-ui, sans-serif; letter-spacing: 1.5px; text-transform: uppercase; box-shadow: 0 10px 25px rgba(40,25,5,.3); }
         #pst-ev-tab.on { display: block; }
+        .pst-toast { position: fixed; left: 50%; top: 78px; z-index: 500; width: min(520px, calc(100vw - 32px)); padding: .95rem 1.2rem;
+            background: #1f3b2c; color: #e9f5ec; border-radius: 8px; box-shadow: 0 18px 40px rgba(0,0,0,.25);
+            font: 400 .88rem/1.5 system-ui, sans-serif; opacity: 0; transform: translate(-50%, -12px); transition: opacity .35s, transform .35s; }
+        .pst-toast.on { opacity: 1; transform: translate(-50%, 0); }
     </style>
 </head>
 <body>
@@ -225,6 +229,28 @@
             }).observe(ev);
         }
         window.addEventListener("hashchange", evTabVisible);
+
+        /* ------------------------------------------------------------------
+           Al publicar: aviso de que la web tarda 1–2 minutos en actualizarse
+           ------------------------------------------------------------------ */
+        function toast(msg) {
+            var t = document.createElement("div");
+            t.className = "pst-toast";
+            t.innerHTML = msg;
+            document.body.appendChild(t);
+            requestAnimationFrame(function () { t.classList.add("on"); });
+            setTimeout(function () { t.classList.remove("on"); setTimeout(function () { t.remove(); }, 500); }, 9000);
+        }
+        CMS.registerEventListener({
+            name: "postPublish",
+            handler: function (ev) {
+                var data = ev && ev.entry && ev.entry.get ? ev.entry.get("data") : null;
+                var pub = data && data.get ? data.get("publicado") !== false : true;
+                toast(pub
+                    ? "<b>✓ Publicada.</b> La web se está actualizando: en <b>1–2 minutos</b> aparecerá la primera en la portada, en Homilías y en el aviso de «Nueva reflexión»."
+                    : "<b>✓ Guardada como borrador.</b> No aparecerá en la web hasta activar «Publicada».");
+            }
+        });
         if (evState.open) evOpen(true); else evTabVisible();
         document.getElementById("pst-hoy-min").addEventListener("click", function () {
             hoyCard.classList.toggle("min");
@@ -241,8 +267,10 @@
            Vista previa: usa los estilos reales de la web para que lo que se
            escribe se vea exactamente como saldrá publicado.
            ------------------------------------------------------------------ */
-        CMS.registerPreviewStyle("/css/fonts.css");
-        CMS.registerPreviewStyle("/css/site.css");
+        // Siempre la versión más reciente de los estilos (sin «?v=» el navegador usaba una copia de hasta un día)
+        var CSS_V = "?v=" + Date.now();
+        CMS.registerPreviewStyle("/css/fonts.css" + CSS_V);
+        CMS.registerPreviewStyle("/css/site.css" + CSS_V);
         CMS.registerPreviewStyle([
             "html,body{background:#efe5d2}",
             ".pv{padding:0 0 3rem;font-size:16px}",
@@ -294,6 +322,29 @@
             if (isNaN(d)) return String(v);
             return d.getUTCDate() + " de " + MESES[d.getUTCMonth()] + " de " + d.getUTCFullYear();
         }
+        var MES_CORTO = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+        function isoDate(v) {
+            if (!v) return "";
+            var d = new Date(v);
+            return isNaN(d) ? "" : d.toISOString().slice(0, 10);
+        }
+        /* Calendario pequeño (día, mes, año), igual que en la web */
+        function dateBadge(v) {
+            var iso = isoDate(v);
+            if (!iso) return null;
+            var p = iso.split("-");
+            return h("time", { className: "date-badge", dateTime: iso },
+                h("span", { className: "db-d" }, String(+p[2])),
+                h("span", { className: "db-m" }, MES_CORTO[+p[1] - 1]),
+                h("span", { className: "db-y" }, p[0]));
+        }
+        /* Etiqueta «Nueva» durante los 30 días siguientes a la fecha */
+        function newBadge(v) {
+            var iso = isoDate(v);
+            if (!iso) return null;
+            var days = (Date.now() - new Date(iso).getTime()) / 864e5;
+            return days >= -1 && days <= 31 ? h("span", { className: "new-badge" }, "Nueva") : null;
+        }
         function photo(src, cls) {
             return h("div", { className: (cls || "priest-photo") + (src ? "" : " no-photo") },
                 src ? h("img", { src: src, alt: "" }) : CROSS);
@@ -326,7 +377,9 @@
                 var a = autores[get("autor")] || {};
                 var nombre = a.nombre || get("autor") || "";
                 var foto = a.foto ? (a.foto.charAt(0) === "/" ? a.foto : "/" + a.foto) : "";
-                var kicker = get("tiempo") || fechaLarga(get("fecha"));
+                var tiempo = get("tiempo") || "";
+                var fecha = fechaLarga(get("fecha"));
+                var kicker = tiempo || fecha;
                 var titulo = get("titulo") || "";
                 var texto = get("texto") || "";
                 var quote = firstQuote(texto);
@@ -351,10 +404,13 @@
                                 photo(foto),
                                 h("div", { className: "reading-author-text" },
                                     h("span", { className: "book-kicker" }, a.cargo || ""),
-                                    h("strong", null, nombre || h("span", { className: "pv-empty" }, "Autor")))),
+                                    h("strong", null, nombre || h("span", { className: "pv-empty" }, "Autor")),
+                                    fecha ? h("span", { className: "reading-date" }, fecha) : null)),
                             get("audio") ? h("div", { className: "pv-audio" }, "🎧 Audio de SoundCloud enlazado") : null,
                             h("article", { className: "prose book-page reading-book" },
-                                h("span", { className: "book-kicker" }, kicker),
+                                h("div", { className: "reading-head" },
+                                    tiempo ? h("span", { className: "book-kicker" }, tiempo) : h("span"),
+                                    dateBadge(get("fecha"))),
                                 h("h2", { className: "reading-title" }, titulo || "Título de la reflexión"),
                                 ORNAMENT,
                                 get("saludo") ? h("p", { className: "lead" }, get("saludo")) : null,
@@ -370,12 +426,14 @@
                                 photo(foto),
                                 h("strong", { className: "book-author" }, nombre || "Autor"),
                                 h("span", { className: "book-role" }, a.cargo || ""),
+                                fecha ? h("span", { className: "book-date" }, fecha) : null,
                                 ORNAMENT,
                                 quote ? h("blockquote", { className: "book-quote" }, h("span", null, "“"), quote)
                                       : h("p", { className: "pv-empty", style: { fontSize: ".85rem" } }, "Consejo: marca una frase como «Cita» para que aparezca aquí destacada."),
                                 h("span", { className: "btn btn-solid" }, "Leer la reflexión completa")),
                             h("div", { className: "book-leaf book-right" },
                                 h("article", { className: "homily-text" },
+                                    newBadge(get("fecha")),
                                     h("span", { className: "book-kicker" }, kicker),
                                     h("h3", null, titulo || "Título de la reflexión"),
                                     h("p", { className: "illuminated" }, firstParagraph(texto) || "…")),

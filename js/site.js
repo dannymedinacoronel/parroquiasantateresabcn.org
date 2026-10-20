@@ -451,7 +451,21 @@
     }
 
     /* --- Fechas de las reflexiones en el idioma de la página --- */
-    document.querySelectorAll("time[data-fmt]").forEach(function (t) {
+    /* --- Etiqueta «Nueva» en la reflexión de los últimos 30 días --- */
+    function daysSince(iso) {
+        var p = (iso || "").split("-");
+        if (p.length < 3) return Infinity;
+        var now = new Date();
+        return (Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) - Date.UTC(+p[0], +p[1] - 1, +p[2])) / 864e5;
+    }
+    var NEW_DAYS = 30;
+    document.querySelectorAll(".new-badge[data-new]").forEach(function (b) {
+        var d = daysSince(b.getAttribute("data-new"));
+        if (d >= 0 && d <= NEW_DAYS) b.hidden = false;
+    });
+
+    function localizeDates(root) {
+      root.querySelectorAll("time[data-fmt]").forEach(function (t) {
         var p = (t.getAttribute("datetime") || "").split("-");
         if (p.length < 3) return;
         var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
@@ -462,7 +476,9 @@
             var m = t.querySelector(".db-m");
             if (m) m.textContent = d.toLocaleDateString(LOCALE, { month: "short", timeZone: "UTC" }).replace(".", "");
         }
-    });
+      });
+    }
+    localizeDates(document);
 
     /* --- Archivo de reflexiones: filtro por autor --- */
     document.querySelectorAll(".rf-filters [data-author]").forEach(function (btn) {
@@ -481,6 +497,30 @@
             });
         });
     });
+
+    /* --- Cambio de idioma sin perder el sitio ---
+       Las otras versiones de idioma se preparan en segundo plano (speculationrules en el <head>),
+       así que el cambio es instantáneo; aquí se recuerda hasta dónde se había bajado. */
+    var SCROLL_KEY = "pst-langscroll";
+    document.addEventListener("click", function (e) {
+        var a = e.target.closest && e.target.closest("a[hreflang]");
+        if (!a || e.ctrlKey || e.metaKey || e.shiftKey) return;
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        try {
+            sessionStorage.setItem(SCROLL_KEY, JSON.stringify({ to: a.href.split("#")[0], ratio: max > 0 ? window.scrollY / max : 0 }));
+        } catch (err) { }
+    });
+    function restoreLangScroll() {
+        var s = null;
+        try { s = JSON.parse(sessionStorage.getItem(SCROLL_KEY) || "null"); } catch (err) { }
+        if (!s || s.to !== location.href.split("#")[0]) return;
+        try { sessionStorage.removeItem(SCROLL_KEY); } catch (err) { }
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        if (s.ratio > 0 && max > 0) window.scrollTo({ top: Math.round(s.ratio * max), behavior: "instant" });
+    }
+    restoreLangScroll();
+    /* página preparada en segundo plano: se coloca justo antes de mostrarse */
+    window.addEventListener("pagereveal", restoreLangScroll);
 
     /* --- Año actual en el pie --- */
     document.querySelectorAll(".js-year").forEach(function (el) {
@@ -647,30 +687,50 @@
             if (a.hasta && today > a.hasta) continue;
             aviso = a; break;
         }
-        if (!aviso) return;
 
-        /* no repetir el aviso en la propia página a la que enlaza */
-        var target = (aviso.enlace || "").replace(/^\/+/, "");
-        if (target && location.pathname.replace(/\.html$/, "").slice(-target.replace(/\.html$/, "").length) === target.replace(/\.html$/, "")) {
-            markSeen(aviso.id);
-            return;
-        }
-
-        var base = SITE_ROOT + (LANG === "es" ? "" : LANG + "/");
         var card = document.createElement("aside");
         card.className = "notice-card";
         card.setAttribute("role", "dialog");
         card.setAttribute("aria-live", "polite");
-        card.setAttribute("aria-label", txt(aviso.titulo));
-        card.innerHTML =
-            '<button type="button" class="notice-close" aria-label="' + T("close") + '">&times;</button>' +
-            (aviso.imagen ? '<div class="notice-photo"><img src="' + escapeHtml(SITE_ROOT + aviso.imagen) + '" alt=""></div>' : "") +
-            '<div class="notice-body">' +
-                '<span class="notice-tag"><span class="notice-dot" aria-hidden="true"></span>' + escapeHtml(txt(aviso.etiqueta)) + "</span>" +
-                "<h3>" + escapeHtml(txt(aviso.titulo)) + "</h3>" +
-                "<p>" + escapeHtml(txt(aviso.texto)) + "</p>" +
-                (aviso.enlace ? '<a class="btn btn-solid notice-go" href="' + escapeHtml(base + target) + '">' + escapeHtml(txt(aviso.boton)) + " &rarr;</a>" : "") +
-            "</div>";
+        var closeBtn = '<button type="button" class="notice-close" aria-label="' + T("close") + '">&times;</button>';
+
+        if (aviso) {
+            /* Aviso escrito a mano en data/avisos.js (tiene prioridad) */
+            var target = (aviso.enlace || "").replace(/^\/+/, "");
+            /* no repetir el aviso en la propia página a la que enlaza */
+            if (target && location.pathname.replace(/\.html$/, "").slice(-target.replace(/\.html$/, "").length) === target.replace(/\.html$/, "")) {
+                markSeen(aviso.id);
+                return;
+            }
+            var base = SITE_ROOT + (LANG === "es" ? "" : LANG + "/");
+            card.setAttribute("aria-label", txt(aviso.titulo));
+            card.innerHTML = closeBtn +
+                (aviso.imagen ? '<div class="notice-photo"><img src="' + escapeHtml(SITE_ROOT + aviso.imagen) + '" alt=""></div>' : "") +
+                '<div class="notice-body">' +
+                    '<span class="notice-tag"><span class="notice-dot" aria-hidden="true"></span>' + escapeHtml(txt(aviso.etiqueta)) + "</span>" +
+                    "<h3>" + escapeHtml(txt(aviso.titulo)) + "</h3>" +
+                    "<p>" + escapeHtml(txt(aviso.texto)) + "</p>" +
+                    (aviso.enlace ? '<a class="btn btn-solid notice-go" href="' + escapeHtml(base + target) + '">' + escapeHtml(txt(aviso.boton)) + " &rarr;</a>" : "") +
+                "</div>";
+        } else {
+            /* Aviso automático: la última reflexión publicada (lo genera la web en cada página).
+               Cada visitante lo ve una vez por reflexión; al publicar otra, vuelve a salir. */
+            var tpl = document.getElementById("pst-ultima");
+            if (!tpl) return;
+            var id = tpl.getAttribute("data-id");
+            if (seen(id)) return;
+            /* quien ya está leyendo esa reflexión no necesita el aviso */
+            if (location.pathname.indexOf("/" + tpl.getAttribute("data-slug") + ".html") > -1) { markSeen(id); return; }
+            var fresh = daysSince(tpl.getAttribute("data-fecha")) <= NEW_DAYS;
+            card.classList.add("notice-reflection");
+            card.innerHTML = closeBtn;
+            card.appendChild(tpl.content.cloneNode(true));
+            card.querySelectorAll("[data-when]").forEach(function (s) { s.hidden = s.getAttribute("data-when") !== (fresh ? "new" : "old"); });
+            localizeDates(card);
+            var h3 = card.querySelector("h3");
+            card.setAttribute("aria-label", h3 ? h3.textContent : "");
+            aviso = { id: id };
+        }
         document.body.appendChild(card);
 
         function close() {
@@ -688,6 +748,8 @@
             if (banner.classList.contains("open")) { setTimeout(tryShow, 800); return; }
             card.classList.add("open");
         }
-        setTimeout(tryShow, 1600);
+        /* si la página se ha preparado en segundo plano, espera a que de verdad se vea */
+        if (document.prerendering) document.addEventListener("prerenderingchange", function () { setTimeout(tryShow, 1600); }, { once: true });
+        else setTimeout(tryShow, 1600);
     })();
 })();

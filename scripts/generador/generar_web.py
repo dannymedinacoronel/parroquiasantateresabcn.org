@@ -210,6 +210,7 @@ __HREFLANG__
     <link rel="stylesheet" href="{p}css/site.css?v={V["css/site.css"]}">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
+    <script type="speculationrules">{{"prerender":[{{"where":{{"selector_matches":"a[hreflang]"}},"eagerness":"eager"}},{{"where":{{"and":[{{"href_matches":"/*"}},{{"not":{{"href_matches":"/admin/*"}}}}]}},"eagerness":"moderate"}}]}}</script>
 {extra_head}</head>
 <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -281,7 +282,7 @@ __LANGSWITCH__    </header>
             </nav>
         </div>
     </footer>
-
+{ultima_template(depth)}
     <script src="{p}data/avisos.js?v={V["data/avisos.js"]}"></script>
     <script src="{p}js/site.js?v={V["js/site.js"]}"></script>
 {extra_scripts}
@@ -458,6 +459,36 @@ def date_badge(h):
             f'<span class="db-d">{int(d)}</span><span class="db-m">{MES_CORTO[m - 1]}</span><span class="db-y">{y}</span></time>')
 
 
+def new_badge(h):
+    """Etiqueta «Nueva»: el JavaScript la muestra solo durante los 30 días siguientes a la fecha."""
+    return f'<span class="new-badge" data-new="{h["fecha"]}" hidden>Nueva</span>' if h.get("fecha") else ""
+
+
+def ultima_template(depth):
+    """Aviso automático de la última reflexión: cada página lo lleva en un <template> (así se
+    traduce y enlaza igual que el resto) y site.js lo muestra una vez a cada visitante."""
+    if not HOMILIAS:
+        return ""
+    h = HOMILIAS[0]
+    p = "../" * depth
+    txt = _first_quote(h.get("texto")) or h["extracto"]
+    if len(txt) > 150:
+        txt = txt[:150].rsplit(" ", 1)[0] + "…"
+    foto = (f'<div class="notice-photo"><img src="{p}{h["autor_foto"]}" alt=""></div>' if h["autor_foto"]
+            else f'<div class="notice-photo no-photo">{LOGO_MARK}</div>')
+    return f"""
+    <template id="pst-ultima" data-id="reflexion-{h["slug"]}" data-fecha="{h["fecha"]}" data-slug="{h["slug"]}">
+        {foto}
+        <div class="notice-body">
+            <span class="notice-tag"><span class="notice-dot" aria-hidden="true"></span><span data-when="new">Nueva reflexión</span><span data-when="old">Última reflexión</span></span>
+            <h3>{esc(h["titulo"])}</h3>
+            <p class="notice-meta"><span>{esc(h["autor_nombre"])}</span> · {date_long(h)}</p>
+            <p class="notice-quote">{esc(txt)}</p>
+            <a class="btn btn-solid notice-go" href="{p}{h["url"]}">Leer la reflexión <span aria-hidden="true">&rarr;</span></a>
+        </div>
+    </template>"""
+
+
 def home_homily():
     if not HOMILIAS:
         return ""
@@ -489,7 +520,7 @@ def home_homily():
                 </div>
                 <div class="book-leaf book-right">
                     <article class="homily-text">
-                        <span class="book-kicker">{esc(h["kicker"]) or date_long(h)}</span>
+                        {new_badge(h)}<span class="book-kicker">{esc(h["kicker"]) or date_long(h)}</span>
                         <h3>{esc(h["titulo"])}</h3>
                         <p class="illuminated">{esc(h["extracto"])}</p>
                     </article>
@@ -1238,7 +1269,7 @@ def archive_body():
                     {date_badge(top)}
                 </a>
                 <div class="rf-body">
-                    <span class="rf-tag"><span class="notice-dot" aria-hidden="true"></span>Última reflexión</span>
+                    <span class="rf-tag"><span class="notice-dot" aria-hidden="true"></span>Última reflexión</span>{new_badge(top)}
                     <span class="book-kicker">{esc(top["kicker"])}</span>
                     <h3><a href="reflexiones/{top["slug"]}.html">{esc(top["titulo"])}</a></h3>
                     <p class="rf-meta"><strong>{esc(top["autor_nombre"])}</strong> · {date_long(top)}</p>
