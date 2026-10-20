@@ -1776,6 +1776,71 @@ body > header { view-transition-name: site-header; }
 .homily-body ul { margin: 0 0 1rem 1.2rem; }
 .homily-body li { margin-bottom: .35rem; line-height: 1.7; }
 
+/* La página derecha del libro mide lo mismo que la izquierda (hasta «Leer la reflexión
+   completa»): el texto se funde al final y queda «Seguir leyendo» */
+@media (min-width: 901px) {
+    .book-right { height: 0; min-height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+    .book-right .homily-text { flex: 1 1 auto; min-height: 0; overflow: hidden; }
+}
+.book-right .homily-text {
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 110px), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 110px), transparent);
+}
+.book-right .book-more { flex: 0 0 auto; margin-top: .75rem; position: relative; z-index: 2; }
+@media (max-width: 900px) {
+    .book-right .homily-text { max-height: 540px; overflow: hidden; }
+    .book-right .homily-text h3, .book-right .homily-text > .book-kicker { padding-right: 2.6rem; }
+}
+
+/* Historia: «Seguir leyendo» desplegable en la línea del tiempo */
+.tl-more { margin-top: .6rem; }
+.tl-more summary {
+    display: inline-flex; align-items: center; gap: .4rem; cursor: pointer; list-style: none;
+    font-size: .78rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-dark);
+}
+.tl-more summary::-webkit-details-marker { display: none; }
+.tl-more summary::after { content: "→"; transition: transform .3s var(--ease); }
+.tl-more[open] summary::after { transform: rotate(90deg); }
+.tl-more[open] summary { margin-bottom: .6rem; }
+.tl-more p { margin-bottom: .75rem; }
+.tl-more .tl-source { font-size: .78rem; color: var(--muted); font-style: italic; }
+
+/* ==========================================================================
+   EVANGELIO PARA LA FAMILIA (evangeli.net insertado)
+   ========================================================================== */
+.family-intro { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: center; max-width: 1100px; margin: 0 auto; }
+.family-intro h2 { font-size: clamp(2.1rem, 4vw, 3rem); line-height: 1.1; margin: .4rem 0 1.2rem; }
+.family-steps { list-style: none; padding: 0; margin: 0; counter-reset: paso; display: grid; gap: .9rem; }
+.family-steps li {
+    counter-increment: paso; position: relative; padding: 1.1rem 1.2rem 1.1rem 4rem;
+    background: #fffaf0; border: 1px solid #e2d1ad; border-radius: 6px; box-shadow: var(--shadow-sm);
+}
+.family-steps li::before {
+    content: counter(paso); position: absolute; left: 1.1rem; top: 50%; transform: translateY(-50%);
+    width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--accent-color); color: #fff; font-family: var(--header-font); font-size: 1.2rem; font-weight: 600;
+}
+.family-steps strong { display: block; font-family: var(--header-font); font-size: 1.2rem; color: var(--heading-color); }
+.family-steps span { font-size: .9rem; color: var(--muted); }
+.family-frame {
+    max-width: 1100px; margin: 0 auto; border-radius: 12px; overflow: hidden; background: #fff;
+    border: 1px solid #e2d1ad; box-shadow: 0 40px 80px rgba(40,25,5,.18);
+}
+.family-frame-bar { display: flex; align-items: center; gap: .9rem; padding: .7rem 1rem; background: #f3ece0; border-bottom: 1px solid #e2d1ad; }
+.family-frame-bar i { width: 11px; height: 11px; border-radius: 50%; background: #e0cfa9; display: inline-block; }
+.family-frame-bar i:nth-child(1) { background: #d88b7a; } .family-frame-bar i:nth-child(2) { background: #e3c37a; } .family-frame-bar i:nth-child(3) { background: #9cc08b; }
+.family-frame-bar > span { flex: 1; min-width: 0; padding: .35rem .9rem; border-radius: 20px; background: #fff; font-size: .8rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.family-frame-bar a { font-size: .72rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-dark); text-decoration: none; white-space: nowrap; }
+.family-frame .consent-embed { border: 0; border-radius: 0; }
+.family-frame iframe { display: block; width: 100%; height: min(1500px, 160vh); border: 0; }
+.family-frame .consent-placeholder { min-height: 420px; border: 0; border-radius: 0; }
+.family-note { max-width: 1100px; margin: 1.25rem auto 0; font-size: .82rem; color: var(--muted); text-align: center; }
+@media (max-width: 900px) {
+    .family-intro { grid-template-columns: minmax(0, 1fr); }
+    .family-frame-bar i { display: none; }
+    .family-frame iframe { height: 140vh; }
+}
+
 /* ==========================================================================
    PORTADA: mapa de ubicación
    ========================================================================== */

@@ -406,6 +406,33 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/noticias"/>
   </url>
   <url>
+    <loc>https://parroquiasantateresabcn.netlify.app/html/evangelio-familia</loc>
+    <lastmod>2026-10-20</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.netlify.app/html/evangelio-familia"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.netlify.app/ca/html/evangelio-familia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.netlify.app/en/html/evangelio-familia"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/evangelio-familia"/>
+  </url>
+  <url>
+    <loc>https://parroquiasantateresabcn.netlify.app/ca/html/evangelio-familia</loc>
+    <lastmod>2026-10-20</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.netlify.app/html/evangelio-familia"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.netlify.app/ca/html/evangelio-familia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.netlify.app/en/html/evangelio-familia"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/evangelio-familia"/>
+  </url>
+  <url>
+    <loc>https://parroquiasantateresabcn.netlify.app/en/html/evangelio-familia</loc>
+    <lastmod>2026-10-20</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.netlify.app/html/evangelio-familia"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.netlify.app/ca/html/evangelio-familia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.netlify.app/en/html/evangelio-familia"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/evangelio-familia"/>
+  </url>
+  <url>
     <loc>https://parroquiasantateresabcn.netlify.app/html/cookies</loc>
     <lastmod>2026-10-20</lastmod>
     <priority>0.3</priority>

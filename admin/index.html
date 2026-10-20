@@ -534,7 +534,7 @@
             if (!body) { body = document.createElement("div"); body.className = "homily-body"; swap(art.querySelector("p"), ""); art.appendChild(body); }
             body.innerHTML = md(ht.md) || '<p class="pv-empty">Aquí aparecerá el texto…</p>';
             var more = sec.querySelector(".book-more");
-            if (more) more.innerHTML = (ht.truncated ? "Seguir leyendo" : "Abrir la reflexión") + " <span>&rarr;</span>";
+            if (more) more.innerHTML = "Seguir leyendo <span>&rarr;</span>";
             return sec.outerHTML;
         }
         function fillArchive(d) {

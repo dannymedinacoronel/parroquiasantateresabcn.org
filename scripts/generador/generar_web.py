@@ -26,6 +26,7 @@ NAV = [
         ("Sacramentos", "index.html#sacramentos"),
         ("La parroquia en imágenes", "index.html#galeria"),
         ("Evangelio de hoy", "index.html#actualidad"),
+        ("Evangelio para la familia", "html/evangelio-familia.html"),
         ("Cómo llegar", "index.html#ubicacion"),
     ]),
     ("eucaristias", "Eucaristías", "html/misas.html", [
@@ -555,7 +556,7 @@ def home_homily():
 {HOM.markdown(body_md, indent="                            ")}
                         </div>
                     </article>
-                    <a href="{h["url"]}" class="link-arrow book-more">{"Seguir leyendo" if truncated else "Abrir la reflexión"} <span>&rarr;</span></a>
+                    <a href="{h["url"]}" class="link-arrow book-more">Seguir leyendo <span>&rarr;</span></a>
                     <span class="book-ornament" aria-hidden="true">{LOGO_MARK}</span>
                 </div>
             </div>
@@ -746,6 +747,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
                         <iframe title="Evangelio de hoy" width="100%" height="680" frameborder="0" loading="lazy" src="https://evangeli.net/evangelio/widget/web"></iframe>
                     </div>
                     <a href="https://evangeli.net/evangelio" class="btn gospel-more" target="_blank" rel="noopener">Leer el Evangelio completo &rarr;</a>
+                    <a href="html/evangelio-familia.html" class="link-arrow gospel-family">El Evangelio para la familia <span>&rarr;</span></a>
                 </div>
 
                 <div class="widget-container">
@@ -996,6 +998,18 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
                     <div class="year" data-count="1924" data-from="1900">1924</div>
                     <h3>Construcción de la iglesia</h3>
                     <p>La iglesia se construyó en terrenos de la antigua finca de Can Grau (actual cruce entre Llobregós y Conca de Tremp) y era tenencia parroquial de Sant Joan d'Horta.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="year" data-count="1927" data-from="1900">1927</div>
+                    <h3>Un templo sencillo y su campanario</h3>
+                    <p>Terminan las obras levantadas desde 1923: una iglesia de una sola nave y, a su lado, el campanario de 17,82 metros que todavía hoy marca la silueta del barrio.</p>
+                    <details class="tl-more">
+                        <summary>Seguir leyendo</summary>
+                        <p>La nave se cubre con un techo de vigas que descansa sobre dos arcos de medio punto, y termina en un ábside semicircular. Los muros, encalados, dan al interior esa luz blanca tan característica. A la entrada se encuentran el cancel y el coro.</p>
+                        <p>Delante de la iglesia se abre un atrio porticado de tres arcos de medio punto —el central, más alto— apoyados en columnas sobre un muro bajo y cerrado con rejas.</p>
+                        <p>El campanario, de la misma época que el templo, es sencillo y funcional: planta casi cuadrada, cornisa moldurada, tejado a cuatro aguas y una ventana de arco en cada cara. Sus muros, revocados y pintados en tono crema, se adosan al muro sur, junto al porche.</p>
+                        <p class="tl-source">Según la ficha de la parroquia en el inventario de campanarios de Cataluña (campaners.com).</p>
+                    </details>
                 </div>
                 <div class="timeline-item">
                     <div class="year" data-count="1928" data-from="1900">1928</div>
@@ -1508,6 +1522,43 @@ PAGES["html/noticias.html"] = page(1, "Noticias", "Noticias de la Parroquia Sant
         </section>
 """)
 
+# ---------------------------------------------------------------- EVANGELIO PARA LA FAMILIA
+# Se inserta la página de evangeli.net tal cual (ellos ofrecen ponerla en otras webs). En catalán
+# e inglés se cambia la dirección por su versión en ese idioma (ver FAMILY_URL más abajo).
+FAMILY_URL = "https://family.evangeli.net/es"
+PAGES["html/evangelio-familia.html"] = page(1, "El Evangelio para la familia", "El Evangelio de cada día explicado para leerlo en familia: texto, comentario, ilustración y juegos para los niños.", active="inicio", body=page_hero("Para leer en casa", "El Evangelio para la familia", "web/familia.jpg", "Evangelio para la familia", "center 35%") + """
+        <section class="section-warm">
+            <div class="family-intro">
+                <div>
+                    <span class="subtitulo text-left">Cada día, una página nueva</span>
+                    <h2 class="text-left">La Palabra de Dios, al alcance de los más pequeños</h2>
+                    <hr class="section-divider left">
+                    <p class="lead">evangeli.net prepara cada día el Evangelio pensado para la familia: el texto del día, un comentario sencillo, una ilustración y juegos para los niños.</p>
+                    <p>Os lo ofrecemos aquí para que podáis leerlo juntos en casa, en la mesa o antes de dormir.</p>
+                </div>
+                <ol class="family-steps">
+                    <li><strong>Leed el Evangelio</strong><span>En voz alta, despacio, todos juntos.</span></li>
+                    <li><strong>Mirad la ilustración</strong><span>¿Qué personajes aparecen? ¿Qué está pasando?</span></li>
+                    <li><strong>Comentadlo en familia</strong><span>¿Qué nos dice Jesús hoy a cada uno?</span></li>
+                    <li><strong>Jugad y rezad</strong><span>Haced el puzzle o el juego del día y terminad con una oración.</span></li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="evangelio-familia">
+            <div class="section-head" style="margin-bottom:2.5rem;">
+                <span class="subtitulo">evangeli.net</span>
+                <h2>El Evangelio de hoy para la familia</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            <div class="family-frame">
+                <div class="family-frame-bar"><i></i><i></i><i></i><span>family.evangeli.net</span><a href=\"""" + FAMILY_URL + """\" target="_blank" rel="noopener">Abrir en evangeli.net <span>&rarr;</span></a></div>
+                <iframe title="El Evangelio de hoy para la familia" loading="lazy" src=\"""" + FAMILY_URL + """\"></iframe>
+            </div>
+            <p class="family-note">Contenido de evangeli.net (Associació Cultural M&amp;M Euroeditors), que se actualiza cada día.</p>
+        </section>
+""")
+
 # ---------------------------------------------------------------- COOKIES
 PAGES["html/cookies.html"] = page(1, "Política de cookies", "Qué cookies utiliza la web de la Parroquia Santa Teresa de Jesús y cómo gestionarlas.", cta=False, body=page_hero("Información legal", "Política de Cookies", crumb="Cookies") + """
         <section>
@@ -1840,6 +1891,8 @@ for rel, base in PAGES.items():
                 html = i18n.translate(html, rel, lang, TABLE, missing)
             html = html.replace('<html lang="es">', f'<html lang="{lang}">', 1)
             html = relocate_assets(html)
+            # Evangelio para la familia: la versión de evangeli.net en el idioma de la página
+            html = html.replace(FAMILY_URL, FAMILY_URL[:-2] + lang)
         html = (html.replace("__URL__", page_url(lang, rel))
                     .replace("__HREFLANG__", hreflang_links(rel))
                     .replace("__LOCALE__", LOCALES[lang])
