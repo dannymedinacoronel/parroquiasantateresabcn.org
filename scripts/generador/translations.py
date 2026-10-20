@@ -449,7 +449,7 @@ TR = {
 "Horarios de Eucaristía": ("Horaris d'Eucaristia", "Mass Times"),
 "19:00 h — Eucaristía": ("19:00 h — Eucaristia", "19:00 — Mass"),
 "11:00 h — Eucaristía": ("11:00 h — Eucaristia", "11:00 — Mass"),
-"13:00 h — Eucaristía": ("13:00 h — Eucaristia", "13:00 — Mass"),
+"13:15 h — Eucaristía": ("13:15 h — Eucaristia", "13:15 — Mass"),
 "Con coro góspel": ("Amb cor gòspel", "With gospel choir"),
 "Misa dominical de las 11:00 h": ("Missa dominical de les 11:00 h", "Sunday Mass at 11:00"),
 "De las misas que se celebran en fin de semana, desde el punto de vista de animación, destaca la dominical de las 11:00 h. Todos los domingos, salvo en agosto, canta en la misa un amplio grupo de góspel.": ("De les misses que se celebren el cap de setmana, des del punt de vista de l'animació, destaca la dominical de les 11:00 h. Tots els diumenges, excepte a l'agost, hi canta un ampli grup de gòspel.", "Of the weekend Masses, the liveliest is the Sunday Mass at 11:00. Every Sunday except in August, a large gospel choir sings."),
@@ -611,7 +611,7 @@ TR = {
 "Metro L5 · El Carmel": ("Metro L5 · El Carmel", "Metro L5 · El Carmel"),
 "La parada más cercana, a pocos minutos a pie": ("La parada més propera, a pocs minuts a peu", "The nearest stop, a few minutes' walk away"),
 "Misas": ("Misses", "Masses"),
-"Laborables y sábados 19:00 h · Domingos 11:00 y 13:00 h": ("Feiners i dissabtes 19:00 h · Diumenges 11:00 i 13:00 h", "Weekdays and Saturdays 7 pm · Sundays 11 am and 1 pm"),
+"Laborables y sábados 19:00 h · Domingos 11:00 y 13:15 h": ("Feiners i dissabtes 19:00 h · Diumenges 11:00 i 13:15 h", "Weekdays and Saturdays 7 pm · Sundays 11 am and 1:15 pm"),
 "Abrir en Google Maps": ("Obre a Google Maps", "Open in Google Maps"),
 # --- portada: pase de fotos ---
 "Eucaristía dominical": ("Eucaristia dominical", "Sunday Eucharist"),

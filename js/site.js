@@ -178,7 +178,7 @@
     }
 
     /* --- Próxima eucaristía (según los horarios fijos de la parroquia) --- */
-    var MISAS = { 0: ["11:00", "13:00"], 1: ["19:00"], 2: ["19:00"], 3: ["19:00"], 4: ["19:00"], 5: ["19:00"], 6: ["19:00"] };
+    var MISAS = { 0: ["11:00", "13:15"], 1: ["19:00"], 2: ["19:00"], 3: ["19:00"], 4: ["19:00"], 5: ["19:00"], 6: ["19:00"] };
     document.querySelectorAll("[data-next-mass]").forEach(function (el) {
         var now = new Date();
         for (var off = 0; off < 8; off++) {

@@ -638,7 +638,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
                 <div class="schedule-item" data-days="0">
                     """ + ICON_CROSS + """
                     <h3>Domingos</h3>
-                    <div class="time">11:00 <small>·</small> 13:00</div>
+                    <div class="time">11:00 <small>·</small> 13:15</div>
                     <p>Eucaristía · 11:00 h con coro góspel</p>
                 </div>
                 <div class="schedule-item" data-days="6">
@@ -820,7 +820,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
                     </li>
                     <li>
                         """ + ICON_CLOCK + """
-                        <div><strong>Misas</strong><span>Laborables y sábados 19:00 h · Domingos 11:00 y 13:00 h</span></div>
+                        <div><strong>Misas</strong><span>Laborables y sábados 19:00 h · Domingos 11:00 y 13:15 h</span></div>
                     </li>
                     <li>
                         """ + ICON_PHONE + """
@@ -1139,7 +1139,7 @@ PAGES["html/misas.html"] = page(1, "Eucaristías", "Horarios de misas y calendar
                 </div>
                 <div class="card" data-days="0">
                     <h3>Domingos</h3>
-                    <ul><li>11:00 h — Eucaristía</li><li>13:00 h — Eucaristía</li></ul>
+                    <ul><li>11:00 h — Eucaristía</li><li>13:15 h — Eucaristía</li></ul>
                 </div>
             </div>
         </section>
@@ -1834,9 +1834,9 @@ def lang_switch(lang, rel):
 
 
 MENU_TEXT = {
-    "es": ("Horarios de misa", "Laborables y sábados · 19:00 h", "Domingos · 11:00 y 13:00 h", "Idioma"),
-    "ca": ("Horaris de missa", "Feiners i dissabtes · 19:00 h", "Diumenges · 11:00 i 13:00 h", "Idioma"),
-    "en": ("Mass times", "Weekdays and Saturdays · 19:00", "Sundays · 11:00 and 13:00", "Language"),
+    "es": ("Horarios de misa", "Laborables y sábados · 19:00 h", "Domingos · 11:00 y 13:15 h", "Idioma"),
+    "ca": ("Horaris de missa", "Feiners i dissabtes · 19:00 h", "Diumenges · 11:00 i 13:15 h", "Idioma"),
+    "en": ("Mass times", "Weekdays and Saturdays · 19:00", "Sundays · 11:00 and 13:15", "Language"),
 }
 
 
