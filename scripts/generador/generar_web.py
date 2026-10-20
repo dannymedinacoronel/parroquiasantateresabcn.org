@@ -127,7 +127,9 @@ TEL = "+34619040913"            # para el enlace tel: (se puede pulsar para llam
 TEL_TXT = "+34 619 040 913"     # tal como se muestra
 # Formularios (contacto y Primera Comunión): se envían por correo a EMAIL a través de FormSubmit.
 # La primera vez que alguien envía uno, FormSubmit manda a ese correo un mensaje para ACTIVARLO.
-FORM_MAIL = "https://formsubmit.co/" + EMAIL
+# Código que FormSubmit asigna a albertsols@gmail.com (así la dirección no aparece en el código de la web)
+FORM_ALIAS = "2823149fadce475f74b32bfd2b23cd79"
+FORM_MAIL = "https://formsubmit.co/" + FORM_ALIAS
 
 # Datos del titular para Aviso legal y Privacidad.
 # Los marcados como PENDIENTE deben completarse con los datos reales de la parroquia.
