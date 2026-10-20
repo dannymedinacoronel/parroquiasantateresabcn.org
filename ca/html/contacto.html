@@ -20,16 +20,16 @@
     <meta property="og:image" content="https://parroquiasantateresabcn.netlify.app/fotosdefinitivas/web/portada3.jpg">
     <meta property="og:locale" content="ca_ES">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" href="../../favicon.svg?v=2" type="image/svg+xml">
-    <link rel="icon" href="../../favicon-48.png?v=2" sizes="48x48" type="image/png">
-    <link rel="apple-touch-icon" href="../../apple-touch-icon.png?v=2">
+    <link rel="icon" href="../../favicon.svg?v=3" type="image/svg+xml">
+    <link rel="icon" href="../../favicon-48.png?v=3" sizes="48x48" type="image/png">
+    <link rel="apple-touch-icon" href="../../apple-touch-icon.png?v=3">
     <link rel="manifest" href="../../site.webmanifest">
 
     <link rel="stylesheet" href="../../css/fonts.css?v=818b49f2ed">
-    <link rel="stylesheet" href="../../css/site.css?v=a40f01414a">
+    <link rel="stylesheet" href="../../css/site.css?v=fa9bee8d76">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
-    <script type="speculationrules">{"prerender":[{"where":{"selector_matches":"a[hreflang]"},"eagerness":"eager"},{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}}]},"eagerness":"moderate"}]}</script>
+    <script type="speculationrules">{"prerender":[{"where":{"selector_matches":"a[hreflang]"},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}},{"not":{"selector_matches":"a[hreflang]"}}]},"eagerness":"moderate"}]}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Inici", "item": "https://parroquiasantateresabcn.netlify.app/ca/"}, {"@type": "ListItem", "position": 2, "name": "Contacte", "item": "https://parroquiasantateresabcn.netlify.app/ca/html/contacto"}]}</script>
 </head>
 <body>
@@ -67,6 +67,7 @@
                     <li><a href="misas.html#gospel" class="sub-link">Missa amb cor gòspel</a></li>
                     <li><a href="misas.html#calendario" class="sub-link">Calendari d'eucaristies i activitats</a></li>
                     <li><a href="adminsacra.html" class="sub-link">Sagraments</a></li>
+                    <li><a href="adminsacra.html#aniversarios" class="sub-link">Casaments i aniversaris</a></li>
                     <li><a href="comuniones.html" class="sub-link">Primera Comunió</a></li>
                     <li><a href="catequesis.html" class="sub-link">Catequesi</a></li>
                 </ul>
@@ -119,6 +120,7 @@
                 <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenú"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
                 <ul class="sub-menu">
                     <li><a href="contacto.html#datos" class="sub-link">Adreça i horaris</a></li>
+                    <li><a href="contacto.html#mapa" class="sub-link">Mapa i com arribar-hi</a></li>
                     <li><a href="contacto.html#escribenos" class="sub-link">Contacta amb nosaltres</a></li>
                     <li><a href="adminsacra.html#despacho" class="sub-link">Despatx parroquial</a></li>
                     <li><a href="privacidad.html" class="sub-link">Política de privacitat</a></li>
@@ -192,6 +194,7 @@
                                 <option value="Consulta general">Consulta general</option>
                                 <option value="Bautizo">Bateig</option>
                                 <option value="Boda">Casament</option>
+                                <option value="Aniversario de boda">Aniversari de casament (plata, or, diamant…)</option>
                                 <option value="Primera Comunión">Primera Comunió</option>
                                 <option value="Confirmación">Confirmació</option>
                                 <option value="Visita a enfermos">Visita a malalts</option>
@@ -217,17 +220,57 @@
                         <p><b>Responsable:</b> Parròquia de Santa Teresa de Jesús. <b>Finalitat:</b> atendre la teva consulta. <b>Legitimació:</b> el teu consentiment. <b>Destinataris:</b> no se cedeixen dades a tercers, llevat d'obligació legal; l'enviament per correu el gestiona FormSubmit. <b>Drets:</b> accés, rectificació, supressió i altres, escrivint a <a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a>. <a href="privacidad.html">Més informació a la Política de privacitat</a>.</p>
                     </div>
                 </div>
-                <div>
-                    <span class="subtitulo text-left">On som?</span>
-                    <h2 class="text-left">Visita'ns</h2>
+                <aside class="contact-aside">
+                    <span class="subtitulo text-left">Prefereixes parlar?</span>
+                    <h2 class="text-left">T'atenem</h2>
                     <hr class="section-divider" style="margin-left:0;">
-                    <div class="embed-frame">
-                        <div class="consent-embed" data-service="Google Maps"><iframe title="Mapa de la Parròquia de Santa Teresa de Jesús" height="536" loading="lazy" allowfullscreen
-                            data-consent-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11966.759774653801!2d2.1558072908873487!3d41.42424881242464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4bd4d9ae3237b%3A0xd805a433a983f974!2sParr%C3%B2quia+Santa+Teresa+de+Jes%C3%BAs!5e0!3m2!1sca!2ses!4v1555520866181!5m2!1sca!2ses"></iframe></div>
-                    </div>
+                    <a class="contact-call" href="tel:+34619040913">
+                        <span class="contact-call-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11 11 0 0 0 5.2 5.2l1.4-2.1 4.2 1.6V17a2.5 2.5 0 0 1-2.5 2.5A15.5 15.5 0 0 1 2.5 6 2.5 2.5 0 0 1 5 3.5z"/></svg></span>
+                        <span><small>Truca a la parròquia</small><strong>+34 619 040 913</strong></span>
+                    </a>
+                    <ul class="contact-facts">
+                        <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><strong>Despatx parroquial</strong><span>Divendres a la tarda, i abans o després de cada missa</span></div></li>
+                        <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><div><strong>Carrer del Llobregós, 132</strong><span>08032 Barcelona · el Carmel · <a href="#mapa">veure el mapa ↓</a></span></div></li>
+                        <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="M3.5 6.5l8.5 7 8.5-7"/></svg><div><strong>Correu electrònic</strong><span><a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a></span></div></li>
+                    </ul>
+                </aside>
+            </div>
+        </section>
+
+        <section id="mapa" class="location location-big">
+            <div class="location-map">
+                <div class="consent-embed" data-service="Google Maps"><iframe title="Mapa de la Parròquia de Santa Teresa de Jesús" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
+                    data-consent-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11966.759774653801!2d2.1558072908873487!3d41.42424881242464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4bd4d9ae3237b%3A0xd805a433a983f974!2sParr%C3%B2quia+Santa+Teresa+de+Jes%C3%BAs!5e0!3m2!1sca!2ses!4v1555520866181!5m2!1sca!2ses"></iframe></div>
+            </div>
+            <div class="location-card">
+                <span class="subtitulo">On som?</span>
+                <h2>Com arribar-hi</h2>
+                <hr class="section-divider left">
+                <ul class="location-list">
+                    <li>
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+                        <div><strong>Carrer del Llobregós, 132</strong><span>08032 Barcelona · barri del Carmel</span></div>
+                    </li>
+                    <li>
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="14" rx="3"/><path d="M8 21l2-4M16 21l-2-4M5 11h14"/><circle cx="9" cy="14" r=".6" fill="currentColor"/><circle cx="15" cy="14" r=".6" fill="currentColor"/></svg>
+                        <div><strong>Metro L5 · El Carmel</strong><span>La parada més propera, a pocs minuts a peu</span></div>
+                    </li>
+                    <li>
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                        <div><strong>Misses</strong><span>Feiners i dissabtes 19:00 h · Diumenges 11:00 i 13:15 h</span></div>
+                    </li>
+                    <li>
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11 11 0 0 0 5.2 5.2l1.4-2.1 4.2 1.6V17a2.5 2.5 0 0 1-2.5 2.5A15.5 15.5 0 0 1 2.5 6 2.5 2.5 0 0 1 5 3.5z"/></svg>
+                        <div><strong><a class="tel-link" href="tel:+34619040913">+34 619 040 913</a></strong><span>Prem per trucar a la parròquia</span></div>
+                    </li>
+                </ul>
+                <div class="btn-group">
+                    <a class="btn btn-solid" href="https://www.google.com/maps/dir/?api=1&amp;destination=Parr%C3%B2quia+Santa+Teresa+de+Jes%C3%BAs%2C+Carrer+del+Llobreg%C3%B3s+132%2C+08032+Barcelona" target="_blank" rel="noopener">Com arribar-hi</a>
+                    <a class="btn" href="https://goo.gl/maps/Y4SiUkiMGwp" target="_blank" rel="noopener">Obre a Google Maps</a>
                 </div>
             </div>
         </section>
+
 
     </main>
 
@@ -298,7 +341,7 @@
         </div>
     </template>
     <script src="../../data/avisos.js?v=d53051e813"></script>
-    <script src="../../js/site.js?v=282a563bbd"></script>
+    <script src="../../js/site.js?v=97602b947a"></script>
 
 </body>
 </html>

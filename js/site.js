@@ -444,8 +444,10 @@
     if (FINE_POINTER && !REDUCED) {
         document.querySelectorAll(".feature, .icon-card, .news-card, .news-feature, .info-card, .org-node").forEach(function (card) {
             card.classList.add("tilt");
+            var rect = null;   // se mide una vez al entrar, no en cada movimiento del ratón
+            card.addEventListener("pointerenter", function () { rect = card.getBoundingClientRect(); });
             card.addEventListener("pointermove", function (e) {
-                var r = card.getBoundingClientRect();
+                var r = rect || (rect = card.getBoundingClientRect());
                 var x = (e.clientX - r.left) / r.width - 0.5;
                 var y = (e.clientY - r.top) / r.height - 0.5;
                 card.style.transitionDelay = "0ms"; /* sin el retardo de la animación de entrada */
@@ -453,7 +455,7 @@
                 card.style.setProperty("--mx", (x + 0.5) * 100 + "%");
                 card.style.setProperty("--my", (y + 0.5) * 100 + "%");
             });
-            card.addEventListener("pointerleave", function () { card.style.transform = ""; });
+            card.addEventListener("pointerleave", function () { card.style.transform = ""; rect = null; });
         });
     }
 
@@ -504,6 +506,17 @@
             });
         });
     });
+
+    /* --- Fotos de fondo que están lejos: se descargan cuando el visitante se acerca --- */
+    (function () {
+        var lazy = document.querySelectorAll("[data-bg]");
+        function show(el) { el.style.backgroundImage = "url('" + new URL(el.getAttribute("data-bg"), location.href).href + "')"; el.removeAttribute("data-bg"); }
+        if (!("IntersectionObserver" in window)) { lazy.forEach(show); return; }
+        var io = new IntersectionObserver(function (es) {
+            es.forEach(function (e) { if (e.isIntersecting) { show(e.target); io.unobserve(e.target); } });
+        }, { rootMargin: "800px 0px" });
+        lazy.forEach(function (el) { io.observe(el); });
+    })();
 
     /* --- Formularios que se envían por correo (FormSubmit → albertsols@gmail.com) ---
        Sin JavaScript el formulario se envía igualmente con su «action»; con JavaScript se envía

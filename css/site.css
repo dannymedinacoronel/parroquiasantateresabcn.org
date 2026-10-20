@@ -2303,3 +2303,122 @@ body.menu-open .notice-card { opacity: 0; visibility: hidden; }
     .date-badge { width: 54px; }
     .db-d { font-size: 1.45rem; }
 }
+
+/* ==========================================================================
+   RENDIMIENTO: misma apariencia, pero las animaciones continuas solo usan
+   transform y opacity (las mueve la tarjeta gráfica sin recalcular la página)
+   ========================================================================== */
+/* Indicador «baja» del inicio: antes animaba «top» y recolocaba la página 60 veces por segundo */
+.scroll-cue::after { top: 8px; animation-name: scrollCueFast; }
+@keyframes scrollCueFast { 0% { opacity: 0; transform: translate(-50%, -2px); } 40% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, 14px); } }
+/* Puntos que laten: un anillo que crece y se desvanece, en vez de animar la sombra */
+.next-mass .dot, .notice-dot { position: relative; animation: none; }
+.next-mass .dot::after, .notice-dot::after {
+    content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--accent-color);
+    animation: ringPulse 2s ease-out infinite; pointer-events: none;
+}
+@keyframes ringPulse { 0% { transform: scale(1); opacity: .65; } 70%, 100% { transform: scale(3); opacity: 0; } }
+.today-tag { animation: none; box-shadow: 0 0 0 4px rgba(191,160,101,0.18); }
+.new-badge { animation: none; box-shadow: 0 4px 14px rgba(122,46,46,.4); }
+/* Cristal esmerilado: muy costoso al hacer scroll (sobre todo encima del pase de fotos) */
+header { -webkit-backdrop-filter: none; backdrop-filter: none; background-color: rgba(253,251,248,0.97); }
+.next-mass { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(20,14,8,0.42); }
+/* Foto «fija» al hacer scroll: obliga a repintar la banda en cada movimiento */
+.image-band { background-attachment: scroll; }
+/* Solo la foto visible del pase y las tarjetas que se mueven reservan capa propia */
+.hero-slide { will-change: auto; }
+.hero-slide.is-on, .hero-slide.was-on { will-change: transform, opacity; }
+.tilt { will-change: auto; }
+.tilt:hover { will-change: transform; }
+/* Lo que está fuera de la pantalla no se dibuja hasta que se acerca */
+main > section:not(.hero):not(:first-child), .site-footer, body > footer { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+@media (prefers-reduced-motion: reduce) { .next-mass .dot::after, .notice-dot::after, .scroll-cue::after { animation: none; } }
+
+/* ==========================================================================
+   ANIVERSARIOS DE BODA (Sacramentos)
+   ========================================================================== */
+.anniv-list { list-style: none; padding: 0; margin: 1.5rem 0 .6rem; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .7rem; }
+.anniv-list li { text-align: center; padding: 1rem .5rem .85rem; border-radius: 14px; background: #fffaf0; border: 1px solid #e6d8bb; box-shadow: var(--shadow-sm); }
+.anniv-list b { display: grid; place-items: center; width: 54px; height: 54px; margin: 0 auto .5rem; border-radius: 50%;
+    font: 600 1.5rem/1 var(--header-font); color: #fff; box-shadow: inset 0 0 0 2px rgba(255,255,255,.45); }
+.anniv-list span { display: block; line-height: 1.3; font-size: .78rem; font-weight: 600; letter-spacing: .5px; color: var(--heading-color); }
+.anniv-list .plata b { background: linear-gradient(135deg, #e3e6ea, #9aa2ab 55%, #c9ced4); color: #33393f; }
+.anniv-list .rubi b { background: linear-gradient(135deg, #c43d4b, #7d1622); }
+.anniv-list .oro b { background: linear-gradient(135deg, #f1d58a, #b88a2e 55%, #e5c26b); color: #3d2c08; }
+.anniv-list .diamante b { background: linear-gradient(135deg, #f4fbff, #a9d4ea 50%, #e3f3fb); color: #23465a; }
+@media (max-width: 560px) { .anniv-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ==========================================================================
+   CONTACTO: mapa grande y columna de datos
+   ========================================================================== */
+.location-big { min-height: 780px; }
+.location-big .location-card { width: min(520px, calc(100% - 2.5rem)); }
+@media (min-width: 801px) { .location-big .location-map .consent-placeholder { padding-left: min(50%, 600px); } }
+@media (max-width: 800px) { .location-big .location-map { height: 440px; } }
+.contact-aside { position: sticky; top: calc(var(--nav-height) + 1.5rem); align-self: start; }
+.contact-call {
+    display: flex; align-items: center; gap: 1rem; margin: .5rem 0 1.5rem; padding: 1.2rem 1.4rem; border-radius: 16px;
+    background: linear-gradient(120deg, #2a1d17, #4a3424); color: #fff; text-decoration: none;
+    box-shadow: 0 18px 40px rgba(40,25,5,.22); transition: transform .25s var(--ease), box-shadow .25s;
+}
+.contact-call:hover { transform: translateY(-3px); box-shadow: 0 24px 48px rgba(40,25,5,.3); }
+.contact-call-icon { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: var(--accent-color); flex-shrink: 0; }
+.contact-call-icon svg { width: 26px; height: 26px; color: #fff; }
+.contact-call small { display: block; font-size: .7rem; letter-spacing: 2px; text-transform: uppercase; color: #d9bd83; }
+.contact-call strong { display: block; font-family: var(--header-font); font-size: 1.9rem; font-weight: 500; letter-spacing: .02em; }
+.contact-facts { list-style: none; margin: 0; padding: 0; }
+.contact-facts li { display: flex; gap: 1rem; align-items: flex-start; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+.contact-facts li:last-child { border-bottom: 0; }
+.contact-facts .icon, .contact-facts svg { flex: 0 0 42px; width: 42px; height: 42px; padding: 9px; border-radius: 50%; background: var(--bg-warm); color: var(--accent-dark); border: 1px solid var(--accent-light); }
+.contact-facts strong { display: block; font-family: var(--header-font); font-size: 1.25rem; color: var(--heading-color); line-height: 1.25; }
+.contact-facts span { font-size: .9rem; color: var(--muted); }
+@media (max-width: 900px) { .contact-aside { position: static; } }
+
+/* ==========================================================================
+   FORMULARIOS MÁS ELEGANTES (contacto y Primera Comunión)
+   ========================================================================== */
+.mail-form {
+    border: 0; border-radius: 18px; background: linear-gradient(180deg, #fffdf9, #fffaf2);
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset, 0 0 0 1px rgba(191,160,101,.22), 0 30px 70px rgba(60,40,10,.12);
+    counter-reset: bloque;
+}
+.mail-form .form-head { border-radius: 18px 18px 0 0; }
+.mail-form legend { display: flex; align-items: center; gap: .7rem; font-size: 1.45rem; margin-bottom: 1.2rem; }
+.mail-form legend::before {
+    counter-increment: bloque; content: counter(bloque);
+    display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
+    background: var(--accent-color); color: #fff; font: 600 .95rem/1 var(--body-font); font-style: normal;
+}
+.mail-form fieldset + fieldset { padding-top: 1.6rem; border-top: 1px dashed rgba(191,160,101,.4); }
+.mail-form label { font-size: .7rem; letter-spacing: 1.5px; color: #8f7340; gap: .5rem; }
+.mail-form input[type=text], .mail-form input[type=email], .mail-form input[type=tel], .mail-form input[type=date], .mail-form select, .mail-form textarea {
+    min-height: 52px; padding: .85rem 1rem; border: 1.5px solid #ebe0ca; border-radius: 12px; background: #fbf8f2;
+    font-size: 1rem; transition: border-color .2s, background .2s, box-shadow .2s;
+}
+.mail-form input:hover, .mail-form select:hover, .mail-form textarea:hover { border-color: #dccb9f; }
+.mail-form input:focus, .mail-form select:focus, .mail-form textarea:focus { background: #fff; border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(191,160,101,.18); }
+.mail-form ::placeholder { color: #b5a88f; }
+.mail-form select {
+    appearance: none; -webkit-appearance: none; cursor: pointer; padding-right: 2.6rem;
+    background: #fbf8f2 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238f7340' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 1rem center / 16px no-repeat;
+}
+.mail-form input:user-invalid, .mail-form select:user-invalid, .mail-form textarea:user-invalid { border-color: #d39a90; background: #fdf6f4; }
+/* opciones Sí / No / No lo sé como «píldoras» */
+.form-choice { gap: .6rem; }
+.mail-form label.inline {
+    padding: .6rem 1.1rem .6rem .8rem; border: 1.5px solid #ebe0ca; border-radius: 30px; background: #fbf8f2; cursor: pointer;
+    transition: border-color .2s, background .2s;
+}
+.mail-form label.inline:hover { border-color: #dccb9f; }
+.mail-form label.inline:has(input:checked) { border-color: var(--accent-color); background: #fff4dc; color: var(--heading-color); font-weight: 600; }
+.mail-form label.consent { padding: 1rem 1.1rem; border-radius: 12px; background: #f6efe1; }
+.mail-form button[type=submit] {
+    display: inline-flex; align-items: center; justify-content: center; gap: .7rem; min-width: 280px; padding: 1.05rem 2rem;
+    border-radius: 40px; background: linear-gradient(120deg, #a88a4f, #c9ab6b); color: #fff; font-size: .82rem; letter-spacing: 2px;
+    box-shadow: 0 14px 30px rgba(143,115,64,.35); transition: transform .2s var(--ease), box-shadow .2s;
+}
+.mail-form button[type=submit]::after { content: "→"; font-size: 1.1rem; letter-spacing: 0; transition: transform .2s; }
+.mail-form button[type=submit]:hover { transform: translateY(-2px); box-shadow: 0 18px 36px rgba(143,115,64,.45); }
+.mail-form button[type=submit]:hover::after { transform: translateX(4px); }
+.form-status.ok { display: flex; gap: .9rem; align-items: flex-start; border-radius: 14px; }
+.form-status.ok::before { content: "✓"; display: grid; place-items: center; flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%; background: #2f6b45; color: #fff; font-weight: 700; }

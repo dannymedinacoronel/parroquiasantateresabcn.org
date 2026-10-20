@@ -20,16 +20,16 @@
     <meta property="og:image" content="https://parroquiasantateresabcn.netlify.app/fotosdefinitivas/web/portada3.jpg">
     <meta property="og:locale" content="es_ES">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
-    <link rel="icon" href="favicon-48.png?v=2" sizes="48x48" type="image/png">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+    <link rel="icon" href="favicon.svg?v=3" type="image/svg+xml">
+    <link rel="icon" href="favicon-48.png?v=3" sizes="48x48" type="image/png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
     <link rel="manifest" href="site.webmanifest">
 
     <link rel="stylesheet" href="css/fonts.css?v=818b49f2ed">
-    <link rel="stylesheet" href="css/site.css?v=a40f01414a">
+    <link rel="stylesheet" href="css/site.css?v=fa9bee8d76">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
-    <script type="speculationrules">{"prerender":[{"where":{"selector_matches":"a[hreflang]"},"eagerness":"eager"},{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}}]},"eagerness":"moderate"}]}</script>
+    <script type="speculationrules">{"prerender":[{"where":{"selector_matches":"a[hreflang]"},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}},{"not":{"selector_matches":"a[hreflang]"}}]},"eagerness":"moderate"}]}</script>
     <link rel="preload" as="image" href="fotosdefinitivas/web/portada/portada-1-1920.jpg" media="(min-width: 1281px)" fetchpriority="high">
     <link rel="preload" as="image" href="fotosdefinitivas/web/portada/portada-1-1280.jpg" media="(max-width: 1280px)" fetchpriority="high">
     <script type="application/ld+json">
@@ -94,6 +94,7 @@
                     <li><a href="html/misas.html#gospel" class="sub-link">Misa con coro góspel</a></li>
                     <li><a href="html/misas.html#calendario" class="sub-link">Calendario de eucaristías y actividades</a></li>
                     <li><a href="html/adminsacra.html" class="sub-link">Sacramentos</a></li>
+                    <li><a href="html/adminsacra.html#aniversarios" class="sub-link">Bodas y aniversarios</a></li>
                     <li><a href="html/comuniones.html" class="sub-link">Primera Comunión</a></li>
                     <li><a href="html/catequesis.html" class="sub-link">Catequesis</a></li>
                 </ul>
@@ -146,6 +147,7 @@
                 <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenú"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
                 <ul class="sub-menu">
                     <li><a href="html/contacto.html#datos" class="sub-link">Dirección y horarios</a></li>
+                    <li><a href="html/contacto.html#mapa" class="sub-link">Mapa y cómo llegar</a></li>
                     <li><a href="html/contacto.html#escribenos" class="sub-link">Contacta con nosotros</a></li>
                     <li><a href="html/adminsacra.html#despacho" class="sub-link">Despacho parroquial</a></li>
                     <li><a href="html/privacidad.html" class="sub-link">Política de privacidad</a></li>
@@ -242,7 +244,7 @@
             </div>
         </section>
 
-        <section class="image-band" style="background-image:url('fotosdefinitivas/web/portada2.jpg')">
+        <section class="image-band" data-bg="fotosdefinitivas/web/portada2.jpg">
             <div class="quote">
                 <span class="quote-mark" aria-hidden="true">&ldquo;</span>
                 <blockquote>Nada te turbe, nada te espante, todo se pasa, Dios no se muda; la paciencia todo lo alcanza; quien a Dios tiene nada le falta. Sólo Dios basta.</blockquote>
@@ -363,10 +365,10 @@
                     <h3>Confirmación</h3>
                     <p>Se celebra cada tres años, con catequesis a partir de los 14 años.</p>
                 </a>
-                <a class="icon-card" href="html/contacto.html">
+                <a class="icon-card" href="html/adminsacra.html#aniversarios">
                     <div class="icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><circle cx="9" cy="14" r="5.5"/><circle cx="15" cy="14" r="5.5"/><path d="M10.5 4.5l1.5-2 1.5 2-1.5 1.5z" stroke-linejoin="round"/></svg></div>
                     <h3>Matrimonio</h3>
-                    <p>Bodas y preparación: consulta en el despacho parroquial los viernes por la tarde.</p>
+                    <p>Bodas, preparación y aniversarios de plata, oro o diamante: consulta en el despacho los viernes por la tarde.</p>
                 </a>
                 <a class="icon-card" href="html/adminsacra.html">
                     <div class="icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21V11M12 11c0-3-1.5-6-4-8-.5 3 0 6 4 8zM12 11c0-3 1.5-6 4-8 .5 3 0 6-4 8z"/><path d="M5 14c2 0 4 1.5 7 4 3-2.5 5-4 7-4"/></svg></div>
@@ -385,11 +387,11 @@
             <div class="mosaic">
                 <a href="fotosdefinitivas/web/dsc_0541.jpg" class="wide"><img src="fotosdefinitivas/web/dsc_0541.jpg" alt="Interior de la iglesia durante la eucaristía" loading="lazy"></a>
                 <a href="fotosdefinitivas/web/img_5432.jpg" class="tall"><img src="fotosdefinitivas/web/img_5432.jpg" alt="Música en la eucaristía" loading="lazy"></a>
-                <a href="fotosdefinitivas/web/dsc_0565.jpg"><img src="fotosdefinitivas/web/dsc_0565.jpg" alt="Vidriera de Santa Teresa con el Niño Jesús" loading="lazy"></a>
+                <a href="fotosdefinitivas/web/salidas.jpg"><img src="fotosdefinitivas/web/salidas.jpg" alt="Salida parroquial con Mn. Albert Sols" loading="lazy"></a>
                 <a href="fotosdefinitivas/web/dsc_0589.jpg"><img src="fotosdefinitivas/web/dsc_0589.jpg" alt="Bendición de ramos en el Domingo de Ramos" loading="lazy"></a>
                 <a href="fotosdefinitivas/web/dsc_0599webog.jpg" class="tall"><img src="fotosdefinitivas/web/dsc_0599webog.jpg" alt="El campanario durante el Domingo de Ramos" loading="lazy"></a>
+                <a href="fotosdefinitivas/web/fotobodapepi.jpg"><img src="fotosdefinitivas/web/fotobodapepi.jpg" alt="Celebración de un aniversario de boda" loading="lazy"></a>
                 <a href="fotosdefinitivas/web/img_5434.jpg"><img src="fotosdefinitivas/web/img_5434.jpg" alt="Celebración de la eucaristía" loading="lazy"></a>
-                <a href="fotosdefinitivas/web/dsc_0574.jpg"><img src="fotosdefinitivas/web/dsc_0574.jpg" alt="Imágenes del presbiterio" loading="lazy"></a>
                 <a href="fotosdefinitivas/web/dsc_0512.jpg" class="wide"><img src="fotosdefinitivas/web/dsc_0512.jpg" alt="La comunidad reunida en la iglesia" loading="lazy"></a>
             </div>
             <div class="btn-group center" style="margin-top:3rem;">
@@ -461,6 +463,7 @@
                 </div>
             </div>
         </section>
+
 
         <section id="ubicacion" class="location">
             <div class="location-map">
@@ -565,7 +568,7 @@
         </div>
     </template>
     <script src="data/avisos.js?v=d53051e813"></script>
-    <script src="js/site.js?v=282a563bbd"></script>
+    <script src="js/site.js?v=97602b947a"></script>
 
 </body>
 </html>

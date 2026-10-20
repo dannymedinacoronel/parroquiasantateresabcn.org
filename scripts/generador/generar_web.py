@@ -34,6 +34,7 @@ NAV = [
         ("Misa con coro góspel", "html/misas.html#gospel"),
         ("Calendario de eucaristías y actividades", "html/misas.html#calendario"),
         ("Sacramentos", "html/adminsacra.html"),
+        ("Bodas y aniversarios", "html/adminsacra.html#aniversarios"),
         ("Primera Comunión", "html/comuniones.html"),
         ("Catequesis", "html/catequesis.html"),
     ]),
@@ -66,6 +67,7 @@ NAV = [
     ]),
     ("contacto", "Contacto", "html/contacto.html", [
         ("Dirección y horarios", "html/contacto.html#datos"),
+        ("Mapa y cómo llegar", "html/contacto.html#mapa"),
         ("Contacta con nosotros", "html/contacto.html#escribenos"),
         ("Despacho parroquial", "html/adminsacra.html#despacho"),
         ("Política de privacidad", "html/privacidad.html"),
@@ -214,16 +216,16 @@ __HREFLANG__
     <meta property="og:image" content="{SITE}fotosdefinitivas/web/portada3.jpg">
     <meta property="og:locale" content="__LOCALE__">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" href="{p}favicon.svg?v=2" type="image/svg+xml">
-    <link rel="icon" href="{p}favicon-48.png?v=2" sizes="48x48" type="image/png">
-    <link rel="apple-touch-icon" href="{p}apple-touch-icon.png?v=2">
+    <link rel="icon" href="{p}favicon.svg?v=3" type="image/svg+xml">
+    <link rel="icon" href="{p}favicon-48.png?v=3" sizes="48x48" type="image/png">
+    <link rel="apple-touch-icon" href="{p}apple-touch-icon.png?v=3">
     <link rel="manifest" href="{p}site.webmanifest">
 
     <link rel="stylesheet" href="{p}css/fonts.css?v={V["css/fonts.css"]}">
     <link rel="stylesheet" href="{p}css/site.css?v={V["css/site.css"]}">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
-    <script type="speculationrules">{{"prerender":[{{"where":{{"selector_matches":"a[hreflang]"}},"eagerness":"eager"}},{{"where":{{"and":[{{"href_matches":"/*"}},{{"not":{{"href_matches":"/admin/*"}}}}]}},"eagerness":"moderate"}}]}}</script>
+    <script type="speculationrules">{{"prerender":[{{"where":{{"selector_matches":"a[hreflang]"}},"eagerness":"moderate"}}],"prefetch":[{{"where":{{"and":[{{"href_matches":"/*"}},{{"not":{{"href_matches":"/admin/*"}}}},{{"not":{{"selector_matches":"a[hreflang]"}}}}]}},"eagerness":"moderate"}}]}}</script>
 {extra_head}</head>
 <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -405,12 +407,26 @@ def mosaic(photos, depth):
 GALLERY = [
     ("dsc_0541.jpg", "Interior de la iglesia durante la eucaristía", "wide"),
     ("img_5432.jpg", "Música en la eucaristía", "tall"),
-    ("dsc_0565.jpg", "Vidriera de Santa Teresa con el Niño Jesús", ""),
+    ("salidas.jpg", "Salida parroquial con Mn. Albert Sols", ""),
     ("dsc_0589.jpg", "Bendición de ramos en el Domingo de Ramos", ""),
     ("dsc_0599webog.jpg", "El campanario durante el Domingo de Ramos", "tall"),
+    ("fotobodapepi.jpg", "Celebración de un aniversario de boda", ""),
     ("img_5434.jpg", "Celebración de la eucaristía", ""),
-    ("dsc_0574.jpg", "Imágenes del presbiterio", ""),
     ("dsc_0512.jpg", "La comunidad reunida en la iglesia", "wide"),
+]
+
+# Galería «Momentos de la comunidad» (Dinámica Pastoral): salidas, celebraciones y vida parroquial
+MOMENTOS = [
+    ("salidas.jpg", "Salida parroquial con Mn. Albert Sols", "wide"),
+    ("fotobodapepi.jpg", "Celebración de un aniversario de boda", "tall"),
+    ("dsc_0591.jpg", "Bendición de los ramos en el patio", ""),
+    ("img_5495.jpg", "Encuentro en la capilla", ""),
+    ("dsc_0546.jpg", "La iglesia llena durante una celebración", "wide"),
+    ("dsc_0586.jpg", "Domingo de Ramos con toda la comunidad", ""),
+    ("img_5432.jpg", "Música en la eucaristía", "tall"),
+    ("mercadet.jpg", "La parroquia, en el corazón del Carmel", ""),
+    ("dsc_0541.jpg", "Eucaristía dominical", ""),
+    ("dsc_0599webog.jpg", "El campanario en fiesta", ""),
 ]
 
 # Mapa de la portada (el mismo de la página de contacto) y ruta en Google Maps
@@ -424,6 +440,45 @@ ICON_PIN = _SVG + '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 
 ICON_METRO = _SVG + '<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M8 21l2-4M16 21l-2-4M5 11h14"/><circle cx="9" cy="14" r=".6" fill="currentColor"/><circle cx="15" cy="14" r=".6" fill="currentColor"/></svg>'
 ICON_CLOCK = _SVG + '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'
 ICON_PHONE = _SVG + '<path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11 11 0 0 0 5.2 5.2l1.4-2.1 4.2 1.6V17a2.5 2.5 0 0 1-2.5 2.5A15.5 15.5 0 0 1 2.5 6 2.5 2.5 0 0 1 5 3.5z"/></svg>'
+
+def location_block(big=False, sid="ubicacion"):
+    """Mapa a todo lo ancho con la tarjeta «Cómo llegar» (portada y, más grande, Contacto)."""
+    return f"""
+        <section id="{sid}" class="location{" location-big" if big else ""}">
+            <div class="location-map">
+                <iframe title="Mapa de la Parroquia Santa Teresa de Jesús" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
+                    src="{MAP_EMBED}"></iframe>
+            </div>
+            <div class="location-card">
+                <span class="subtitulo">¿Dónde estamos?</span>
+                <h2>Cómo llegar</h2>
+                <hr class="section-divider left">
+                <ul class="location-list">
+                    <li>
+                        {ICON_PIN}
+                        <div><strong>Carrer del Llobregós, 132</strong><span>08032 Barcelona · barrio de El Carmel</span></div>
+                    </li>
+                    <li>
+                        {ICON_METRO}
+                        <div><strong>Metro L5 · El Carmel</strong><span>La parada más cercana, a pocos minutos a pie</span></div>
+                    </li>
+                    <li>
+                        {ICON_CLOCK}
+                        <div><strong>Misas</strong><span>Laborables y sábados 19:00 h · Domingos 11:00 y 13:15 h</span></div>
+                    </li>
+                    <li>
+                        {ICON_PHONE}
+                        <div><strong><a class="tel-link" href="tel:{TEL}">{TEL_TXT}</a></strong><span>Pulsa para llamar a la parroquia</span></div>
+                    </li>
+                </ul>
+                <div class="btn-group">
+                    <a class="btn btn-solid" href="{MAP_DIRECTIONS}" target="_blank" rel="noopener">Cómo llegar</a>
+                    <a class="btn" href="https://goo.gl/maps/Y4SiUkiMGwp" target="_blank" rel="noopener">Abrir en Google Maps</a>
+                </div>
+            </div>
+        </section>
+"""
+
 
 # Fotos del pase de la portada (fotosdefinitivas/web/portada/portada-N-1920.jpg y -1280.jpg).
 # Cada una se descarga justo antes de mostrarse; la primera, enseguida.
@@ -682,7 +737,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
             </div>
         </section>
 
-        <section class="image-band" style="background-image:url('fotosdefinitivas/web/portada2.jpg')">
+        <section class="image-band" data-bg="fotosdefinitivas/web/portada2.jpg">
             <div class="quote">
                 <span class="quote-mark" aria-hidden="true">&ldquo;</span>
                 <blockquote>Nada te turbe, nada te espante, todo se pasa, Dios no se muda; la paciencia todo lo alcanza; quien a Dios tiene nada le falta. Sólo Dios basta.</blockquote>
@@ -722,7 +777,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
 """ + "\n".join([
     icon_card("agua", "Bautismo", "Ceremonias bautismales al mediodía en cualquier domingo del año que se pida.", "html/adminsacra.html"),
     icon_card("paloma", "Confirmación", "Se celebra cada tres años, con catequesis a partir de los 14 años.", "html/catequesis.html"),
-    icon_card("anillos", "Matrimonio", "Bodas y preparación: consulta en el despacho parroquial los viernes por la tarde.", "html/contacto.html"),
+    icon_card("anillos", "Matrimonio", "Bodas, preparación y aniversarios de plata, oro o diamante: consulta en el despacho los viernes por la tarde.", "html/adminsacra.html#aniversarios"),
     icon_card("manos", "Perdón", "Los sábados de 18:30 a 19:00 h y siempre un rato antes de cada misa.", "html/adminsacra.html"),
 ]) + """
             </div>
@@ -805,40 +860,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
             </div>
         </section>
 
-        <section id="ubicacion" class="location">
-            <div class="location-map">
-                <iframe title="Mapa de la Parroquia Santa Teresa de Jesús" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
-                    src=\"""" + MAP_EMBED + """\"></iframe>
-            </div>
-            <div class="location-card">
-                <span class="subtitulo">¿Dónde estamos?</span>
-                <h2>Cómo llegar</h2>
-                <hr class="section-divider left">
-                <ul class="location-list">
-                    <li>
-                        """ + ICON_PIN + """
-                        <div><strong>Carrer del Llobregós, 132</strong><span>08032 Barcelona · barrio de El Carmel</span></div>
-                    </li>
-                    <li>
-                        """ + ICON_METRO + """
-                        <div><strong>Metro L5 · El Carmel</strong><span>La parada más cercana, a pocos minutos a pie</span></div>
-                    </li>
-                    <li>
-                        """ + ICON_CLOCK + """
-                        <div><strong>Misas</strong><span>Laborables y sábados 19:00 h · Domingos 11:00 y 13:15 h</span></div>
-                    </li>
-                    <li>
-                        """ + ICON_PHONE + """
-                        <div><strong><a class="tel-link" href=\"tel:""" + TEL + """\">""" + TEL_TXT + """</a></strong><span>Pulsa para llamar a la parroquia</span></div>
-                    </li>
-                </ul>
-                <div class="btn-group">
-                    <a class="btn btn-solid" href=\"""" + MAP_DIRECTIONS + """\" target="_blank" rel="noopener">Cómo llegar</a>
-                    <a class="btn" href="https://goo.gl/maps/Y4SiUkiMGwp" target="_blank" rel="noopener">Abrir en Google Maps</a>
-                </div>
-            </div>
-        </section>
-""")
+""" + location_block() + """""")
 
 # ---------------------------------------------------------------- DINÁMICA PASTORAL
 FLIP = [
@@ -946,6 +968,18 @@ PAGES["html/dinamicapastoral.html"] = page(1, "Dinámica Pastoral", "Grupos, ser
             <hr class="section-divider">
             <div class="flip-grid">
 """ + "\n".join(flip_card(*f) for f in FLIP) + """
+            </div>
+        </section>
+
+        <section class="section-warm" id="momentos">
+            <div class="section-head">
+                <span class="subtitulo">Salidas, celebraciones y vida parroquial</span>
+                <h2>Momentos de la comunidad</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+""" + mosaic(MOMENTOS, 1) + """
+            <div class="btn-group center" style="margin-top:2.5rem;">
+                <a href="imagenes.html" class="btn">Más fotos y vídeos</a>
             </div>
         </section>
 """)
@@ -1124,6 +1158,7 @@ PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia San
                                 <option value="Consulta general">Consulta general</option>
                                 <option value="Bautizo">Bautizo</option>
                                 <option value="Boda">Boda</option>
+                                <option value="Aniversario de boda">Aniversario de boda (plata, oro, diamante…)</option>
                                 <option value="Primera Comunión">Primera Comunión</option>
                                 <option value="Confirmación">Confirmación</option>
                                 <option value="Visita a enfermos">Visita a enfermos</option>
@@ -1149,17 +1184,23 @@ PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia San
                         <p><b>Responsable:</b> Parroquia de Santa Teresa de Jesús. <b>Finalidad:</b> atender tu consulta. <b>Legitimación:</b> tu consentimiento. <b>Destinatarios:</b> no se ceden datos a terceros, salvo obligación legal; el envío por correo lo gestiona FormSubmit. <b>Derechos:</b> acceso, rectificación, supresión y otros, escribiendo a <a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a>. <a href="privacidad.html">Más información en la Política de privacidad</a>.</p>
                     </div>
                 </div>
-                <div>
-                    <span class="subtitulo text-left">¿Dónde estamos?</span>
-                    <h2 class="text-left">Visítanos</h2>
+                <aside class="contact-aside">
+                    <span class="subtitulo text-left">¿Prefieres hablar?</span>
+                    <h2 class="text-left">Te atendemos</h2>
                     <hr class="section-divider" style="margin-left:0;">
-                    <div class="embed-frame">
-                        <iframe title="Mapa de la Parroquia Santa Teresa de Jesús" height="536" loading="lazy" allowfullscreen
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11966.759774653801!2d2.1558072908873487!3d41.42424881242464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4bd4d9ae3237b%3A0xd805a433a983f974!2sParr%C3%B2quia+Santa+Teresa+de+Jes%C3%BAs!5e0!3m2!1sca!2ses!4v1555520866181!5m2!1sca!2ses"></iframe>
-                    </div>
-                </div>
+                    <a class="contact-call" href=\"tel:""" + TEL + """\">
+                        <span class="contact-call-icon">""" + ICON_PHONE + """</span>
+                        <span><small>Llamar a la parroquia</small><strong>""" + TEL_TXT + """</strong></span>
+                    </a>
+                    <ul class="contact-facts">
+                        <li>""" + ICON_CLOCK + """<div><strong>Despacho parroquial</strong><span>Viernes por la tarde, y antes o después de cada misa</span></div></li>
+                        <li>""" + ICON_PIN + """<div><strong>Carrer del Llobregós, 132</strong><span>08032 Barcelona · El Carmel · <a href="#mapa">ver el mapa ↓</a></span></div></li>
+                        <li>""" + SAC_ICONS["mail"].replace('<svg ', '<svg class="icon" ') + """<div><strong>Correo electrónico</strong><span><a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a></span></div></li>
+                    </ul>
+                </aside>
             </div>
         </section>
+""" + location_block(big=True, sid="mapa") + """
 """)
 
 # ---------------------------------------------------------------- MISAS
@@ -1222,12 +1263,37 @@ PAGES["html/adminsacra.html"] = page(1, "Sacramentos", "Sacramento del Perdón, 
     icon_card("manos", "Perdón", "Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:30 a 19:00 horas y siempre un rato antes de cada misa.", "misas.html"),
     icon_card("agua", "Bautismo", "Hay ceremonias bautismales al mediodía en cualquier domingo del año que se pida.", "contacto.html"),
     icon_card("paloma", "Confirmación", "Cada tres años se celebra la Confirmación. La catequesis prepara a los adolescentes a partir de los 14 años.", "catequesis.html"),
-    icon_card("anillos", "Matrimonio", "Para bodas y su preparación, consulta en el despacho parroquial los viernes por la tarde.", "contacto.html"),
+    icon_card("anillos", "Matrimonio", "Bodas, su preparación y aniversarios de plata, oro o diamante: consulta en el despacho parroquial los viernes por la tarde.", "#aniversarios"),
 ]) + """
             </div>
         </section>
 
-        <section class="section-warm" id="despacho">
+        <section class="section-warm" id="aniversarios">
+            <div class="two-col center">
+                <div class="framed-img">
+                    <img src="../fotosdefinitivas/web/fotobodapepi.jpg" alt="Celebración de un aniversario de boda en la parroquia" loading="lazy">
+                </div>
+                <div>
+                    <span class="subtitulo text-left">Aniversarios de boda</span>
+                    <h2 class="text-left">Celebrad vuestras bodas de plata, oro o diamante</h2>
+                    <hr class="section-divider" style="margin-left:0;">
+                    <p>¿Cumplís años de casados? En la parroquia podéis dar gracias a Dios por vuestro matrimonio con una bendición especial durante la eucaristía, acompañados de vuestra familia y de toda la comunidad.</p>
+                    <ul class="anniv-list">
+                        <li class="plata"><b>25</b><span>Bodas de plata</span></li>
+                        <li class="rubi"><b>40</b><span>Bodas de rubí</span></li>
+                        <li class="oro"><b>50</b><span>Bodas de oro</span></li>
+                        <li class="diamante"><b>60</b><span>Bodas de diamante</span></li>
+                    </ul>
+                    <p class="caption" style="text-align:left;">Y cualquier otro aniversario que queráis celebrar.</p>
+                    <div class="btn-group">
+                        <a href="contacto.html#escribenos" class="btn btn-solid">Pedir la celebración</a>
+                        <a href=\"tel:""" + TEL + """\" class="btn btn-call">""" + ICON_PHONE + """<span>Llamar</span></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="despacho">
             <div class="two-col center">
                 <div class="framed-img">
                     <img src="../fotosdefinitivas/web/img_5434.jpg" alt="Celebración de la eucaristía" loading="lazy">
@@ -2008,7 +2074,7 @@ def structured_data(html, lang, rel):
 
 def relocate_assets(html):
     """Las páginas de /ca y /en están una carpeta más abajo: los recursos comunes suben un nivel."""
-    html = re.sub(r'((?:href|src|data-src)=")((?:\.\./)*)(css/|js/|fotosdefinitivas/|fonts/|data/|favicon|apple-touch-icon|site\.webmanifest)',
+    html = re.sub(r'((?:href|src|data-src|data-bg)=")((?:\.\./)*)(css/|js/|fotosdefinitivas/|fonts/|data/|favicon|apple-touch-icon|site\.webmanifest)',
                   r'\1../\2\3', html)
     return re.sub(r"url\('((?:\.\./)*)fotosdefinitivas/", r"url('../\1fotosdefinitivas/", html)
 
