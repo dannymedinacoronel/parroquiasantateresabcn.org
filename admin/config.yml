@@ -5,25 +5,39 @@
 
 # ---------------------------------------------------------------------------
 # ACCESO CON CORREO Y CONTRASEÑA (DecapBridge, sin cuenta de GitHub)
-# Al dar de alta la web en https://decapbridge.com, DecapBridge muestra su
-# propio bloque "backend:". Sustituye las líneas de "backend:" de abajo por
-# ese bloque, manteniendo "branch: main" y "commit_messages".
+# Los usuarios se invitan y gestionan en https://decapbridge.com
 # ---------------------------------------------------------------------------
 backend:
-  name: github
+  name: git-gateway
   repo: dannymedinacoronel/parroquiasantateresabcn.org
   branch: main
+  auth_type: pkce
+  base_url: https://auth.decapbridge.com
+  auth_endpoint: /sites/e9b3b04d-42f3-47d2-9041-343f719e4de5/pkce
+  auth_token_endpoint: /sites/e9b3b04d-42f3-47d2-9041-343f719e4de5/token
+  gateway_url: https://gateway.decapbridge.com
+  # Quién hizo cada cambio queda guardado en el historial de GitHub
   commit_messages:
-    create: "Nueva reflexión: {{slug}}"
-    update: "Reflexión actualizada: {{slug}}"
-    delete: "Reflexión eliminada: {{slug}}"
-    uploadMedia: "Foto subida: {{path}}"
-    deleteMedia: "Foto eliminada: {{path}}"
+    create: "Nueva reflexión «{{slug}}» - {{author-name}} <{{author-login}}> vía DecapBridge"
+    update: "Reflexión actualizada «{{slug}}» - {{author-name}} <{{author-login}}> vía DecapBridge"
+    delete: "Reflexión eliminada «{{slug}}» - {{author-name}} <{{author-login}}> vía DecapBridge"
+    uploadMedia: "Foto subida «{{path}}» - {{author-name}} <{{author-login}}> vía DecapBridge"
+    deleteMedia: "Foto eliminada «{{path}}» - {{author-name}} <{{author-login}}> vía DecapBridge"
+    openAuthoring: "{{message}} - {{author-name}} <{{author-login}}> vía DecapBridge"
+
+# Datos del usuario que inicia sesión (nombre, correo y foto en el panel)
+auth:
+  email_claim: email
+  first_name_claim: first_name
+  last_name_claim: last_name
+  avatar_url_claim: avatar_url
 
 locale: es
-site_url: https://www.parroquiasantateresabcn.org
-display_url: https://www.parroquiasantateresabcn.org
-logo_url: /favicon-192.png
+# Mientras el dominio propio no apunte a Netlify, los enlaces del panel van a la web publicada en Netlify.
+# Cuando www.parroquiasantateresabcn.org esté conectado, cambia estas dos líneas a ese dominio.
+site_url: https://parroquiasantateresabcn.netlify.app
+display_url: https://parroquiasantateresabcn.netlify.app
+logo_url: https://decapbridge.com/decapcms-with-bridge.svg
 publish_mode: simple
 
 media_folder: fotosdefinitivas/web/autores
