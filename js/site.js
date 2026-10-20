@@ -99,7 +99,10 @@
             setMenu(!navMenu.classList.contains("active"));
         });
         navMenu.querySelectorAll(".nav-link, .sub-link").forEach(function (link) {
-            link.addEventListener("click", function () { setMenu(false); });
+            link.addEventListener("click", function () {
+                setMenu(false);
+                link.blur(); /* que el submenú no se quede abierto por el foco al volver atrás */
+            });
         });
 
         /* Submenús: botón ⌄ (acordeón en móvil; también abre el panel con teclado en ordenador) */

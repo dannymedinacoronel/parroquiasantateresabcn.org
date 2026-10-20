@@ -1475,3 +1475,18 @@ header { gap: 1.5rem; }
     .link-arrow span { display: inline-block; margin-left: 0.3rem; }
     .widget-container h3 { font-size: 1.35rem; }
 }
+
+/* --- Arreglo del menú ---
+   1) Sin barra de progreso dentro de la cabecera: a medio llenar parecía un borde roto.
+   2) El desenfoque de fondo convierte la cabecera en contenedor de los elementos fijos y,
+      en algunos navegadores (Safari iOS), recorta el panel del menú móvil: se desactiva
+      con el menú abierto y en pantallas con hamburguesa. */
+.scroll-progress { display: none !important; }
+@media (max-width: 1280px) {
+    header, header.scrolled, header.menu-open {
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+    }
+    header.scrolled, header.menu-open { background-color: var(--white); }
+}
+header.menu-open { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
