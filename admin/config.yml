@@ -156,3 +156,9 @@ collections:
                 widget: image
                 required: false
                 hint: "Mejor una foto cuadrada de la cara. Si no hay foto se muestra la cruz de la parroquia."
+              # Huella (SHA-256) del correo con el que la persona entra al panel: así el panel la
+              # reconoce, muestra su foto y firma por ella las reflexiones nuevas. No es el correo.
+              - label: Acceso al panel
+                name: acceso
+                widget: hidden
+                required: false

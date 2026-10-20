@@ -65,8 +65,23 @@
         #pst-ev-tab.on { display: block; }
         .pst-toast { position: fixed; left: 50%; top: 78px; z-index: 500; width: min(520px, calc(100vw - 32px)); padding: .95rem 1.2rem;
             background: #1f3b2c; color: #e9f5ec; border-radius: 8px; box-shadow: 0 18px 40px rgba(0,0,0,.25);
-            font: 400 .88rem/1.5 system-ui, sans-serif; opacity: 0; transform: translate(-50%, -12px); transition: opacity .35s, transform .35s; }
+            font: 400 .88rem/1.5 system-ui, sans-serif; opacity: 0; transform: translate(-50%, -12px); transition: opacity .35s, transform .35s;
+            pointer-events: none; /* no tapa los botones que hay debajo */ }
         .pst-toast.on { opacity: 1; transform: translate(-50%, 0); }
+        .pst-toast-photo { float: left; width: 44px; height: 44px; margin: 0 .8rem .2rem 0; border-radius: 50%; object-fit: cover; border: 2px solid #bfa065; }
+
+        /* Perfil de quien ha entrado */
+        #pst-me { display: flex; align-items: center; gap: .75rem; margin: -.2rem 0 .9rem; padding: 0 0 .85rem; border-bottom: 1px solid #eadfc8; }
+        #pst-me[hidden] { display: none; }
+        #pst-me img { width: 52px; height: 52px; flex-shrink: 0; border-radius: 50%; object-fit: cover; border: 2px solid #bfa065; padding: 2px; background: #fff; }
+        #pst-me b { display: block; font-family: Georgia, "Times New Roman", serif; font-size: 1.15rem; font-style: italic; font-weight: 400; color: #1a1a1a; }
+        #pst-me span { display: block; font-size: .72rem; line-height: 1.4; color: #8a7e6c; }
+        /* su foto en el botón de perfil de la barra superior */
+        .pst-avatar { position: relative; }
+        .pst-avatar::after {
+            content: ""; position: absolute; top: 50%; left: 50%; width: 34px; height: 34px; margin: -17px 0 0 -17px;
+            border-radius: 50%; background: #fff var(--pst-me-photo) center / cover no-repeat; box-shadow: 0 0 0 2px #bfa065;
+        }
     </style>
 </head>
 <body>
@@ -77,6 +92,7 @@
     </div>
 
     <aside id="pst-hoy" aria-label="Evangelio de hoy">
+        <div id="pst-me" hidden></div>
         <div class="pst-hoy-top"><span>✝ Evangelio de hoy</span><button type="button" id="pst-hoy-min" title="Plegar / desplegar">–</button></div>
         <strong id="pst-hoy-dia"></strong>
         <small id="pst-hoy-fecha"></small>
@@ -241,6 +257,80 @@
             requestAnimationFrame(function () { t.classList.add("on"); });
             setTimeout(function () { t.classList.remove("on"); setTimeout(function () { t.remove(); }, 500); }, 9000);
         }
+        /* ------------------------------------------------------------------
+           Perfil de quien entra. En contenido/autores.json cada persona guarda
+           la huella SHA-256 de su correo («acceso»), nunca el correo en claro.
+           Al reconocerla: saludo con su foto, su foto como avatar del panel y
+           las reflexiones nuevas salen firmadas por ella.
+           ------------------------------------------------------------------ */
+        var ME = null, meEmail = "";
+        function userEmail() {
+            try {
+                var u = JSON.parse(localStorage.getItem("decap-cms-user") || "null");
+                return u ? String(u.email || (u.user_metadata && u.user_metadata.email) || "").trim().toLowerCase() : "";
+            } catch (e) { return ""; }
+        }
+        function sha256(s) {
+            return crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)).then(function (b) {
+                return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, "0"); }).join("");
+            });
+        }
+        function fotoURL(a) { return a && a.foto ? location.origin + (a.foto.charAt(0) === "/" ? a.foto : "/" + a.foto) : ""; }
+        function checkUser() {
+            var email = userEmail();
+            if (email === meEmail) return;
+            meEmail = email; ME = null;
+            if (!email || !window.crypto || !crypto.subtle) return applyMe();
+            Promise.all([sha256(email), loadTemplates().catch(function () { })]).then(function (r) {
+                var hx = r[0];
+                Object.keys(autores).forEach(function (id) { if ((autores[id].acceso || []).indexOf(hx) > -1) ME = autores[id]; });
+                applyMe();
+            });
+        }
+        function applyMe() {
+            var box = document.getElementById("pst-me");
+            if (!ME) { box.hidden = true; document.documentElement.style.removeProperty("--pst-me-photo"); return; }
+            var foto = fotoURL(ME), nombre = (ME.nombre || "").replace(/^Mn\.\s*/, "");
+            box.innerHTML = (foto ? '<img src="' + escH(foto) + '" alt="">' : "") +
+                "<div><b>Hola, " + escH(nombre) + "</b><span>Tus reflexiones nuevas saldrán firmadas como «" + escH(ME.nombre) + "».</span></div>";
+            box.hidden = false;
+            if (foto) document.documentElement.style.setProperty("--pst-me-photo", 'url("' + foto + '")');
+            paintAvatar();
+            try {
+                if (sessionStorage.getItem("pst-hola") !== ME.id) {
+                    sessionStorage.setItem("pst-hola", ME.id);
+                    toast((foto ? '<img class="pst-toast-photo" src="' + escH(foto) + '" alt="">' : "") +
+                        "<b>Bienvenido/a, " + escH(ME.nombre) + ".</b> Ya puedes escribir tus reflexiones: saldrán con tu nombre y tu foto.");
+                }
+            } catch (e) { }
+            newEntryAuthor();
+        }
+        /* Su foto en el botón de perfil de la barra superior (junto a la dirección de la web) */
+        function paintAvatar() {
+            if (!ME || !ME.foto) return;
+            var root = document.getElementById("nc-root");
+            if (!root) return;
+            var btn = root.querySelector('[aria-label="Account options dropdown"]');
+            if (btn && !btn.classList.contains("pst-avatar")) { btn.classList.add("pst-avatar"); btn.title = ME.nombre; }
+        }
+        new MutationObserver(function () { if (ME) paintAvatar(); }).observe(document.body, { childList: true, subtree: true });
+        /* Reflexión nueva: «Escrita por» ya viene con su nombre. El editor solo lee los valores
+           iniciales al abrirse, así que se intercepta el clic en «+ Reflexión» / «Añadir rápido» */
+        function newEntryAuthor() { }
+        document.addEventListener("click", function (e) {
+            if (!ME) return;
+            var a = e.target.closest && e.target.closest("a[href]");
+            var isNewLink = a && /#\/collections\/homilias\/new\/?$/.test(a.getAttribute("href") || "");
+            var item = !isNewLink && e.target.closest && e.target.closest("[role=menuitem], [role=option], li, button");
+            var isQuickAdd = item && !item.closest("#pst-hoy") && (item.textContent || "").trim() === "Reflexión";
+            if (!isNewLink && !isQuickAdd) return;
+            e.preventDefault();
+            e.stopPropagation();
+            location.hash = "#/collections/homilias/new?autor=" + encodeURIComponent(ME.id);
+        }, true);
+        setTimeout(checkUser, 0);       // cuando el resto del panel ya está preparado
+        setInterval(checkUser, 1500);   // detecta el inicio y el cierre de sesión
+
         CMS.registerEventListener({
             name: "postPublish",
             handler: function (ev) {

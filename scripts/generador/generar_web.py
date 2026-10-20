@@ -758,7 +758,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
             </div>
 
             <a class="family-entry" href="html/evangelio-familia.html">
-                <span class="family-entry-img" style="background-image:url('fotosdefinitivas/web/familia.jpg')" aria-hidden="true"></span>
+                <span class="family-entry-img" style="background-image:url('fotosdefinitivas/web/familia-parroquia.jpg')" aria-hidden="true"></span>
                 <span class="family-entry-body">
                     <span class="subtitulo">Para leer en casa</span>
                     <strong>El Evangelio para la familia</strong>
@@ -1541,7 +1541,7 @@ PAGES["html/noticias.html"] = page(1, "Noticias", "Noticias de la Parroquia Sant
 # Se inserta la página de evangeli.net tal cual (ellos ofrecen ponerla en otras webs). En catalán
 # e inglés se cambia la dirección por su versión en ese idioma (ver FAMILY_URL más abajo).
 FAMILY_URL = "https://family.evangeli.net/es"
-PAGES["html/evangelio-familia.html"] = page(1, "El Evangelio para la familia", "El Evangelio de cada día explicado para leerlo en familia: texto, comentario, ilustración y juegos para los niños.", active="inicio", body=page_hero("Para leer en casa", "El Evangelio para la familia", "web/familia.jpg", "Evangelio para la familia", "center 35%") + """
+PAGES["html/evangelio-familia.html"] = page(1, "El Evangelio para la familia", "El Evangelio de cada día explicado para leerlo en familia: texto, comentario, ilustración y juegos para los niños.", active="inicio", body=page_hero("Para leer en casa", "El Evangelio para la familia", "web/familia-parroquia.jpg", "Evangelio para la familia", "center 30%") + """
         <section class="section-warm">
             <div class="family-intro">
                 <div>

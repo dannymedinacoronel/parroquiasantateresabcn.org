@@ -1812,7 +1812,7 @@ body > header { view-transition-name: site-header; }
     box-shadow: 0 25px 55px rgba(60,40,10,.14); transition: transform .35s var(--ease), box-shadow .35s;
 }
 .family-entry:hover { transform: translateY(-4px); box-shadow: 0 32px 65px rgba(60,40,10,.2); }
-.family-entry-img { min-height: 280px; background: center 30% / cover no-repeat; transition: transform .8s var(--ease); }
+.family-entry-img { min-height: 280px; background: center 42% / cover no-repeat; transition: transform .8s var(--ease); }
 .family-entry:hover .family-entry-img { transform: scale(1.04); }
 .family-entry-body { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: .55rem; padding: 2.5rem 2.75rem; }
 .family-entry-body .subtitulo { margin: 0; }
