@@ -1123,24 +1123,14 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
 
 # ---------------------------------------------------------------- CONTACTO
 PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia Santa Teresa de Jesús: Carrer del Llobregós, 132, 08032 Barcelona.", active="contacto", body=page_hero("Estamos para ayudarte", "Contacto", "web/portada1.jpg") + """
-        <section class="schedule-section" id="datos">
-            <div class="info-cards">
-""" + "\n".join([
-    info_card("pin", "Dirección", 'Carrer del Llobregós, 132<br>08032 Barcelona<br><a href="https://goo.gl/maps/Y4SiUkiMGwp" target="_blank" rel="noopener">Cómo llegar &rarr;</a>'),
-    info_card("phone", "Teléfono", f'<a href="tel:{TEL}">{TEL_TXT}</a><br><a class="btn btn-solid btn-call btn-small" href="tel:{TEL}">{ICON_PHONE}<span>Llamar</span></a>'),
-    info_card("reloj", "Despacho parroquial", "Viernes por la tarde, y un rato antes o después de cada misa"),
-    info_card("insta", "Instagram", '<a href="https://www.instagram.com/parroquiasantateresadejesusbcn/" target="_blank" rel="noopener">@parroquiasantateresadejesusbcn</a>'),
-]) + """
-            </div>
-        </section>
-
-        <section style="padding-top:2rem;" id="escribenos">
+        <section class="contact-main" id="escribenos">
+            <span id="datos" class="anchor-alias"></span>
             <div class="two-col">
                 <div>
                     <span class="subtitulo text-left">Escríbenos</span>
                     <h2 class="text-left">Contacta con nosotros</h2>
                     <hr class="section-divider" style="margin-left:0;">
-                    <form class="mail-form form-contact" action=\"""" + FORM_MAIL + """\" method="POST" data-form-id="contacto" data-ok="formOkContact" data-subject="Nuevo mensaje desde la web" data-mail-form=\"""" + FORM_MAIL.replace("formsubmit.co/", "formsubmit.co/ajax/") + """\">
+                    <form class="mail-form form-contact" action=\"""" + FORM_MAIL + """\" method="POST" data-form-id="contacto" data-ok="formOkContact" data-subject="{Nombre} os escribe desde la web · {Motivo}" data-intro="Hola, soy {Nombre}. Os escribo desde la web de la parroquia por este motivo: {Motivo}. Podéis responder a este correo para contestarme directamente[ o llamarme al {Teléfono}]." data-mail-form=\"""" + FORM_MAIL.replace("formsubmit.co/", "formsubmit.co/ajax/") + """\">
                         <div class="form-head">
                             <span class="form-head-icon">""" + SAC_ICONS["mail"] + """</span>
                             <div>
@@ -1180,7 +1170,6 @@ PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia San
                         <button type="submit" class="btn btn-solid">Enviar mensaje</button>
                         <p class="form-status" role="status" aria-live="polite"></p>
                     </form>
-                    <p class="caption" style="text-align:left;">También puedes escribir a <a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a> o llamar al <a href=\"tel:""" + TEL + """\">""" + TEL_TXT + """</a>.</p>
                     <div class="data-notice">
                         <strong>Información básica sobre protección de datos</strong>
                         <p><b>Responsable:</b> Parroquia de Santa Teresa de Jesús. <b>Finalidad:</b> atender tu consulta. <b>Legitimación:</b> tu consentimiento. <b>Destinatarios:</b> no se ceden datos a terceros, salvo obligación legal; el envío por correo lo gestiona FormSubmit. <b>Derechos:</b> acceso, rectificación, supresión y otros, escribiendo a <a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a>. <a href="privacidad.html">Más información en la Política de privacidad</a>.</p>
@@ -1198,6 +1187,7 @@ PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia San
                         <li>""" + ICON_CLOCK + """<div><strong>Despacho parroquial</strong><span>Viernes por la tarde, y antes o después de cada misa</span></div></li>
                         <li>""" + ICON_PIN + """<div><strong>Carrer del Llobregós, 132</strong><span>08032 Barcelona · El Carmel · <a href="#mapa">ver el mapa ↓</a></span></div></li>
                         <li>""" + SAC_ICONS["mail"].replace('<svg ', '<svg class="icon" ') + """<div><strong>Correo electrónico</strong><span><a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a></span></div></li>
+                        <li>""" + SAC_ICONS["insta"].replace('<svg ', '<svg class="icon" ') + """<div><strong>Instagram</strong><span><a href="https://www.instagram.com/parroquiasantateresadejesusbcn/" target="_blank" rel="noopener">@parroquiasantateresadejesusbcn</a></span></div></li>
                     </ul>
                 </aside>
             </div>
@@ -1376,7 +1366,7 @@ PAGES["html/comuniones.html"] = page(1, "Primera Comunión", "Preparación e ins
                 <hr class="section-divider" style="margin-bottom:1rem;">
                 <p>La inscripción llega directamente por correo a la parroquia. Los campos con * son obligatorios.</p>
             </div>
-            <form class="mail-form form-communion" action=\"""" + FORM_MAIL + """\" method="POST" data-form-id="comuniones" data-mail-form=\"""" + FORM_MAIL.replace("formsubmit.co/", "formsubmit.co/ajax/") + """\">
+            <form class="mail-form form-communion" action=\"""" + FORM_MAIL + """\" method="POST" data-form-id="comuniones" data-subject="Inscripción a la Primera Comunión · {Nombre del niño o niña} {Apellidos}" data-intro="Hola, soy {Padre, madre o tutor}. Nos gustaría inscribir a {Nombre del niño o niña} {Apellidos} en la catequesis de Primera Comunión[ (curso {Curso escolar})]. Aquí tenéis todos los datos. Podéis responder a este correo para contestarnos directamente[ o llamarnos al {Teléfono}]." data-mail-form=\"""" + FORM_MAIL.replace("formsubmit.co/", "formsubmit.co/ajax/") + """\">
                 <div class="form-head">
                     <span class="form-head-icon">""" + SAC_ICONS["caliz"] + """</span>
                     <div>

@@ -550,9 +550,27 @@
             if (data._honey) return;                        // casilla trampa para robots
             var mail = form.querySelector("input[type=email]");
             if (mail && mail.value) data._replyto = mail.value; // responder directamente a quien escribe
-            /* asunto del correo con el motivo, para saber de un vistazo de qué se trata */
-            var pf = form.querySelector("[data-purpose]");
-            if (form.getAttribute("data-subject")) data._subject = form.getAttribute("data-subject") + (pf && pf.value ? " — " + pf.value : "");
+            /* El correo empieza con un saludo escrito con los datos del formulario («Hola, soy Ana…») y
+               el asunto dice quién escribe y para qué. En las plantillas, {Campo} es el valor de ese campo
+               y lo que va entre [ ] solo aparece si sus campos están rellenos. */
+            function fill(tpl) {
+                return tpl.replace(/\[([^\]]*)\]/g, function (m, part) {
+                    var empty = false;
+                    part.replace(/\{([^}]+)\}/g, function (x, k) { if (!String(data[k] || "").trim()) empty = true; });
+                    return empty ? "" : part;
+                }).replace(/\{([^}]+)\}/g, function (x, k) { return String(data[k] || "").trim(); }).replace(/\s+/g, " ").trim();
+            }
+            if (form.getAttribute("data-subject")) data._subject = fill(form.getAttribute("data-subject"));
+            if (form.getAttribute("data-intro")) {
+                var ordered = { "Resumen": fill(form.getAttribute("data-intro")) };
+                Object.keys(data).forEach(function (k) {
+                    var v = String(data[k]).trim();
+                    if (k === "Formulario" || (!v && k.charAt(0) !== "_")) return;   // sin filas vacías
+                    var d = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v);
+                    ordered[k] = d ? d[3] + "/" + d[2] + "/" + d[1] : data[k];          // fechas como 04/05/2018
+                });
+                data = ordered;
+            }
             btn.disabled = true;
             status.className = "form-status";
             status.textContent = T("formSending");
