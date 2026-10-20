@@ -1,0 +1,16 @@
+{
+  "autores": [
+    {
+      "id": "albert-sols",
+      "nombre": "Mn. Albert Sols",
+      "cargo": "Rector de nuestra parroquia",
+      "foto": "/fotosdefinitivas/web/albertsols-retrato.jpg"
+    },
+    {
+      "id": "magdalena",
+      "nombre": "Magdalena",
+      "cargo": "Feligresa de nuestra parroquia",
+      "foto": "/fotosdefinitivas/web/magdalena-retrato.jpg"
+    }
+  ]
+}

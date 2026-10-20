@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /scripts/
+Disallow: /admin/
+Disallow: /contenido/
 
 Sitemap: https://www.parroquiasantateresabcn.org/sitemap.xml

@@ -1,0 +1,136 @@
+# Panel de homilías (Decap CMS)
+# Cada homilía se guarda como archivo en contenido/homilias/ del repositorio de GitHub.
+# Al publicar, Netlify vuelve a generar la web y la reflexión aparece sola en la portada,
+# en el menú y en el archivo.
+
+backend:
+  name: github
+  repo: dannymedinacoronel/parroquiasantateresabcn.org
+  branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+  commit_messages:
+    create: "Nueva reflexión: {{slug}}"
+    update: "Reflexión actualizada: {{slug}}"
+    delete: "Reflexión eliminada: {{slug}}"
+    uploadMedia: "Foto subida: {{path}}"
+    deleteMedia: "Foto eliminada: {{path}}"
+
+locale: es
+site_url: https://www.parroquiasantateresabcn.org
+display_url: https://www.parroquiasantateresabcn.org
+logo_url: /favicon-192.png
+publish_mode: simple
+
+media_folder: fotosdefinitivas/web/autores
+public_folder: /fotosdefinitivas/web/autores
+
+collections:
+  - name: homilias
+    label: Homilías y reflexiones
+    label_singular: Reflexión
+    description: >
+      Escribe o pega el texto de la reflexión, elige quién la firma y pulsa «Publicar».
+      En unos minutos aparecerá en la portada de la web, en el menú y en el archivo.
+    folder: contenido/homilias
+    extension: json
+    format: json
+    create: true
+    delete: true
+    slug: "{{fecha}}-{{titulo}}"
+    identifier_field: titulo
+    summary: "{{fecha}} · {{titulo}}"
+    sortable_fields: ["fecha", "titulo"]
+    view_filters:
+      - { label: "Publicadas", field: publicado, pattern: true }
+      - { label: "Borradores", field: publicado, pattern: false }
+    fields:
+      - label: Título
+        name: titulo
+        widget: string
+        hint: "Ej.: Remar mar adentro"
+      - label: Escrita por
+        name: autor
+        widget: relation
+        collection: ajustes
+        file: autores
+        search_fields: ["autores.*.nombre"]
+        display_fields: ["autores.*.nombre"]
+        value_field: "autores.*.id"
+        hint: "Si la persona no aparece, añádela antes en «Personas que escriben»."
+      - label: Fecha
+        name: fecha
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "DD/MM/YYYY"
+        time_format: false
+        picker_utc: true
+        hint: "La reflexión más reciente es la que sale en la portada."
+      - label: Tiempo litúrgico (opcional)
+        name: tiempo
+        widget: string
+        required: false
+        hint: "Aparece encima del título. Ej.: III domingo de Pascua · 2026. Si lo dejas vacío se muestra la fecha."
+      - label: Saludo inicial (opcional)
+        name: saludo
+        widget: string
+        required: false
+        hint: "Ej.: Queridos/as amigos/as:"
+      - label: Texto de la reflexión
+        name: texto
+        widget: markdown
+        buttons: ["bold", "italic", "heading-three", "quote", "bulleted-list"]
+        editor_components: []
+        modes: ["rich_text", "raw"]
+        hint: >
+          Pega el texto. Separa los párrafos con una línea en blanco. La primera letra del primer
+          párrafo se mostrará como letra capitular. Usa «Cita» para destacar una frase en grande
+          y «Subtítulo» (H3) para los apartados.
+      - label: Audio de SoundCloud (opcional)
+        name: audio
+        widget: string
+        required: false
+        hint: "Pega el enlace de la pista de SoundCloud (https://soundcloud.com/...)."
+      - label: Enlace a la presentación (opcional)
+        name: presentacion
+        widget: string
+        required: false
+        hint: "Por ejemplo, una carpeta de Google Drive."
+      - label: Publicada
+        name: publicado
+        widget: boolean
+        default: true
+        hint: "Desactívalo para guardarla como borrador sin que aparezca en la web."
+
+  - name: ajustes
+    label: Personas que escriben
+    editor:
+      preview: false
+    files:
+      - name: autores
+        label: Autores de las reflexiones
+        file: contenido/autores.json
+        format: json
+        fields:
+          - label: Personas
+            name: autores
+            widget: list
+            summary: "{{fields.nombre}}"
+            fields:
+              - label: Identificador
+                name: id
+                widget: string
+                hint: "En minúsculas y sin espacios, p. ej. «maria-garcia». No lo cambies después de usarlo."
+              - label: Nombre que se muestra
+                name: nombre
+                widget: string
+              - label: Cargo o relación con la parroquia
+                name: cargo
+                widget: string
+                required: false
+                hint: "Ej.: Rector de nuestra parroquia · Feligresa · Catequista"
+              - label: Foto (opcional)
+                name: foto
+                widget: image
+                required: false
+                hint: "Mejor una foto cuadrada de la cara. Si no hay foto se muestra la cruz de la parroquia."

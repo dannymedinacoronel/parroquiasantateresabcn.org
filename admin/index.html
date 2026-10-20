@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Panel de homilías · Parroquia Santa Teresa de Jesús</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url">
+</head>
+<body>
+    <!-- Panel de edición (Decap CMS). La configuración está en /admin/config.yml -->
+    <script src="https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js"></script>
+    <script>
+        /* Vista previa con los estilos reales de la web */
+        CMS.registerPreviewStyle("/css/fonts.css");
+        CMS.registerPreviewStyle("/css/site.css");
+        CMS.registerPreviewStyle(".preview-wrap{padding:2rem 1rem;background:#f3e8d2;min-height:100vh}", { raw: true });
+
+        var h = React.createElement;
+        CMS.registerPreviewTemplate("homilias", function (props) {
+            var e = props.entry;
+            return h("div", { className: "preview-wrap" },
+                h("article", { className: "prose book-page reading-book", style: { maxWidth: "820px", margin: "0 auto" } },
+                    h("span", { className: "book-kicker" }, e.getIn(["data", "tiempo"]) || e.getIn(["data", "fecha"]) || ""),
+                    h("h2", { className: "reading-title" }, e.getIn(["data", "titulo"]) || "Título de la reflexión"),
+                    e.getIn(["data", "saludo"]) ? h("p", { className: "lead" }, e.getIn(["data", "saludo"])) : null,
+                    h("div", { className: "preview-body" }, props.widgetFor("texto"))
+                )
+            );
+        });
+    </script>
+</body>
+</html>

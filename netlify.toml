@@ -3,13 +3,78 @@
 
 [build]
   publish = "."
-  command = ""
+  # Regenera todas las páginas (también las homilías publicadas desde /admin/)
+  command = "python3 scripts/generador/generar_web.py ."
+
+[build.environment]
+  PYTHON_VERSION = "3.12"
 
 # --- Direcciones antiguas -> nuevas (301 conserva el posicionamiento en Google) ---
 # El menú antiguo enlazaba a /HTML/ en mayúsculas
 [[redirects]]
   from = "/HTML/*"
   to = "/html/:splat"
+  status = 301
+
+# Homilías: direcciones antiguas -> nuevas páginas generadas desde el panel
+[[redirects]]
+  from = "/html/humilias.html"
+  to = "/html/reflexiones/2019-05-12-hechos-de-los-apostoles"
+  status = 301
+
+[[redirects]]
+  from = "/html/humilias"
+  to = "/html/reflexiones/2019-05-12-hechos-de-los-apostoles"
+  status = 301
+
+[[redirects]]
+  from = "/html/humiliasmagdalena3domingo.html"
+  to = "/html/reflexiones/2019-05-05-remar-mar-adentro"
+  status = 301
+
+[[redirects]]
+  from = "/html/humiliasmagdalena3domingo"
+  to = "/html/reflexiones/2019-05-05-remar-mar-adentro"
+  status = 301
+
+[[redirects]]
+  from = "/ca/html/humilias.html"
+  to = "/ca/html/reflexiones/2019-05-12-hechos-de-los-apostoles"
+  status = 301
+
+[[redirects]]
+  from = "/ca/html/humilias"
+  to = "/ca/html/reflexiones/2019-05-12-hechos-de-los-apostoles"
+  status = 301
+
+[[redirects]]
+  from = "/ca/html/humiliasmagdalena3domingo.html"
+  to = "/ca/html/reflexiones/2019-05-05-remar-mar-adentro"
+  status = 301
+
+[[redirects]]
+  from = "/ca/html/humiliasmagdalena3domingo"
+  to = "/ca/html/reflexiones/2019-05-05-remar-mar-adentro"
+  status = 301
+
+[[redirects]]
+  from = "/en/html/humilias.html"
+  to = "/en/html/reflexiones/2019-05-12-hechos-de-los-apostoles"
+  status = 301
+
+[[redirects]]
+  from = "/en/html/humilias"
+  to = "/en/html/reflexiones/2019-05-12-hechos-de-los-apostoles"
+  status = 301
+
+[[redirects]]
+  from = "/en/html/humiliasmagdalena3domingo.html"
+  to = "/en/html/reflexiones/2019-05-05-remar-mar-adentro"
+  status = 301
+
+[[redirects]]
+  from = "/en/html/humiliasmagdalena3domingo"
+  to = "/en/html/reflexiones/2019-05-05-remar-mar-adentro"
   status = 301
 
 # Páginas antiguas eliminadas

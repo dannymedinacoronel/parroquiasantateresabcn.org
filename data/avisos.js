@@ -21,7 +21,7 @@ window.AVISOS = [
         desde: "2026-10-20",
         hasta: "2026-12-31",
         imagen: "fotosdefinitivas/web/magdalena-retrato.jpg",
-        enlace: "html/humiliasmagdalena3domingo.html",
+        enlace: "html/reflexiones/2019-05-05-remar-mar-adentro.html",
         etiqueta: { es: "Ya disponible", ca: "Ja disponible", en: "Now available" },
         titulo: {
             es: "Reflexiones del Evangelio",

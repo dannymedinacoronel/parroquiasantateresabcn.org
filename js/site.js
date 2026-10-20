@@ -156,7 +156,7 @@
         "main section:not(.hero):not(.page-hero) > h2",
         ".two-col > *", ".card", ".feature", ".flip-card", ".widget-container",
         ".timeline-item", ".quote", ".image-band > *:not(.quote)", ".schedule-card",
-        ".icon-card", ".mosaic a", ".info-cards", ".org-node", ".cta-band", ".priest-card", ".book-page", ".reading-author", ".reading-audio", ".reading-nav", ".reflection-card"
+        ".icon-card", ".mosaic a", ".info-cards", ".org-node", ".cta-band", ".priest-card", ".book-page", ".reading-author", ".reading-audio", ".reading-nav", ".reflection-card", ".open-book", ".homily-chip"
     ].join(",");
     var targets = document.querySelectorAll(revealSelector);
     if ("IntersectionObserver" in window) {

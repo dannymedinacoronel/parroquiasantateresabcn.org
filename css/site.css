@@ -1624,3 +1624,93 @@ body.menu-open .notice-card { opacity: 0; visibility: hidden; }
     box-shadow: 0 0 0 4px #fffaf0, 0 0 0 5px rgba(191,160,101,0.4);
 }
 @media (max-width: 600px) { .notice-photo { flex-basis: auto; padding: 1.2rem 0 0 1rem; } .notice-photo img { width: 54px; height: 54px; } }
+
+/* ==========================================================================
+   PORTADA: REFLEXIÓN COMO LIBRO ABIERTO
+   ========================================================================== */
+.open-book {
+    position: relative; max-width: 1120px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    background: #fffaf0; border-radius: 6px;
+    box-shadow: 0 40px 80px rgba(60,40,10,0.22), 0 2px 0 #e2d1ad,
+                0 6px 0 -1px #f6eedf, 0 7px 0 -1px #e2d1ad, 0 11px 0 -2px #f3e8d2, 0 12px 0 -2px #dcc79e;
+}
+/* lomo central con sombra de encuadernación */
+.open-book::before {
+    content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 70px; margin-left: -35px; pointer-events: none; z-index: 1;
+    background: linear-gradient(90deg, transparent, rgba(120,90,40,0.10) 38%, rgba(70,50,20,0.28) 50%, rgba(120,90,40,0.10) 62%, transparent);
+}
+.book-leaf { position: relative; padding: 3.5rem 3.25rem 3.25rem; }
+.book-leaf::after {
+    content: ""; position: absolute; inset: 14px; pointer-events: none;
+    border: 1px solid rgba(191,160,101,0.45);
+}
+.book-left {
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.35rem;
+    background: radial-gradient(ellipse at 50% 0%, rgba(191,160,101,0.16), transparent 60%);
+}
+.book-left .priest-photo { width: 170px; height: 170px; margin: 0 auto 1rem; }
+.book-author { font-family: var(--header-font); font-size: 2.1rem; font-style: italic; font-weight: 500; color: var(--heading-color); line-height: 1.1; }
+.book-role { font-size: 0.74rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent-dark); }
+.book-left .ornament { margin: 1.1rem auto 0.6rem; }
+.book-quote {
+    position: relative; margin: 0 0 1.75rem; padding: 0 0.5rem;
+    font-family: var(--header-font); font-size: 1.5rem; line-height: 1.45; font-style: italic; color: #4a2f22;
+}
+.book-quote span { display: block; font-size: 3.6rem; line-height: 0.6; color: var(--accent-color); margin-bottom: 0.4rem; font-style: normal; }
+.book-right { padding-left: 3.75rem; }
+.book-right .homily-text h3 { font-size: clamp(1.8rem, 2.6vw, 2.35rem); font-style: italic; font-weight: 500; line-height: 1.2; margin: 0.4rem 0 1.4rem; color: var(--heading-color); }
+.book-right .homily-text p {
+    font-size: 1.02rem; line-height: 1.9; margin-bottom: 1rem;
+    display: -webkit-box; -webkit-line-clamp: 11; -webkit-box-orient: vertical; overflow: hidden;
+}
+.book-right .book-ornament { right: 2.5rem; bottom: 2rem; }
+/* cinta de lectura */
+.book-ribbon {
+    position: absolute; top: -6px; left: calc(50% + 40px); z-index: 2;
+    width: 26px; height: 120px; background: linear-gradient(90deg, #7a2323, #9b3131 50%, #6e1f1f);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 84%, 0 100%);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.no-photo { display: grid; place-items: center; background: #f3e8d2 !important; color: var(--accent-color); }
+.no-photo svg { width: 34%; height: auto; }
+
+.homily-more { max-width: 1120px; margin: 4rem auto 0; text-align: center; }
+.homily-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin: 1rem 0 1.5rem; }
+.homily-chip {
+    display: inline-flex; align-items: center; gap: 0.9rem; text-align: left; padding: 0.6rem 1.4rem 0.6rem 0.6rem;
+    background: rgba(255,250,240,0.9); border: 1px solid #e2d1ad; border-radius: 60px; text-decoration: none; color: inherit;
+    box-shadow: var(--shadow-sm); transition: transform .3s var(--ease), box-shadow .3s;
+}
+.homily-chip:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.chip-photo { width: 52px; height: 52px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 2px solid var(--accent-color); }
+.chip-photo img { width: 100%; height: 100%; object-fit: cover; }
+.homily-chip strong { display: block; font-family: var(--header-font); font-size: 1.2rem; font-style: italic; font-weight: 500; color: var(--heading-color); line-height: 1.2; }
+.homily-chip em { font-style: normal; font-size: 0.78rem; color: var(--muted); }
+.reading-next-photo { width: 84px; height: 84px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 2px solid var(--accent-color); padding: 2px; background: #fff; }
+.reading-next-photo img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.reflection-card .clamp { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* Historia: punto de actualidad */
+.timeline-now .year { font-style: italic; color: #7a2e2e; }
+.timeline-now::before { background: var(--accent-color) !important; }
+.timeline-now .link-arrow { margin-top: 0.75rem; }
+
+@media (max-width: 900px) {
+    .open-book { grid-template-columns: 1fr; }
+    .open-book::before { display: none; }
+    .book-ribbon { left: auto; right: 2rem; }
+    .book-left { border-bottom: 1px dashed rgba(191,160,101,0.5); }
+    .book-right { padding-left: 3.25rem; }
+}
+@media (max-width: 600px) {
+    .book-leaf, .book-right { padding: 2.5rem 1.5rem 2.25rem; }
+    .book-leaf::after { inset: 8px; }
+    .book-left .priest-photo { width: 140px; height: 140px; }
+    .book-quote { font-size: 1.3rem; }
+    .homily-chip { width: 100%; }
+    .reading-next-photo { width: 64px; height: 64px; }
+}
+.reading-next .reading-next-photo img { border: 0; padding: 0; width: 100%; height: 100%; }
+.book-ribbon { left: auto; right: 4.5rem; }
+@media (max-width: 900px) { .book-ribbon { right: 2rem; } }

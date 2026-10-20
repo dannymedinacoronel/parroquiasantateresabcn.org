@@ -1,6 +1,13 @@
-import sys, os
+import sys, os, re
 
 ROOT = sys.argv[1]
+
+import html as _html
+import importlib.util as _ilu
+_hs = _ilu.spec_from_file_location("homilias", os.path.join(os.path.dirname(os.path.abspath(__file__)), "homilias.py"))
+HOM = _ilu.module_from_spec(_hs); _hs.loader.exec_module(HOM)
+HOMILIAS, AUTORES = HOM.load(ROOT)
+esc = lambda t: _html.escape(t or "", quote=False)
 
 NAV = [
     ("inicio", "Inicio", "index.html", [
@@ -23,9 +30,8 @@ NAV = [
         ("§", "Actualidad de la Iglesia"),
         ("Vaticano y Arzobispado de Barcelona", "html/noticias.html"),
         ("§parish", "De nuestra parroquia"),
-        ("+Reflexión dominical · Mn. Albert Sols", "html/humilias.html"),
-        ("+Remar mar adentro · Magdalena", "html/humiliasmagdalena3domingo.html"),
-        ("+Homilías anteriores", "html/humiliasmenu.html"),
+        ("+Última reflexión", "__ULTIMA__"),
+        ("+Todas las reflexiones", "html/humiliasmenu.html"),
     ]),
     ("dinamica", "Dinámica Pastoral", "html/dinamicapastoral.html", [
         ("Grupos y servicios", "html/dinamicapastoral.html"),
@@ -52,6 +58,11 @@ NAV = [
         ("Política de privacidad", "html/privacidad.html"),
     ]),
 ]
+
+if HOMILIAS:
+    NAV = [(k, l, p, [(a, HOMILIAS[0]["url"] if b == "__ULTIMA__" else b) for a, b in ch]) for k, l, p, ch in NAV]
+else:
+    NAV = [(k, l, p, [(a, b) for a, b in ch if b != "__ULTIMA__"]) for k, l, p, ch in NAV]
 
 CHEVRON = ('<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" '
            'stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>')
@@ -87,7 +98,7 @@ PARROQUIA_LINKS = [
     ("Eucaristías y calendario", "html/misas.html"),
     ("Sacramentos", "html/adminsacra.html"),
     ("Catequesis", "html/catequesis.html"),
-    ("Homilías", "html/humilias.html"),
+    ("Homilías", "html/humiliasmenu.html"),
     ("Jóvenes", "html/jovenes2alternativa.html"),
     ("Imágenes y vídeos", "html/imagenes.html"),
 ]
@@ -143,9 +154,15 @@ def href(path, depth):
         if path.startswith("index.html#"):
             return path[len("index.html"):]
         return path
-    if path.startswith("html/"):
-        return path[5:]
-    return "../" + path
+    if depth == 1:
+        if path.startswith("html/"):
+            return path[5:]
+        return "../" + path
+    # depth 2: páginas de html/reflexiones/
+    import posixpath as _pp
+    target, _, anchor = path.partition("#")
+    rel = _pp.relpath(target, "html/reflexiones")
+    return rel + ("#" + anchor if anchor else "")
 
 
 def page(depth, title, desc, body, active=None, extra_head="", extra_scripts="", full_title=None, cta=None):
@@ -154,7 +171,7 @@ def page(depth, title, desc, body, active=None, extra_head="", extra_scripts="",
     parroquia = "\n".join(
         '                    <li><a href="%s">%s</a></li>' % (href(path, depth), label)
         for label, path in PARROQUIA_LINKS)
-    logo_href = "#" if depth == 0 else "../index.html"
+    logo_href = "#" if depth == 0 else "../" * depth + "index.html"
     if cta is None:
         cta = depth == 1 and active != "contacto"
     cta_html = CTA_BAND if cta else ""
@@ -399,6 +416,68 @@ INDEX_HEAD = """    <link rel="preload" as="image" href="fotosdefinitivas/web/po
     </script>
 """
 
+def _first_quote(text):
+    m = re.search(r"(?m)^>\s*(.+)$", text or "")
+    return m.group(1).strip() if m else ""
+
+
+def _portrait(h, depth, cls="priest-photo"):
+    p = "../" * depth
+    if h["autor_foto"]:
+        return f'<div class="{cls}"><img src="{p}{h["autor_foto"]}" alt="{esc(h["autor_nombre"])}" loading="lazy"></div>'
+    return f'<div class="{cls} no-photo">{LOGO_MARK}</div>'
+
+
+def home_homily():
+    if not HOMILIAS:
+        return ""
+    h = HOMILIAS[0]
+    quote = _first_quote(h.get("texto"))
+    quote_html = (f'<blockquote class="book-quote"><span aria-hidden="true">&ldquo;</span>{esc(quote)}</blockquote>' if quote else "")
+    others = "".join(
+        f"""
+                <a class="homily-chip" href="{o["url"]}">
+                    {_portrait(o, 0, "chip-photo")}
+                    <span><strong>{esc(o["titulo"])}</strong><em>{esc(o["autor_nombre"])}</em></span>
+                </a>""" for o in HOMILIAS[1:3])
+    return f"""        <section id="reflexion" class="homily">
+            <div class="section-head">
+                <span class="subtitulo">De nuestra parroquia</span>
+                <h2>Reflexión dominical</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            <div class="open-book">
+                <span class="book-ribbon" aria-hidden="true"></span>
+                <div class="book-leaf book-left">
+                    {_portrait(h, 0)}
+                    <strong class="book-author">{esc(h["autor_nombre"])}</strong>
+                    <span class="book-role">{esc(h["autor_cargo"])}</span>
+                    {ORNAMENT}
+                    {quote_html}
+                    <a href="{h["url"]}" class="btn btn-solid">Leer la reflexión completa</a>
+                </div>
+                <div class="book-leaf book-right">
+                    <article class="homily-text">
+                        <span class="book-kicker">{esc(h["kicker"])}</span>
+                        <h3>{esc(h["titulo"])}</h3>
+                        <p class="illuminated">{esc(h["extracto"])}</p>
+                    </article>
+                    <a href="{h["url"]}" class="link-arrow book-more">Seguir leyendo <span>&rarr;</span></a>
+                    <span class="book-ornament" aria-hidden="true">{LOGO_MARK}</span>
+                </div>
+            </div>
+            <div class="homily-more">
+                <span class="subtitulo">Otras reflexiones</span>
+                <div class="homily-chips">{others}
+                </div>
+                <a href="html/humiliasmenu.html" class="link-arrow">Ver todas las reflexiones <span>&rarr;</span></a>
+            </div>
+        </section>
+"""
+
+
+HOME_HOMILY = home_homily()
+
 # ---------------------------------------------------------------- INDEX
 ICON_SUN = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>'
 ICON_MOON = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>'
@@ -496,35 +575,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
             </div>
         </section>
 
-        <section id="reflexion" class="homily">
-            <div class="section-head">
-                <span class="subtitulo">La palabra del párroco</span>
-                <h2>Reflexión dominical</h2>
-                <hr class="section-divider" style="margin-bottom:0;">
-            </div>
-            <div class="homily-grid">
-                <div class="priest-card">
-                    <div class="priest-photo"><img src="fotosdefinitivas/web/albertsols-retrato.jpg" alt="Mn. Albert Sols" loading="lazy"></div>
-                    <strong>Mn. Albert Sols</strong>
-                    <span>Rector de nuestra parroquia</span>
-                    <div class="btn-stack">
-                        <a href="html/humilias.html" class="btn btn-solid">Leer la reflexión completa</a>
-                        <a href="html/humiliasmenu.html" class="btn">Ver anteriores homilías &raquo;</a>
-                    </div>
-                </div>
-                <div class="book-page">
-                    <article class="homily-text">
-                        <span class="book-kicker">Tiempo de Pascua · Mayo de 2019</span>
-                        <h3>De contenido sublime el libro de los «Hechos de los Apóstoles»</h3>
-                        <p class="illuminated">Texto neotestamentario que la Iglesia fija como primera lectura a lo largo de los cincuenta días de Pascua. San Lucas narra con sentido eclesial, no tanto la vida detallada de cada Apóstol, sino el cómo vivía la primera comunidad cristiana, la ilusión y heroísmo de los primeros cristianos. Deja constancia de esa fe tan sólida en el Espíritu Santo quien comenzaba actuar en su Iglesia naciente por medio de ellos.</p>
-                        <p class="book-fade">Bien podría subtitularse este libro: «presencia del Espíritu en los primeros cristianos»…</p>
-                    </article>
-                    <a href="html/humilias.html" class="link-arrow book-more">Seguir leyendo <span>&rarr;</span></a>
-                    <span class="book-ornament" aria-hidden="true">""" + LOGO_MARK + """</span>
-                </div>
-            </div>
-        </section>
-
+""" + HOME_HOMILY + """
         <section id="vida" class="section-warm">
             <div class="section-head">
                 <span class="subtitulo">Dinámica pastoral</span>
@@ -820,6 +871,12 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
                     <h3>El hundimiento del túnel</h3>
                     <p>En febrero de 2005 la parroquia se situó en el centro de las miradas, al estar afectada por el desgraciado hundimiento del túnel de maniobra durante las obras del metro. El patio de la iglesia está situado justo enfrente, al otro lado de la calle, de donde se formó el agujero.</p>
                 </div>
+                <div class="timeline-item timeline-now">
+                    <div class="year">Hoy</div>
+                    <h3>Un siglo de vida en el Carmel</h3>
+                    <p>Cien años después de su construcción, la parroquia sigue siendo un punto de encuentro del barrio: la misa dominical con coro góspel, la catequesis de niños y adolescentes, Cáritas, los grupos de jóvenes y de matrimonios, y una comunidad que continúa abierta a todos.</p>
+                    <a href="dinamicapastoral.html" class="link-arrow">Conoce la vida parroquial <span>&rarr;</span></a>
+                </div>
             </div>
         </section>
 
@@ -1044,149 +1101,80 @@ PAGES["html/imagenes.html"] = page(1, "Imágenes y vídeos", "Vídeos y álbumes
         </section>
 """)
 
-# ---------------------------------------------------------------- HOMILÍAS
-SOUNDCLOUD = ('<iframe title="Audio de la reflexión" width="100%" height="120" scrolling="no" frameborder="no" loading="lazy" '
-              'src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{track}&color=%23bfa065&auto_play=false'
-              '&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>')
-
-
-def reading_author(photo, name, role):
-    return f"""                <div class="reading-author">
-                    <div class="priest-photo"><img src="../fotosdefinitivas/web/{photo}" alt="{name}"></div>
-                    <div class="reading-author-text">
-                        <span class="book-kicker">{role}</span>
-                        <strong>{name}</strong>
-                    </div>
-                </div>"""
-
-
-def reading_audio(track):
+# ---------------------------------------------------------------- HOMILÍAS (desde el panel)
+def reading_audio(src):
     return f"""                <div class="reading-audio">
                     <span class="reading-audio-label"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg>Escuchar la reflexión</span>
-                    {SOUNDCLOUD.format(track=track)}
+                    <iframe title="Audio de la reflexión" width="100%" height="120" scrolling="no" frameborder="no" loading="lazy" src="{src}"></iframe>
                 </div>"""
 
 
-def other_reflection(href, photo, name, title, text):
-    return f"""                <nav class="reading-nav" aria-label="Otras reflexiones">
+def homily_page(i, h):
+    nxt = HOMILIAS[i + 1] if i + 1 < len(HOMILIAS) else (HOMILIAS[i - 1] if i > 0 else None)
+    audio = reading_audio(HOM.audio_src(h.get("audio"))) if h.get("audio") else ""
+    pres = (f"""
+                <div class="btn-group center reading-actions">
+                    <a class="btn" href="{esc(h["presentacion"])}" target="_blank" rel="noopener">Descarga la presentación &raquo;</a>
+                </div>""" if h.get("presentacion") else "")
+    saludo = f'\n                    <p class="lead">{esc(h["saludo"])}</p>' if h.get("saludo") else ""
+    other = ""
+    if nxt:
+        other = f"""
+                <nav class="reading-nav" aria-label="Otras reflexiones">
                     <span class="subtitulo">Otras reflexiones</span>
-                    <a class="reading-next" href="{href}">
-                        <img src="../fotosdefinitivas/web/{photo}" alt="{name}" loading="lazy">
-                        <div><span class="book-kicker">{name}</span><strong>{title}</strong><p>{text}</p></div>
+                    <a class="reading-next" href="{nxt["slug"]}.html">
+                        {_portrait(nxt, 2, "reading-next-photo")}
+                        <div><span class="book-kicker">{esc(nxt["autor_nombre"])}</span><strong>{esc(nxt["titulo"])}</strong><p>{esc(nxt["kicker"])}</p></div>
                         <span class="reading-arrow" aria-hidden="true">&rarr;</span>
                     </a>
-                    <a class="link-arrow" href="humiliasmenu.html">Ver anteriores homilías <span>&rarr;</span></a>
+                    <a class="link-arrow" href="../humiliasmenu.html">Ver todas las reflexiones <span>&rarr;</span></a>
                 </nav>"""
-
-
-PAGES["html/humilias.html"] = page(1, "Reflexión dominical", "Reflexión dominical de Mn. Albert Sols, rector de la Parroquia Santa Teresa de Jesús.", body=page_hero("Comentario del Evangelio", "Reflexión Dominical") + """
+    desc = f"{h['titulo']} — reflexión de {h['autor_nombre']} en la Parroquia Santa Teresa de Jesús."
+    body = page_hero(esc(h["kicker"]), esc(h["titulo"]), crumb="Homilías").replace('href="../index.html"', 'href="../../index.html"').replace("url('../fotosdefinitivas/", "url('../../fotosdefinitivas/") + f"""
         <section class="reading">
             <div class="reading-wrap">
-""" + reading_author("albertsols-retrato.jpg", "Mn. Albert Sols", "Rector de nuestra parroquia") + """
-""" + reading_audio("630405192") + """
+                <div class="reading-author">
+                    {_portrait(h, 2)}
+                    <div class="reading-author-text">
+                        <span class="book-kicker">{esc(h["autor_cargo"])}</span>
+                        <strong>{esc(h["autor_nombre"])}</strong>
+                    </div>
+                </div>
+{audio}{pres}
                 <article class="prose book-page reading-book">
-                    <span class="book-kicker">Tiempo de Pascua · Mayo de 2019</span>
-                    <h2 class="reading-title">De contenido sublime el libro de los «Hechos de los Apóstoles»</h2>
-                    """ + ORNAMENT + """
-                    <p class="illuminated">Texto neotestamentario que la Iglesia fija como primera lectura a lo largo de los cincuenta días de Pascua. San Lucas narra con sentido eclesial, no tanto la vida detallada de cada Apóstol, sino el cómo vivía la primera comunidad cristiana, la ilusión y heroísmo de los primeros cristianos. Deja constancia de esa fe tan sólida en el Espíritu Santo quien comenzaba actuar en su Iglesia naciente por medio de ellos. Bien podría subtitularse este libro: «presencia del Espíritu en los primeros cristianos».</p>
-                    <p>Aparecen no pocas alusiones a los ángeles siendo una realidad el trato natural que los primeros cristianos tenían con estos seres puros creados por Dios. De entre los apóstoles su autor se detiene en Pablo y Pedro. Cabe ver como dos ejes en los Hechos: uno horizontal el de la primitiva comunidad cristiana y otro vertical de las apariciones del Cristo Resucitado durante la cincuentena pascual que culmina con la Ascensión y la llegada del Consolador, Solemnidad de Pentecostés.</p>
-                    <blockquote class="pull">Que la vida heroica de los primeros cristianos suponga para nosotros un reclamo de cómo hemos de dar testimonio del Evangelio en una sociedad cada vez más paganizada.</blockquote>
-                    <p class="firma">Mn. Albert Sols</p>
+                    <span class="book-kicker">{esc(h["kicker"])}</span>
+                    <h2 class="reading-title">{esc(h["titulo"])}</h2>
+                    {ORNAMENT}{saludo}
+{HOM.markdown(h.get("texto", ""))}
+                    <p class="firma">{esc(h["autor_nombre"])}</p>
                 </article>
-""" + other_reflection("humiliasmagdalena3domingo.html", "magdalena-retrato.jpg", "Magdalena", "Remar mar adentro", "Reflexión del III domingo de Pascua 2019.") + """
+{other}
             </div>
         </section>
-""")
+"""
+    return page(2, esc(h["titulo"]), esc(desc), body=body, active="noticias")
 
-PAGES["html/humiliasmenu.html"] = page(1, "Homilías anteriores", "Historial de los comentarios del Evangelio de la Parroquia Santa Teresa de Jesús.", body=page_hero("Archivo", "Comentarios del Evangelio", crumb="Homilías") + """
-        <section>
+
+for _i, _h in enumerate(HOMILIAS):
+    PAGES[_h["url"]] = homily_page(_i, _h)
+
+_cards = "".join(f"""
+                <a class="reflection-card" href="reflexiones/{h["slug"]}.html">
+                    {_portrait(h, 1)}
+                    <span class="book-kicker"><span>{esc(h["autor_nombre"])}</span> · <span>{esc(h["kicker"])}</span></span>
+                    <h3>{esc(h["titulo"])}</h3>
+                    <p class="clamp">{esc(h["extracto"])}</p>
+                    <span class="flip-hint">Leer &rarr;</span>
+                </a>""" for h in HOMILIAS)
+
+PAGES["html/humiliasmenu.html"] = page(1, "Reflexiones", "Reflexiones y comentarios del Evangelio de la Parroquia Santa Teresa de Jesús.", active="noticias", body=page_hero("De nuestra parroquia", "Reflexiones del Evangelio", crumb="Homilías") + """
+        <section class="reading">
             <div class="section-head">
                 <span class="subtitulo">Historial</span>
-                <h2>Reflexiones anteriores</h2>
+                <h2>Todas las reflexiones</h2>
                 <hr class="section-divider" style="margin-bottom:0;">
             </div>
-            <div class="reflection-list">
-                <a class="reflection-card" href="humilias.html">
-                    <div class="priest-photo"><img src="../fotosdefinitivas/web/albertsols-retrato.jpg" alt="Mn. Albert Sols" loading="lazy"></div>
-                    <span class="book-kicker">Mn. Albert Sols · Mayo de 2019</span>
-                    <h3>Los Hechos de los Apóstoles</h3>
-                    <p>Reflexión de Mn. Albert Sols para el tiempo de Pascua (mayo de 2019).</p>
-                    <span class="flip-hint">Leer &rarr;</span>
-                </a>
-                <a class="reflection-card" href="humiliasmagdalena3domingo.html">
-                    <div class="priest-photo"><img src="../fotosdefinitivas/web/magdalena-retrato.jpg" alt="Magdalena" loading="lazy"></div>
-                    <span class="book-kicker">Magdalena · III domingo de Pascua 2019</span>
-                    <h3>Remar mar adentro</h3>
-                    <p>Nuestra feligresa Magdalena nos hace una reflexión sobre el tercer domingo de Pascua.</p>
-                    <span class="flip-hint">Leer &rarr;</span>
-                </a>
-            </div>
-        </section>
-""")
-
-PAGES["html/humiliasmagdalena3domingo.html"] = page(1, "Reflexión del III domingo de Pascua 2019", "Reflexión de Magdalena, feligresa de la parroquia, sobre el Evangelio del tercer domingo de Pascua: Remar mar adentro.", body=page_hero("III domingo de Pascua 2019", "Remar mar adentro", crumb="Homilías") + """
-        <section class="reading">
-            <div class="reading-wrap">
-""" + reading_author("magdalena-retrato.jpg", "Magdalena", "Feligresa de nuestra parroquia") + """
-""" + reading_audio("2422385796") + """
-                <div class="btn-group center reading-actions">
-                    <a class="btn" href="https://drive.google.com/drive/folders/1IBMzDnk5hvzVKMxUR3poi81uYXse4xWX?usp=sharing" target="_blank" rel="noopener">Descarga la presentación &raquo;</a>
-                </div>
-                <article class="prose book-page reading-book">
-                    <span class="book-kicker">III domingo de Pascua · 2019</span>
-                    <h2 class="reading-title">Remar mar adentro</h2>
-                    """ + ORNAMENT + """
-                    <p class="lead">Queridos/as amigos/as:</p>
-                    <p class="illuminated">Es un privilegio para mí transmitiros esta reflexión del Evangelio de este domingo. Gracias Mn. Albert por su confianza en mí. En ningún momento esta reflexión quiere sustituir una homilía, sino que sea un complemento de lo que yo he descubierto al profundizar en la Palabra de Dios y lo comparto con todos vosotros.</p>
-                    <p>Este domingo el Evangelio nos presenta la Pesca milagrosa… Yo lo he titulado <strong>REMAR MAR ADENTRO</strong>, en nuestra vida y en nuestra fe. No será tanto el explicar en qué consistió la pesca milagrosa sino cuál es el mensaje vigente y actual de lo que sucedió en aquel momento.</p>
-                    <p><strong>En el Evangelio tenemos varios mensajes:</strong></p>
-                    <ul>
-                        <li>CONFIAR en la Palabra de Jesús</li>
-                        <li>Contestar a la Palabra clave ¿ME AMAS?</li>
-                        <li>DEJARLO TODO Y SEGUIR a Jesús</li>
-                        <li>DAR TESTIMONIO de nuestra fe.</li>
-                    </ul>
-                    <p>El relato del Evangelio tiene que ver con una profesión que en aquel momento (y ahora también, por supuesto) era muy importante, ser pescadores. Los discípulos de Jesús se dedicaban a la pesca y para que ellos entendieran la importancia del llamamiento que les iba a hacer Jesús y que les llevaría a seguirle se desarrolla en su vida cotidiana. Pescando. Jesús ya había muerto y resucitado y se les aparece en sus quehaceres cotidianos, en lo cotidiano se manifiesta Jesús haciendo de algo simple un gran milagro.</p>
-                    <p>Todo se desarrolla en el Mar de Galilea. Un precioso paraje.</p>
-                    <p>En la imagen de la pesca milagrosa, vemos cómo será la primera vocación de los discípulos de Jesús.</p>
-                    <p>Qué pasó en las horas que estuvieron juntos los discípulos intentando pescar de una forma infructuosa. Ellos hacían su trabajo cotidiano, como lo hacemos todos nosotros. Venimos a la iglesia, participamos de la Eucaristía, hacemos oración, vamos a la escuela, el instituto, nuestro trabajo fuera de casa, nuestros quehaceres, la comida, etc.</p>
-                    <p>Para entenderlo vamos a dar respuesta a estas cuestiones:</p>
-
-                    <h3>Qué es SEGUIR a alguien</h3>
-                    <p>En el día a día podemos seguir a personas conocidas por las redes sociales, programas de entretenimiento, revistas, periódicos, tv, etc. ¿Os habéis planteado por qué seguís a alguien? Quizás porque es nuestro amigo, conocido, un cantante famoso, un actor o actriz reconocido, un futbolista, un equipo de fútbol o baloncesto, etc.</p>
-                    <p>¿Y cómo lo hacéis y por qué? Los más jóvenes por las redes sociales, programas de televisión y lo hacemos porque es nuestro ídolo. ¿No os parece? Incluso copiamos o imitamos su moda, su forma de actuar.</p>
-                    <blockquote class="pull">¿Si hoy Jesús viviera también lo seguiríamos en las redes sociales? Le daríamos al Me gusta e incluso le pediríamos amistad.</blockquote>
-                    <p>Teniendo esto en cuenta yo pregunto ahora:</p>
-
-                    <h3>Qué es SEGUIR a Jesús</h3>
-                    <ul>
-                        <li>No es una moda, ES UN COMPROMISO (como el de los discípulos que estaban pescando)</li>
-                        <li>Es un ESTILO DE VIDA</li>
-                        <li>Es creer en su mensaje y transmitirlo. Es hacer de su FE nuestra FE. De su ESPERANZA, nuestra ESPERANZA</li>
-                        <li>Es ACTUAR de palabra y con nuestra vida</li>
-                        <li>Es CONFIAR de que nunca nos abandona y que nos AMA</li>
-                        <li>Es DESCUBRIRLO en el día a día</li>
-                        <li>Es PARTICIPAR DE LA EUCARISTÍA Y LA ORACIÓN</li>
-                        <li>Es ser FIELES a su AMISTAD</li>
-                        <li>No es algo pasajero, es TOMAR LA DECISIÓN DE AMARLE cada día de mi vida aunque muchas veces dude y me desespere.</li>
-                    </ul>
-
-                    <h3>Confiar en la Palabra de Jesús</h3>
-                    <p>Y confiar en su Palabra es igual que los discípulos que habían pasado toda la noche bregando sin pescar nada y cuando Jesús les espera a la orilla y les pregunta si han pescado y que lancen las redes a la derecha a ver si encuentran algo: le reconocen, saben que es Él.</p>
-                    <p>Un momento importante: ¿reconocemos a Jesús en el día a día, en los buenos y no tan buenos momentos? ¿Descubrimos su presencia en el rostro de la gente que nos rodea?</p>
-
-                    <h3>Contestar a la Palabra clave ¿Me amas?</h3>
-                    <p>Jesús se lo dice a Simón Pedro, ¿y acaso no nos lo dice a todos nosotros? ¿Me amas? Nosotros cuántas veces a las personas que amamos les hacemos la misma pregunta para que nos confirmen si nos aman. Necesitamos saberlo, no sólo con acciones sino de palabra. Una pregunta que nos conmueve y nos mueve por dentro. Y nuestra respuesta es Sí, tú sabes que te amo, que te quiero.</p>
-                    <p>Y como aquel discípulo amaba tanto a Jesús recibió una misión: apacienta mis ovejas. Jesús le dice: DÉJALO TODO Y SÍGUEME. Gracias a su respuesta y a la de tantas y tantas personas que han recibido la llamada de Jesús hoy podemos ser testigos alegres de su Resurrección.</p>
-
-                    <h3>Dar testimonio de nuestra fe</h3>
-                    <p>Muchos hombres y mujeres, aquí tenemos a Mn. Albert que lo ha dejado todo para seguir su vocación. Nosotros también podemos dejar todo lo que nos separa de Jesús y seguir su mensaje. Podemos ser la Buena Noticia que el mundo necesita para ser leída y vista para gloria de Él. Podemos dar testimonio de Dios con nuestra vida y nuestra palabra.</p>
-                    <p>Por último hoy día de las madres, de una forma especial quiero recordar a María, la Madre de Jesús y Madre nuestra, ella fiel seguidora y testigo alegre de su vida y su Resurrección nos puede ayudar a mirar con ojos de Fe. Gracias María porque nos acompañas y nos cuidas.</p>
-                    <p>Y a todas las madres, abuelas que estamos aquí presentes donde no sólo somos madres el día de hoy sino los 365 días al año. ¡FELICIDADES! Estamos todos de enhorabuena, somos unos privilegiados porque Dios ha puesto en nuestra vida a nuestra propia madre que nos ha dado y nos da todo el amor, nos cuida y nos protege.</p>
-                    <p>Felicidades a todos y todas.<br>Con afecto,</p>
-                    <p class="firma">Magdalena</p>
-                </article>
-""" + other_reflection("humilias.html", "albertsols-retrato.jpg", "Mn. Albert Sols", "Los Hechos de los Apóstoles", "Reflexión de Mn. Albert Sols para el tiempo de Pascua.") + """
+            <div class="reflection-list">""" + _cards + """
             </div>
         </section>
 """)
@@ -1250,17 +1238,13 @@ PAGES["html/noticias.html"] = page(1, "Noticias", "Noticias del Vaticano y del A
                 <h2>Reflexiones y homilías</h2>
                 <hr class="section-divider" style="margin-bottom:0;">
             </div>
-            <div class="grid-container" style="margin-top:0;">
-                <a class="card" href="humilias.html">
-                    <h3>Los Hechos de los Apóstoles</h3>
-                    <p>Reflexión de Mn. Albert Sols para el tiempo de Pascua.</p>
+            <div class="reflection-list">""" + "".join(f"""
+                <a class="reflection-card" href="reflexiones/{h["slug"]}.html">
+                    {_portrait(h, 1)}
+                    <span class="book-kicker">{esc(h["autor_nombre"])}</span>
+                    <h3>{esc(h["titulo"])}</h3>
                     <span class="flip-hint">Leer &rarr;</span>
-                </a>
-                <a class="card" href="humiliasmagdalena3domingo.html">
-                    <h3>Remar mar adentro</h3>
-                    <p>Reflexión de Magdalena sobre el III domingo de Pascua.</p>
-                    <span class="flip-hint">Leer &rarr;</span>
-                </a>
+                </a>""" for h in HOMILIAS[:3]) + """
             </div>
         </section>
 """)
@@ -1575,7 +1559,16 @@ for rel, base in PAGES.items():
     for lang in LANGS:
         html = base
         if lang != "es":
-            html = i18n.translate(html, rel, lang, TABLE, missing)
+            if rel.startswith("html/reflexiones/"):
+                # reflexión subida desde el panel: si su texto aún no está traducido, se muestra
+                # en castellano con un aviso (sin contarla como texto pendiente del generador)
+                _art = re.search(r'<article class="prose.*?</article>', html, re.S)
+                _pend = _art and any(k not in TABLE for k in i18n.extract(_art.group(0), rel))
+                html = i18n.translate(html, rel, lang, TABLE, set())
+                if _pend:
+                    html = html.replace('<article class="prose', f'<p class="lang-note">{HOMILY_NOTE[lang]}</p>\n                <article class="prose', 1)
+            else:
+                html = i18n.translate(html, rel, lang, TABLE, missing)
             html = html.replace('<html lang="es">', f'<html lang="{lang}">', 1)
             html = relocate_assets(html)
         html = (html.replace("__URL__", page_url(lang, rel))
@@ -1603,7 +1596,7 @@ with open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8", newline="\n"
     fh.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
              'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "\n".join(urls) + "\n</urlset>\n")
 with open(os.path.join(ROOT, "robots.txt"), "w", encoding="utf-8", newline="\n") as fh:
-    fh.write(f"User-agent: *\nAllow: /\nDisallow: /scripts/\n\nSitemap: {SITE}sitemap.xml\n")
+    fh.write(f"User-agent: *\nAllow: /\nDisallow: /scripts/\nDisallow: /admin/\nDisallow: /contenido/\n\nSitemap: {SITE}sitemap.xml\n")
 
 print(len(written), "páginas escritas en", len(LANGS), "idiomas;", len(urls), "URL en sitemap.xml")
 if missing:

@@ -20,3 +20,14 @@ aviso una sola vez.
 
 Los textos de las homilías se traducen en `translations_homilias.py`. Al añadir una
 reflexión nueva, el generador avisa de las frases que faltan por traducir.
+
+## Panel de homilías (/admin/)
+
+Las homilías y reflexiones se publican desde `https://www.parroquiasantateresabcn.org/admin/`
+(Decap CMS). Cada una se guarda en `contenido/homilias/*.json` y las personas que escriben en
+`contenido/autores.json`. Netlify ejecuta este generador en cada cambio (ver `netlify.toml`),
+así que la reflexión aparece sola en la portada (la más reciente), en el menú, en el archivo
+y con su página propia en `html/reflexiones/`.
+
+Si una reflexión nueva no tiene traducción en `translations_homilias.py`, en catalán e inglés
+se muestra en castellano con un aviso.
