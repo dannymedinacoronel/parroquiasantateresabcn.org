@@ -37,7 +37,7 @@ locale: es
 # Cuando www.parroquiasantateresabcn.org esté conectado, cambia estas dos líneas a ese dominio.
 site_url: https://parroquiasantateresabcn.netlify.app
 display_url: https://parroquiasantateresabcn.netlify.app
-logo_url: https://decapbridge.com/decapcms-with-bridge.svg
+logo_url: /favicon-512.png
 publish_mode: simple
 
 media_folder: fotosdefinitivas/web/autores
@@ -57,7 +57,8 @@ collections:
     delete: true
     slug: "{{fecha}}-{{titulo}}"
     identifier_field: titulo
-    summary: "{{fecha}} · {{titulo}}"
+    summary: "{{fecha}} · {{titulo}} — {{autor}}"
+    preview_path: "html/reflexiones/{{slug}}.html"
     sortable_fields: ["fecha", "titulo"]
     view_filters:
       - { label: "Publicadas", field: publicado, pattern: true }
@@ -122,8 +123,6 @@ collections:
 
   - name: ajustes
     label: Personas que escriben
-    editor:
-      preview: false
     files:
       - name: autores
         label: Autores de las reflexiones
