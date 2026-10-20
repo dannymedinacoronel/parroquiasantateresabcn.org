@@ -25,7 +25,8 @@ def _inline(text):
     t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)
     t = re.sub(r"(?<![\w*])\*(?!\s)(.+?)(?<!\s)\*(?![\w*])", r"<em>\1</em>", t)
     t = re.sub(r"(?<![\w_])_(?!\s)(.+?)(?<!\s)_(?![\w_])", r"<em>\1</em>", t)
-    return t
+    # el editor del panel escapa algunos signos (\. \[ \-): se quitan las barras
+    return re.sub(r"\\([^\w\s])", r"\1", t)
 
 
 def markdown(text, indent="                    "):
@@ -50,6 +51,32 @@ def markdown(text, indent="                    "):
             first_p = False
             out.append(f"{indent}<p{cls}>{body}</p>")
     return "\n".join(out)
+
+
+HOME_LIMIT = 1800  # caracteres del texto que caben en la página derecha del libro de la portada
+
+
+def _plain(block):
+    return re.sub(r"[*_#>\-]|\\", "", block)
+
+
+def home_text(text, limit=HOME_LIMIT):
+    """Texto de la portada: entero si cabe; si es largo, se corta al final de un párrafo (o de
+    una frase) y devuelve truncated=True para mostrar «Seguir leyendo»."""
+    blocks = [b.strip() for b in re.split(r"\n\s*\n", (text or "").replace("\r\n", "\n").strip()) if b.strip()]
+    out, total, truncated = [], 0, False
+    for b in blocks:
+        n = len(_plain(b))
+        if total + n > limit:
+            truncated = True
+            if not out:  # primer párrafo larguísimo: se corta en la última frase que cabe
+                cut = b[:limit]
+                end = max(cut.rfind(". "), cut.rfind("? "), cut.rfind("! "))
+                out.append((cut[:end + 1] if end > limit // 3 else cut.rsplit(" ", 1)[0]) + " …")
+            break
+        out.append(b)
+        total += n
+    return "\n\n".join(out), truncated
 
 
 def first_paragraph(text):

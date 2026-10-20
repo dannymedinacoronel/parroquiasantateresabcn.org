@@ -39,6 +39,10 @@ site_url: https://parroquiasantateresabcn.netlify.app
 display_url: https://parroquiasantateresabcn.netlify.app
 logo_url: /favicon-512.png
 publish_mode: simple
+# Direcciones de las reflexiones sin acentos ni eñes (más fáciles de compartir)
+slug:
+  encoding: ascii
+  clean_accents: true
 
 media_folder: fotosdefinitivas/web/autores
 public_folder: /fotosdefinitivas/web/autores

@@ -563,6 +563,14 @@ TR = {
 "Última reflexión": ("Última reflexió", "Latest reflection"),
 "Nueva": ("Nova", "New"),
 "Nueva reflexión": ("Nova reflexió", "New reflection"),
+"Abrir la reflexión": ("Obrir la reflexió", "Open the reflection"),
+# --- portada: mapa ---
+"08032 Barcelona · barrio de El Carmel": ("08032 Barcelona · barri del Carmel", "08032 Barcelona · El Carmel district"),
+"Metro L5 · El Carmel": ("Metro L5 · El Carmel", "Metro L5 · El Carmel"),
+"La parada más cercana, a pocos minutos a pie": ("La parada més propera, a pocs minuts a peu", "The nearest stop, a few minutes' walk away"),
+"Misas": ("Misses", "Masses"),
+"Laborables y sábados 19:00 h · Domingos 11:00 y 13:00 h": ("Feiners i dissabtes 19:00 h · Diumenges 11:00 i 13:00 h", "Weekdays and Saturdays 7 pm · Sundays 11 am and 1 pm"),
+"Abrir en Google Maps": ("Obre a Google Maps", "Open in Google Maps"),
 # --- portada: pase de fotos ---
 "Eucaristía dominical": ("Eucaristia dominical", "Sunday Eucharist"),
 "Nuestro campanario": ("El nostre campanar", "Our bell tower"),

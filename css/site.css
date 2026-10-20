@@ -1761,6 +1761,77 @@ body > header { view-transition-name: site-header; }
 .ig-phone-feed .consent-embed { min-height: 100%; }
 .ig-phone-feed .consent-placeholder { min-height: 100%; border: 0; border-radius: 0 0 30px 30px; }
 .news-church-head { padding: clamp(3.5rem, 7vw, 5.5rem) 1.25rem 0; }
+/* ==========================================================================
+   PORTADA: el texto de la reflexión se lee entero en el libro
+   ========================================================================== */
+.book-right .homily-text .homily-body p {
+    display: block; -webkit-line-clamp: unset; overflow: visible;
+    font-size: 1.02rem; line-height: 1.85; margin-bottom: 1rem;
+}
+.homily-body h3 { font-size: 1.35rem; font-style: italic; font-weight: 600; margin: 1.6rem 0 .6rem; color: var(--heading-color); }
+.homily-body blockquote {
+    margin: 1.4rem 0; padding: .9rem 1.2rem; border-left: 2px solid var(--accent-color); background: rgba(191,160,101,.08);
+    font-family: var(--header-font); font-size: 1.3rem; font-style: italic; line-height: 1.45; color: #4a2f22;
+}
+.homily-body ul { margin: 0 0 1rem 1.2rem; }
+.homily-body li { margin-bottom: .35rem; line-height: 1.7; }
+
+/* ==========================================================================
+   PORTADA: mapa de ubicación
+   ========================================================================== */
+.location { position: relative; padding: 0; min-height: 600px; display: flex; align-items: center; background: #e9e2d4; overflow: hidden; }
+.location-map { position: absolute; inset: 0; }
+.location-map .consent-embed { width: 100%; height: 100%; border: 0; border-radius: 0; }
+.location-map iframe { display: block; width: 100%; height: 100%; border: 0; filter: grayscale(.35) sepia(.2) contrast(1.03); }
+.location-map .consent-placeholder { height: 100%; min-height: 0; border: 0; border-radius: 0; padding-left: min(48%, 560px); }
+.location-card {
+    position: relative; z-index: 2; width: min(460px, calc(100% - 2.5rem));
+    margin: 4.5rem 0 4.5rem clamp(1.25rem, 7vw, 8rem); padding: 2.6rem 2.4rem 2.4rem; width: min(500px, calc(100% - 2.5rem));
+    background: rgba(255,250,240,.97); border-top: 3px solid var(--accent-color); border-radius: 4px;
+    box-shadow: 0 30px 70px rgba(40,25,5,.25);
+}
+.location-card::before { content: ""; position: absolute; inset: 10px; border: 1px solid rgba(191,160,101,.35); pointer-events: none; }
+.location-card h2 { font-size: clamp(2.1rem, 3.4vw, 2.8rem); margin: .35rem 0 1rem; text-align: left; }
+.location-card .subtitulo { text-align: left; }
+.location-card .btn-group { gap: .6rem; }
+.location-card .btn { padding: 12px 18px; font-size: .7rem; }
+.location-list { list-style: none; padding: 0; margin: 0 0 1.9rem; }
+.location-list li { display: flex; gap: .95rem; align-items: flex-start; padding: .8rem 0; border-bottom: 1px solid rgba(191,160,101,.25); }
+.location-list li:last-child { border-bottom: 0; }
+.location-list .icon { flex: 0 0 38px; width: 38px; height: 38px; padding: 8px; border-radius: 50%; background: var(--bg-warm); color: var(--accent-dark); border: 1px solid var(--accent-light); }
+.location-list strong { display: block; font-family: var(--header-font); font-size: 1.25rem; font-weight: 600; color: var(--heading-color); line-height: 1.2; }
+.location-list span { display: block; font-size: .86rem; color: var(--muted); margin-top: .15rem; }
+@media (max-width: 800px) {
+    .location { display: block; min-height: 0; background: var(--bg-warm); }
+    .location-map { position: relative; height: 340px; }
+    .location-map .consent-placeholder { padding-left: 1.25rem; }
+    .location-card { margin: -70px auto 3rem; padding: 2.1rem 1.5rem 1.8rem; }
+}
+
+/* ==========================================================================
+   AVISO DE «NUEVA REFLEXIÓN»: la mitad de grande y discreto
+   ========================================================================== */
+.notice-card.notice-reflection { width: min(340px, calc(100% - 2rem)); right: 1.25rem; bottom: 1.25rem; border-radius: 10px; }
+.notice-reflection .notice-photo { flex: 0 0 74px; padding: 1rem 0 0; }
+.notice-reflection .notice-photo img { width: 50px; height: 50px; border-width: 2px; padding: 1px; box-shadow: 0 4px 10px rgba(60,40,10,.15); }
+.notice-reflection .notice-photo.no-photo svg { width: 26px; margin-top: .4rem; }
+.notice-reflection .notice-body { padding: .85rem 2.2rem .9rem .3rem; }
+.notice-reflection .notice-tag { font-size: .58rem; letter-spacing: 2px; gap: .35rem; }
+.notice-reflection .notice-dot { width: 6px; height: 6px; }
+.notice-reflection h3 { font-size: 1.22rem; margin: .2rem 0 .2rem; line-height: 1.15; }
+.notice-reflection .notice-meta { font-size: .7rem; margin: 0 0 .45rem; line-height: 1.4; }
+.notice-reflection .notice-quote { display: none; }
+.notice-reflection .notice-go {
+    padding: 0; background: none !important; border: 0; color: var(--accent-dark) !important;
+    font-size: .66rem; letter-spacing: 1.8px; box-shadow: none;
+}
+.notice-reflection .notice-go:hover { color: #7a2e2e !important; }
+.notice-reflection .notice-close { top: .35rem; right: .4rem; width: 24px; height: 24px; font-size: 1rem; }
+@media (max-width: 600px) {
+    .notice-card.notice-reflection { left: .75rem; right: .75rem; bottom: .75rem; width: auto; }
+    .notice-reflection .notice-meta span + time, .notice-reflection .notice-meta { font-size: .68rem; }
+}
+
 @media (max-width: 900px) {
     .parish-news-grid { grid-template-columns: minmax(0, 1fr); }
     .parish-news-text { text-align: center; }
@@ -1904,7 +1975,7 @@ body.menu-open .notice-card { opacity: 0; visibility: hidden; }
 .reading-next .reading-next-photo img { border: 0; padding: 0; width: 100%; height: 100%; }
 .book-ribbon { left: auto; right: 4.5rem; }
 @media (max-width: 900px) { .book-ribbon { right: 2rem; } }
-.book-right h3, .book-right > .book-kicker { padding-right: 2.75rem; }
+.book-right .homily-text h3, .book-right .homily-text > .book-kicker { padding-right: 4.4rem; }
 
 /* ==========================================================================
    HISTORIA: álbum de fotos como copias impresas

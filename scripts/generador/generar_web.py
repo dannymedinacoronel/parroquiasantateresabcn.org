@@ -26,6 +26,7 @@ NAV = [
         ("Sacramentos", "index.html#sacramentos"),
         ("La parroquia en imágenes", "index.html#galeria"),
         ("Evangelio de hoy", "index.html#actualidad"),
+        ("Cómo llegar", "index.html#ubicacion"),
     ]),
     ("eucaristias", "Eucaristías", "html/misas.html", [
         ("Horarios de Eucaristía", "html/misas.html#horarios"),
@@ -399,6 +400,17 @@ GALLERY = [
     ("dsc_0512.jpg", "La comunidad reunida en la iglesia", "wide"),
 ]
 
+# Mapa de la portada (el mismo de la página de contacto) y ruta en Google Maps
+MAP_EMBED = ("https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11966.759774653801!2d2.1558072908873487!3d41.42424881242464"
+             "!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4bd4d9ae3237b%3A0xd805a433a983f974"
+             "!2sParr%C3%B2quia+Santa+Teresa+de+Jes%C3%BAs!5e0!3m2!1sca!2ses!4v1555520866181!5m2!1sca!2ses")
+MAP_DIRECTIONS = ("https://www.google.com/maps/dir/?api=1&amp;destination="
+                  "Parr%C3%B2quia+Santa+Teresa+de+Jes%C3%BAs%2C+Carrer+del+Llobreg%C3%B3s+132%2C+08032+Barcelona")
+_SVG = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+ICON_PIN = _SVG + '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>'
+ICON_METRO = _SVG + '<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M8 21l2-4M16 21l-2-4M5 11h14"/><circle cx="9" cy="14" r=".6" fill="currentColor"/><circle cx="15" cy="14" r=".6" fill="currentColor"/></svg>'
+ICON_CLOCK = _SVG + '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'
+
 # Fotos del pase de la portada (fotosdefinitivas/web/portada/portada-N-1920.jpg y -1280.jpg).
 # Cada una se descarga justo antes de mostrarse; la primera, enseguida.
 HERO_SLIDES = [
@@ -477,6 +489,11 @@ def new_badge(h):
     return f'<span class="new-badge" data-new="{h["fecha"]}" hidden>Nueva</span>' if h.get("fecha") else ""
 
 
+def notice_text(h):
+    txt = _first_quote(h.get("texto")) or h["extracto"]
+    return txt[:150].rsplit(" ", 1)[0] + "…" if len(txt) > 150 else txt
+
+
 def ultima_template(depth):
     """Aviso automático de la última reflexión: cada página lo lleva en un <template> (así se
     traduce y enlaza igual que el resto) y site.js lo muestra una vez a cada visitante."""
@@ -484,9 +501,7 @@ def ultima_template(depth):
         return ""
     h = HOMILIAS[0]
     p = "../" * depth
-    txt = _first_quote(h.get("texto")) or h["extracto"]
-    if len(txt) > 150:
-        txt = txt[:150].rsplit(" ", 1)[0] + "…"
+    txt = notice_text(h)
     foto = (f'<div class="notice-photo"><img src="{p}{h["autor_foto"]}" alt=""></div>' if h["autor_foto"]
             else f'<div class="notice-photo no-photo">{LOGO_MARK}</div>')
     return f"""
@@ -506,6 +521,7 @@ def home_homily():
     if not HOMILIAS:
         return ""
     h = HOMILIAS[0]
+    body_md, truncated = HOM.home_text(h.get("texto", ""))
     quote = _first_quote(h.get("texto"))
     quote_html = (f'<blockquote class="book-quote"><span aria-hidden="true">&ldquo;</span>{esc(quote)}</blockquote>' if quote else "")
     others = "".join(
@@ -535,9 +551,11 @@ def home_homily():
                     <article class="homily-text">
                         {new_badge(h)}<span class="book-kicker">{esc(h["kicker"]) or date_long(h)}</span>
                         <h3>{esc(h["titulo"])}</h3>
-                        <p class="illuminated">{esc(h["extracto"])}</p>
+                        <div class="homily-body">
+{HOM.markdown(body_md, indent="                            ")}
+                        </div>
                     </article>
-                    <a href="{h["url"]}" class="link-arrow book-more">Seguir leyendo <span>&rarr;</span></a>
+                    <a href="{h["url"]}" class="link-arrow book-more">{"Seguir leyendo" if truncated else "Abrir la reflexión"} <span>&rarr;</span></a>
                     <span class="book-ornament" aria-hidden="true">{LOGO_MARK}</span>
                 </div>
             </div>
@@ -756,8 +774,38 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
                     </ul>
                     <div class="btn-group">
                         <a href="html/contacto.html" class="btn btn-solid">Contactar</a>
-                        <a href="https://goo.gl/maps/Y4SiUkiMGwp" class="btn btn-light" target="_blank" rel="noopener">Cómo llegar</a>
+                        <a href="#ubicacion" class="btn btn-light">Cómo llegar</a>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ubicacion" class="location">
+            <div class="location-map">
+                <iframe title="Mapa de la Parroquia Santa Teresa de Jesús" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
+                    src=\"""" + MAP_EMBED + """\"></iframe>
+            </div>
+            <div class="location-card">
+                <span class="subtitulo">¿Dónde estamos?</span>
+                <h2>Cómo llegar</h2>
+                <hr class="section-divider left">
+                <ul class="location-list">
+                    <li>
+                        """ + ICON_PIN + """
+                        <div><strong>Carrer del Llobregós, 132</strong><span>08032 Barcelona · barrio de El Carmel</span></div>
+                    </li>
+                    <li>
+                        """ + ICON_METRO + """
+                        <div><strong>Metro L5 · El Carmel</strong><span>La parada más cercana, a pocos minutos a pie</span></div>
+                    </li>
+                    <li>
+                        """ + ICON_CLOCK + """
+                        <div><strong>Misas</strong><span>Laborables y sábados 19:00 h · Domingos 11:00 y 13:00 h</span></div>
+                    </li>
+                </ul>
+                <div class="btn-group">
+                    <a class="btn btn-solid" href=\"""" + MAP_DIRECTIONS + """\" target="_blank" rel="noopener">Cómo llegar</a>
+                    <a class="btn" href="https://goo.gl/maps/Y4SiUkiMGwp" target="_blank" rel="noopener">Abrir en Google Maps</a>
                 </div>
             </div>
         </section>
@@ -1673,6 +1721,10 @@ for _h in HOMILIAS:
                _h.get("autor_cargo"), _first_quote(_h.get("texto"))):
         if _k:
             TABLE.setdefault(_k.strip(), {"ca": _k.strip(), "en": _k.strip()})
+# El texto de la última reflexión aparece entero en la portada: sin traducción, se queda tal cual
+if HOMILIAS:
+    for _k in i18n.extract(HOM.markdown(HOM.home_text(HOMILIAS[0].get("texto", ""))[0]), "index.html") + [notice_text(HOMILIAS[0])]:
+        TABLE.setdefault(_k.strip(), {"ca": _k.strip(), "en": _k.strip()})
 LANGS = ["es", "ca", "en"]
 LOCALES = {"es": "es_ES", "ca": "ca_ES", "en": "en_GB"}
 LANG_NAMES = [("es", "ES", "Español"), ("ca", "CA", "Català"), ("en", "EN", "English")]
