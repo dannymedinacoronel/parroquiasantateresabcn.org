@@ -3,9 +3,13 @@
 
 [build]
   publish = "."
-  # Sin compilación: las páginas ya vienen generadas en el repositorio
-  # (GitHub las regenera con .github/workflows/generar-web.yml)
-  command = ""
+  # En cada publicación: descarga las noticias del día y genera todas las páginas
+  # (incluidas las homilías subidas desde /admin/). Si la descarga de noticias
+  # falla, se conservan las anteriores y la web se genera igualmente.
+  command = "python3 scripts/actualizar_noticias.py; python3 scripts/generador/generar_web.py ."
+
+[build.environment]
+  PYTHON_VERSION = "3.12"
 
 # --- Direcciones antiguas -> nuevas (301 conserva el posicionamiento en Google) ---
 # El menú antiguo enlazaba a /HTML/ en mayúsculas

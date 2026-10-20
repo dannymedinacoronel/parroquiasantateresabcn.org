@@ -9,6 +9,14 @@ HOM = _ilu.module_from_spec(_hs); _hs.loader.exec_module(HOM)
 HOMILIAS, AUTORES = HOM.load(ROOT)
 esc = lambda t: _html.escape(t or "", quote=False)
 
+# Versión de cada archivo común (huella de su contenido): al cambiar el archivo cambia su
+# dirección (site.css?v=...) y ningún navegador puede seguir usando una copia antigua.
+import hashlib as _hashlib
+V = {}
+for _f in ("css/fonts.css", "css/site.css", "js/site.js", "data/avisos.js"):
+    with open(os.path.join(ROOT, _f), "rb") as _fh:
+        V[_f] = _hashlib.md5(_fh.read()).hexdigest()[:10]
+
 NAV = [
     ("inicio", "Inicio", "index.html", [
         ("Horarios de misa", "index.html#horarios"),
@@ -198,8 +206,8 @@ __HREFLANG__
     <link rel="apple-touch-icon" href="{p}apple-touch-icon.png">
     <link rel="manifest" href="{p}site.webmanifest">
 
-    <link rel="stylesheet" href="{p}css/fonts.css">
-    <link rel="stylesheet" href="{p}css/site.css">
+    <link rel="stylesheet" href="{p}css/fonts.css?v={V["css/fonts.css"]}">
+    <link rel="stylesheet" href="{p}css/site.css?v={V["css/site.css"]}">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
 {extra_head}</head>
@@ -274,8 +282,8 @@ __LANGSWITCH__    </header>
         </div>
     </footer>
 
-    <script src="{p}data/avisos.js"></script>
-    <script src="{p}js/site.js"></script>
+    <script src="{p}data/avisos.js?v={V["data/avisos.js"]}"></script>
+    <script src="{p}js/site.js?v={V["js/site.js"]}"></script>
 {extra_scripts}
 </body>
 </html>
