@@ -23,7 +23,7 @@ reflexión nueva, el generador avisa de las frases que faltan por traducir.
 
 ## Panel de homilías (/admin/)
 
-Las homilías y reflexiones se publican desde `https://www.parroquiasantateresabcn.org/admin/`
+Las homilías y reflexiones se publican desde `https://parroquiasantateresabcn.netlify.app/admin/`
 (Decap CMS). Cada una se guarda en `contenido/homilias/*.json` y las personas que escriben en
 `contenido/autores.json`. GitHub ejecuta este generador en cada cambio (`.github/workflows/generar-web.yml`),
 así que la reflexión aparece sola en la portada (la más reciente), en el menú, en el archivo

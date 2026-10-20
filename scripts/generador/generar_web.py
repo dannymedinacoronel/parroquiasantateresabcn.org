@@ -112,7 +112,7 @@ PARROQUIA_LINKS = [
 ]
 
 
-SITE = "https://www.parroquiasantateresabcn.org/"
+SITE = "https://parroquiasantateresabcn.netlify.app/"
 
 # Datos del titular para Aviso legal y Privacidad.
 # Los marcados como PENDIENTE deben completarse con los datos reales de la parroquia.
@@ -402,15 +402,15 @@ INDEX_HEAD = """    <link rel="preload" as="image" href="fotosdefinitivas/web/po
     {
       "@context": "https://schema.org",
       "@type": "Church",
-      "@id": "https://www.parroquiasantateresabcn.org/#parroquia",
+      "@id": "https://parroquiasantateresabcn.netlify.app/#parroquia",
       "name": "Parroquia Santa Teresa de Jesús",
       "alternateName": ["Parròquia de Santa Teresa de Jesús", "Parroquia de Santa Teresa de Jesús de Barcelona", "Santa Teresa de Jesús (El Carmel)"],
       "description": "Parroquia católica del barrio del Carmel, en Barcelona, perteneciente al Arzobispado de Barcelona.",
-      "url": "https://www.parroquiasantateresabcn.org/",
-      "logo": "https://www.parroquiasantateresabcn.org/favicon-512.png",
+      "url": "https://parroquiasantateresabcn.netlify.app/",
+      "logo": "https://parroquiasantateresabcn.netlify.app/favicon-512.png",
       "hasMap": "https://goo.gl/maps/Y4SiUkiMGwp",
       "parentOrganization": { "@type": "Organization", "name": "Arzobispado de Barcelona", "url": "https://esglesia.barcelona/" },
-      "image": "https://www.parroquiasantateresabcn.org/fotosdefinitivas/web/portada3.jpg",
+      "image": "https://parroquiasantateresabcn.netlify.app/fotosdefinitivas/web/portada3.jpg",
       "email": "parroquisantateresabarcelona@gmail.com",
       "address": {
         "@type": "PostalAddress",
@@ -1549,7 +1549,7 @@ def structured_data(html, lang, rel):
         extra += jsonld({"@context": "https://schema.org", "@type": "WebSite", "name": "Parroquia Santa Teresa de Jesús",
                          "alternateName": ["Parròquia de Santa Teresa de Jesús", "Parroquia Santa Teresa de Jesús Barcelona"],
                          "url": page_url(lang, rel), "inLanguage": lang,
-                         "publisher": {"@id": "https://www.parroquiasantateresabcn.org/#parroquia"}})
+                         "publisher": {"@id": "https://parroquiasantateresabcn.netlify.app/#parroquia"}})
     else:
         m = re.search(r'<nav class="breadcrumb"[^>]*><a [^>]*>(.*?)</a><span>/</span>(.*?)</nav>', html)
         if m:

@@ -19,7 +19,7 @@ from email.utils import parsedate_to_datetime
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SALIDA = os.path.join(RAIZ, "data", "noticias.js")
 POR_FUENTE = 8
-UA = "Mozilla/5.0 (compatible; ParroquiaSantaTeresaBCN/1.0; +https://www.parroquiasantateresabcn.org/)"
+UA = "Mozilla/5.0 (compatible; ParroquiaSantaTeresaBCN/1.0; +https://parroquiasantateresabcn.netlify.app/)"
 
 FUENTES = {
     "vaticano_es": ("rss", "https://www.vaticannews.va/es.rss.xml"),

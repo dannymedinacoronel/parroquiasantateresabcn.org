@@ -4,4 +4,4 @@ Disallow: /scripts/
 Disallow: /admin/
 Disallow: /contenido/
 
-Sitemap: https://www.parroquiasantateresabcn.org/sitemap.xml
+Sitemap: https://parroquiasantateresabcn.netlify.app/sitemap.xml
