@@ -7,6 +7,8 @@
   # (incluidas las homilías subidas desde /admin/). Si la descarga de noticias
   # falla, se conservan las anteriores y la web se genera igualmente.
   command = "python3 scripts/actualizar_noticias.py; python3 scripts/generador/generar_web.py ."
+  # Si en un cambio solo se han tocado las tareas del equipo, no hace falta volver a generar la web
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':(exclude)contenido/tareas.json'"
 
 [build.environment]
   PYTHON_VERSION = "3.12"
@@ -151,6 +153,13 @@
 # Código de las funciones de métricas (se ejecutan en /api/form-event y /api/form-stats)
 [[redirects]]
   from = "/netlify/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Las tareas del equipo no son públicas: el dashboard las lee con el acceso del panel
+[[redirects]]
+  from = "/contenido/tareas.json"
   to = "/404.html"
   status = 404
   force = true

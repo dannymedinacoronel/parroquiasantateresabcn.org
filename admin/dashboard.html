@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Dashboard · Parroquia Santa Teresa de Jesús</title>
+    <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
+    <style>
+        :root { --bg: #f4eee3; --card: #fffdf8; --ink: #1d1a16; --muted: #857a68; --gold: #bfa065; --gold-d: #8f7340; --line: #e6dac2; --wine: #8c2f2f; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+        button, input, select, textarea { font: inherit; }
+        header { position: sticky; top: 0; z-index: 20; background: #1b1610; color: #f0d79a; box-shadow: 0 6px 20px rgba(0,0,0,.18); }
+        .top { display: flex; align-items: center; gap: 1rem; padding: .9rem clamp(1rem, 4vw, 2.5rem) .5rem; }
+        .top svg { width: 22px; height: 30px; flex-shrink: 0; }
+        .top h1 { margin: 0; font: italic 400 1.35rem/1.2 Georgia, "Times New Roman", serif; color: #fff; }
+        .top small { display: block; font-size: .66rem; letter-spacing: 2.5px; text-transform: uppercase; color: #bfa065; }
+        .top .me { margin-left: auto; display: flex; align-items: center; gap: .6rem; font-size: .85rem; color: #e9dcc0; }
+        .top .me img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); }
+        .top a.back { color: #f0d79a; font-size: .82rem; text-decoration: none; border: 1px solid rgba(240,215,154,.4); padding: .4rem .85rem; border-radius: 20px; white-space: nowrap; }
+        nav.tabs { display: flex; gap: .3rem; padding: 0 clamp(1rem, 4vw, 2.5rem); }
+        nav.tabs a { padding: .7rem 1.2rem .8rem; color: #cbbd9f; text-decoration: none; font-weight: 600; font-size: .92rem; border-bottom: 3px solid transparent; }
+        nav.tabs a[aria-current="page"] { color: #fff; border-bottom-color: var(--gold); }
+        nav.tabs a:hover { color: #fff; }
+        main { max-width: 1240px; margin: 0 auto; padding: 1.6rem clamp(1rem, 4vw, 2.5rem) 4rem; }
+        .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1.3rem 1.4rem 1.4rem; box-shadow: 0 10px 28px rgba(60,40,10,.07); }
+        .card h2 { margin: 0 0 .2rem; font: italic 400 1.45rem/1.2 Georgia, serif; }
+        .sub { font-size: .78rem; color: var(--muted); margin-bottom: 1rem; }
+        .empty { padding: 1.2rem; text-align: center; color: var(--muted); font-style: italic; }
+        .btn { border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: .5rem 1rem; border-radius: 22px; cursor: pointer; font-size: .86rem; }
+        .btn:hover { border-color: var(--gold); }
+        .btn.primary { background: var(--ink); color: #fff; border-color: var(--ink); }
+        .btn.primary:hover { background: #3a2f22; }
+        .bar { display: flex; flex-wrap: wrap; align-items: center; gap: .55rem; margin-bottom: 1.3rem; }
+        .bar b { font-weight: 600; margin-right: .2rem; }
+        .bar .sp { flex: 1; }
+        .bar small { color: var(--muted); }
+        .chip { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid var(--line); background: var(--card); padding: .3rem .8rem .3rem .35rem; border-radius: 22px; cursor: pointer; font-size: .85rem; }
+        .chip img, .chip .dot { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 2px solid var(--c, var(--gold)); }
+        .chip .dot { display: inline-block; background: var(--c, var(--gold)); }
+        .chip[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+        .state-f { padding: .3rem .85rem; }
+
+        /* ---------- tareas ---------- */
+        .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; margin-bottom: 1.3rem; }
+        .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: .9rem 1rem; }
+        .kpi b { display: block; font: 600 1.9rem/1.1 Georgia, serif; }
+        .kpi span { font-size: .72rem; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+        .kpi.alert b { color: var(--wine); }
+        .board { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.1rem; align-items: start; }
+        .col { background: color-mix(in srgb, var(--c) 6%, var(--card)); border: 1px solid var(--line); border-top: 5px solid var(--c); border-radius: 10px; padding: 1rem; }
+        .col-head { display: flex; align-items: center; gap: .7rem; margin-bottom: .9rem; }
+        .col-head img, .col-head .dot { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; border: 3px solid var(--c); background: #fff; }
+        .col-head strong { display: block; font: italic 500 1.2rem/1.15 Georgia, serif; }
+        .col-head span { font-size: .75rem; color: var(--muted); }
+        .col-head .add { margin-left: auto; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--c); background: #fff; color: var(--c); font-size: 1.2rem; cursor: pointer; line-height: 1; }
+        .col-head .add:hover { background: var(--c); color: #fff; }
+        .task { position: relative; background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--c); border-radius: 8px; padding: .75rem .8rem .7rem 2.6rem; margin-bottom: .6rem; box-shadow: 0 3px 10px rgba(60,40,10,.05); }
+        .task.hecha { opacity: .6; }
+        .task.hecha .t-title { text-decoration: line-through; }
+        .task .state { position: absolute; left: .6rem; top: .7rem; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--c); background: #fff; cursor: pointer; display: grid; place-items: center; color: #fff; font-size: .8rem; padding: 0; }
+        .task.en-curso .state { background: linear-gradient(90deg, var(--c) 50%, #fff 50%); }
+        .task.hecha .state { background: var(--c); }
+        .t-title { font-weight: 600; line-height: 1.35; padding-right: 3.4rem; }
+        .t-meta { display: flex; flex-wrap: wrap; gap: .35rem .6rem; margin-top: .3rem; font-size: .75rem; color: var(--muted); align-items: center; }
+        .t-badge { padding: .05rem .5rem; border-radius: 10px; font-weight: 600; font-size: .68rem; letter-spacing: .5px; text-transform: uppercase; }
+        .t-badge.alta { background: #f8e3df; color: var(--wine); }
+        .t-badge.en-curso { background: #fdf1d8; color: #8a5a00; }
+        .t-badge.hecha { background: #e4f1e7; color: #2f6b45; }
+        .t-date.late { color: var(--wine); font-weight: 600; }
+        .t-notes { margin: .4rem 0 0; font-size: .82rem; color: #5b5244; white-space: pre-wrap; }
+        .t-actions { position: absolute; right: .4rem; top: .45rem; display: flex; gap: .1rem; opacity: .35; }
+        .task:hover .t-actions, .task:focus-within .t-actions { opacity: 1; }
+        .t-actions button { border: 0; background: none; cursor: pointer; padding: .2rem .3rem; font-size: .9rem; border-radius: 6px; }
+        .t-actions button:hover { background: #f1e9da; }
+        .col .none { font-size: .82rem; color: var(--muted); font-style: italic; padding: .4rem .2rem; }
+        .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 50; padding: .75rem 1.2rem; border-radius: 8px; background: #1f3b2c; color: #e9f5ec; font-size: .9rem; box-shadow: 0 12px 30px rgba(0,0,0,.25); }
+        .toast.err { background: #6d2525; }
+        dialog { border: 0; border-radius: 12px; padding: 0; width: min(520px, calc(100vw - 2rem)); box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+        dialog::backdrop { background: rgba(20,14,8,.55); }
+        dialog form { padding: 1.4rem 1.5rem 1.3rem; }
+        dialog h3 { margin: 0 0 1rem; font: italic 400 1.5rem/1.2 Georgia, serif; }
+        dialog label { display: flex; flex-direction: column; gap: .3rem; margin-bottom: .85rem; font-size: .75rem; font-weight: 600; letter-spacing: .6px; text-transform: uppercase; color: var(--gold-d); }
+        dialog input, dialog select, dialog textarea { padding: .6rem .7rem; border: 1px solid #dccfb5; border-radius: 6px; background: #fffdf9; font-size: .95rem; text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--ink); }
+        dialog .row { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+        dialog .acts { display: flex; justify-content: flex-end; gap: .6rem; margin-top: .4rem; }
+        .notice { margin-bottom: 1rem; padding: .8rem 1rem; border-radius: 8px; background: #fff8e1; border-left: 3px solid #e0a800; font-size: .88rem; color: #6b5400; }
+
+        /* ---------- métricas ---------- */
+        .forms { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 1.25rem; }
+        .mk { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; }
+        .mk div { padding: .75rem .7rem; border-radius: 8px; background: #f7f1e5; text-align: center; }
+        .mk b { display: block; font: 600 1.7rem/1.1 Georgia, serif; }
+        .mk span { font-size: .7rem; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+        .mk .main { background: #1d1a16; } .mk .main b { color: #f0d79a; } .mk .main span { color: #cbbd9f; }
+        .note { margin: .8rem 0 0; font-size: .8rem; color: var(--muted); } .note b { color: var(--wine); }
+        .wide { margin-top: 1.25rem; }
+        .chart { width: 100%; height: 260px; display: block; }
+        .legend { display: flex; flex-wrap: wrap; gap: 1rem; font-size: .8rem; color: var(--muted); margin-top: .4rem; }
+        .legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: .35rem; }
+        .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 1.25rem; margin-top: 1.25rem; }
+        .hbars { list-style: none; margin: .5rem 0 0; padding: 0; }
+        .hbars li { display: grid; grid-template-columns: minmax(0, 11rem) 1fr 2.5rem; align-items: center; gap: .7rem; margin: .45rem 0; font-size: .88rem; }
+        .hbars .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .hbars .b { height: 12px; border-radius: 6px; background: #efe6d4; overflow: hidden; }
+        .hbars .b i { display: block; height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--gold-d), var(--gold)); }
+        .hbars .n { text-align: right; font-weight: 600; }
+        .help { font-size: .82rem; color: var(--muted); line-height: 1.6; }
+        .gate { max-width: 520px; margin: 4rem auto; text-align: center; }
+        .gate a { color: var(--gold-d); font-weight: 600; }
+        @media (max-width: 640px) { .kpis, .mk { grid-template-columns: repeat(2, 1fr); } .top .me span, .top a.back { display: none; } dialog .row { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="top">
+            <svg viewBox="0 0 26 34" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.3"/></svg>
+            <div><small>Parroquia Santa Teresa de Jesús</small><h1>Dashboard del equipo</h1></div>
+            <div class="me" id="me"></div>
+            <a class="back" href="/admin/">← Panel de reflexiones</a>
+        </div>
+        <nav class="tabs">
+            <a href="#tareas" data-tab="tareas">📋 Tareas</a>
+            <a href="#metricas" data-tab="metricas">📊 Métricas de los formularios</a>
+        </nav>
+    </header>
+    <main id="app"><p class="empty">Cargando…</p></main>
+
+    <dialog id="taskDlg">
+        <form method="dialog" id="taskForm">
+            <h3 id="dlgTitle">Nueva tarea</h3>
+            <label>Tarea *<input name="titulo" required maxlength="140" placeholder="Ej.: Preparar la reflexión del domingo"></label>
+            <div class="row">
+                <label>Persona *<select name="persona" required></select></label>
+                <label>Prioridad<select name="prioridad"><option value="normal">Normal</option><option value="alta">Alta</option></select></label>
+            </div>
+            <div class="row">
+                <label>Estado<select name="estado"><option value="pendiente">Pendiente</option><option value="en-curso">En curso</option><option value="hecha">Hecha</option></select></label>
+                <label>Fecha límite<input type="date" name="fecha"></label>
+            </div>
+            <label>Notas<textarea name="notas" rows="3" maxlength="1000" placeholder="Detalles, enlaces, a quién preguntar…"></textarea></label>
+            <div class="acts"><button type="button" class="btn" id="dlgCancel">Cancelar</button><button type="submit" class="btn primary">Guardar</button></div>
+        </form>
+    </dialog>
+
+<script>
+(function () {
+    var app = document.getElementById("app");
+    function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+    function toast(msg, err) {
+        var t = document.createElement("div"); t.className = "toast" + (err ? " err" : ""); t.textContent = msg;
+        document.body.appendChild(t); setTimeout(function () { t.remove(); }, err ? 7000 : 3200);
+    }
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var TODAY = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, "0") + "-" + String(today.getDate()).padStart(2, "0");
+
+    /* ---------- sesión del panel ---------- */
+    var user = null;
+    try { user = JSON.parse(localStorage.getItem("decap-cms-user") || "null"); } catch (e) { }
+    if (!user) {
+        app.innerHTML = '<div class="gate card"><h2>Entra primero en el panel</h2><p>El dashboard es solo para el equipo de la parroquia.</p><p><a href="/admin/">Ir al panel e iniciar sesión →</a></p></div>';
+        return;
+    }
+    var PEOPLE = {}, ORDER = [], ME = null;
+    function photo(p) { return p && p.foto ? (p.foto.charAt(0) === "/" ? p.foto : "/" + p.foto) : ""; }
+    function sha256(s) {
+        return crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)).then(function (b) {
+            return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, "0"); }).join("");
+        });
+    }
+    var ready = fetch("/contenido/autores.json?t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (d) {
+        (d.autores || []).forEach(function (a) { PEOPLE[a.id] = a; ORDER.push(a.id); });
+        var email = String(user.email || "").trim().toLowerCase();
+        return email && window.crypto && crypto.subtle ? sha256(email).then(function (h) {
+            ORDER.forEach(function (id) { if ((PEOPLE[id].acceso || []).indexOf(h) > -1) ME = PEOPLE[id]; });
+        }) : null;
+    }).then(function () {
+        var me = document.getElementById("me");
+        var name = ME ? ME.nombre : (user.user_metadata && user.user_metadata.full_name) || user.email || "";
+        me.innerHTML = (ME && photo(ME) ? '<img src="' + esc(photo(ME)) + '" alt="">' : "") + "<span>" + esc(name) + "</span>";
+    });
+
+    /* ---------- tareas: se leen y se guardan en contenido/tareas.json a través de DecapBridge ---------- */
+    var GW = null, REPO = null, BRANCH = "main", FILE = "contenido/tareas.json";
+    var cfgReady = fetch("/admin/config.yml", { cache: "no-store" }).then(function (r) { return r.text(); }).then(function (y) {
+        var g = /gateway_url:\s*(\S+)/.exec(y), rp = /\brepo:\s*(\S+)/.exec(y), br = /\bbranch:\s*(\S+)/.exec(y);
+        GW = g ? g[1].replace(/\/+$/, "") + "/github" : null; REPO = rp && rp[1]; if (br) BRANCH = br[1];
+    });
+    var tasks = [], sha = null, filterP = "", filterS = "abiertas";
+    function b64enc(s) { return btoa(unescape(encodeURIComponent(s))); }
+    function b64dec(s) { return decodeURIComponent(escape(atob(s.replace(/\s/g, "")))); }
+    function api(path, opts) {
+        opts = opts || {};
+        opts.headers = Object.assign({ "Authorization": "Bearer " + user.token, "Content-Type": "application/json" }, opts.headers || {});
+        return fetch(GW + "/repos/" + REPO + path, opts).then(function (r) {
+            if (r.status === 401 || r.status === 403) throw new Error("sesion");
+            return r;
+        });
+    }
+    function loadTasks() {
+        return api("/contents/" + FILE + "?ref=" + BRANCH + "&t=" + Date.now()).then(function (r) {
+            if (r.status === 404) { tasks = []; sha = null; return; }
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.json().then(function (j) { sha = j.sha; tasks = (JSON.parse(b64dec(j.content)).tareas || []); });
+        });
+    }
+    function saveTasks(msg, retried) {
+        var body = { message: msg, branch: BRANCH, content: b64enc(JSON.stringify({ tareas: tasks }, null, 2) + "\n") };
+        if (sha) body.sha = sha;
+        return api("/contents/" + FILE, { method: "PUT", body: JSON.stringify(body) }).then(function (r) {
+            if ((r.status === 409 || r.status === 422) && !retried) throw new Error("conflicto");
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.json().then(function (j) { sha = j.content && j.content.sha; });
+        });
+    }
+    function who() { return ME ? ME.nombre : (user.email || "el equipo"); }
+    /* cambio = función que modifica la lista; si alguien guardó a la vez, se recarga y se repite */
+    function change(mutate, msg) {
+        mutate();
+        renderTasks();
+        return saveTasks(msg + " — por " + who()).then(function () { toast("✓ Guardado"); })
+            .catch(function (e) {
+                if (e.message === "conflicto") {
+                    return loadTasks().then(function () { mutate(); renderTasks(); return saveTasks(msg + " — por " + who(), true); })
+                        .then(function () { toast("✓ Guardado"); });
+                }
+                throw e;
+            })
+            .catch(function (e) {
+                toast(e.message === "sesion" ? "Tu sesión ha caducado: abre el panel de reflexiones y vuelve aquí." : "No se pudo guardar (" + e.message + "). Inténtalo de nuevo.", true);
+                return loadTasks().then(renderTasks, function () { });
+            });
+    }
+
+    function dateTxt(d) {
+        if (!d) return "";
+        var p = d.split("-"), dt = new Date(+p[0], p[1] - 1, +p[2]);
+        var diff = Math.round((dt - today) / 864e5);
+        var txt = dt.toLocaleDateString("es-ES", { day: "numeric", month: "short" });
+        if (diff === 0) txt = "hoy"; else if (diff === 1) txt = "mañana"; else if (diff < 0) txt += " (" + (-diff) + " d de retraso)";
+        return { txt: txt, late: diff < 0 };
+    }
+    var STATE_NEXT = { "pendiente": "en-curso", "en-curso": "hecha", "hecha": "pendiente" };
+    var STATE_TXT = { "pendiente": "Pendiente", "en-curso": "En curso", "hecha": "Hecha" };
+
+    function taskHTML(t) {
+        var p = PEOPLE[t.persona] || {}, d = dateTxt(t.fecha);
+        return '<div class="task ' + esc(t.estado) + '" style="--c:' + esc(p.color || "#b08a3e") + '" data-id="' + esc(t.id) + '">' +
+            '<button class="state" data-act="state" title="Cambiar estado (ahora: ' + STATE_TXT[t.estado] + ')">' + (t.estado === "hecha" ? "✓" : "") + "</button>" +
+            '<div class="t-title">' + esc(t.titulo) + "</div>" +
+            '<div class="t-meta">' + (t.prioridad === "alta" ? '<span class="t-badge alta">Prioridad alta</span>' : "") +
+            (t.estado !== "pendiente" ? '<span class="t-badge ' + esc(t.estado) + '">' + STATE_TXT[t.estado] + "</span>" : "") +
+            (d ? '<span class="t-date' + (d.late && t.estado !== "hecha" ? " late" : "") + '">📅 ' + esc(d.txt) + "</span>" : "") + "</div>" +
+            (t.notas ? '<p class="t-notes">' + esc(t.notas) + "</p>" : "") +
+            '<div class="t-actions"><button data-act="edit" title="Editar">✎</button><button data-act="del" title="Borrar">🗑</button></div></div>';
+    }
+
+    function renderTasks() {
+        var open = tasks.filter(function (t) { return t.estado !== "hecha"; });
+        var late = open.filter(function (t) { return t.fecha && t.fecha < TODAY; }).length;
+        var weekAgo = new Date(today.getTime() - 7 * 864e5).toISOString().slice(0, 10);
+        var doneWeek = tasks.filter(function (t) { return t.estado === "hecha" && (t.hecha || "") >= weekAgo; }).length;
+        var html = '<div class="kpis">' +
+            '<div class="kpi"><b>' + tasks.filter(function (t) { return t.estado === "pendiente"; }).length + "</b><span>Pendientes</span></div>" +
+            '<div class="kpi"><b>' + tasks.filter(function (t) { return t.estado === "en-curso"; }).length + "</b><span>En curso</span></div>" +
+            '<div class="kpi' + (late ? " alert" : "") + '"><b>' + late + "</b><span>Atrasadas</span></div>" +
+            '<div class="kpi"><b>' + doneWeek + "</b><span>Hechas (últimos 7 días)</span></div></div>";
+        html += '<div class="bar"><b>Persona:</b><button class="chip" data-fp="" aria-pressed="' + !filterP + '"><span class="dot" style="--c:#1d1a16"></span>Todas</button>' +
+            ORDER.map(function (id) {
+                var p = PEOPLE[id];
+                return '<button class="chip" data-fp="' + esc(id) + '" aria-pressed="' + (filterP === id) + '" style="--c:' + esc(p.color || "#b08a3e") + '">' +
+                    (photo(p) ? '<img src="' + esc(photo(p)) + '" alt="">' : '<span class="dot"></span>') + esc(p.nombre) + "</button>";
+            }).join("") +
+            '<span class="sp"></span><b>Ver:</b>' + [["abiertas", "Por hacer"], ["hecha", "Hechas"], ["todas", "Todas"]].map(function (s) {
+                return '<button class="chip state-f" data-fs="' + s[0] + '" aria-pressed="' + (filterS === s[0]) + '">' + s[1] + "</button>";
+            }).join("") + '<button class="btn primary" id="newTask">＋ Nueva tarea</button></div>';
+        html += '<div class="board">' + ORDER.filter(function (id) { return !filterP || filterP === id; }).map(function (id) {
+            var p = PEOPLE[id];
+            var mine = tasks.filter(function (t) { return t.persona === id; });
+            var shown = mine.filter(function (t) { return filterS === "todas" || (filterS === "hecha" ? t.estado === "hecha" : t.estado !== "hecha"); })
+                .sort(function (a, b) {
+                    var o = { "en-curso": 0, "pendiente": 1, "hecha": 2 };
+                    return (o[a.estado] - o[b.estado]) || ((b.prioridad === "alta") - (a.prioridad === "alta")) || String(a.fecha || "9999").localeCompare(String(b.fecha || "9999"));
+                });
+            var openN = mine.filter(function (t) { return t.estado !== "hecha"; }).length;
+            return '<section class="col" style="--c:' + esc(p.color || "#b08a3e") + '"><div class="col-head">' +
+                (photo(p) ? '<img src="' + esc(photo(p)) + '" alt="">' : '<span class="dot"></span>') +
+                "<div><strong>" + esc(p.nombre) + "</strong><span>" + openN + " por hacer · " + (mine.length - openN) + " hechas</span></div>" +
+                '<button class="add" data-add="' + esc(id) + '" title="Nueva tarea para ' + esc(p.nombre) + '">＋</button></div>' +
+                (shown.length ? shown.map(taskHTML).join("") : '<div class="none">' + (filterS === "hecha" ? "Ninguna tarea hecha todavía." : "Nada pendiente. ✨") + "</div>") + "</section>";
+        }).join("") + "</div>";
+        html += '<p class="help" style="margin-top:1.4rem">Pulsa el círculo de una tarea para pasarla de <b>Pendiente</b> a <b>En curso</b> y a <b>Hecha</b>. Los cambios se guardan al momento y todo el equipo los ve. ' +
+            "También se pueden editar todas a la vez en el panel, en «Tareas del equipo».</p>";
+        app.innerHTML = html;
+    }
+
+    /* ---------- formulario de tarea ---------- */
+    var dlg = document.getElementById("taskDlg"), tf = document.getElementById("taskForm"), editing = null;
+    function openDlg(t, persona) {
+        editing = t || null;
+        document.getElementById("dlgTitle").textContent = t ? "Editar tarea" : "Nueva tarea";
+        tf.persona.innerHTML = ORDER.map(function (id) { return '<option value="' + esc(id) + '">' + esc(PEOPLE[id].nombre) + "</option>"; }).join("");
+        tf.titulo.value = t ? t.titulo : ""; tf.persona.value = t ? t.persona : (persona || (ME && ME.id) || ORDER[0]);
+        tf.prioridad.value = t ? t.prioridad || "normal" : "normal"; tf.estado.value = t ? t.estado : "pendiente";
+        tf.fecha.value = t ? t.fecha || "" : ""; tf.notas.value = t ? t.notas || "" : "";
+        dlg.showModal(); tf.titulo.focus();
+    }
+    document.getElementById("dlgCancel").onclick = function () { dlg.close(); };
+    tf.addEventListener("submit", function () {
+        var v = { titulo: tf.titulo.value.trim(), persona: tf.persona.value, prioridad: tf.prioridad.value, estado: tf.estado.value, fecha: tf.fecha.value, notas: tf.notas.value.trim() };
+        if (!v.titulo) return;
+        if (editing) {
+            var id = editing.id;
+            change(function () {
+                tasks.forEach(function (t) { if (t.id === id) { if (v.estado === "hecha" && t.estado !== "hecha") v.hecha = TODAY; Object.assign(t, v); } });
+            }, "Tareas: editada «" + v.titulo + "»");
+        } else {
+            var nt = Object.assign({ id: "t-" + Date.now().toString(36), creada: TODAY }, v);
+            if (v.estado === "hecha") nt.hecha = TODAY;
+            change(function () { if (!tasks.some(function (t) { return t.id === nt.id; })) tasks.push(nt); }, "Tareas: nueva «" + v.titulo + "» para " + (PEOPLE[v.persona] || {}).nombre);
+        }
+    });
+
+    app.addEventListener("click", function (e) {
+        var b = e.target.closest("button"); if (!b) return;
+        if (b.hasAttribute("data-fp")) { filterP = b.getAttribute("data-fp"); return renderTasks(); }
+        if (b.hasAttribute("data-fs")) { filterS = b.getAttribute("data-fs"); return renderTasks(); }
+        if (b.id === "newTask") return openDlg(null, filterP);
+        if (b.hasAttribute("data-add")) return openDlg(null, b.getAttribute("data-add"));
+        var card = b.closest(".task"); if (!card) return;
+        var id = card.getAttribute("data-id"), t = tasks.filter(function (x) { return x.id === id; })[0]; if (!t) return;
+        var act = b.getAttribute("data-act");
+        if (act === "edit") return openDlg(t);
+        if (act === "del") {
+            if (!confirm("¿Borrar la tarea «" + t.titulo + "»?")) return;
+            return change(function () { tasks = tasks.filter(function (x) { return x.id !== id; }); }, "Tareas: borrada «" + t.titulo + "»");
+        }
+        if (act === "state") {
+            var nx = STATE_NEXT[t.estado] || "pendiente";
+            return change(function () {
+                tasks.forEach(function (x) { if (x.id === id) { x.estado = nx; if (nx === "hecha") x.hecha = TODAY; else delete x.hecha; } });
+            }, "Tareas: «" + t.titulo + "» → " + STATE_TXT[nx]);
+        }
+    });
+
+    function showTasks() {
+        app.innerHTML = '<p class="empty">Cargando tareas…</p>';
+        Promise.all([ready, cfgReady]).then(function () {
+            if (!GW || !REPO || !user.token) throw new Error("sesion");
+            return loadTasks();
+        }).then(renderTasks).catch(function (e) {
+            app.innerHTML = '<div class="card"><h2>No se han podido cargar las tareas</h2><p class="notice">' +
+                (e.message === "sesion" ? "Tu sesión del panel ha caducado o no se ha iniciado. Abre el <a href=\"/admin/\">panel de reflexiones</a>, entra con tu correo y vuelve a esta pestaña."
+                    : "Error: " + esc(e.message) + ". Comprueba la conexión y vuelve a intentarlo.") +
+                '</p><button class="btn" onclick="location.reload()">Reintentar</button></div>';
+        });
+    }
+
+    /* ---------- métricas de los formularios ---------- */
+    var FORMS = { contacto: "Contacto", comuniones: "Primera Comunión" };
+    var FORM_SUB = { contacto: "Página de Contacto · mensajes a albertsols@gmail.com", comuniones: "Página Primera Comunión · inscripciones a albertsols@gmail.com" };
+    var PURPOSE_TITLE = { contacto: "Mensajes por motivo", comuniones: "Inscripciones por curso escolar" };
+    var NAMES = { "consulta-general": "Consulta general", "bautizo": "Bautizo", "boda": "Boda", "primera-comunion": "Primera Comunión", "confirmacion": "Confirmación",
+        "visita-a-enfermos": "Visita a enfermos", "funeral": "Funeral", "caritas": "Cáritas", "otro": "Otro", "2-de-primaria": "2º de Primaria", "3-de-primaria": "3º de Primaria",
+        "4-de-primaria": "4º de Primaria", "5-de-primaria": "5º de Primaria", "6-de-primaria": "6º de Primaria", "-": "Sin indicar" };
+    var LANGS = { es: "Castellano", ca: "Català", en: "English" };
+    var mDays = 30, mData = null;
+    function nice(p) { return NAMES[p] || (p.charAt(0).toUpperCase() + p.slice(1)).replace(/-/g, " "); }
+    function showMetrics() {
+        app.innerHTML = '<p class="empty">Cargando métricas…</p>';
+        fetch("/api/form-stats?days=" + mDays + "&t=" + Date.now(), { cache: "no-store" })
+            .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+            .then(function (j) { mData = j; renderMetrics(); })
+            .catch(function (e) { app.innerHTML = '<div class="card"><h2>No se han podido cargar las métricas</h2><p class="notice">' + esc(e.message) + '</p><button class="btn" onclick="location.reload()">Reintentar</button></div>'; });
+    }
+    function tally() {
+        var t = {}, days = [], d0 = new Date(mData.since + "T12:00:00Z");
+        for (var i = 0; i < mData.days; i++) days.push(new Date(d0.getTime() + i * 864e5).toISOString().slice(0, 10));
+        Object.keys(FORMS).forEach(function (f) { t[f] = { view: 0, start: 0, submit: 0, error: 0, daily: {}, purpose: {}, lang: {} }; days.forEach(function (d) { t[f].daily[d] = { view: 0, submit: 0 }; }); });
+        Object.keys(mData.counts || {}).forEach(function (k) {
+            var p = k.split("|"), n = mData.counts[k], f = t[p[1]];
+            if (!f || !(p[2] in f)) return;
+            f[p[2]] += n;
+            if (f.daily[p[0]] && (p[2] === "view" || p[2] === "submit")) f.daily[p[0]][p[2]] += n;
+            if (p[2] === "submit") { f.purpose[p[3]] = (f.purpose[p[3]] || 0) + n; f.lang[p[4]] = (f.lang[p[4]] || 0) + n; }
+        });
+        return { t: t, days: days };
+    }
+    function hbars(obj, names) {
+        var keys = Object.keys(obj).sort(function (a, b) { return obj[b] - obj[a]; });
+        if (!keys.length) return '<p class="empty">Todavía no hay envíos en este periodo.</p>';
+        var max = obj[keys[0]];
+        return '<ul class="hbars">' + keys.map(function (k) {
+            return '<li><span class="t">' + esc(names ? (names[k] || k) : nice(k)) + '</span><span class="b"><i style="width:' + Math.max(3, obj[k] / max * 100) + '%"></i></span><span class="n">' + obj[k] + "</span></li>";
+        }).join("") + "</ul>";
+    }
+    function chart(r) {
+        var W = 1000, H = 260, L = 34, B = 26, T = 12, R = 10, days = r.days, n = days.length;
+        var series = [{ f: "contacto", k: "view", c: "#3b6a8f", w: 1.6, dash: "5 4" }, { f: "contacto", k: "submit", c: "#3b6a8f", w: 3 },
+            { f: "comuniones", k: "view", c: "#bfa065", w: 1.6, dash: "5 4" }, { f: "comuniones", k: "submit", c: "#8f7340", w: 3 }];
+        var max = 1;
+        series.forEach(function (s) { days.forEach(function (d) { max = Math.max(max, r.t[s.f].daily[d][s.k]); }); });
+        var x = function (i) { return L + (n === 1 ? (W - L - R) / 2 : i * (W - L - R) / (n - 1)); }, y = function (v) { return T + (H - T - B) * (1 - v / max); };
+        var g = "";
+        for (var i = 0; i <= 4; i++) { var v = Math.round(max * i / 4), yy = y(v); g += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy + '" y2="' + yy + '" stroke="#ece3d1"/><text x="' + (L - 6) + '" y="' + (yy + 4) + '" text-anchor="end" font-size="11" fill="#9a8e78">' + v + "</text>"; }
+        var step = Math.max(1, Math.ceil(n / 8));
+        days.forEach(function (d, i) { if (i % step === 0 || i === n - 1) g += '<text x="' + x(i) + '" y="' + (H - 6) + '" text-anchor="middle" font-size="11" fill="#9a8e78">' + d.slice(8, 10) + "/" + d.slice(5, 7) + "</text>"; });
+        series.forEach(function (s) {
+            g += '<polyline points="' + days.map(function (d, i) { return x(i).toFixed(1) + "," + y(r.t[s.f].daily[d][s.k]).toFixed(1); }).join(" ") + '" fill="none" stroke="' + s.c + '" stroke-width="' + s.w + '" stroke-linejoin="round"' + (s.dash ? ' stroke-dasharray="' + s.dash + '"' : "") + "/>";
+        });
+        return '<svg class="chart" viewBox="0 0 ' + W + " " + H + '" preserveAspectRatio="none">' + g + '</svg><div class="legend"><span><i style="background:#3b6a8f"></i>Contacto · envíos</span><span><i style="background:repeating-linear-gradient(90deg,#3b6a8f 0 5px,transparent 5px 9px)"></i>Contacto · visitas</span><span><i style="background:#8f7340"></i>Primera Comunión · envíos</span><span><i style="background:repeating-linear-gradient(90deg,#bfa065 0 5px,transparent 5px 9px)"></i>Primera Comunión · visitas</span></div>';
+    }
+    function renderMetrics() {
+        var r = tally(), html = '<div class="bar"><b>Periodo:</b>' + [7, 30, 90, 365].map(function (d) {
+            return '<button class="chip state-f" data-days="' + d + '" aria-pressed="' + (d === mDays) + '">' + (d === 365 ? "1 año" : "Últimos " + d + " días") + "</button>";
+        }).join("") + '<span class="sp"></span><small>Actualizado: ' + new Date(mData.generated).toLocaleString("es-ES") + '</small><button class="btn" id="csv">⬇ CSV</button><button class="btn" id="mreload">↻ Actualizar</button></div>';
+        html += '<div class="forms">' + Object.keys(FORMS).map(function (f) {
+            var s = r.t[f], conv = s.view ? Math.round(s.submit / s.view * 1000) / 10 : 0;
+            return '<section class="card"><h2>' + FORMS[f] + '</h2><div class="sub">' + FORM_SUB[f] + '</div><div class="mk"><div><b>' + s.view + '</b><span>Visto</span></div><div><b>' + s.start +
+                '</b><span>Empezado</span></div><div class="main"><b>' + s.submit + '</b><span>Enviado</span></div><div><b>' + conv + '%</b><span>Conversión</span></div></div><p class="note">' +
+                (s.view ? Math.round(s.start / s.view * 100) + "% de quienes lo ven empiezan a rellenarlo. " : "") + (s.error ? "<b>" + s.error + " envío(s) con error</b> (revisad que FormSubmit está activado)." : "Sin errores de envío.") + "</p></section>";
+        }).join("") + "</div>";
+        html += '<section class="card wide"><h2>Evolución diaria</h2><div class="sub">Visitas al formulario (línea discontinua) y envíos (línea continua)</div>' + chart(r) + "</section>";
+        html += '<div class="two">' + Object.keys(FORMS).map(function (f) { return '<section class="card"><h2>' + PURPOSE_TITLE[f] + "</h2>" + hbars(r.t[f].purpose) + "</section>"; }).join("") + "</div>";
+        var langs = {}; Object.keys(FORMS).forEach(function (f) { Object.keys(r.t[f].lang).forEach(function (l) { langs[l] = (langs[l] || 0) + r.t[f].lang[l]; }); });
+        html += '<div class="two"><section class="card"><h2>Envíos por idioma de la web</h2>' + hbars(langs, LANGS) + '</section><section class="card"><h2>Cómo leer estas cifras</h2><p class="help"><b>Visto:</b> el formulario apareció en pantalla. <b>Empezado:</b> alguien escribió en algún campo. <b>Enviado:</b> el mensaje o la inscripción salió hacia el correo. <b>Conversión:</b> enviados ÷ vistos.<br>Las cifras son anónimas: no se guarda ningún nombre, correo, mensaje ni dirección IP. El contenido de cada mensaje solo llega por correo a albertsols@gmail.com.</p></section></div>';
+        app.innerHTML = html;
+        app.querySelectorAll("[data-days]").forEach(function (b) { b.onclick = function () { mDays = +b.getAttribute("data-days"); showMetrics(); }; });
+        document.getElementById("mreload").onclick = showMetrics;
+        document.getElementById("csv").onclick = function () {
+            var rows = [["fecha", "formulario", "evento", "motivo", "idioma", "cantidad"]];
+            Object.keys(mData.counts).sort().forEach(function (k) { rows.push(k.split("|").concat(mData.counts[k])); });
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(new Blob(["﻿" + rows.map(function (x) { return x.join(";"); }).join("\n")], { type: "text/csv;charset=utf-8" }));
+            a.download = "metricas-formularios-" + mData.since + ".csv"; a.click();
+        };
+    }
+
+    /* ---------- pestañas ---------- */
+    function route() {
+        var tab = location.hash === "#metricas" ? "metricas" : "tareas";
+        document.querySelectorAll("nav.tabs a").forEach(function (a) { a.setAttribute("aria-current", a.getAttribute("data-tab") === tab ? "page" : "false"); });
+        document.title = (tab === "tareas" ? "Tareas" : "Métricas") + " · Dashboard · Parroquia Santa Teresa de Jesús";
+        if (tab === "tareas") showTasks(); else showMetrics();
+    }
+    window.addEventListener("hashchange", route);
+    route();
+})();
+</script>
+</body>
+</html>

@@ -38,6 +38,24 @@
         #pst-hoy a { font-size: .78rem; color: #8f7340; font-weight: 600; }
         #pst-hoy .pst-metrics { display: block; margin-top: .7rem; padding-top: .7rem; border-top: 1px solid #eadfc8; color: #1d1a16; }
         #pst-hoy .pst-metrics:hover { color: #8f7340; }
+        #pst-hoy .pst-metrics + .pst-metrics { margin-top: .35rem; padding-top: 0; border-top: 0; }
+
+        /* Pestañas «Tareas» y «Métricas» en la barra superior del panel */
+        .pst-tabs { display: inline-flex; gap: .4rem; margin-left: .9rem; vertical-align: middle; }
+        .pst-tabs a {
+            display: inline-flex; align-items: center; padding: .45rem .95rem; border-radius: 20px;
+            background: #1b1610; color: #f0d79a !important; font: 600 .85rem/1 system-ui, sans-serif; text-decoration: none; white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,.15);
+        }
+        .pst-tabs a:hover { background: #3a2f22; }
+
+        /* Cada reflexión de la lista con el color y la foto de quien la escribe */
+        .pst-entry { border-left: 6px solid var(--pst-c) !important; position: relative; }
+        .pst-entry .pst-author {
+            display: inline-flex; align-items: center; gap: .4rem; margin-left: .7rem; padding: .15rem .6rem .15rem .2rem; border-radius: 20px;
+            background: color-mix(in srgb, var(--pst-c) 12%, #fff); color: var(--pst-c); font: 600 .78rem/1.4 system-ui, sans-serif; vertical-align: middle;
+        }
+        .pst-entry .pst-author img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; border: 2px solid var(--pst-c); }
         #pst-hoy p { margin: .6rem 0 0; font-size: .75rem; line-height: 1.45; color: #8a7e6c; }
         #pst-hoy .pst-see { display: block; width: 100%; padding: .6rem; margin-bottom: .55rem; border: 1px solid #bfa065; border-radius: 4px; cursor: pointer;
             background: #fff; color: #8f7340; font-size: .72rem; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; }
@@ -101,7 +119,8 @@
         <button type="button" class="pst-go" id="pst-hoy-go">✚ Preparar la reflexión de hoy</button>
         <button type="button" class="pst-see" id="pst-hoy-see">📖 Ver el Evangelio aquí</button>
         <a href="https://evangeli.net/evangelio" target="_blank" rel="noopener">Abrir en otra pestaña ↗</a>
-        <a class="pst-metrics" href="/admin/metricas.html" target="_blank" rel="noopener">📊 Métricas de los formularios</a>
+        <a class="pst-metrics" href="/admin/dashboard.html#tareas" target="_blank" rel="noopener">📋 Tareas del equipo</a>
+        <a class="pst-metrics" href="/admin/dashboard.html#metricas" target="_blank" rel="noopener">📊 Métricas de los formularios</a>
         <p>Se abre ya firmada por la parroquia, con la fecha y el día litúrgico. El Evangelio queda en una ventanita al lado para ir siguiéndolo mientras escribes.</p>
     </aside>
 
@@ -331,6 +350,39 @@
             e.stopPropagation();
             location.hash = "#/collections/homilias/new?autor=" + encodeURIComponent(ME.id);
         }, true);
+        /* ------------------------------------------------------------------
+           Barra superior: pestañas «Tareas» y «Métricas» (abren el dashboard)
+           y, en la lista de reflexiones, el color y la foto de cada autor
+           ------------------------------------------------------------------ */
+        function decorate() {
+            var root = document.getElementById("nc-root");
+            if (!root) return;
+            if (!root.querySelector(".pst-tabs")) {
+                var medios = Array.from(root.querySelectorAll("header a, header button")).find(function (el) { return el.textContent.trim() === "Medios"; });
+                if (medios) {
+                    var tabs = document.createElement("span");
+                    tabs.className = "pst-tabs";
+                    tabs.innerHTML = '<a href="/admin/dashboard.html#tareas" target="_blank" rel="noopener">📋 Tareas</a><a href="/admin/dashboard.html#metricas" target="_blank" rel="noopener">📊 Métricas</a>';
+                    medios.parentNode.insertBefore(tabs, medios.nextSibling);
+                }
+            }
+            root.querySelectorAll('a[href^="#/collections/homilias/entries/"]:not([data-pst])').forEach(function (a) {
+                var m = /—\s*([a-z0-9-]+)\s*$/i.exec(a.textContent.trim());
+                var p = m && autores[m[1]];
+                if (!p) return;
+                a.setAttribute("data-pst", "1");
+                a.style.setProperty("--pst-c", p.color || "#b08a3e");
+                a.classList.add("pst-entry");
+                var f = fotoURL(p);
+                var chip = document.createElement("span");
+                chip.className = "pst-author";
+                chip.innerHTML = (f ? '<img src="' + escH(f) + '" alt="">' : "") + escH(p.nombre);
+                a.appendChild(chip);
+            });
+        }
+        new MutationObserver(function () { decorate(); }).observe(document.body, { childList: true, subtree: true });
+        setTimeout(function () { loadTemplates().then(decorate, function () { }); }, 0);
+
         setTimeout(checkUser, 0);       // cuando el resto del panel ya está preparado
         setInterval(checkUser, 1500);   // detecta el inicio y el cierre de sesión
 
@@ -724,6 +776,27 @@
             }
         });
         CMS.registerPreviewTemplate("autores", AuthorsPreview);
+
+        /* Vista previa de las tareas del equipo: lista por persona con su color */
+        var TasksPreview = createClass({
+            render: function () {
+                var list = this.props.entry.getIn(["data", "tareas"]);
+                var items = list ? list.toArray() : [];
+                var EST = { "pendiente": "Pendiente", "en-curso": "En curso", "hecha": "Hecha" };
+                return h("div", { className: "pv", style: { padding: "1.5rem", fontFamily: "system-ui, sans-serif" } },
+                    h("div", { className: "pv-label" }, h("i"), "Tareas del equipo"),
+                    h("p", { style: { margin: "1rem 0", color: "#6b5f4d" } }, "Es más cómodo gestionarlas en el dashboard: ",
+                        h("a", { href: "/admin/dashboard.html#tareas", target: "_blank", style: { color: "#8f7340", fontWeight: 600 } }, "abrir el dashboard de tareas →")),
+                    items.map(function (t, i) {
+                        var p = autores[t.get("persona")] || {}, c = p.color || "#b08a3e";
+                        return h("div", { key: i, style: { background: "#fff", borderLeft: "5px solid " + c, borderRadius: "8px", padding: ".7rem .9rem", margin: ".5rem 0", boxShadow: "0 2px 8px rgba(0,0,0,.06)", opacity: t.get("estado") === "hecha" ? .6 : 1 } },
+                            h("strong", { style: { display: "block" } }, t.get("titulo") || "Sin título"),
+                            h("span", { style: { fontSize: ".8rem", color: c, fontWeight: 600 } }, (p.nombre || t.get("persona") || "") + " · " + (EST[t.get("estado")] || "") +
+                                (t.get("prioridad") === "alta" ? " · prioridad alta" : "") + (t.get("fecha") ? " · " + t.get("fecha") : "")));
+                    }));
+            }
+        });
+        CMS.registerPreviewTemplate("tareas", TasksPreview);
     })();
     </script>
 </body>

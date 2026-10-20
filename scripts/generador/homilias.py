@@ -142,6 +142,9 @@ def load(root):
         a = autores.get(h.get("autor"), {})
         h["autor_nombre"] = a.get("nombre") or h.get("autor") or "Parroquia Santa Teresa de Jesús"
         h["autor_cargo"] = a.get("cargo", "")
+        # color propio de la persona (marca sus miniaturas); si no tiene, el dorado de la parroquia
+        color = str(a.get("color") or "").strip()
+        h["autor_color"] = color if re.fullmatch(r"#[0-9a-fA-F]{6}", color) else "#b08a3e"
         foto = (a.get("foto") or "").lstrip("/")
         h["autor_foto"] = foto if foto and os.path.exists(os.path.join(root, foto)) else ""
         h["kicker"] = (h.get("tiempo") or "").strip()

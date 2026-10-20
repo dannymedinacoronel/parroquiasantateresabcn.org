@@ -1,0 +1,24 @@
+{
+  "tareas": [
+    {
+      "id": "t-activar-formularios",
+      "titulo": "Activar los formularios de la web",
+      "persona": "albert-sols",
+      "estado": "pendiente",
+      "prioridad": "alta",
+      "fecha": "",
+      "notas": "Enviar un mensaje de prueba desde Contacto y pulsar «Activate Form» en el correo de FormSubmit que llega a albertsols@gmail.com (mirar también en spam).",
+      "creada": "2026-10-21"
+    },
+    {
+      "id": "t-primera-reflexion",
+      "titulo": "Publicar la primera reflexión desde el panel",
+      "persona": "magdalena",
+      "estado": "pendiente",
+      "prioridad": "normal",
+      "fecha": "",
+      "notas": "Seguir el vídeo tutorial «Cómo publicar una reflexión».",
+      "creada": "2026-10-21"
+    }
+  ]
+}

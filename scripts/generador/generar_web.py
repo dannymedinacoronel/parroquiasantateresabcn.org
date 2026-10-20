@@ -541,7 +541,7 @@ def home_homily():
     quote_html = (f'<blockquote class="book-quote"><span aria-hidden="true">&ldquo;</span>{esc(quote)}</blockquote>' if quote else "")
     others = "".join(
         f"""
-                <a class="homily-chip" href="{o["url"]}">
+                <a class="homily-chip" href="{o["url"]}" style="--author:{o["autor_color"]}">
                     {_portrait(o, 0, "chip-photo")}
                     <span><strong>{esc(o["titulo"])}</strong><em><span>{esc(o["autor_nombre"])}</span> · {date_long(o)}</em></span>
                 </a>""" for o in HOMILIAS[1:3])
@@ -551,7 +551,7 @@ def home_homily():
                 <h2>Reflexión dominical</h2>
                 <hr class="section-divider" style="margin-bottom:0;">
             </div>
-            <div class="open-book">
+            <div class="open-book" style="--author:{h["autor_color"]}">
                 <span class="book-ribbon" aria-hidden="true"></span>
                 <div class="book-leaf book-left">
                     {_portrait(h, 0)}
@@ -1433,7 +1433,7 @@ def homily_page(i, h):
 
     def nav_card(o, rel_label):
         return f"""
-                    <a class="reading-next" href="{o["slug"]}.html">
+                    <a class="reading-next" href="{o["slug"]}.html" style="--author:{o["autor_color"]}">
                         {_portrait(o, 2, "reading-next-photo")}
                         <div class="reading-next-text"><span class="book-kicker">{rel_label}</span><strong>{esc(o["titulo"])}</strong><p><span>{esc(o["autor_nombre"])}</span> · {date_long(o)}</p></div>
                         <span class="reading-arrow" aria-hidden="true">&rarr;</span>
@@ -1491,7 +1491,7 @@ def archive_body():
     top = HOMILIAS[0]
     quote = _first_quote(top.get("texto"))
     featured = f"""
-            <article class="reflection-featured">
+            <article class="reflection-featured" style="--author:{top["autor_color"]}">
                 <a class="rf-photo" href="reflexiones/{top["slug"]}.html" aria-hidden="true" tabindex="-1">
                     {_portrait(top, 1)}
                     {date_badge(top)}
@@ -1525,7 +1525,7 @@ def archive_body():
             year = y
             rows.append(f'<li class="rf-year" aria-hidden="true"><span>{y}</span></li>')
         rows.append(f"""
-                <li class="rf-row" data-author="{esc(h["autor_nombre"])}">
+                <li class="rf-row" data-author="{esc(h["autor_nombre"])}" style="--author:{h["autor_color"]}">
                     <a href="reflexiones/{h["slug"]}.html">
                         {date_badge(h)}
                         {_portrait(h, 1, "rf-avatar")}
@@ -1658,7 +1658,7 @@ PAGES["html/noticias.html"] = page(1, "Noticias", "Noticias de la Parroquia Sant
                 <hr class="section-divider" style="margin-bottom:0;">
             </div>
             <div class="reflection-list news-reflections">""" + "".join(f"""
-                <a class="reflection-card" href="reflexiones/{h["slug"]}.html">
+                <a class="reflection-card" href="reflexiones/{h["slug"]}.html" style="--author:{h["autor_color"]}">
                     {_portrait(h, 1)}
                     {new_badge(h)}
                     <span class="book-kicker">{esc(h["autor_nombre"])}</span>

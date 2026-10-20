@@ -1892,6 +1892,29 @@ body > header { view-transition-name: site-header; }
 .form-alt { text-align: center; margin-top: 1.5rem; color: var(--muted); }
 @media (max-width: 640px) { .form-grid { grid-template-columns: minmax(0, 1fr); } .mail-form button[type=submit] { width: 100%; } }
 
+/* ==========================================================================
+   COLOR DE CADA PERSONA en las miniaturas de las reflexiones (--author viene de autores.json)
+   ========================================================================== */
+[style*="--author"] .priest-photo {
+    background: conic-gradient(from 210deg, color-mix(in srgb, var(--author) 35%, #fff), var(--author), color-mix(in srgb, var(--author) 70%, #000), color-mix(in srgb, var(--author) 35%, #fff), var(--author));
+    box-shadow: 0 0 0 9px color-mix(in srgb, var(--author) 12%, #fbf6ec), 0 0 0 10px color-mix(in srgb, var(--author) 45%, transparent), 0 22px 45px rgba(60,40,10,0.22);
+}
+.homily-chip[style*="--author"] { border-left: 5px solid var(--author); }
+.homily-chip[style*="--author"] .chip-photo { border-color: var(--author); box-shadow: 0 0 0 2px color-mix(in srgb, var(--author) 25%, transparent); }
+.homily-chip[style*="--author"] em span { color: var(--author); font-weight: 600; }
+.reading-next[style*="--author"] { border-left: 5px solid var(--author); }
+.reading-next[style*="--author"] .book-kicker { color: var(--author); }
+.reflection-featured[style*="--author"] { border-top: 5px solid var(--author); }
+.reflection-featured[style*="--author"] .rf-meta strong { color: var(--author); }
+.reflection-featured[style*="--author"] .rf-quote { border-left-color: var(--author); }
+.rf-row[style*="--author"] a { border-left: 5px solid var(--author); }
+.rf-row[style*="--author"] .rf-avatar { border-color: var(--author); }
+.rf-row[style*="--author"] .rf-text em { color: var(--author); font-weight: 600; }
+.reflection-card[style*="--author"] { border-top: 5px solid var(--author); }
+.reflection-card[style*="--author"] .book-kicker { color: var(--author); }
+.open-book[style*="--author"] .book-author { color: color-mix(in srgb, var(--author) 75%, #1a1a1a); }
+.open-book[style*="--author"] .book-ribbon { background: linear-gradient(90deg, color-mix(in srgb, var(--author) 80%, #000), var(--author) 50%, color-mix(in srgb, var(--author) 80%, #000)); }
+
 /* Botón de llamar (enlace tel:) */
 .btn-call { display: inline-flex; align-items: center; gap: .55rem; }
 .btn-call .icon, .btn-call svg { width: 18px; height: 18px; flex-shrink: 0; }

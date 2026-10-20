@@ -5,6 +5,7 @@
       "nombre": "Mn. Albert Sols",
       "cargo": "Rector de nuestra parroquia",
       "foto": "/fotosdefinitivas/web/albertsols-retrato.jpg",
+      "color": "#8c2f2f",
       "acceso": ["9e972bb821f72319db7272a0584d4d8964a777f3c122812a137a4de4b1660b3a"]
     },
     {
@@ -12,13 +13,15 @@
       "nombre": "Magdalena",
       "cargo": "Feligresa de nuestra parroquia",
       "foto": "/fotosdefinitivas/web/magdalena-retrato.jpg",
+      "color": "#2f6b8f",
       "acceso": ["f4e7bb07cceda0b0bff8b4db72587531536fa16c99d0efe69710b52b146f680e"]
     },
     {
       "id": "parroquia",
       "nombre": "Parroquia Santa Teresa de Jesús",
       "cargo": "Comunidad parroquial · El Carmel",
-      "foto": "/fotosdefinitivas/web/santateresa-retrato.jpg"
+      "foto": "/fotosdefinitivas/web/santateresa-retrato.jpg",
+      "color": "#b08a3e"
     }
   ]
 }
