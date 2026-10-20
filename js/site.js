@@ -389,7 +389,7 @@
     var progress = document.createElement("div");
     progress.className = "scroll-progress";
     progress.setAttribute("aria-hidden", "true");
-    document.body.appendChild(progress);
+    (header || document.body).appendChild(progress); /* en el borde inferior de la cabecera */
     var toTop = document.createElement("button");
     toTop.type = "button";
     toTop.className = "to-top";

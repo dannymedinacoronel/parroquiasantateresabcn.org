@@ -18,7 +18,7 @@
     --black-footer: #111111;
     --header-font: 'Cormorant Garamond', serif;
     --body-font: 'Montserrat', sans-serif;
-    --nav-height: 65px;
+    --nav-height: 72px;
     --nav-height-top: 84px;
     --radius: 4px;
     --shadow-sm: 0 2px 10px rgba(40, 30, 10, 0.05);
@@ -48,22 +48,30 @@ a { color: var(--accent-dark); }
 
 /* --- HEADER & NAVEGACIÓN --- */
 header {
-    background-color: var(--white);
+    background-color: rgba(255,255,255,0.94);
+    -webkit-backdrop-filter: saturate(1.4) blur(12px);
+    backdrop-filter: saturate(1.4) blur(12px);
     height: var(--nav-height);
     width: 100%;
     padding: 0 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 1px 12px rgba(0,0,0,0.06);
+    /* filete dorado fino + sombra suave: separa la cabecera del fondo crema */
+    box-shadow: 0 1px 0 rgba(191,160,101,0.35), 0 10px 28px rgba(30,20,5,0.07);
     position: fixed;
     top: 0; left: 0; z-index: 1000;
     transition: background-color .35s ease, height .35s ease, box-shadow .35s ease;
 }
+/* al hacer scroll (o con el menú abierto) el logo se reduce ligeramente y queda centrado */
+.logo { transform-origin: left center; transition: color .35s, transform .35s ease; }
+header.scrolled .logo, header.menu-open .logo { transform: scale(0.92); }
 
 /* Con JS: cabecera transparente sobre la foto hasta hacer scroll */
 .js header:not(.scrolled):not(.menu-open) {
     background-color: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     box-shadow: none;
     height: var(--nav-height-top);
 }
@@ -87,7 +95,7 @@ header {
     text-decoration: none;
     line-height: 1.05;
     flex-shrink: 0;
-    transition: color .35s;
+    transition: color .35s, transform .35s ease;
 }
 .logo-mark { width: 26px; height: 34px; color: var(--accent-color); flex-shrink: 0; transition: color .35s; }
 
@@ -883,7 +891,8 @@ mark.pendiente { background: #fff1c2; color: #7a5a00; padding: 0.1rem 0.35rem; b
 
 /* Barra de progreso de lectura */
 .scroll-progress {
-    position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 1200;
+    position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; z-index: 2;
+    transition: opacity .3s;
     background: linear-gradient(90deg, var(--accent-dark), var(--accent-color), #e6cf98);
     transform: scaleX(0); transform-origin: 0 50%; pointer-events: none;
 }
@@ -1454,4 +1463,15 @@ header { gap: 1.5rem; }
 @media (max-width: 1280px) and (max-height: 720px) {
     .nav-link { padding: 0.7rem 0.25rem; font-size: 1.5rem; }
     .nav-menu .nav-extra { margin-top: 1.25rem; }
+}
+
+/* La barra de progreso solo se ve con la cabecera blanca */
+.js header:not(.scrolled) .scroll-progress { opacity: 0; }
+
+/* --- Pulido móvil --- */
+.widget-container h3 { overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+    .link-arrow { display: inline; text-align: center; line-height: 1.8; }
+    .link-arrow span { display: inline-block; margin-left: 0.3rem; }
+    .widget-container h3 { font-size: 1.35rem; }
 }
