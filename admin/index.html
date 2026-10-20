@@ -37,6 +37,32 @@
         #pst-hoy .pst-go:hover { background: #8f7340; }
         #pst-hoy a { font-size: .78rem; color: #8f7340; font-weight: 600; }
         #pst-hoy p { margin: .6rem 0 0; font-size: .75rem; line-height: 1.45; color: #8a7e6c; }
+        #pst-hoy .pst-see { display: block; width: 100%; padding: .6rem; margin-bottom: .55rem; border: 1px solid #bfa065; border-radius: 4px; cursor: pointer;
+            background: #fff; color: #8f7340; font-size: .72rem; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; }
+        #pst-hoy .pst-see:hover { background: #f6eedf; }
+
+        /* Ventana flotante con el Evangelio del día: se mueve arrastrando la barra y se agranda desde la esquina */
+        #pst-ev {
+            position: fixed; right: 22px; top: 90px; z-index: 400; width: 400px; height: 560px; min-width: 260px; min-height: 160px;
+            max-width: calc(100vw - 20px); max-height: calc(100vh - 20px);
+            display: none; flex-direction: column; overflow: hidden; resize: both;
+            background: #fffaf0; border: 1px solid #e2d1ad; border-radius: 8px; box-shadow: 0 22px 50px rgba(40,25,5,.3);
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        }
+        #pst-ev.on { display: flex; }
+        #pst-ev.min { height: auto !important; min-height: 0; resize: none; }
+        #pst-ev.min .pst-ev-body { display: none; }
+        .pst-ev-bar { display: flex; align-items: center; gap: .4rem; padding: .5rem .55rem .5rem .8rem; background: #2a1d17; color: #f0d79a; cursor: move; user-select: none; touch-action: none; }
+        .pst-ev-bar b { flex: 1; font-size: .68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .pst-ev-bar button { border: 0; background: rgba(255,255,255,.08); color: #f0d79a; border-radius: 4px; min-width: 26px; height: 26px; cursor: pointer; font-size: .78rem; font-weight: 700; }
+        .pst-ev-bar button:hover { background: rgba(255,255,255,.2); }
+        .pst-ev-bar button[aria-pressed="true"] { background: #bfa065; color: #2a1d17; }
+        .pst-ev-body { position: relative; flex: 1; min-height: 0; }
+        .pst-ev-body iframe { position: absolute; top: 0; left: 0; border: 0; background: #fff; transform-origin: 0 0; }
+        #pst-ev.drag iframe { pointer-events: none; }
+        #pst-ev-tab { position: fixed; left: 22px; bottom: 22px; z-index: 399; display: none; padding: .65rem 1rem; border: 0; border-radius: 30px; cursor: pointer;
+            background: #2a1d17; color: #f0d79a; font: 700 .72rem system-ui, sans-serif; letter-spacing: 1.5px; text-transform: uppercase; box-shadow: 0 10px 25px rgba(40,25,5,.3); }
+        #pst-ev-tab.on { display: block; }
     </style>
 </head>
 <body>
@@ -51,9 +77,26 @@
         <strong id="pst-hoy-dia"></strong>
         <small id="pst-hoy-fecha"></small>
         <button type="button" class="pst-go" id="pst-hoy-go">✚ Preparar la reflexión de hoy</button>
-        <a href="https://evangeli.net/evangelio" target="_blank" rel="noopener">Leer el Evangelio de hoy ↗</a>
-        <p>Se abre ya firmada por la parroquia, con la fecha y el día litúrgico. Escribe la reflexión donde pone [entre corchetes] y pulsa «Publicar».</p>
+        <button type="button" class="pst-see" id="pst-hoy-see">📖 Ver el Evangelio aquí</button>
+        <a href="https://evangeli.net/evangelio" target="_blank" rel="noopener">Abrir en otra pestaña ↗</a>
+        <p>Se abre ya firmada por la parroquia, con la fecha y el día litúrgico. El Evangelio queda en una ventanita al lado para ir siguiéndolo mientras escribes.</p>
     </aside>
+
+    <!-- Ventanita con el Evangelio del día (evangeli.net), visible también mientras se escribe -->
+    <section id="pst-ev" aria-label="Evangelio de hoy">
+        <div class="pst-ev-bar" id="pst-ev-bar">
+            <b>📖 Evangelio de hoy</b>
+            <button type="button" data-lang="es" aria-pressed="true" title="Castellano">ES</button>
+            <button type="button" data-lang="ca" aria-pressed="false" title="Català">CA</button>
+            <button type="button" data-lang="en" aria-pressed="false" title="English">EN</button>
+            <button type="button" id="pst-ev-small" title="Letra más pequeña">A−</button>
+            <button type="button" id="pst-ev-big" title="Letra más grande">A+</button>
+            <button type="button" id="pst-ev-min" title="Plegar / desplegar">–</button>
+            <button type="button" id="pst-ev-close" title="Cerrar">✕</button>
+        </div>
+        <div class="pst-ev-body"><iframe id="pst-ev-frame" title="Evangelio de hoy" loading="lazy"></iframe></div>
+    </section>
+    <button type="button" id="pst-ev-tab">📖 Evangelio de hoy</button>
 
     <!-- Calendario litúrgico (el mismo que usa la web) -->
     <script src="/js/liturgia.js"></script>
@@ -93,7 +136,96 @@
                 publicado: "true"
             });
             location.hash = "#/collections/homilias/new?" + q.toString();
+            evOpen(true);
         });
+
+        /* ------------------------------------------------------------------
+           Ventanita del Evangelio: se arrastra por la barra, se agranda desde
+           la esquina, tiene idioma y tamaño de letra, y recuerda su sitio.
+           ------------------------------------------------------------------ */
+        var ev = document.getElementById("pst-ev"), evFrame = document.getElementById("pst-ev-frame"),
+            evTab = document.getElementById("pst-ev-tab"), evBar = document.getElementById("pst-ev-bar");
+        var EV_URL = { es: "https://evangeli.net/evangelio/widget/web", ca: "https://evangeli.net/evangeli/widget/web", en: "https://evangeli.net/gospel/widget/web" };
+        var evState = { lang: "es", zoom: 1, open: false };
+        try { var saved = JSON.parse(localStorage.getItem("pst-ev") || "null"); if (saved) evState = Object.assign(evState, saved); } catch (e) { }
+        function evSave() {
+            try {
+                evState.box = { left: ev.style.left, top: ev.style.top, width: ev.style.width, height: ev.style.height };
+                localStorage.setItem("pst-ev", JSON.stringify(evState));
+            } catch (e) { }
+        }
+        function evZoom() {
+            // Se escala el visor entero (la página de evangeli.net no deja cambiar su letra desde fuera)
+            var z = evState.zoom;
+            evFrame.style.transform = "scale(" + z + ")";
+            evFrame.style.width = (100 / z) + "%";
+            evFrame.style.height = (100 / z) + "%";
+        }
+        function evLang(l) {
+            evState.lang = EV_URL[l] ? l : "es";
+            if (evFrame.getAttribute("src") !== EV_URL[evState.lang]) evFrame.src = EV_URL[evState.lang];
+            ev.querySelectorAll("[data-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === evState.lang)); });
+        }
+        function evOpen(show) {
+            evState.open = show;
+            if (show) { evLang(evState.lang); ev.classList.remove("min"); document.getElementById("pst-ev-min").textContent = "–"; }
+            ev.classList.toggle("on", show);
+            evTabVisible();
+            evSave();
+        }
+        function evTabVisible() {
+            // La pestañita aparece cuando la ventana está cerrada y se está escribiendo una reflexión
+            var editing = /^#\/collections\/homilias\/(new|entries)/.test(location.hash);
+            evTab.classList.toggle("on", editing && !evState.open);
+        }
+        if (evState.box && evState.box.width) {
+            ["left", "top", "width", "height"].forEach(function (k) { if (evState.box[k]) ev.style[k] = evState.box[k]; });
+            if (evState.box.left) ev.style.right = "auto";
+        }
+        evZoom();
+        ev.querySelectorAll("[data-lang]").forEach(function (b) {
+            b.addEventListener("click", function () { evLang(b.getAttribute("data-lang")); evSave(); });
+        });
+        document.getElementById("pst-ev-big").addEventListener("click", function () { evState.zoom = Math.min(1.6, +(evState.zoom + .1).toFixed(2)); evZoom(); evSave(); });
+        document.getElementById("pst-ev-small").addEventListener("click", function () { evState.zoom = Math.max(.6, +(evState.zoom - .1).toFixed(2)); evZoom(); evSave(); });
+        document.getElementById("pst-ev-close").addEventListener("click", function () { evOpen(false); });
+        document.getElementById("pst-ev-min").addEventListener("click", function () {
+            ev.classList.toggle("min");
+            this.textContent = ev.classList.contains("min") ? "+" : "–";
+        });
+        document.getElementById("pst-hoy-see").addEventListener("click", function () { evOpen(true); });
+        evTab.addEventListener("click", function () { evOpen(true); });
+        // Arrastrar por la barra (ratón, táctil o lápiz)
+        evBar.addEventListener("pointerdown", function (e) {
+            if (e.target.closest("button")) return;
+            var r = ev.getBoundingClientRect(), dx = e.clientX - r.left, dy = e.clientY - r.top;
+            ev.classList.add("drag");
+            evBar.setPointerCapture(e.pointerId);
+            function move(m) {
+                var x = Math.max(0, Math.min(window.innerWidth - 80, m.clientX - dx));
+                var y = Math.max(0, Math.min(window.innerHeight - 40, m.clientY - dy));
+                ev.style.left = x + "px"; ev.style.top = y + "px"; ev.style.right = "auto";
+            }
+            function up() {
+                ev.classList.remove("drag");
+                evBar.removeEventListener("pointermove", move);
+                evBar.removeEventListener("pointerup", up);
+                evSave();
+            }
+            evBar.addEventListener("pointermove", move);
+            evBar.addEventListener("pointerup", up);
+        });
+        // Guardar el tamaño al agrandar desde la esquina
+        if (window.ResizeObserver) {
+            var evT;
+            new ResizeObserver(function () {
+                if (!ev.classList.contains("on") || ev.classList.contains("min")) return;
+                clearTimeout(evT);
+                evT = setTimeout(function () { ev.style.width = ev.offsetWidth + "px"; ev.style.height = ev.offsetHeight + "px"; evSave(); }, 300);
+            }).observe(ev);
+        }
+        window.addEventListener("hashchange", evTabVisible);
+        if (evState.open) evOpen(true); else evTabVisible();
         document.getElementById("pst-hoy-min").addEventListener("click", function () {
             hoyCard.classList.toggle("min");
             this.textContent = hoyCard.classList.contains("min") ? "+" : "–";
