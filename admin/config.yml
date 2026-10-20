@@ -85,12 +85,12 @@ collections:
         time_format: false
         picker_utc: true
         hint: "La reflexión más reciente es la que sale en la portada."
-      - label: Tiempo litúrgico (opcional)
+      - label: Tiempo litúrgico
         name: tiempo
         widget: string
         required: false
         hint: "Aparece encima del título. Ej.: III domingo de Pascua · 2026. Si lo dejas vacío se muestra la fecha."
-      - label: Saludo inicial (opcional)
+      - label: Saludo inicial
         name: saludo
         widget: string
         required: false
@@ -105,12 +105,12 @@ collections:
           Pega el texto. Separa los párrafos con una línea en blanco. La primera letra del primer
           párrafo se mostrará como letra capitular. Usa «Cita» para destacar una frase en grande
           y «Subtítulo» (H3) para los apartados.
-      - label: Audio de SoundCloud (opcional)
+      - label: Audio de SoundCloud
         name: audio
         widget: string
         required: false
         hint: "Pega el enlace de la pista de SoundCloud (https://soundcloud.com/...)."
-      - label: Enlace a la presentación (opcional)
+      - label: Enlace a la presentación
         name: presentacion
         widget: string
         required: false
@@ -146,7 +146,7 @@ collections:
                 widget: string
                 required: false
                 hint: "Ej.: Rector de nuestra parroquia · Feligresa · Catequista"
-              - label: Foto (opcional)
+              - label: Foto
                 name: foto
                 widget: image
                 required: false
