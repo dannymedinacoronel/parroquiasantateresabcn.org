@@ -48,6 +48,12 @@
             box-shadow: 0 2px 8px rgba(0,0,0,.15);
         }
         .pst-tabs a:hover { background: #3a2f22; }
+        .pst-tabs a.on { background: #bfa065; color: #1b1610 !important; }
+        /* Tareas, Visitas, Formularios y Exportar se abren aquí mismo, bajo la barra del panel */
+        #pst-panel { position: fixed; left: 0; right: 0; bottom: 0; top: 72px; z-index: 250; background: #f4eee3; display: none; }
+        #pst-panel.open { display: block; }
+        #pst-panel iframe { width: 100%; height: 100%; border: 0; display: block; }
+        body.pst-panel-open #pst-hoy, body.pst-panel-open #pst-ev, body.pst-panel-open #pst-ev-tab { display: none !important; }
 
         /* Cada reflexión de la lista con el color y la foto de quien la escribe */
         .pst-entry { border-left: 6px solid var(--pst-c) !important; position: relative; }
@@ -119,10 +125,10 @@
         <button type="button" class="pst-go" id="pst-hoy-go">✚ Preparar la reflexión de hoy</button>
         <button type="button" class="pst-see" id="pst-hoy-see">📖 Ver el Evangelio aquí</button>
         <a href="https://evangeli.net/evangelio" target="_blank" rel="noopener">Abrir en otra pestaña ↗</a>
-        <a class="pst-metrics" href="/admin/dashboard.html#tareas" target="_blank" rel="noopener">📋 Tareas del equipo</a>
-        <a class="pst-metrics" href="/admin/dashboard.html#visitas" target="_blank" rel="noopener">🟢 Visitas en directo</a>
-        <a class="pst-metrics" href="/admin/dashboard.html#metricas" target="_blank" rel="noopener">📊 Métricas de los formularios</a>
-        <a class="pst-metrics" href="/admin/dashboard.html#exportar" target="_blank" rel="noopener">⬇ Exportar</a>
+        <a class="pst-metrics" href="/admin/?panel=tareas" data-panel="tareas">📋 Tareas del equipo</a>
+        <a class="pst-metrics" href="/admin/?panel=visitas" data-panel="visitas">🟢 Visitas en directo</a>
+        <a class="pst-metrics" href="/admin/?panel=metricas" data-panel="metricas">📊 Métricas de los formularios</a>
+        <a class="pst-metrics" href="/admin/?panel=exportar" data-panel="exportar">⬇ Exportar</a>
         <p>Se abre ya firmada por la parroquia, con la fecha y el día litúrgico. El Evangelio queda en una ventanita al lado para ir siguiéndolo mientras escribes.</p>
     </aside>
 
@@ -144,6 +150,26 @@
 
     <!-- Calendario litúrgico (el mismo que usa la web) -->
     <script src="/js/liturgia.js"></script>
+    <!-- Las Tareas se guardan en GitHub con la misma llave de acceso que usa el panel: se toma de las
+         propias peticiones del panel a DecapBridge (así nunca hay que volver a iniciar sesión aparte) -->
+    <script>
+    (function () {
+        var origFetch = window.fetch;
+        function grab(h) {
+            try {
+                var a = h && (typeof h.get === "function" ? h.get("Authorization") : (h.Authorization || h.authorization));
+                if (a && /^(Bearer|token) /i.test(a)) localStorage.setItem("pst-gw-token", JSON.stringify({ t: a.replace(/^(Bearer|token) /i, ""), at: Date.now() }));
+            } catch (e) { }
+        }
+        window.fetch = function (input, init) {
+            try {
+                var url = typeof input === "string" ? input : input && input.url;
+                if (url && String(url).indexOf("gateway.decapbridge.com") > -1) { grab(init && init.headers); if (input && input.headers) grab(input.headers); }
+            } catch (e) { }
+            return origFetch.apply(this, arguments);
+        };
+    })();
+    </script>
     <!-- Panel de edición (Decap CMS). La configuración está en /admin/config.yml -->
     <script src="https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js"></script>
     <script>
@@ -353,6 +379,60 @@
             location.hash = "#/collections/homilias/new?autor=" + encodeURIComponent(ME.id);
         }, true);
         /* ------------------------------------------------------------------
+           Un solo panel: Tareas, Visitas, Formularios y Exportar se abren aquí
+           mismo, bajo la barra superior (el dashboard va dentro). «Contenido»
+           o «Medios» vuelven a las reflexiones.
+           ------------------------------------------------------------------ */
+        var panelTab = null, panelBox = null;
+        function markTab(tab) {
+            document.querySelectorAll(".pst-tabs a").forEach(function (a) { a.classList.toggle("on", a.getAttribute("data-panel") === tab); });
+        }
+        window.pstMarkTab = function (tab) { if (panelTab) { panelTab = tab; markTab(tab); } };
+        function openPanel(tab) {
+            if (!panelBox) {
+                panelBox = document.createElement("div");
+                panelBox.id = "pst-panel";
+                panelBox.innerHTML = '<iframe title="Dashboard del equipo"></iframe>';
+                document.body.appendChild(panelBox);
+            }
+            var head = document.querySelector("#nc-root header");
+            panelBox.style.top = (head ? Math.round(head.getBoundingClientRect().bottom) : 72) + "px";
+            var frame = panelBox.querySelector("iframe");
+            if (!frame.getAttribute("src")) frame.setAttribute("src", "/admin/dashboard.html?embed=1#" + tab);
+            else try { frame.contentWindow.location.hash = tab; } catch (e) { frame.setAttribute("src", "/admin/dashboard.html?embed=1#" + tab); }
+            panelBox.classList.add("open");
+            document.body.classList.add("pst-panel-open");
+            panelTab = tab; markTab(tab);
+            history.replaceState(null, "", "/admin/?panel=" + tab + location.hash);
+        }
+        function closePanel() {
+            if (!panelTab) return;
+            panelTab = null; markTab(null);
+            if (panelBox) panelBox.classList.remove("open");
+            document.body.classList.remove("pst-panel-open");
+            history.replaceState(null, "", "/admin/" + location.hash);
+        }
+        document.addEventListener("click", function (e) {
+            var a = e.target.closest && e.target.closest("a[data-panel]");
+            if (a) { e.preventDefault(); e.stopPropagation(); openPanel(a.getAttribute("data-panel")); return; }
+            // cualquier otro botón de la barra superior (Contenido, Medios…) vuelve al panel de reflexiones
+            if (panelTab && e.target.closest && e.target.closest("#nc-root header")) closePanel();
+        }, true);
+        window.addEventListener("hashchange", function () { if (panelTab && /^#\/(collections|media)/.test(location.hash)) closePanel(); });
+        window.addEventListener("resize", function () { if (panelTab) openPanel(panelTab); });
+        // /admin/?panel=visitas abre esa pestaña cuando el panel ya ha cargado (y tras iniciar sesión, si hace falta)
+        var askedPanel = new URLSearchParams(location.search).get("panel");
+        if (askedPanel) {
+            var waitHead = setInterval(function () {
+                if (document.querySelector("#nc-root header") && /^#\/collections\//.test(location.hash)) {
+                    clearInterval(waitHead);
+                    setTimeout(function () { openPanel(askedPanel); }, 400);
+                }
+            }, 300);
+            setTimeout(function () { clearInterval(waitHead); }, 120000);
+        }
+
+        /* ------------------------------------------------------------------
            Barra superior: pestañas «Tareas» y «Métricas» (abren el dashboard)
            y, en la lista de reflexiones, el color y la foto de cada autor
            ------------------------------------------------------------------ */
@@ -364,8 +444,9 @@
                 if (medios) {
                     var tabs = document.createElement("span");
                     tabs.className = "pst-tabs";
-                    tabs.innerHTML = '<a href="/admin/dashboard.html#tareas" target="_blank" rel="noopener">📋 Tareas</a><a href="/admin/dashboard.html#visitas" target="_blank" rel="noopener">🟢 Visitas</a><a href="/admin/dashboard.html#metricas" target="_blank" rel="noopener">📊 Formularios</a><a href="/admin/dashboard.html#exportar" target="_blank" rel="noopener">⬇ Exportar</a>';
+                    tabs.innerHTML = '<a href="/admin/?panel=tareas" data-panel="tareas">📋 Tareas</a><a href="/admin/?panel=visitas" data-panel="visitas">🟢 Visitas</a><a href="/admin/?panel=metricas" data-panel="metricas">📊 Formularios</a><a href="/admin/?panel=exportar" data-panel="exportar">⬇ Exportar</a>';
                     medios.parentNode.insertBefore(tabs, medios.nextSibling);
+                    markTab(panelTab);
                 }
             }
             root.querySelectorAll('a[href^="#/collections/homilias/entries/"]:not([data-pst])').forEach(function (a) {

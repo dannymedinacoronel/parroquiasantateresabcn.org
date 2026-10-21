@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
     <title>Dashboard · Parroquia Santa Teresa de Jesús</title>
+    <script>
+        /* Un solo panel: el dashboard vive dentro de /admin/. Si se abre suelto, se lleva allí. */
+        if (window.top === window) location.replace("/admin/?panel=" + ((location.hash || "#tareas").slice(1) || "tareas"));
+        else document.documentElement.classList.add("embed");
+    </script>
     <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml">
     <style>
         :root { --bg: #f4eee3; --card: #fffdf8; --ink: #1d1a16; --muted: #857a68; --gold: #bfa065; --gold-d: #8f7340; --line: #e6dac2; --wine: #8c2f2f; }
@@ -113,6 +118,8 @@
         /* ---------- visitas ---------- */
         nav.tabs { overflow-x: auto; scrollbar-width: none; }
         nav.tabs a { white-space: nowrap; display: inline-flex; align-items: center; gap: .45rem; }
+        html.embed header { display: none; }
+        html.embed main { padding-top: 1.3rem; }
         .live-dot { width: 9px; height: 9px; border-radius: 50%; background: #3fb36b; box-shadow: 0 0 0 0 rgba(63,179,107,.6); animation: livePulse 2s infinite; }
         @keyframes livePulse { 70% { box-shadow: 0 0 0 8px rgba(63,179,107,0); } 100% { box-shadow: 0 0 0 0 rgba(63,179,107,0); } }
         .vk { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .8rem; margin-bottom: 1.25rem; }
@@ -207,7 +214,7 @@
     }
     var ready = fetch("/contenido/autores.json?t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (d) {
         (d.autores || []).forEach(function (a) { PEOPLE[a.id] = a; ORDER.push(a.id); });
-        var email = String(user.email || "").trim().toLowerCase();
+        var email = String(user.email || user.login || (user.user_metadata && user.user_metadata.email) || "").trim().toLowerCase();
         return email && window.crypto && crypto.subtle ? sha256(email).then(function (h) {
             ORDER.forEach(function (id) { if ((PEOPLE[id].acceso || []).indexOf(h) > -1) ME = PEOPLE[id]; });
         }) : null;
@@ -224,11 +231,17 @@
         GW = g ? g[1].replace(/\/+$/, "") + "/github" : null; REPO = rp && rp[1]; if (br) BRANCH = br[1];
     });
     var tasks = [], sha = null, filterP = "", filterS = "abiertas";
+    /* llave de acceso: la que acaba de usar el propio panel con DecapBridge; si no, la guardada al iniciar sesión */
+    function gwToken() {
+        try { var k = JSON.parse(localStorage.getItem("pst-gw-token") || "null"); if (k && k.t) return k.t; } catch (e) { }
+        var t = user.token;
+        return typeof t === "string" ? t : (t && (t.access_token || t.token)) || "";
+    }
     function b64enc(s) { return btoa(unescape(encodeURIComponent(s))); }
     function b64dec(s) { return decodeURIComponent(escape(atob(s.replace(/\s/g, "")))); }
     function api(path, opts) {
         opts = opts || {};
-        opts.headers = Object.assign({ "Authorization": "Bearer " + user.token, "Content-Type": "application/json" }, opts.headers || {});
+        opts.headers = Object.assign({ "Authorization": "Bearer " + gwToken(), "Content-Type": "application/json" }, opts.headers || {});
         return fetch(GW + "/repos/" + REPO + path, opts).then(function (r) {
             if (r.status === 401 || r.status === 403) throw new Error("sesion");
             return r;
@@ -383,11 +396,11 @@
     function showTasks() {
         app.innerHTML = '<p class="empty">Cargando tareas…</p>';
         Promise.all([ready, cfgReady]).then(function () {
-            if (!GW || !REPO || !user.token) throw new Error("sesion");
+            if (!GW || !REPO || !gwToken()) throw new Error("sesion");
             return loadTasks();
         }).then(renderTasks).catch(function (e) {
             app.innerHTML = '<div class="card"><h2>No se han podido cargar las tareas</h2><p class="notice">' +
-                (e.message === "sesion" ? "Tu sesión del panel ha caducado o no se ha iniciado. Abre el <a href=\"/admin/\">panel de reflexiones</a>, entra con tu correo y vuelve a esta pestaña."
+                (e.message === "sesion" ? "Hace falta renovar el acceso. Pulsa «Contenido» arriba (o recarga la página) para que el panel se conecte, y vuelve a «Tareas»."
                     : "Error: " + esc(e.message) + ". Comprueba la conexión y vuelve a intentarlo.") +
                 '</p><button class="btn" onclick="location.reload()">Reintentar</button></div>';
         });
@@ -693,6 +706,7 @@
         if (!TABS[tab]) tab = "tareas";
         stopLive();
         document.querySelectorAll("nav.tabs a").forEach(function (a) { a.setAttribute("aria-current", a.getAttribute("data-tab") === tab ? "page" : "false"); });
+        try { if (window.parent !== window && parent.pstMarkTab) parent.pstMarkTab(tab); } catch (e) { }
         document.title = TABS[tab][0] + " · Dashboard · Parroquia Santa Teresa de Jesús";
         TABS[tab][1]();
     }
