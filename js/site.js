@@ -21,7 +21,7 @@
             bannerText: "Usamos almacenamiento técnico necesario para que la web funcione. Con tu permiso, también cargaremos contenido de terceros (mapas, vídeos, Instagram, formularios), que pueden instalar sus propias cookies. No usamos cookies de publicidad ni de analítica.",
             policy: "Política de cookies",
             optNecessary: "<strong>Necesarias</strong> Guardan tu elección sobre cookies. Siempre activas.",
-            optEmbeds: "<strong>Contenido externo</strong> Google Maps, Calendar y Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa, Evangeli.net y fotos de las noticias.",
+            optEmbeds: "<strong>Contenido externo</strong> Google Maps, YouTube, Instagram, SoundCloud, Cincopa, Evangeli.net y fotos de las noticias.",
             reject: "Rechazar", configure: "Configurar", save: "Guardar selección", acceptAll: "Aceptar todas"
         },
         ca: {
@@ -42,7 +42,7 @@
             bannerText: "Fem servir emmagatzematge tècnic necessari perquè el web funcioni. Amb el teu permís, també carregarem contingut de tercers (mapes, vídeos, Instagram, formularis), que poden instal·lar les seves pròpies galetes. No fem servir galetes de publicitat ni d'analítica.",
             policy: "Política de galetes",
             optNecessary: "<strong>Necessàries</strong> Desen la teva elecció sobre galetes. Sempre actives.",
-            optEmbeds: "<strong>Contingut extern</strong> Google Maps, Calendar i Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa, Evangeli.net i fotos de les notícies.",
+            optEmbeds: "<strong>Contingut extern</strong> Google Maps, YouTube, Instagram, SoundCloud, Cincopa, Evangeli.net i fotos de les notícies.",
             reject: "Rebutjar", configure: "Configurar", save: "Desar la selecció", acceptAll: "Acceptar-les totes"
         },
         en: {
@@ -63,7 +63,7 @@
             bannerText: "We use essential technical storage for the website to work. With your permission, we will also load third-party content (maps, videos, Instagram, forms), which may set their own cookies. We do not use advertising or analytics cookies.",
             policy: "Cookie policy",
             optNecessary: "<strong>Essential</strong> Store your cookie choice. Always active.",
-            optEmbeds: "<strong>External content</strong> Google Maps, Calendar and Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa, Evangeli.net and news photos.",
+            optEmbeds: "<strong>External content</strong> Google Maps, YouTube, Instagram, SoundCloud, Cincopa, Evangeli.net and news photos.",
             reject: "Reject", configure: "Settings", save: "Save selection", acceptAll: "Accept all"
         }
     };

@@ -2505,3 +2505,25 @@ main > section:not(.hero):not(:first-child), .site-footer, body > footer { conte
 .ig-feed-more { display: block; margin: 14px 16px 0; padding: .65rem; border-radius: 8px; background: #efefef; color: #111; font-size: .8rem; font-weight: 600; text-align: center; text-decoration: none; }
 .ig-feed-more:hover { background: #e2e2e2; }
 @media (max-width: 1100px) { .ig-phone-feed { height: auto; } }
+
+/* ==========================================================================
+   EUCARISTÍAS: horario semana a semana (sustituye al calendario de Google)
+   ========================================================================== */
+.week-plan { list-style: none; margin: 0 0 1.25rem; padding: 0; border: 1px solid var(--border); border-radius: var(--radius); background: var(--white); overflow: hidden; box-shadow: var(--shadow-sm); }
+.week-day { position: relative; display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); align-items: start; gap: 1rem; padding: .95rem 1.25rem; border-bottom: 1px solid var(--border); text-align: left; }
+.week-day:last-child { border-bottom: 0; }
+.wp-day { font-family: var(--header-font); font-style: italic; font-size: 1.3rem; line-height: 1.3; color: var(--heading-color); }
+.week-day ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .45rem; }
+.week-day li { display: flex; align-items: baseline; gap: .8rem; margin: 0; padding: 0; }
+.week-day li::before { content: none; }
+.wp-time { flex: 0 0 3.6rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--accent-dark); }
+.wp-what { color: var(--text-color); line-height: 1.45; }
+.wp-what small { display: block; font-size: .8rem; color: var(--muted); }
+.week-day.is-today { background: linear-gradient(90deg, #fbf5e8, var(--white)); box-shadow: inset 4px 0 0 var(--accent-color); }
+.week-day .today-tag { position: absolute; top: .55rem; right: .9rem; margin: 0; }
+.week-note { font-size: .92rem; color: var(--muted); line-height: 1.6; text-align: left; }
+#calendario .btn-group { justify-content: flex-start; }
+@media (max-width: 520px) {
+    .week-day { grid-template-columns: minmax(0, 1fr); gap: .35rem; padding: .9rem 1rem; }
+    .week-day .today-tag { top: .8rem; }
+}

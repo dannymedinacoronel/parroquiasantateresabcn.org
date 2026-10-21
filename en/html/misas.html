@@ -26,7 +26,7 @@
     <link rel="manifest" href="../../site.webmanifest">
 
     <link rel="stylesheet" href="../../css/fonts.css?v=818b49f2ed">
-    <link rel="stylesheet" href="../../css/site.css?v=1eaeb48557">
+    <link rel="stylesheet" href="../../css/site.css?v=6fa4dba816">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
     <script type="speculationrules">{"prerender":[{"where":{"selector_matches":"a[hreflang]"},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}},{"not":{"selector_matches":"a[hreflang]"}}]},"eagerness":"moderate"}]}</script>
@@ -183,12 +183,22 @@
                 </script></div>
                 </div>
                 <div id="calendario">
-                    <span class="subtitulo">Add it to your calendar</span>
+                    <span class="subtitulo">Week by week</span>
                     <h2>Calendar of Masses and activities</h2>
                     <hr class="section-divider">
-                    <div class="embed-frame">
-                        <div class="consent-embed" data-service="Google Calendar"><iframe title="Calendar of Masses and activities" height="520" loading="lazy" scrolling="no"
-                            data-consent-src="https://calendar.google.com/calendar/embed?title=Agrega%20a%20tu%20calendario%20el%20horario%20de%20eucaristías%20y%20actividades&amp;height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=6ufb6ib57o0aq9m4l4gnk9lkng%40group.calendar.google.com&amp;color=%2342104A&amp;ctz=Europe%2FMadrid&amp;mode=AGENDA"></iframe></div>
+                    <ol class="week-plan">
+                        <li class="week-day" data-days="1"><span class="wp-day">Monday</span><ul><li><span class="wp-time">19:00</span><span class="wp-what">Mass</span></li></ul></li>
+                        <li class="week-day" data-days="2"><span class="wp-day">Tuesday</span><ul><li><span class="wp-time">19:00</span><span class="wp-what">Mass</span></li></ul></li>
+                        <li class="week-day" data-days="3"><span class="wp-day">Wednesday</span><ul><li><span class="wp-time">19:00</span><span class="wp-what">Mass</span></li></ul></li>
+                        <li class="week-day" data-days="4"><span class="wp-day">Thursday</span><ul><li><span class="wp-time">19:00</span><span class="wp-what">Mass</span></li></ul></li>
+                        <li class="week-day" data-days="5"><span class="wp-day">Friday</span><ul><li><span class="wp-time">19:00</span><span class="wp-what">Mass</span></li><li><span class="wp-time">Afternoon</span><span class="wp-what">Parish office<small>For baptisms, weddings and any enquiry</small></span></li></ul></li>
+                        <li class="week-day" data-days="6"><span class="wp-day">Saturday</span><ul><li><span class="wp-time">18:30</span><span class="wp-what">Confession<small>Until 19:00</small></span></li><li><span class="wp-time">19:00</span><span class="wp-what">Mass</span></li></ul></li>
+                        <li class="week-day" data-days="0"><span class="wp-day">Sunday</span><ul><li><span class="wp-time">11:00</span><span class="wp-what">Mass with gospel choir<small>Except in August</small></span></li><li><span class="wp-time">13:15</span><span class="wp-what">Mass</span></li></ul></li>
+                    </ol>
+                    <p class="week-note">Before or after every Mass the parish priest is available to anyone who needs him, including for confession. On the last Sunday of each month we visit at home the sick who ask for it.</p>
+                    <div class="btn-group">
+                        <a class="btn btn-solid" href="../../data/eucaristias.ics" download>Add to my calendar</a>
+                        <a class="btn" href="contacto.html#escribenos">Ask about a time</a>
                     </div>
                 </div>
             </div>
@@ -275,7 +285,7 @@
         </div>
     </template>
     <script src="../../data/avisos.js?v=d53051e813"></script>
-    <script src="../../js/site.js?v=f4a30baf0e"></script>
+    <script src="../../js/site.js?v=1b54b7e447"></script>
 
 </body>
 </html>

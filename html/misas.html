@@ -26,7 +26,7 @@
     <link rel="manifest" href="../site.webmanifest">
 
     <link rel="stylesheet" href="../css/fonts.css?v=818b49f2ed">
-    <link rel="stylesheet" href="../css/site.css?v=1eaeb48557">
+    <link rel="stylesheet" href="../css/site.css?v=6fa4dba816">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
     <script type="speculationrules">{"prerender":[{"where":{"selector_matches":"a[hreflang]"},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}},{"not":{"selector_matches":"a[hreflang]"}}]},"eagerness":"moderate"}]}</script>
@@ -183,12 +183,22 @@
                 </script></div>
                 </div>
                 <div id="calendario">
-                    <span class="subtitulo">Agrégalo a tu calendario</span>
+                    <span class="subtitulo">Semana a semana</span>
                     <h2>Calendario de eucaristías y actividades</h2>
                     <hr class="section-divider">
-                    <div class="embed-frame">
-                        <div class="consent-embed" data-service="Google Calendar"><iframe title="Calendario de eucaristías y actividades" height="520" loading="lazy" scrolling="no"
-                            data-consent-src="https://calendar.google.com/calendar/embed?title=Agrega%20a%20tu%20calendario%20el%20horario%20de%20eucaristías%20y%20actividades&amp;height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=6ufb6ib57o0aq9m4l4gnk9lkng%40group.calendar.google.com&amp;color=%2342104A&amp;ctz=Europe%2FMadrid&amp;mode=AGENDA"></iframe></div>
+                    <ol class="week-plan">
+                        <li class="week-day" data-days="1"><span class="wp-day">Lunes</span><ul><li><span class="wp-time">19:00</span><span class="wp-what">Eucaristía</span></li></ul></li>
+                        <li class="week-day" data-days="2"><span class="wp-day">Martes</span><ul><li><span class="wp-time">19:00</span><span class="wp-what">Eucaristía</span></li></ul></li>
+                        <li class="week-day" data-days="3"><span class="wp-day">Miércoles</span><ul><li><span class="wp-time">19:00</span><span class="wp-what">Eucaristía</span></li></ul></li>
+                        <li class="week-day" data-days="4"><span class="wp-day">Jueves</span><ul><li><span class="wp-time">19:00</span><span class="wp-what">Eucaristía</span></li></ul></li>
+                        <li class="week-day" data-days="5"><span class="wp-day">Viernes</span><ul><li><span class="wp-time">19:00</span><span class="wp-what">Eucaristía</span></li><li><span class="wp-time">Tarde</span><span class="wp-what">Despacho parroquial<small>Para bautizos, bodas y cualquier consulta</small></span></li></ul></li>
+                        <li class="week-day" data-days="6"><span class="wp-day">Sábado</span><ul><li><span class="wp-time">18:30</span><span class="wp-what">Sacramento del Perdón<small>Hasta las 19:00</small></span></li><li><span class="wp-time">19:00</span><span class="wp-what">Eucaristía</span></li></ul></li>
+                        <li class="week-day" data-days="0"><span class="wp-day">Domingo</span><ul><li><span class="wp-time">11:00</span><span class="wp-what">Eucaristía con coro góspel<small>Salvo en agosto</small></span></li><li><span class="wp-time">13:15</span><span class="wp-what">Eucaristía</span></li></ul></li>
+                    </ol>
+                    <p class="week-note">Antes o después de cada misa el párroco atiende a quien lo necesite, también para confesarse. El último domingo de cada mes se visita en casa a los enfermos que lo pidan.</p>
+                    <div class="btn-group">
+                        <a class="btn btn-solid" href="../data/eucaristias.ics" download>Añadir a mi calendario</a>
+                        <a class="btn" href="contacto.html#escribenos">Preguntar un horario</a>
                     </div>
                 </div>
             </div>
@@ -275,7 +285,7 @@
         </div>
     </template>
     <script src="../data/avisos.js?v=d53051e813"></script>
-    <script src="../js/site.js?v=f4a30baf0e"></script>
+    <script src="../js/site.js?v=1b54b7e447"></script>
 
 </body>
 </html>

@@ -1244,6 +1244,29 @@ PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia San
 """)
 
 # ---------------------------------------------------------------- MISAS
+# Horario semanal de la página de Eucaristías: (día, número del día para resaltar «hoy» [0 = domingo], actos).
+# Cada acto: (hora, qué, detalle opcional). El mismo horario está en data/eucaristias.ics para añadirlo al móvil.
+WEEK_PLAN = [
+    ("Lunes", 1, [("19:00", "Eucaristía", "")]),
+    ("Martes", 2, [("19:00", "Eucaristía", "")]),
+    ("Miércoles", 3, [("19:00", "Eucaristía", "")]),
+    ("Jueves", 4, [("19:00", "Eucaristía", "")]),
+    ("Viernes", 5, [("19:00", "Eucaristía", ""), ("Tarde", "Despacho parroquial", "Para bautizos, bodas y cualquier consulta")]),
+    ("Sábado", 6, [("18:30", "Sacramento del Perdón", "Hasta las 19:00"), ("19:00", "Eucaristía", "")]),
+    ("Domingo", 0, [("11:00", "Eucaristía con coro góspel", "Salvo en agosto"), ("13:15", "Eucaristía", "")]),
+]
+
+
+def week_plan():
+    rows = []
+    for day, idx, items in WEEK_PLAN:
+        acts = "".join(
+            f'<li><span class="wp-time">{t}</span><span class="wp-what">{w}{f"<small>{d}</small>" if d else ""}</span></li>'
+            for t, w, d in items)
+        rows.append(f'                        <li class="week-day" data-days="{idx}"><span class="wp-day">{day}</span><ul>{acts}</ul></li>')
+    return '<ol class="week-plan">\n' + "\n".join(rows) + "\n                    </ol>"
+
+
 PAGES["html/misas.html"] = page(1, "Eucaristías", "Horarios de misas y calendario de eucaristías y actividades de la Parroquia Santa Teresa de Jesús.", active="eucaristias", body=page_hero("Celebraciones litúrgicas", "Eucaristías", "eucaristia.jpeg") + """
         <section id="horarios">
             <span class="subtitulo">Horarios</span>
@@ -1277,12 +1300,14 @@ PAGES["html/misas.html"] = page(1, "Eucaristías", "Horarios de misas y calendar
                     """ + cincopa("5053ed90-a7d4-4b43-af71-bfb01383be44", "AwFALeeQzr7a") + """
                 </div>
                 <div id="calendario">
-                    <span class="subtitulo">Agrégalo a tu calendario</span>
+                    <span class="subtitulo">Semana a semana</span>
                     <h2>Calendario de eucaristías y actividades</h2>
                     <hr class="section-divider">
-                    <div class="embed-frame">
-                        <iframe title="Calendario de eucaristías y actividades" height="520" loading="lazy" scrolling="no"
-                            src="https://calendar.google.com/calendar/embed?title=Agrega%20a%20tu%20calendario%20el%20horario%20de%20eucaristías%20y%20actividades&amp;height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=6ufb6ib57o0aq9m4l4gnk9lkng%40group.calendar.google.com&amp;color=%2342104A&amp;ctz=Europe%2FMadrid&amp;mode=AGENDA"></iframe>
+                    """ + week_plan() + """
+                    <p class="week-note">Antes o después de cada misa el párroco atiende a quien lo necesite, también para confesarse. El último domingo de cada mes se visita en casa a los enfermos que lo pidan.</p>
+                    <div class="btn-group">
+                        <a class="btn btn-solid" href="../data/eucaristias.ics" download>Añadir a mi calendario</a>
+                        <a class="btn" href="contacto.html#escribenos">Preguntar un horario</a>
                     </div>
                 </div>
             </div>
@@ -1842,7 +1867,7 @@ PAGES["html/cookies.html"] = page(1, "Política de cookies", "Qué cookies utili
                 <div class="table-wrap"><table>
                     <thead><tr><th>Servicio</th><th>Proveedor</th><th>Dónde se usa</th><th>Finalidad</th></tr></thead>
                     <tbody>
-                        <tr><td>Google Maps y Calendar</td><td>Google Ireland Ltd.</td><td>Inicio, Contacto, Eucaristías</td><td>Mapa y calendario. <a href="https://policies.google.com/technologies/cookies?hl=es" target="_blank" rel="noopener">Política</a></td></tr>
+                        <tr><td>Google Maps</td><td>Google Ireland Ltd.</td><td>Inicio, Contacto</td><td>Mapa. <a href="https://policies.google.com/technologies/cookies?hl=es" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>YouTube (modo de privacidad mejorada)</td><td>Google Ireland Ltd.</td><td>Imágenes y vídeos</td><td>Reproducir vídeos. <a href="https://policies.google.com/privacy?hl=es" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>SoundCloud</td><td>SoundCloud Global Ltd.</td><td>Homilías</td><td>Reproducir audios. <a href="https://soundcloud.com/pages/cookies" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>Cincopa</td><td>Cincopa Ltd.</td><td>Historia, Eucaristías, Imágenes</td><td>Galerías de fotos.</td></tr>
@@ -1936,7 +1961,7 @@ PAGES["html/privacidad.html"] = page(1, "Política de privacidad", "Cómo trata 
                 <p>Los datos de contacto, el tiempo necesario para atender tu consulta. Los de catequesis, mientras dure la formación y, después, durante los plazos que exija la normativa civil o canónica aplicable. En cualquier caso, mientras no solicites su supresión cuando proceda.</p>
 
                 <h3>4. Destinatarios</h3>
-                <p>No cedemos datos a terceros salvo obligación legal. Para prestar algunos servicios usamos proveedores que tratan datos por nuestra cuenta (encargados del tratamiento): Google (calendario y mapas), FormSubmit (envía por correo a la parroquia los formularios de contacto y de inscripción a la Primera Comunión; no instala cookies) y Netlify (alojamiento de la web). Algunos están en Estados Unidos; las transferencias se amparan en el Marco de Privacidad de Datos UE-EE. UU. cuando el proveedor está adherido o, en su defecto, en las cláusulas contractuales tipo aprobadas por la Comisión Europea.</p>
+                <p>No cedemos datos a terceros salvo obligación legal. Para prestar algunos servicios usamos proveedores que tratan datos por nuestra cuenta (encargados del tratamiento): Google (mapas), FormSubmit (envía por correo a la parroquia los formularios de contacto y de inscripción a la Primera Comunión; no instala cookies) y Netlify (alojamiento de la web). Algunos están en Estados Unidos; las transferencias se amparan en el Marco de Privacidad de Datos UE-EE. UU. cuando el proveedor está adherido o, en su defecto, en las cláusulas contractuales tipo aprobadas por la Comisión Europea.</p>
                 <p>Para saber cómo se usa la web, se cuenta de forma anónima qué páginas se visitan (con el idioma, el tipo de pantalla y la web desde la que se llega) y cuántas veces se ven, se empiezan a rellenar y se envían los formularios, con el motivo elegido. No se guardan nombres, correos, mensajes ni direcciones IP, no se usan cookies ni se guarda nada en tu navegador.</p>
 
                 <h3>5. Tus derechos</h3>

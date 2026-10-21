@@ -1,0 +1,2 @@
+# Calendarios (.ics): se guardan tal cual, con saltos de línea CRLF como pide la norma iCalendar
+*.ics -text
