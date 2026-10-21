@@ -432,6 +432,40 @@ MOMENTOS = [
     ("dsc_0599webog.jpg", "El campanario en fiesta", ""),
 ]
 
+# Vista de Instagram propia: fotos de la parroquia en cuadrícula, cada una lleva al perfil.
+# (Antes era un widget de Elfsight; su plan gratuito se queda sin visitas cada mes y el recuadro salía vacío.)
+IG_URL = "https://www.instagram.com/parroquiasantateresadejesusbcn/"
+ICON_IG = ('<svg class="ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">'
+           '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>')
+IG_PHOTOS = [
+    ("dsc_0589.jpg", "Bendición de ramos en el Domingo de Ramos"),
+    ("salidas.jpg", "Salida parroquial con Mn. Albert Sols"),
+    ("img_5432.jpg", "Música en la eucaristía"),
+    ("fotobodapepi.jpg", "Celebración de un aniversario de boda"),
+    ("dsc_0541.jpg", "Eucaristía dominical"),
+    ("dsc_0599webog.jpg", "El campanario en fiesta"),
+    ("img_5495.jpg", "Encuentro en la capilla"),
+    ("dsc_0546.jpg", "La iglesia llena durante una celebración"),
+    ("mercadet.jpg", "La parroquia, en el corazón del Carmel"),
+]
+
+
+def ig_grid(depth):
+    pre = "../" * depth + "fotosdefinitivas/web/"
+    tiles = "\n".join(f'''                <a class="ig-tile" href="{IG_URL}" target="_blank" rel="noopener"><img src="{pre}{f}" alt="{alt}" loading="lazy" decoding="async"></a>''' for f, alt in IG_PHOTOS)
+    return f'''<div class="ig-grid">
+{tiles}
+            </div>'''
+
+
+def ig_profile(depth, cls=""):
+    return f'''<div class="ig-phone-top {cls}">
+                        <img src="{"../" * depth}fotosdefinitivas/web/santateresa-retrato.jpg" alt="" loading="lazy">
+                        <div><strong>parroquiasantateresadejesusbcn</strong><span>Parroquia Santa Teresa de Jesús · Barcelona</span></div>
+                        <a href="{IG_URL}" target="_blank" rel="noopener">Seguir</a>
+                    </div>'''
+
+
 # Mapa de la portada (el mismo de la página de contacto) y ruta en Google Maps
 MAP_EMBED = ("https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11966.759774653801!2d2.1558072908873487!3d41.42424881242464"
              "!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4bd4d9ae3237b%3A0xd805a433a983f974"
@@ -805,7 +839,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
                 <hr class="section-divider" style="margin-bottom:0;">
             </div>
             <a class="family-entry family-entry-top" href="html/evangelio-familia.html">
-                <span class="family-entry-img" style="background-image:url('fotosdefinitivas/web/familia-parroquia.jpg')" aria-hidden="true"></span>
+                <span class="family-entry-img" style="background-image:url('fotosdefinitivas/web/familia-pixelada.jpg')" aria-hidden="true"></span>
                 <span class="family-entry-body">
                     <span class="subtitulo">Para leer en casa</span>
                     <strong>El Evangelio para la familia</strong>
@@ -834,8 +868,11 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
 
                 <div class="widget-container">
                     <h3>@parroquiasantateresadejesusbcn</h3>
-                    <script src="https://elfsightcdn.com/platform.js" async></script>
-                    <div class="elfsight-app-8b9a40bb-7d76-4b43-bf12-9ed787fa24e2" data-elfsight-app-lazy></div>
+                    <div class="ig-card">
+                    """ + ig_profile(0, "flat") + """
+                    """ + ig_grid(0) + """
+                    <a class="btn btn-solid ig-more" href="""" + IG_URL + """" target="_blank" rel="noopener">Ver las últimas publicaciones en Instagram &rarr;</a>
+                    </div>
                 </div>
             </div>
 
@@ -1652,9 +1689,6 @@ PAGES["html/jovenes2alternativa.html"] = page(1, "Jóvenes", "Grupo de jóvenes 
 """)
 
 # ---------------------------------------------------------------- NOTICIAS
-IG_URL = "https://www.instagram.com/parroquiasantateresadejesusbcn/"
-ICON_IG = ('<svg class="ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">'
-           '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>')
 
 PAGES["html/noticias.html"] = page(1, "Noticias", "Noticias de la Parroquia Santa Teresa de Jesús, del Vaticano y del Arzobispado de Barcelona.", active="noticias", extra_head=NEWS_HEAD_1, body=page_hero("Actualidad de la Iglesia", "Noticias", "web/dsc_0541.jpg") + f"""
         <section id="parroquia" class="parish-news">
@@ -1682,8 +1716,8 @@ PAGES["html/noticias.html"] = page(1, "Noticias", "Noticias de la Parroquia Sant
                         <a href="{IG_URL}" target="_blank" rel="noopener">Seguir</a>
                     </div>
                     <div class="ig-phone-feed">
-                        <script src="https://elfsightcdn.com/platform.js" async></script>
-                        <div class="elfsight-app-8b9a40bb-7d76-4b43-bf12-9ed787fa24e2" data-elfsight-app-lazy></div>
+                        {ig_grid(1)}
+                        <a class="ig-feed-more" href="{IG_URL}" target="_blank" rel="noopener">Ver todas las publicaciones</a>
                     </div>
                 </div>
             </div>
@@ -1749,7 +1783,7 @@ PAGES["html/noticias.html"] = page(1, "Noticias", "Noticias de la Parroquia Sant
 # Se inserta la página de evangeli.net tal cual (ellos ofrecen ponerla en otras webs). En catalán
 # e inglés se cambia la dirección por su versión en ese idioma (ver FAMILY_URL más abajo).
 FAMILY_URL = "https://family.evangeli.net/es"
-PAGES["html/evangelio-familia.html"] = page(1, "El Evangelio para la familia", "El Evangelio de cada día explicado para leerlo en familia: texto, comentario, ilustración y juegos para los niños.", active="inicio", body=page_hero("Para leer en casa", "El Evangelio para la familia", "web/familia-parroquia.jpg", "Evangelio para la familia", "center 30%") + """
+PAGES["html/evangelio-familia.html"] = page(1, "El Evangelio para la familia", "El Evangelio de cada día explicado para leerlo en familia: texto, comentario, ilustración y juegos para los niños.", active="inicio", body=page_hero("Para leer en casa", "El Evangelio para la familia", "web/familia-pixelada.jpg", "Evangelio para la familia", "center 30%") + """
         <section class="section-warm">
             <div class="family-intro">
                 <div>
@@ -1811,7 +1845,6 @@ PAGES["html/cookies.html"] = page(1, "Política de cookies", "Qué cookies utili
                         <tr><td>Chat de atención</td><td>Tawk.to Inc. (EE. UU.)</td><td>Todas las páginas</td><td>Chat en directo con la parroquia. <a href="https://www.tawk.to/privacy-policy/" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>Google Maps y Calendar</td><td>Google Ireland Ltd.</td><td>Inicio, Contacto, Eucaristías</td><td>Mapa y calendario. <a href="https://policies.google.com/technologies/cookies?hl=es" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>YouTube (modo de privacidad mejorada)</td><td>Google Ireland Ltd.</td><td>Imágenes y vídeos</td><td>Reproducir vídeos. <a href="https://policies.google.com/privacy?hl=es" target="_blank" rel="noopener">Política</a></td></tr>
-                        <tr><td>Instagram</td><td>Elfsight LLC / Meta Platforms Ireland Ltd.</td><td>Inicio</td><td>Mostrar publicaciones de nuestro Instagram. <a href="https://elfsight.com/privacy-policy/" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>SoundCloud</td><td>SoundCloud Global Ltd.</td><td>Homilías</td><td>Reproducir audios. <a href="https://soundcloud.com/pages/cookies" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>Cincopa</td><td>Cincopa Ltd.</td><td>Historia, Eucaristías, Imágenes</td><td>Galerías de fotos.</td></tr>
                         <tr><td>Evangeli.net</td><td>Evangeli.net</td><td>Inicio</td><td>Mostrar el Evangelio del día.</td></tr>

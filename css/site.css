@@ -2485,3 +2485,23 @@ main > section:not(.hero):not(:first-child), .site-footer, body > footer { conte
 .family-entry.family-entry-top { margin: 2.25rem auto 0; }
 .act-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .9rem; margin: 2rem auto 3rem; }
 @media (max-width: 640px) { .act-actions .btn { width: 100%; text-align: center; } }
+
+/* ==========================================================================
+   INSTAGRAM PROPIO: fotos de la parroquia en cuadrícula (sin widget externo)
+   ========================================================================== */
+.ig-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; }
+.ig-tile { position: relative; display: block; aspect-ratio: 1; overflow: hidden; background: #efe6d4; }
+.ig-tile img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s var(--ease); }
+.ig-tile::after {
+    content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.28) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.6'%3E%3Crect x='3' y='3' width='18' height='18' rx='5'/%3E%3Ccircle cx='12' cy='12' r='4.2'/%3E%3C/svg%3E") center / 30px no-repeat;
+    opacity: 0; transition: opacity .25s;
+}
+.ig-tile:hover img { transform: scale(1.06); }
+.ig-tile:hover::after, .ig-tile:focus-visible::after { opacity: 1; }
+.ig-card { overflow: hidden; border-radius: 14px; border: 1px solid #eadfca; background: #fff; text-align: left; }
+.ig-phone-top.flat { padding: 14px 16px; border-radius: 0; }
+.ig-more { display: block; width: auto; margin: 14px; text-align: center; }
+.ig-phone-feed { height: auto; overflow: visible; padding-bottom: 14px; }
+.ig-feed-more { display: block; margin: 14px 16px 0; padding: .65rem; border-radius: 8px; background: #efefef; color: #111; font-size: .8rem; font-weight: 600; text-align: center; text-decoration: none; }
+.ig-feed-more:hover { background: #e2e2e2; }
+@media (max-width: 1100px) { .ig-phone-feed { height: auto; } }

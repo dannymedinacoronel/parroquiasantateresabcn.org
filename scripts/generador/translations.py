@@ -773,6 +773,8 @@ TR = {
 "Vatican News (Santa Sede) / Arzobispado de Barcelona": ("Vatican News (Santa Seu) / Arquebisbat de Barcelona", "Vatican News (Holy See) / Archdiocese of Barcelona"),
 "Mostrar las fotos de las noticias.": ("Mostrar les fotos de les notícies.", "Shows the news photos."),
 "Consulta nuestra": ("Consulta la nostra", "See our"),
+"Ver las últimas publicaciones en Instagram &rarr;": ("Veure les darreres publicacions a Instagram &rarr;", "See our latest posts on Instagram &rarr;"),
+"Ver todas las publicaciones": ("Veure totes les publicacions", "See all posts"),
 "Leer el Evangelio de hoy completo &rarr;": ("Llegir l'Evangeli d'avui complet &rarr;", "Read today's full Gospel &rarr;"),
 "Noticias del Vaticano y del Arzobispado &rarr;": ("Notícies del Vaticà i de l'Arquebisbat &rarr;", "News from the Vatican and the Archdiocese &rarr;"),
 # formularios con botones y enlaces con el motivo ya elegido
