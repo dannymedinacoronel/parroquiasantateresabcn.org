@@ -26,7 +26,7 @@
     <link rel="manifest" href="../../site.webmanifest">
 
     <link rel="stylesheet" href="../../css/fonts.css?v=818b49f2ed">
-    <link rel="stylesheet" href="../../css/site.css?v=fa9bee8d76">
+    <link rel="stylesheet" href="../../css/site.css?v=118700f023">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
     <script type="speculationrules">{"prerender":[{"where":{"selector_matches":"a[hreflang]"},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}},{"not":{"selector_matches":"a[hreflang]"}}]},"eagerness":"moderate"}]}</script>
@@ -76,12 +76,12 @@
                 <a href="noticias.html" class="nav-link">News</a>
                 <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenu"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
                 <ul class="sub-menu">
-                    <li class="sub-heading" aria-hidden="true">Church news</li>
-                    <li><a href="noticias.html#actualidad-iglesia" class="sub-link">Vatican and Archdiocese of Barcelona</a></li>
                     <li class="sub-heading parish" aria-hidden="true">From our parish</li>
                     <li class="parish-item"><a href="noticias.html#parroquia" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Parish news</span></a></li>
                     <li class="parish-item"><a href="reflexiones/2026-10-20-reflexión-de-el-evangelio.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Latest reflection</span></a></li>
                     <li class="parish-item"><a href="humiliasmenu.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>All reflections</span></a></li>
+                    <li class="sub-heading" aria-hidden="true">Church news</li>
+                    <li><a href="noticias.html#actualidad-iglesia" class="sub-link">Vatican and Archdiocese of Barcelona</a></li>
                 </ul>
             </li>
             <li class="nav-item has-sub">
@@ -164,21 +164,25 @@
                         <input type="hidden" name="_template" value="table">
                         <input type="hidden" name="_captcha" value="false">
                         <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
-                        <label>Reason *
-                            <select name="Motivo" required data-purpose>
-                                <option value="">Select…</option>
-                                <option value="Consulta general">General enquiry</option>
-                                <option value="Bautizo">Baptism</option>
-                                <option value="Boda">Wedding</option>
-                                <option value="Aniversario de boda">Wedding anniversary (silver, golden, diamond…)</option>
-                                <option value="Primera Comunión">First Communion</option>
-                                <option value="Confirmación">Confirmation</option>
-                                <option value="Visita a enfermos">Visiting the sick</option>
-                                <option value="Funeral">Funeral</option>
-                                <option value="Cáritas">Caritas</option>
-                                <option value="Otro">Other</option>
-                            </select>
-                        </label>
+                        <fieldset class="motive-picker" data-purpose>
+                            <legend class="picker-label">How can we help you? *</legend>
+                            <div class="chips">
+                                <label class="chip"><input type="radio" name="Motivo" value="Consulta general" data-hint="Tell us how we can help" required><span>General enquiry</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Bautizo" data-hint="Baby's name, date of birth and the Sunday you would like"><span>Baptism</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Boda" data-hint="Your names and the approximate date you have in mind"><span>Wedding</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Aniversario de boda" data-hint="Which anniversary you are celebrating (silver, golden, diamond…) and the date you would like"><span>Wedding anniversary</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Primera Comunión" data-hint="Child's name, age and school year"><span>First Communion</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Confirmación" data-hint="Name and age of the person who wants to be confirmed"><span>Confirmation</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Sacramento del Perdón" data-hint="If you need a time other than Saturdays, tell us when suits you"><span>Confession</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Visita a enfermos" data-hint="The person's name, address and which days work best"><span>Visiting the sick</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Funeral" data-hint="Name of the deceased and planned date. We will call you as soon as possible"><span>Funeral</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Cáritas" data-hint="Tell us what you need or how you would like to help"><span>Caritas</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Grupo de jóvenes" data-hint="Your age and how you heard about the group"><span>Youth group</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Archivo histórico" data-hint="Which photos you have, roughly what year and what occasion"><span>Old photos</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Otro" data-hint="Tell us how we can help"><span>Other</span></label>
+                            </div>
+                            <p class="motive-note" data-for="Primera Comunión" hidden>To register a child there is a dedicated form: <a href="comuniones.html#inscripcion">First Communion registration →</a></p>
+                        </fieldset>
                         <div class="form-grid">
                             <label>First name *<input type="text" name="Nombre" required autocomplete="name"></label>
                             <label>Phone<input type="tel" name="Teléfono" autocomplete="tel" inputmode="tel"></label>
@@ -317,7 +321,7 @@
         </div>
     </template>
     <script src="../../data/avisos.js?v=d53051e813"></script>
-    <script src="../../js/site.js?v=b8a479b110"></script>
+    <script src="../../js/site.js?v=9ec17689ad"></script>
 
 </body>
 </html>

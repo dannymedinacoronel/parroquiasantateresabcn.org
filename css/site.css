@@ -2422,3 +2422,61 @@ main > section:not(.hero):not(:first-child), .site-footer, body > footer { conte
 .mail-form button[type=submit]:hover::after { transform: translateX(4px); }
 .form-status.ok { display: flex; gap: .9rem; align-items: flex-start; border-radius: 14px; }
 .form-status.ok::before { content: "✓"; display: grid; place-items: center; flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%; background: #2f6b45; color: #fff; font-weight: 700; }
+
+/* ==========================================================================
+   SUBMENÚ DE NOTICIAS: «De nuestra parroquia» va primero
+   ========================================================================== */
+.sub-heading.parish:first-child { margin-top: 0; border-top: 0; padding-top: 0.7rem; }
+@media (min-width: 1281px) {
+    .parish-item + .sub-heading:not(.parish) { margin-top: 0.4rem; padding-top: 0.85rem; border-top: 1px solid var(--border); }
+}
+
+/* ==========================================================================
+   FORMULARIOS: motivos y cursos como botones (un toque en vez de un desplegable)
+   ========================================================================== */
+.mail-form .motive-picker { margin: 0 0 1.4rem; padding: 0; border: 0; }
+.mail-form .motive-picker legend.picker-label {
+    display: block; margin-bottom: .7rem; font: 600 .7rem/1.4 var(--body-font); letter-spacing: 1.5px; text-transform: uppercase; color: #8f7340;
+}
+.mail-form .motive-picker legend.picker-label::before { content: none; counter-increment: none; }
+.chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+.mail-form label.chip {
+    position: relative; display: inline-flex; flex-direction: row; margin: 0; cursor: pointer;
+    font: 500 .92rem/1.2 var(--body-font); letter-spacing: 0; text-transform: none; color: var(--text-color);
+}
+.chip input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.chip span {
+    display: inline-flex; align-items: center; gap: .45rem; padding: .62rem 1.05rem; border: 1.5px solid #ebe0ca; border-radius: 30px;
+    background: #fbf8f2; transition: border-color .2s, background .2s, color .2s, transform .2s;
+}
+.chip:hover span { border-color: #d8c59a; transform: translateY(-1px); }
+.chip input:focus-visible + span { box-shadow: 0 0 0 4px rgba(191,160,101,.25); }
+.chip input:checked + span { border-color: var(--accent-color); background: linear-gradient(120deg, #a88a4f, #c9ab6b); color: #fff; font-weight: 600; box-shadow: 0 8px 18px rgba(143,115,64,.25); }
+.chip input:checked + span::before { content: "✓"; font-size: .85rem; }
+.chip.preset input:checked + span { animation: chipPop .7s var(--ease) both; }
+@keyframes chipPop { 0% { transform: scale(.92); } 60% { transform: scale(1.06); } 100% { transform: scale(1); } }
+.motive-note { margin: .8rem 0 0; padding: .75rem 1rem; border-radius: 12px; background: #fff4dc; font-size: .9rem; color: var(--heading-color); }
+.motive-note a { font-weight: 600; }
+.motive-picker.compact { margin-top: .2rem; }
+@media (max-width: 640px) {
+    .chips { gap: .45rem; }
+    .mail-form label.chip { font-size: .88rem; }
+    .chip span { padding: .6rem .9rem; min-height: 42px; }
+}
+@media (prefers-reduced-motion: reduce) { .chip.preset input:checked + span { animation: none; } }
+
+/* tarjetas de sacramentos: se nota que llevan al formulario */
+.icon-card-cta {
+    display: inline-block; margin-top: 1rem; font-size: .72rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-dark);
+    border-bottom: 1px solid rgba(191,160,101,.5); padding-bottom: 2px; transition: color .2s, border-color .2s;
+}
+.icon-card:hover .icon-card-cta { color: var(--heading-color); border-color: var(--accent-color); }
+
+/* retrato redondo del párroco */
+.priest-portrait { position: relative; display: grid; justify-items: center; gap: 1.1rem; }
+.priest-portrait img {
+    width: min(360px, 78vw); aspect-ratio: 1; height: auto; object-fit: cover; object-position: 50% 30%; border-radius: 50%;
+    border: 6px solid #fff; box-shadow: 0 0 0 1px rgba(191,160,101,.45), 0 0 0 14px rgba(243,232,210,.6), 0 30px 60px rgba(60,40,10,.18);
+}
+.priest-name { display: grid; text-align: center; font-family: var(--header-font); font-style: italic; font-size: 1.5rem; color: var(--heading-color); }
+.priest-name small { font-family: var(--body-font); font-style: normal; font-size: .68rem; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent-dark); }

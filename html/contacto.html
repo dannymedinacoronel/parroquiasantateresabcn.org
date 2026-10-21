@@ -26,7 +26,7 @@
     <link rel="manifest" href="../site.webmanifest">
 
     <link rel="stylesheet" href="../css/fonts.css?v=818b49f2ed">
-    <link rel="stylesheet" href="../css/site.css?v=fa9bee8d76">
+    <link rel="stylesheet" href="../css/site.css?v=118700f023">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
     <script type="speculationrules">{"prerender":[{"where":{"selector_matches":"a[hreflang]"},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}},{"not":{"selector_matches":"a[hreflang]"}}]},"eagerness":"moderate"}]}</script>
@@ -76,12 +76,12 @@
                 <a href="noticias.html" class="nav-link">Noticias</a>
                 <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenú"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
                 <ul class="sub-menu">
-                    <li class="sub-heading" aria-hidden="true">Actualidad de la Iglesia</li>
-                    <li><a href="noticias.html#actualidad-iglesia" class="sub-link">Vaticano y Arzobispado de Barcelona</a></li>
                     <li class="sub-heading parish" aria-hidden="true">De nuestra parroquia</li>
                     <li class="parish-item"><a href="noticias.html#parroquia" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Noticias de la parroquia</span></a></li>
                     <li class="parish-item"><a href="reflexiones/2026-10-20-reflexión-de-el-evangelio.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Última reflexión</span></a></li>
                     <li class="parish-item"><a href="humiliasmenu.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Todas las reflexiones</span></a></li>
+                    <li class="sub-heading" aria-hidden="true">Actualidad de la Iglesia</li>
+                    <li><a href="noticias.html#actualidad-iglesia" class="sub-link">Vaticano y Arzobispado de Barcelona</a></li>
                 </ul>
             </li>
             <li class="nav-item has-sub">
@@ -164,21 +164,25 @@
                         <input type="hidden" name="_template" value="table">
                         <input type="hidden" name="_captcha" value="false">
                         <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
-                        <label>Motivo *
-                            <select name="Motivo" required data-purpose>
-                                <option value="">Selecciona…</option>
-                                <option value="Consulta general">Consulta general</option>
-                                <option value="Bautizo">Bautizo</option>
-                                <option value="Boda">Boda</option>
-                                <option value="Aniversario de boda">Aniversario de boda (plata, oro, diamante…)</option>
-                                <option value="Primera Comunión">Primera Comunión</option>
-                                <option value="Confirmación">Confirmación</option>
-                                <option value="Visita a enfermos">Visita a enfermos</option>
-                                <option value="Funeral">Funeral</option>
-                                <option value="Cáritas">Cáritas</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                        </label>
+                        <fieldset class="motive-picker" data-purpose>
+                            <legend class="picker-label">¿En qué te podemos ayudar? *</legend>
+                            <div class="chips">
+                                <label class="chip"><input type="radio" name="Motivo" value="Consulta general" data-hint="Cuéntanos en qué podemos ayudarte" required><span>Consulta general</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Bautizo" data-hint="Nombre del bebé, su fecha de nacimiento y el domingo que os gustaría"><span>Bautizo</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Boda" data-hint="Vuestros nombres y la fecha aproximada que tenéis pensada"><span>Boda</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Aniversario de boda" data-hint="Qué aniversario celebráis (plata, oro, diamante…) y la fecha que os gustaría"><span>Aniversario de boda</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Primera Comunión" data-hint="Nombre del niño o la niña, edad y curso escolar"><span>Primera Comunión</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Confirmación" data-hint="Nombre y edad de quien quiere confirmarse"><span>Confirmación</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Sacramento del Perdón" data-hint="Si necesitas otro horario distinto al de los sábados, dinos cuándo te va bien"><span>Perdón (confesión)</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Visita a enfermos" data-hint="Nombre de la persona, dirección y qué días va mejor"><span>Visita a enfermos</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Funeral" data-hint="Nombre del difunto y fecha prevista. Te llamaremos cuanto antes"><span>Funeral</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Cáritas" data-hint="Cuéntanos qué necesitas o cómo te gustaría colaborar"><span>Cáritas</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Grupo de jóvenes" data-hint="Tu edad y cómo te has enterado del grupo"><span>Grupo de jóvenes</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Archivo histórico" data-hint="Qué fotos tienes, de qué año aproximado y de qué celebración"><span>Fotos antiguas</span></label>
+                                <label class="chip"><input type="radio" name="Motivo" value="Otro" data-hint="Cuéntanos en qué podemos ayudarte"><span>Otro</span></label>
+                            </div>
+                            <p class="motive-note" data-for="Primera Comunión" hidden>Para inscribir a un niño o una niña tienes un formulario propio: <a href="comuniones.html#inscripcion">inscripción a la Primera Comunión →</a></p>
+                        </fieldset>
                         <div class="form-grid">
                             <label>Nombre *<input type="text" name="Nombre" required autocomplete="name"></label>
                             <label>Teléfono<input type="tel" name="Teléfono" autocomplete="tel" inputmode="tel"></label>
@@ -317,7 +321,7 @@
         </div>
     </template>
     <script src="../data/avisos.js?v=d53051e813"></script>
-    <script src="../js/site.js?v=b8a479b110"></script>
+    <script src="../js/site.js?v=9ec17689ad"></script>
 
 </body>
 </html>

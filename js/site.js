@@ -526,7 +526,8 @@
     function trackForm(form, type) {
         if (location.protocol !== "https:" && location.hostname !== "localhost") return;   // no desde archivos sueltos
         var pf = form.querySelector("[data-purpose]");
-        var payload = JSON.stringify({ form: form.getAttribute("data-form-id"), type: type, purpose: pf ? pf.value : "", lang: LANG });
+        var picked = pf && (pf.value != null ? { value: pf.value } : pf.querySelector("input:checked"));   // desplegable o botones
+        var payload = JSON.stringify({ form: form.getAttribute("data-form-id"), type: type, purpose: picked ? picked.value : "", lang: LANG });
         try {
             if (navigator.sendBeacon && navigator.sendBeacon("/api/form-event", new Blob([payload], { type: "text/plain" }))) return;
         } catch (err) { }
@@ -534,6 +535,28 @@
     }
     document.querySelectorAll("form[data-mail-form]").forEach(function (form) {
         var status = form.querySelector(".form-status");
+        /* Botones de motivo: la ayuda del mensaje cambia según lo elegido y algunos motivos muestran
+           un aviso (p. ej. Primera Comunión tiene su propio formulario). Si se llega desde otra página
+           con ?motivo=Bautizo, ese botón ya aparece marcado y el cursor espera en el primer campo vacío. */
+        var area = form.querySelector("textarea");
+        var baseHint = area ? area.getAttribute("placeholder") : "";
+        function onPick() {
+            var c = form.querySelector(".motive-picker input:checked");
+            if (area && c && c.name === "Motivo") area.setAttribute("placeholder", c.getAttribute("data-hint") || baseHint);
+            form.querySelectorAll(".motive-note").forEach(function (n) { n.hidden = !(c && n.getAttribute("data-for") === c.value); });
+        }
+        form.addEventListener("change", function (e) { if (e.target.closest(".motive-picker")) onPick(); });
+        var want = new URLSearchParams(location.search).get("motivo");
+        if (want) {
+            var chip = Array.prototype.find.call(form.querySelectorAll(".motive-picker input"), function (i) { return i.value === want; });
+            if (chip) {
+                chip.checked = true;
+                chip.closest(".chip").classList.add("preset");
+                onPick();
+                var first = Array.prototype.find.call(form.querySelectorAll("input[type=text]:not(.hp-field), input[type=email], input[type=tel], textarea"), function (i) { return !i.value; });
+                if (first && window.matchMedia("(min-width: 900px)").matches) setTimeout(function () { first.focus({ preventScroll: true }); }, 600);
+            }
+        }
         /* visto (una vez, cuando al menos un tercio entra en pantalla) y empezado (primer campo tocado) */
         if ("IntersectionObserver" in window) {
             var seenObs = new IntersectionObserver(function (es) {

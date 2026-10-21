@@ -39,12 +39,12 @@ NAV = [
         ("Catequesis", "html/catequesis.html"),
     ]),
     ("noticias", "Noticias", "html/noticias.html", [
-        ("§", "Actualidad de la Iglesia"),
-        ("Vaticano y Arzobispado de Barcelona", "html/noticias.html#actualidad-iglesia"),
         ("§parish", "De nuestra parroquia"),
         ("+Noticias de la parroquia", "html/noticias.html#parroquia"),
         ("+Última reflexión", "__ULTIMA__"),
         ("+Todas las reflexiones", "html/humiliasmenu.html"),
+        ("§", "Actualidad de la Iglesia"),
+        ("Vaticano y Arzobispado de Barcelona", "html/noticias.html#actualidad-iglesia"),
     ]),
     ("dinamica", "Dinámica Pastoral", "html/dinamicapastoral.html", [
         ("Grupos y servicios", "html/dinamicapastoral.html"),
@@ -388,11 +388,12 @@ NEWS_HEAD_0 = '    <script src="data/noticias.js"></script>\n'
 NEWS_HEAD_1 = '    <script src="../data/noticias.js"></script>\n'
 
 
-def icon_card(icon, title, text, link):
+def icon_card(icon, title, text, link, cta=None):
+    more = f'\n                    <span class="icon-card-cta">{cta} &rarr;</span>' if cta else ""
     return f"""                <a class="icon-card" href="{link}">
                     <div class="icon-circle">{SAC_ICONS[icon]}</div>
                     <h3>{title}</h3>
-                    <p>{text}</p>
+                    <p>{text}</p>{more}
                 </a>"""
 
 
@@ -895,7 +896,7 @@ FLIP = [
      "Mn. Sols atiende a gente mayor en sus casas el domingo último de cada mes, ayudado por un grupo de voluntarios.",
      "Atención pastoral a enfermos",
      "Mn. Sols atiende a gente mayor en sus casas el domingo último de cada mes si estos así lo solicitan mediante las vías de contacto de la web y es ayudado por un grupo de voluntarios que van a residencias de la tercera edad.",
-     ("contacto.html", "Solicitar visita", False)),
+     ("contacto.html?motivo=Visita%20a%20enfermos#escribenos", "Solicitar visita", False)),
     ("IMG_5495.jpg", "Equipo de jóvenes",
      "Cada 8 sábados aproximadamente un pequeño grupo de jóvenes comentan con el rector el evangelio del domingo.",
      "Equipo de jóvenes",
@@ -1116,12 +1117,29 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
                     <strong>¿Guardas fotos antiguas de la parroquia?</strong>
                     <p>Estamos recuperando el archivo histórico: la colocación de la primera piedra en 1923, la bendición de 1928 y la vida del barrio. Si tienes fotografías, escríbenos y las incorporaremos.</p>
                 </div>
-                <a href="contacto.html" class="btn">Compartir fotos</a>
+                <a href="contacto.html?motivo=Archivo%20histórico#escribenos" class="btn">Compartir fotos</a>
             </div>
         </section>
 """)
 
 # ---------------------------------------------------------------- CONTACTO
+# Motivos del formulario: (valor que llega en el correo, texto del botón, ayuda para el mensaje).
+# Otras páginas enlazan a contacto.html?motivo=<valor>#escribenos y el motivo llega ya marcado.
+MOTIVOS = [
+    ("Consulta general", "Consulta general", "Cuéntanos en qué podemos ayudarte"),
+    ("Bautizo", "Bautizo", "Nombre del bebé, su fecha de nacimiento y el domingo que os gustaría"),
+    ("Boda", "Boda", "Vuestros nombres y la fecha aproximada que tenéis pensada"),
+    ("Aniversario de boda", "Aniversario de boda", "Qué aniversario celebráis (plata, oro, diamante…) y la fecha que os gustaría"),
+    ("Primera Comunión", "Primera Comunión", "Nombre del niño o la niña, edad y curso escolar"),
+    ("Confirmación", "Confirmación", "Nombre y edad de quien quiere confirmarse"),
+    ("Sacramento del Perdón", "Perdón (confesión)", "Si necesitas otro horario distinto al de los sábados, dinos cuándo te va bien"),
+    ("Visita a enfermos", "Visita a enfermos", "Nombre de la persona, dirección y qué días va mejor"),
+    ("Funeral", "Funeral", "Nombre del difunto y fecha prevista. Te llamaremos cuanto antes"),
+    ("Cáritas", "Cáritas", "Cuéntanos qué necesitas o cómo te gustaría colaborar"),
+    ("Grupo de jóvenes", "Grupo de jóvenes", "Tu edad y cómo te has enterado del grupo"),
+    ("Archivo histórico", "Fotos antiguas", "Qué fotos tienes, de qué año aproximado y de qué celebración"),
+    ("Otro", "Otro", "Cuéntanos en qué podemos ayudarte"),
+]
 PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia Santa Teresa de Jesús: Carrer del Llobregós, 132, 08032 Barcelona.", active="contacto", body=page_hero("Estamos para ayudarte", "Contacto", "web/portada1.jpg") + """
         <section class="contact-main" id="escribenos">
             <span id="datos" class="anchor-alias"></span>
@@ -1144,21 +1162,13 @@ PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia San
                         <input type="hidden" name="_template" value="table">
                         <input type="hidden" name="_captcha" value="false">
                         <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
-                        <label>Motivo *
-                            <select name="Motivo" required data-purpose>
-                                <option value="">Selecciona…</option>
-                                <option value="Consulta general">Consulta general</option>
-                                <option value="Bautizo">Bautizo</option>
-                                <option value="Boda">Boda</option>
-                                <option value="Aniversario de boda">Aniversario de boda (plata, oro, diamante…)</option>
-                                <option value="Primera Comunión">Primera Comunión</option>
-                                <option value="Confirmación">Confirmación</option>
-                                <option value="Visita a enfermos">Visita a enfermos</option>
-                                <option value="Funeral">Funeral</option>
-                                <option value="Cáritas">Cáritas</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                        </label>
+                        <fieldset class="motive-picker" data-purpose>
+                            <legend class="picker-label">¿En qué te podemos ayudar? *</legend>
+                            <div class="chips">
+""" + "\n".join(f'''                                <label class="chip"><input type="radio" name="Motivo" value="{v}" data-hint="{h}"{' required' if i == 0 else ''}><span>{t}</span></label>''' for i, (v, t, h) in enumerate(MOTIVOS)) + """
+                            </div>
+                            <p class="motive-note" data-for="Primera Comunión" hidden>Para inscribir a un niño o una niña tienes un formulario propio: <a href="comuniones.html#inscripcion">inscripción a la Primera Comunión →</a></p>
+                        </fieldset>
                         <div class="form-grid">
                             <label>Nombre *<input type="text" name="Nombre" required autocomplete="name"></label>
                             <label>Teléfono<input type="tel" name="Teléfono" autocomplete="tel" inputmode="tel"></label>
@@ -1242,7 +1252,7 @@ PAGES["html/misas.html"] = page(1, "Eucaristías", "Horarios de misas y calendar
 """)
 
 # ---------------------------------------------------------------- SACRAMENTOS
-PAGES["html/adminsacra.html"] = page(1, "Sacramentos", "Sacramento del Perdón, bautizos, confirmación y despacho parroquial en la Parroquia Santa Teresa de Jesús.", body=page_hero("Administración de", "Sacramentos", "web/img_5434.jpg", pos="center 85%") + """
+PAGES["html/adminsacra.html"] = page(1, "Sacramentos", "Sacramento del Perdón, bautizos, confirmación y despacho parroquial en la Parroquia Santa Teresa de Jesús.", body=page_hero("Administración de", "Sacramentos", "web/sacramentos-hero.jpg", pos="center 40%") + """
         <section>
             <div class="section-head">
                 """ + ORNAMENT + """
@@ -1252,10 +1262,10 @@ PAGES["html/adminsacra.html"] = page(1, "Sacramentos", "Sacramento del Perdón, 
             </div>
             <div class="icon-grid">
 """ + "\n".join([
-    icon_card("manos", "Perdón", "Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:30 a 19:00 horas y siempre un rato antes de cada misa.", "misas.html"),
-    icon_card("agua", "Bautismo", "Hay ceremonias bautismales al mediodía en cualquier domingo del año que se pida.", "contacto.html"),
-    icon_card("paloma", "Confirmación", "Cada tres años se celebra la Confirmación. La catequesis prepara a los adolescentes a partir de los 14 años.", "catequesis.html"),
-    icon_card("anillos", "Matrimonio", "Bodas, su preparación y aniversarios de plata, oro o diamante: consulta en el despacho parroquial los viernes por la tarde.", "#aniversarios"),
+    icon_card("manos", "Perdón", "Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:30 a 19:00 horas y siempre un rato antes de cada misa.", "contacto.html?motivo=Sacramento%20del%20Perdón#escribenos", "Pedir otro horario"),
+    icon_card("agua", "Bautismo", "Hay ceremonias bautismales al mediodía en cualquier domingo del año que se pida.", "contacto.html?motivo=Bautizo#escribenos", "Pedir un bautizo"),
+    icon_card("paloma", "Confirmación", "Cada tres años se celebra la Confirmación. La catequesis prepara a los adolescentes a partir de los 14 años.", "contacto.html?motivo=Confirmación#escribenos", "Pedir información"),
+    icon_card("anillos", "Matrimonio", "Bodas, su preparación y aniversarios de plata, oro o diamante: consulta en el despacho parroquial los viernes por la tarde.", "contacto.html?motivo=Boda#escribenos", "Preparar una boda"),
 ]) + """
             </div>
         </section>
@@ -1278,7 +1288,7 @@ PAGES["html/adminsacra.html"] = page(1, "Sacramentos", "Sacramento del Perdón, 
                     </ul>
                     <p class="caption" style="text-align:left;">Y cualquier otro aniversario que queráis celebrar.</p>
                     <div class="btn-group">
-                        <a href="contacto.html#escribenos" class="btn btn-solid">Pedir la celebración</a>
+                        <a href="contacto.html?motivo=Aniversario%20de%20boda#escribenos" class="btn btn-solid">Pedir la celebración</a>
                         <a href=\"tel:""" + TEL + """\" class="btn btn-call">""" + ICON_PHONE + """<span>Llamar</span></a>
                     </div>
                 </div>
@@ -1287,8 +1297,9 @@ PAGES["html/adminsacra.html"] = page(1, "Sacramentos", "Sacramento del Perdón, 
 
         <section id="despacho">
             <div class="two-col center">
-                <div class="framed-img">
-                    <img src="../fotosdefinitivas/web/img_5434.jpg" alt="Celebración de la eucaristía" loading="lazy">
+                <div class="priest-portrait">
+                    <img src="../fotosdefinitivas/web/parroco-albert.jpg" alt="Mn. Albert Sols, párroco de Santa Teresa de Jesús" width="640" height="640" loading="lazy">
+                    <span class="priest-name">Mn. Albert Sols<small>Párroco</small></span>
                 </div>
                 <div>
                     <span class="subtitulo text-left">Despacho parroquial</span>
@@ -1366,7 +1377,7 @@ PAGES["html/comuniones.html"] = page(1, "Primera Comunión", "Preparación e ins
                 <hr class="section-divider" style="margin-bottom:1rem;">
                 <p>La inscripción llega directamente por correo a la parroquia. Los campos con * son obligatorios.</p>
             </div>
-            <form class="mail-form form-communion" action=\"""" + FORM_MAIL + """\" method="POST" data-form-id="comuniones" data-subject="Inscripción a la Primera Comunión · {Nombre del niño o niña} {Apellidos}" data-intro="Hola, soy {Padre, madre o tutor}. Nos gustaría inscribir a {Nombre del niño o niña} {Apellidos} en la catequesis de Primera Comunión[ (curso {Curso escolar})]. Aquí tenéis todos los datos. Podéis responder a este correo para contestarnos directamente[ o llamarnos al {Teléfono}]." data-mail-form=\"""" + FORM_MAIL.replace("formsubmit.co/", "formsubmit.co/ajax/") + """\">
+            <form class="mail-form form-communion" action=\"""" + FORM_MAIL + """\" method="POST" data-form-id="comuniones" data-subject="Inscripción a la Primera Comunión · {Nombre del niño o niña} {Apellidos}" data-intro="Hola, soy {Padre, madre o tutor}. Nos gustaría inscribir a {Nombre del niño o niña} {Apellidos} en la catequesis de Primera Comunión[ (curso: {Curso escolar})]. Aquí tenéis todos los datos. Podéis responder a este correo para contestarnos directamente[ o llamarnos al {Teléfono}]." data-mail-form=\"""" + FORM_MAIL.replace("formsubmit.co/", "formsubmit.co/ajax/") + """\">
                 <div class="form-head">
                     <span class="form-head-icon">""" + SAC_ICONS["caliz"] + """</span>
                     <div>
@@ -1386,24 +1397,26 @@ PAGES["html/comuniones.html"] = page(1, "Primera Comunión", "Preparación e ins
                         <label>Nombre *<input type="text" name="Nombre del niño o niña" required autocomplete="off"></label>
                         <label>Apellidos *<input type="text" name="Apellidos" required autocomplete="off"></label>
                         <label>Fecha de nacimiento *<input type="date" name="Fecha de nacimiento" required></label>
-                        <label>Curso escolar
-                            <select name="Curso escolar" data-purpose>
-                                <option value="">Selecciona…</option>
-                                <option value="2º de Primaria">2º de Primaria</option>
-                                <option value="3º de Primaria">3º de Primaria</option>
-                                <option value="4º de Primaria">4º de Primaria</option>
-                                <option value="5º de Primaria">5º de Primaria</option>
-                                <option value="6º de Primaria">6º de Primaria</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                        </label>
                     </div>
-                    <div class="form-choice">
-                        <span>¿Está bautizado o bautizada? *</span>
-                        <label class="inline"><input type="radio" name="Bautizado/a" value="Sí" required> Sí</label>
-                        <label class="inline"><input type="radio" name="Bautizado/a" value="No"> No</label>
-                        <label class="inline"><input type="radio" name="Bautizado/a" value="No lo sé"> No lo sé</label>
-                    </div>
+                    <fieldset class="motive-picker compact" data-purpose>
+                        <legend class="picker-label">Curso escolar</legend>
+                        <div class="chips">
+                            <label class="chip"><input type="radio" name="Curso escolar" value="2º de Primaria"><span>2º Primaria</span></label>
+                            <label class="chip"><input type="radio" name="Curso escolar" value="3º de Primaria"><span>3º Primaria</span></label>
+                            <label class="chip"><input type="radio" name="Curso escolar" value="4º de Primaria"><span>4º Primaria</span></label>
+                            <label class="chip"><input type="radio" name="Curso escolar" value="5º de Primaria"><span>5º Primaria</span></label>
+                            <label class="chip"><input type="radio" name="Curso escolar" value="6º de Primaria"><span>6º Primaria</span></label>
+                            <label class="chip"><input type="radio" name="Curso escolar" value="Otro"><span>Otro</span></label>
+                        </div>
+                    </fieldset>
+                    <fieldset class="motive-picker compact">
+                        <legend class="picker-label">¿Está bautizado o bautizada? *</legend>
+                        <div class="chips">
+                            <label class="chip"><input type="radio" name="Bautizado/a" value="Sí" required><span>Sí</span></label>
+                            <label class="chip"><input type="radio" name="Bautizado/a" value="No"><span>No</span></label>
+                            <label class="chip"><input type="radio" name="Bautizado/a" value="No lo sé"><span>No lo sé</span></label>
+                        </div>
+                    </fieldset>
                     <label>Parroquia donde fue bautizado/a<input type="text" name="Parroquia de bautismo" placeholder="Si lo sabéis"></label>
                 </fieldset>
                 <fieldset>
@@ -1624,7 +1637,7 @@ PAGES["html/jovenes2alternativa.html"] = page(1, "Jóvenes", "Grupo de jóvenes 
                 <p style="text-align:center;">Cada 8 sábados aproximadamente, un pequeño grupo de jóvenes, acompañados de algún matrimonio, comentan con el rector el evangelio del domingo.</p>
                 <p class="lead" style="text-align:center;">¿Quieres formar parte de nuestro club? ¿Todavía lo estás pensando?</p>
                 <div class="btn-group center">
-                    <a href="contacto.html" class="btn btn-solid">Quiero apuntarme</a>
+                    <a href="contacto.html?motivo=Grupo%20de%20jóvenes#escribenos" class="btn btn-solid">Quiero apuntarme</a>
                     <a href="https://www.instagram.com/parroquiasantateresadejesusbcn/" class="btn" target="_blank" rel="noopener">Síguenos en Instagram</a>
                 </div>
             </div>

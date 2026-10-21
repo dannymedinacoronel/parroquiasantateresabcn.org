@@ -26,7 +26,7 @@
     <link rel="manifest" href="../../site.webmanifest">
 
     <link rel="stylesheet" href="../../css/fonts.css?v=818b49f2ed">
-    <link rel="stylesheet" href="../../css/site.css?v=fa9bee8d76">
+    <link rel="stylesheet" href="../../css/site.css?v=118700f023">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
     <script type="speculationrules">{"prerender":[{"where":{"selector_matches":"a[hreflang]"},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}},{"not":{"selector_matches":"a[hreflang]"}}]},"eagerness":"moderate"}]}</script>
@@ -76,12 +76,12 @@
                 <a href="noticias.html" class="nav-link">Notícies</a>
                 <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenú"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
                 <ul class="sub-menu">
-                    <li class="sub-heading" aria-hidden="true">Actualitat de l'Església</li>
-                    <li><a href="noticias.html#actualidad-iglesia" class="sub-link">Vaticà i Arquebisbat de Barcelona</a></li>
                     <li class="sub-heading parish" aria-hidden="true">De la nostra parròquia</li>
                     <li class="parish-item"><a href="noticias.html#parroquia" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Notícies de la parròquia</span></a></li>
                     <li class="parish-item"><a href="reflexiones/2026-10-20-reflexión-de-el-evangelio.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Última reflexió</span></a></li>
                     <li class="parish-item"><a href="humiliasmenu.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Totes les reflexions</span></a></li>
+                    <li class="sub-heading" aria-hidden="true">Actualitat de l'Església</li>
+                    <li><a href="noticias.html#actualidad-iglesia" class="sub-link">Vaticà i Arquebisbat de Barcelona</a></li>
                 </ul>
             </li>
             <li class="nav-item has-sub">
@@ -165,7 +165,7 @@
                 <hr class="section-divider" style="margin-bottom:1rem;">
                 <p>La inscripció arriba directament per correu a la parròquia. Els camps amb * són obligatoris.</p>
             </div>
-            <form class="mail-form form-communion" action="https://formsubmit.co/2823149fadce475f74b32bfd2b23cd79" method="POST" data-form-id="comuniones" data-subject="Inscripción a la Primera Comunión · {Nombre del niño o niña} {Apellidos}" data-intro="Hola, soy {Padre, madre o tutor}. Nos gustaría inscribir a {Nombre del niño o niña} {Apellidos} en la catequesis de Primera Comunión[ (curso {Curso escolar})]. Aquí tenéis todos los datos. Podéis responder a este correo para contestarnos directamente[ o llamarnos al {Teléfono}]." data-mail-form="https://formsubmit.co/ajax/2823149fadce475f74b32bfd2b23cd79">
+            <form class="mail-form form-communion" action="https://formsubmit.co/2823149fadce475f74b32bfd2b23cd79" method="POST" data-form-id="comuniones" data-subject="Inscripción a la Primera Comunión · {Nombre del niño o niña} {Apellidos}" data-intro="Hola, soy {Padre, madre o tutor}. Nos gustaría inscribir a {Nombre del niño o niña} {Apellidos} en la catequesis de Primera Comunión[ (curso: {Curso escolar})]. Aquí tenéis todos los datos. Podéis responder a este correo para contestarnos directamente[ o llamarnos al {Teléfono}]." data-mail-form="https://formsubmit.co/ajax/2823149fadce475f74b32bfd2b23cd79">
                 <div class="form-head">
                     <span class="form-head-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5h12c0 5-2.7 8-6 8s-6-3-6-8z"/><path d="M12 11.5V19M8 20.5h8"/><circle cx="12" cy="6.5" r="1.4"/></svg></span>
                     <div>
@@ -185,24 +185,26 @@
                         <label>Nom *<input type="text" name="Nombre del niño o niña" required autocomplete="off"></label>
                         <label>Cognoms *<input type="text" name="Apellidos" required autocomplete="off"></label>
                         <label>Data de naixement *<input type="date" name="Fecha de nacimiento" required></label>
-                        <label>Curs escolar
-                            <select name="Curso escolar" data-purpose>
-                                <option value="">Selecciona…</option>
-                                <option value="2º de Primaria">2n de Primària</option>
-                                <option value="3º de Primaria">3r de Primària</option>
-                                <option value="4º de Primaria">4t de Primària</option>
-                                <option value="5º de Primaria">5è de Primària</option>
-                                <option value="6º de Primaria">6è de Primària</option>
-                                <option value="Otro">Altre</option>
-                            </select>
-                        </label>
                     </div>
-                    <div class="form-choice">
-                        <span>Està batejat o batejada? *</span>
-                        <label class="inline"><input type="radio" name="Bautizado/a" value="Sí" required> Sí</label>
-                        <label class="inline"><input type="radio" name="Bautizado/a" value="No"> No</label>
-                        <label class="inline"><input type="radio" name="Bautizado/a" value="No lo sé"> No ho sé</label>
-                    </div>
+                    <fieldset class="motive-picker compact" data-purpose>
+                        <legend class="picker-label">Curs escolar</legend>
+                        <div class="chips">
+                            <label class="chip"><input type="radio" name="Curso escolar" value="2º de Primaria"><span>2n Primària</span></label>
+                            <label class="chip"><input type="radio" name="Curso escolar" value="3º de Primaria"><span>3r Primària</span></label>
+                            <label class="chip"><input type="radio" name="Curso escolar" value="4º de Primaria"><span>4t Primària</span></label>
+                            <label class="chip"><input type="radio" name="Curso escolar" value="5º de Primaria"><span>5è Primària</span></label>
+                            <label class="chip"><input type="radio" name="Curso escolar" value="6º de Primaria"><span>6è Primària</span></label>
+                            <label class="chip"><input type="radio" name="Curso escolar" value="Otro"><span>Altre</span></label>
+                        </div>
+                    </fieldset>
+                    <fieldset class="motive-picker compact">
+                        <legend class="picker-label">Està batejat o batejada? *</legend>
+                        <div class="chips">
+                            <label class="chip"><input type="radio" name="Bautizado/a" value="Sí" required><span>Sí</span></label>
+                            <label class="chip"><input type="radio" name="Bautizado/a" value="No"><span>No</span></label>
+                            <label class="chip"><input type="radio" name="Bautizado/a" value="No lo sé"><span>No ho sé</span></label>
+                        </div>
+                    </fieldset>
                     <label>Parròquia on va ser batejat/da<input type="text" name="Parroquia de bautismo" placeholder="Si ho sabeu"></label>
                 </fieldset>
                 <fieldset>
@@ -307,7 +309,7 @@
         </div>
     </template>
     <script src="../../data/avisos.js?v=d53051e813"></script>
-    <script src="../../js/site.js?v=b8a479b110"></script>
+    <script src="../../js/site.js?v=9ec17689ad"></script>
 
 </body>
 </html>
