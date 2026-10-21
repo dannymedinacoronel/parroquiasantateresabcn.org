@@ -18,11 +18,10 @@
             phText: "Este contenido lo proporciona un servicio externo que puede instalar cookies. Solo se mostrará si lo aceptas.",
             phAccept: "Aceptar y mostrar", moreInfo: "Más información",
             bannerLabel: "Aviso de cookies", bannerTitle: "Tu privacidad",
-            bannerText: "Usamos almacenamiento técnico necesario para que la web funcione. Con tu permiso, también cargaremos contenido de terceros (mapas, vídeos, Instagram, formularios) y el chat de atención, que pueden instalar sus propias cookies. No usamos cookies de publicidad ni de analítica.",
+            bannerText: "Usamos almacenamiento técnico necesario para que la web funcione. Con tu permiso, también cargaremos contenido de terceros (mapas, vídeos, Instagram, formularios), que pueden instalar sus propias cookies. No usamos cookies de publicidad ni de analítica.",
             policy: "Política de cookies",
             optNecessary: "<strong>Necesarias</strong> Guardan tu elección sobre cookies. Siempre activas.",
             optEmbeds: "<strong>Contenido externo</strong> Google Maps, Calendar y Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa, Evangeli.net y fotos de las noticias.",
-            optChat: "<strong>Chat de atención</strong> Tawk.to, para hablar con la parroquia en directo.",
             reject: "Rechazar", configure: "Configurar", save: "Guardar selección", acceptAll: "Aceptar todas"
         },
         ca: {
@@ -40,11 +39,10 @@
             phText: "Aquest contingut el proporciona un servei extern que pot instal·lar galetes. Només es mostrarà si ho acceptes.",
             phAccept: "Acceptar i mostrar", moreInfo: "Més informació",
             bannerLabel: "Avís de galetes", bannerTitle: "La teva privacitat",
-            bannerText: "Fem servir emmagatzematge tècnic necessari perquè el web funcioni. Amb el teu permís, també carregarem contingut de tercers (mapes, vídeos, Instagram, formularis) i el xat d'atenció, que poden instal·lar les seves pròpies galetes. No fem servir galetes de publicitat ni d'analítica.",
+            bannerText: "Fem servir emmagatzematge tècnic necessari perquè el web funcioni. Amb el teu permís, també carregarem contingut de tercers (mapes, vídeos, Instagram, formularis), que poden instal·lar les seves pròpies galetes. No fem servir galetes de publicitat ni d'analítica.",
             policy: "Política de galetes",
             optNecessary: "<strong>Necessàries</strong> Desen la teva elecció sobre galetes. Sempre actives.",
             optEmbeds: "<strong>Contingut extern</strong> Google Maps, Calendar i Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa, Evangeli.net i fotos de les notícies.",
-            optChat: "<strong>Xat d'atenció</strong> Tawk.to, per parlar amb la parròquia en directe.",
             reject: "Rebutjar", configure: "Configurar", save: "Desar la selecció", acceptAll: "Acceptar-les totes"
         },
         en: {
@@ -62,11 +60,10 @@
             phText: "This content is provided by an external service that may set cookies. It will only be shown if you accept.",
             phAccept: "Accept and show", moreInfo: "More information",
             bannerLabel: "Cookie notice", bannerTitle: "Your privacy",
-            bannerText: "We use essential technical storage for the website to work. With your permission, we will also load third-party content (maps, videos, Instagram, forms) and the support chat, which may set their own cookies. We do not use advertising or analytics cookies.",
+            bannerText: "We use essential technical storage for the website to work. With your permission, we will also load third-party content (maps, videos, Instagram, forms), which may set their own cookies. We do not use advertising or analytics cookies.",
             policy: "Cookie policy",
             optNecessary: "<strong>Essential</strong> Store your cookie choice. Always active.",
             optEmbeds: "<strong>External content</strong> Google Maps, Calendar and Forms, YouTube, Instagram, Typeform, SoundCloud, Cincopa, Evangeli.net and news photos.",
-            optChat: "<strong>Support chat</strong> Tawk.to, to talk to the parish live.",
             reject: "Reject", configure: "Settings", save: "Save selection", acceptAll: "Accept all"
         }
     };
@@ -836,27 +833,12 @@
         });
     });
 
-    /* Chat Tawk.to */
-    var chatLoaded = false;
-    function loadChat() {
-        if (chatLoaded) return;
-        chatLoaded = true;
-        window.Tawk_API = window.Tawk_API || {};
-        window.Tawk_LoadStart = new Date();
-        var s1 = document.createElement("script");
-        s1.async = true;
-        s1.src = "https://embed.tawk.to/5e7d2de035bcbb0c9aaad04f/default";
-        s1.charset = "UTF-8";
-        s1.setAttribute("crossorigin", "*");
-        document.body.appendChild(s1);
-    }
 
     function apply(c) {
         document.documentElement.classList.toggle("consent-embeds", !!c.embeds);
         if (c.embeds) loadEmbeds();
-        if (c.chat) loadChat();
         /* Retirar el consentimiento tiene que surtir efecto: recargamos sin terceros */
-        if ((!c.embeds && embedsLoaded) || (!c.chat && chatLoaded)) location.reload();
+        if ((!c.embeds && embedsLoaded)) location.reload();
     }
 
     /* Aviso y panel de configuración */
@@ -873,7 +855,6 @@
         '<div class="cookie-settings" hidden>' +
             '<label class="cookie-option"><input type="checkbox" checked disabled><span>' + T("optNecessary") + '</span></label>' +
             '<label class="cookie-option"><input type="checkbox" data-cat="embeds"><span>' + T("optEmbeds") + '</span></label>' +
-            '<label class="cookie-option"><input type="checkbox" data-cat="chat"><span>' + T("optChat") + '</span></label>' +
         '</div>' +
         '<div class="cookie-actions">' +
             '<button type="button" class="btn" data-act="reject">' + T("reject") + '</button>' +
@@ -885,14 +866,13 @@
 
     var settings = banner.querySelector(".cookie-settings");
     var boxEmbeds = banner.querySelector('[data-cat="embeds"]');
-    var boxChat = banner.querySelector('[data-cat="chat"]');
+
     var btnConfig = banner.querySelector('[data-act="config"]');
     var btnSave = banner.querySelector('[data-act="save"]');
 
     function showBanner(openSettings) {
         var c = readConsent() || { embeds: false, chat: false };
         boxEmbeds.checked = c.embeds;
-        boxChat.checked = c.chat;
         settings.hidden = !openSettings;
         btnSave.hidden = !openSettings;
         btnConfig.hidden = !!openSettings;
@@ -903,7 +883,7 @@
     banner.querySelector('[data-act="accept"]').addEventListener("click", function () { hideBanner(); apply(saveConsent(true, true)); });
     banner.querySelector('[data-act="reject"]').addEventListener("click", function () { hideBanner(); apply(saveConsent(false, false)); });
     btnConfig.addEventListener("click", function () { showBanner(true); });
-    btnSave.addEventListener("click", function () { hideBanner(); apply(saveConsent(boxEmbeds.checked, boxChat.checked)); });
+    btnSave.addEventListener("click", function () { hideBanner(); apply(saveConsent(boxEmbeds.checked, false)); });
     document.querySelectorAll("[data-cookie-settings]").forEach(function (b) {
         b.addEventListener("click", function () { showBanner(true); });
     });

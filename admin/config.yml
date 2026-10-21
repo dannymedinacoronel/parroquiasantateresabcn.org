@@ -126,50 +126,6 @@ collections:
         default: true
         hint: "Desactívalo para guardarla como borrador sin que aparezca en la web."
 
-  # Tareas del equipo. Se gestionan sobre todo desde el dashboard (/admin/dashboard.html);
-  # aquí también se pueden editar todas a la vez.
-  - name: equipo
-    label: Tareas del equipo
-    files:
-      - name: tareas
-        label: Tareas asignadas
-        file: contenido/tareas.json
-        format: json
-        fields:
-          - label: Tareas
-            name: tareas
-            widget: list
-            summary: "{{fields.titulo}} — {{fields.persona}} ({{fields.estado}})"
-            fields:
-              - { label: Identificador, name: id, widget: hidden, required: false }
-              - { label: Tarea, name: titulo, widget: string }
-              - label: Persona
-                name: persona
-                widget: relation
-                collection: ajustes
-                file: autores
-                search_fields: ["autores.*.nombre"]
-                display_fields: ["autores.*.nombre"]
-                value_field: "autores.*.id"
-              - label: Estado
-                name: estado
-                widget: select
-                default: pendiente
-                options:
-                  - { label: "Pendiente", value: pendiente }
-                  - { label: "En curso", value: en-curso }
-                  - { label: "Hecha", value: hecha }
-              - label: Prioridad
-                name: prioridad
-                widget: select
-                default: normal
-                options:
-                  - { label: "Normal", value: normal }
-                  - { label: "Alta", value: alta }
-              - { label: "Fecha límite", name: fecha, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, required: false }
-              - { label: Notas, name: notas, widget: text, required: false }
-              - { label: Creada, name: creada, widget: hidden, required: false }
-
   - name: ajustes
     label: Personas que escriben
     files:

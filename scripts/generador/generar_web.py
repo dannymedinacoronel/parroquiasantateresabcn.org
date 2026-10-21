@@ -1842,7 +1842,6 @@ PAGES["html/cookies.html"] = page(1, "Política de cookies", "Qué cookies utili
                 <div class="table-wrap"><table>
                     <thead><tr><th>Servicio</th><th>Proveedor</th><th>Dónde se usa</th><th>Finalidad</th></tr></thead>
                     <tbody>
-                        <tr><td>Chat de atención</td><td>Tawk.to Inc. (EE. UU.)</td><td>Todas las páginas</td><td>Chat en directo con la parroquia. <a href="https://www.tawk.to/privacy-policy/" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>Google Maps y Calendar</td><td>Google Ireland Ltd.</td><td>Inicio, Contacto, Eucaristías</td><td>Mapa y calendario. <a href="https://policies.google.com/technologies/cookies?hl=es" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>YouTube (modo de privacidad mejorada)</td><td>Google Ireland Ltd.</td><td>Imágenes y vídeos</td><td>Reproducir vídeos. <a href="https://policies.google.com/privacy?hl=es" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>SoundCloud</td><td>SoundCloud Global Ltd.</td><td>Homilías</td><td>Reproducir audios. <a href="https://soundcloud.com/pages/cookies" target="_blank" rel="noopener">Política</a></td></tr>
@@ -1928,17 +1927,16 @@ PAGES["html/privacidad.html"] = page(1, "Política de privacidad", "Cómo trata 
                     <tbody>
                         <tr><td>Formulario de contacto y correo electrónico</td><td>Nombre, correo y lo que nos escribas</td><td>Responder a tu consulta</td><td>Tu consentimiento (art. 6.1.a RGPD)</td></tr>
                         <tr><td>Formulario de inscripción a la Primera Comunión</td><td>Datos del menor y de su padre, madre o tutor</td><td>Gestionar la inscripción y la catequesis</td><td>Consentimiento del padre, madre o tutor (art. 6.1.a RGPD y art. 7 LOPDGDD) y actividad legítima de una entidad religiosa con sus fieles (art. 9.2.d RGPD)</td></tr>
-                        <tr><td>Chat de atención</td><td>Nombre, correo y mensajes que escribas</td><td>Atender tu consulta en directo</td><td>Tu consentimiento (art. 6.1.a RGPD)</td></tr>
                         <tr><td>Fotografías de actividades</td><td>Imagen de las personas que aparecen</td><td>Dar a conocer la vida de la parroquia</td><td>Consentimiento de los interesados o de sus representantes legales</td></tr>
                     </tbody>
                 </table></div>
                 <p>Los datos de <strong>menores de 14 años</strong> solo pueden facilitarlos sus padres o tutores legales.</p>
 
                 <h3>3. Cuánto tiempo los conservamos</h3>
-                <p>Los datos de contacto y del chat, el tiempo necesario para atender tu consulta. Los de catequesis, mientras dure la formación y, después, durante los plazos que exija la normativa civil o canónica aplicable. En cualquier caso, mientras no solicites su supresión cuando proceda.</p>
+                <p>Los datos de contacto, el tiempo necesario para atender tu consulta. Los de catequesis, mientras dure la formación y, después, durante los plazos que exija la normativa civil o canónica aplicable. En cualquier caso, mientras no solicites su supresión cuando proceda.</p>
 
                 <h3>4. Destinatarios</h3>
-                <p>No cedemos datos a terceros salvo obligación legal. Para prestar algunos servicios usamos proveedores que tratan datos por nuestra cuenta (encargados del tratamiento): Google (calendario y mapas), FormSubmit (envía por correo a la parroquia los formularios de contacto y de inscripción a la Primera Comunión; no instala cookies), Netlify (alojamiento de la web) y Tawk.to (chat). Algunos están en Estados Unidos; las transferencias se amparan en el Marco de Privacidad de Datos UE-EE. UU. cuando el proveedor está adherido o, en su defecto, en las cláusulas contractuales tipo aprobadas por la Comisión Europea.</p>
+                <p>No cedemos datos a terceros salvo obligación legal. Para prestar algunos servicios usamos proveedores que tratan datos por nuestra cuenta (encargados del tratamiento): Google (calendario y mapas), FormSubmit (envía por correo a la parroquia los formularios de contacto y de inscripción a la Primera Comunión; no instala cookies) y Netlify (alojamiento de la web). Algunos están en Estados Unidos; las transferencias se amparan en el Marco de Privacidad de Datos UE-EE. UU. cuando el proveedor está adherido o, en su defecto, en las cláusulas contractuales tipo aprobadas por la Comisión Europea.</p>
                 <p>Para saber cómo se usa la web, se cuenta de forma anónima qué páginas se visitan (con el idioma, el tipo de pantalla y la web desde la que se llega) y cuántas veces se ven, se empiezan a rellenar y se envían los formularios, con el motivo elegido. No se guardan nombres, correos, mensajes ni direcciones IP, no se usan cookies ni se guarda nada en tu navegador.</p>
 
                 <h3>5. Tus derechos</h3>
