@@ -518,6 +518,36 @@
         lazy.forEach(function (el) { io.observe(el); });
     })();
 
+    /* --- Visitas anónimas (dashboard → pestaña «Visitas») ---
+       Se cuenta la página vista, el idioma, el tipo de pantalla y la web de procedencia; mientras
+       la pestaña está a la vista se avisa cada 30 s para saber cuántas personas hay ahora mismo.
+       Sin cookies, sin guardar nada en el navegador y sin IP. No cuenta el panel ni los robots,
+       ni las páginas que el navegador prepara por adelantado hasta que de verdad se abren. */
+    (function () {
+        if (location.protocol !== "https:" || /^\/admin/.test(location.pathname) || navigator.webdriver) return;
+        function send(data) {
+            var body = JSON.stringify(data);
+            try { if (navigator.sendBeacon && navigator.sendBeacon("/api/hit", new Blob([body], { type: "text/plain" }))) return; } catch (err) { }
+            fetch("/api/hit", { method: "POST", body: body, keepalive: true }).catch(function () { });
+        }
+        function start() {
+            var ref = "", entry = true;
+            try {
+                var r = document.referrer ? new URL(document.referrer) : null;
+                if (r && r.host === location.host) entry = false; else if (r) ref = r.hostname;
+            } catch (err) { }
+            var w = window.innerWidth;
+            send({ k: "view", p: location.pathname.replace(/^\/(ca|en)(?=\/|$)/, "") || "/", l: LANG, d: w < 700 ? "movil" : w < 1100 ? "tablet" : "ordenador", r: ref, e: entry ? 1 : 0 });
+            var beats = 0, timer = setInterval(function () {
+                if (document.visibilityState !== "visible") return;
+                if (++beats > 60) return clearInterval(timer);     // como mucho 30 min por página
+                send({ k: "ping" });
+            }, 30000);
+        }
+        if (document.prerendering) document.addEventListener("prerenderingchange", start, { once: true });
+        else start();
+    })();
+
     /* --- Formularios que se envían por correo (FormSubmit → albertsols@gmail.com) ---
        Sin JavaScript el formulario se envía igualmente con su «action»; con JavaScript se envía
        sin salir de la página y se muestra la confirmación. */

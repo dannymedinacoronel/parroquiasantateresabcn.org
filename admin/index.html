@@ -120,7 +120,9 @@
         <button type="button" class="pst-see" id="pst-hoy-see">📖 Ver el Evangelio aquí</button>
         <a href="https://evangeli.net/evangelio" target="_blank" rel="noopener">Abrir en otra pestaña ↗</a>
         <a class="pst-metrics" href="/admin/dashboard.html#tareas" target="_blank" rel="noopener">📋 Tareas del equipo</a>
+        <a class="pst-metrics" href="/admin/dashboard.html#visitas" target="_blank" rel="noopener">🟢 Visitas en directo</a>
         <a class="pst-metrics" href="/admin/dashboard.html#metricas" target="_blank" rel="noopener">📊 Métricas de los formularios</a>
+        <a class="pst-metrics" href="/admin/dashboard.html#exportar" target="_blank" rel="noopener">⬇ Exportar</a>
         <p>Se abre ya firmada por la parroquia, con la fecha y el día litúrgico. El Evangelio queda en una ventanita al lado para ir siguiéndolo mientras escribes.</p>
     </aside>
 
@@ -362,7 +364,7 @@
                 if (medios) {
                     var tabs = document.createElement("span");
                     tabs.className = "pst-tabs";
-                    tabs.innerHTML = '<a href="/admin/dashboard.html#tareas" target="_blank" rel="noopener">📋 Tareas</a><a href="/admin/dashboard.html#metricas" target="_blank" rel="noopener">📊 Métricas</a>';
+                    tabs.innerHTML = '<a href="/admin/dashboard.html#tareas" target="_blank" rel="noopener">📋 Tareas</a><a href="/admin/dashboard.html#visitas" target="_blank" rel="noopener">🟢 Visitas</a><a href="/admin/dashboard.html#metricas" target="_blank" rel="noopener">📊 Formularios</a><a href="/admin/dashboard.html#exportar" target="_blank" rel="noopener">⬇ Exportar</a>';
                     medios.parentNode.insertBefore(tabs, medios.nextSibling);
                 }
             }

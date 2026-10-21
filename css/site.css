@@ -2480,3 +2480,8 @@ main > section:not(.hero):not(:first-child), .site-footer, body > footer { conte
 }
 .priest-name { display: grid; text-align: center; font-family: var(--header-font); font-style: italic; font-size: 1.5rem; color: var(--heading-color); }
 .priest-name small { font-family: var(--body-font); font-style: normal; font-size: .68rem; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent-dark); }
+
+/* Portada · Actualidad y Evangelio: el Evangelio para la familia y los botones, justo bajo el título */
+.family-entry.family-entry-top { margin: 2.25rem auto 0; }
+.act-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .9rem; margin: 2rem auto 3rem; }
+@media (max-width: 640px) { .act-actions .btn { width: 100%; text-align: center; } }

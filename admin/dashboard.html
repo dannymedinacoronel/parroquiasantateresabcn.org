@@ -30,6 +30,7 @@
         .empty { padding: 1.2rem; text-align: center; color: var(--muted); font-style: italic; }
         .btn { border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: .5rem 1rem; border-radius: 22px; cursor: pointer; font-size: .86rem; }
         .btn:hover { border-color: var(--gold); }
+        a.btn { display: inline-block; text-decoration: none; }
         .btn.primary { background: var(--ink); color: #fff; border-color: var(--ink); }
         .btn.primary:hover { background: #3a2f22; }
         .bar { display: flex; flex-wrap: wrap; align-items: center; gap: .55rem; margin-bottom: 1.3rem; }
@@ -109,7 +110,40 @@
         .help { font-size: .82rem; color: var(--muted); line-height: 1.6; }
         .gate { max-width: 520px; margin: 4rem auto; text-align: center; }
         .gate a { color: var(--gold-d); font-weight: 600; }
-        @media (max-width: 640px) { .kpis, .mk { grid-template-columns: repeat(2, 1fr); } .top .me span, .top a.back { display: none; } dialog .row { grid-template-columns: 1fr; } }
+        /* ---------- visitas ---------- */
+        nav.tabs { overflow-x: auto; scrollbar-width: none; }
+        nav.tabs a { white-space: nowrap; display: inline-flex; align-items: center; gap: .45rem; }
+        .live-dot { width: 9px; height: 9px; border-radius: 50%; background: #3fb36b; box-shadow: 0 0 0 0 rgba(63,179,107,.6); animation: livePulse 2s infinite; }
+        @keyframes livePulse { 70% { box-shadow: 0 0 0 8px rgba(63,179,107,0); } 100% { box-shadow: 0 0 0 0 rgba(63,179,107,0); } }
+        .vk { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .8rem; margin-bottom: 1.25rem; }
+        .vk .kpi.now { background: #1d1a16; border-color: #1d1a16; } .vk .kpi.now b { color: #7be0a1; display: flex; align-items: center; gap: .5rem; } .vk .kpi.now span { color: #cbbd9f; }
+        .vk .kpi small { display: block; margin-top: .2rem; font-size: .72rem; color: var(--muted); }
+        .feed { list-style: none; margin: .4rem 0 0; padding: 0; max-height: 430px; overflow: auto; }
+        .feed li { display: grid; grid-template-columns: 3.4rem minmax(0, 1fr); gap: .6rem; padding: .55rem 0; border-bottom: 1px solid #f0e8d8; font-size: .87rem; }
+        .feed li:last-child { border-bottom: 0; }
+        .feed time { color: var(--muted); font-variant-numeric: tabular-nums; }
+        .feed .pg { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .feed .meta { display: block; font-size: .76rem; color: var(--muted); }
+        .feed li.fresh { animation: fresh 2.5s ease-out; }
+        @keyframes fresh { from { background: #fff4dc; } to { background: transparent; } }
+        .hours { display: grid; grid-template-columns: repeat(24, 1fr); align-items: end; gap: 3px; height: 150px; margin-top: .8rem; }
+        .hours i { display: block; background: linear-gradient(180deg, var(--gold), var(--gold-d)); border-radius: 3px 3px 0 0; min-height: 2px; }
+        .hours-x { display: grid; grid-template-columns: repeat(24, 1fr); gap: 3px; font-size: .64rem; color: var(--muted); text-align: center; margin-top: .3rem; }
+
+        /* ---------- exportar ---------- */
+        .exp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; }
+        .opt { display: flex; flex-wrap: wrap; gap: .5rem; margin: .4rem 0 1.2rem; }
+        .opt-title { font-size: .72rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--gold-d); }
+        .fmt { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; }
+        .fmt button { display: grid; justify-items: center; gap: .35rem; padding: 1.2rem .6rem 1rem; border: 1px solid var(--line); border-radius: 12px; background: #fff; cursor: pointer; transition: transform .15s, box-shadow .15s, border-color .15s; }
+        .fmt button:hover { transform: translateY(-2px); border-color: var(--gold); box-shadow: 0 10px 24px rgba(60,40,10,.1); }
+        .fmt button[disabled] { opacity: .5; cursor: wait; }
+        .fmt .ic { width: 44px; height: 52px; border-radius: 6px; display: grid; place-items: center; color: #fff; font: 700 .78rem/1 system-ui; letter-spacing: .5px; }
+        .fmt .pdf .ic { background: #b3392f; } .fmt .xls .ic { background: #1f7a46; } .fmt .csv .ic { background: #4c5d73; }
+        .fmt b { font-size: .95rem; } .fmt small { font-size: .74rem; color: var(--muted); text-align: center; }
+        .incl { margin: 0; padding-left: 1.1rem; font-size: .86rem; line-height: 1.7; color: #5b5244; }
+        @media (max-width: 900px) { .vk { grid-template-columns: repeat(2, minmax(0, 1fr)); } .vk .kpi.now { grid-column: 1 / -1; } }
+        @media (max-width: 640px) { .kpis, .mk { grid-template-columns: repeat(2, 1fr); } .top .me span, .top a.back { display: none; } dialog .row { grid-template-columns: 1fr; } .fmt { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -122,7 +156,9 @@
         </div>
         <nav class="tabs">
             <a href="#tareas" data-tab="tareas">📋 Tareas</a>
-            <a href="#metricas" data-tab="metricas">📊 Métricas de los formularios</a>
+            <a href="#visitas" data-tab="visitas"><span class="live-dot"></span>Visitas en directo</a>
+            <a href="#metricas" data-tab="metricas">📊 Formularios</a>
+            <a href="#exportar" data-tab="exportar">⬇ Exportar</a>
         </nav>
     </header>
     <main id="app"><p class="empty">Cargando…</p></main>
@@ -362,7 +398,8 @@
     var FORM_SUB = { contacto: "Página de Contacto · mensajes a albertsols@gmail.com", comuniones: "Página Primera Comunión · inscripciones a albertsols@gmail.com" };
     var PURPOSE_TITLE = { contacto: "Mensajes por motivo", comuniones: "Inscripciones por curso escolar" };
     var NAMES = { "consulta-general": "Consulta general", "bautizo": "Bautizo", "boda": "Boda", "primera-comunion": "Primera Comunión", "confirmacion": "Confirmación",
-        "visita-a-enfermos": "Visita a enfermos", "funeral": "Funeral", "caritas": "Cáritas", "otro": "Otro", "2-de-primaria": "2º de Primaria", "3-de-primaria": "3º de Primaria",
+        "visita-a-enfermos": "Visita a enfermos", "funeral": "Funeral", "caritas": "Cáritas", "otro": "Otro", "aniversario-de-boda": "Aniversario de boda",
+        "sacramento-del-perdon": "Perdón (confesión)", "grupo-de-jovenes": "Grupo de jóvenes", "archivo-historico": "Fotos antiguas", "2-de-primaria": "2º de Primaria", "3-de-primaria": "3º de Primaria",
         "4-de-primaria": "4º de Primaria", "5-de-primaria": "5º de Primaria", "6-de-primaria": "6º de Primaria", "-": "Sin indicar" };
     var LANGS = { es: "Castellano", ca: "Català", en: "English" };
     var mDays = 30, mData = null;
@@ -374,12 +411,13 @@
             .then(function (j) { mData = j; renderMetrics(); })
             .catch(function (e) { app.innerHTML = '<div class="card"><h2>No se han podido cargar las métricas</h2><p class="notice">' + esc(e.message) + '</p><button class="btn" onclick="location.reload()">Reintentar</button></div>'; });
     }
-    function tally() {
-        var t = {}, days = [], d0 = new Date(mData.since + "T12:00:00Z");
-        for (var i = 0; i < mData.days; i++) days.push(new Date(d0.getTime() + i * 864e5).toISOString().slice(0, 10));
+    function tally(src) {
+        src = src || mData;
+        var t = {}, days = [], d0 = new Date(src.since + "T12:00:00Z");
+        for (var i = 0; i < src.days; i++) days.push(new Date(d0.getTime() + i * 864e5).toISOString().slice(0, 10));
         Object.keys(FORMS).forEach(function (f) { t[f] = { view: 0, start: 0, submit: 0, error: 0, daily: {}, purpose: {}, lang: {} }; days.forEach(function (d) { t[f].daily[d] = { view: 0, submit: 0 }; }); });
-        Object.keys(mData.counts || {}).forEach(function (k) {
-            var p = k.split("|"), n = mData.counts[k], f = t[p[1]];
+        Object.keys(src.counts || {}).forEach(function (k) {
+            var p = k.split("|"), n = src.counts[k], f = t[p[1]];
             if (!f || !(p[2] in f)) return;
             f[p[2]] += n;
             if (f.daily[p[0]] && (p[2] === "view" || p[2] === "submit")) f.daily[p[0]][p[2]] += n;
@@ -414,7 +452,7 @@
     function renderMetrics() {
         var r = tally(), html = '<div class="bar"><b>Periodo:</b>' + [7, 30, 90, 365].map(function (d) {
             return '<button class="chip state-f" data-days="' + d + '" aria-pressed="' + (d === mDays) + '">' + (d === 365 ? "1 año" : "Últimos " + d + " días") + "</button>";
-        }).join("") + '<span class="sp"></span><small>Actualizado: ' + new Date(mData.generated).toLocaleString("es-ES") + '</small><button class="btn" id="csv">⬇ CSV</button><button class="btn" id="mreload">↻ Actualizar</button></div>';
+        }).join("") + '<span class="sp"></span><small>Actualizado: ' + new Date(mData.generated).toLocaleString("es-ES") + '</small><a class="btn" href="#exportar">⬇ Exportar (PDF, Excel, CSV)</a><button class="btn" id="mreload">↻ Actualizar</button></div>';
         html += '<div class="forms">' + Object.keys(FORMS).map(function (f) {
             var s = r.t[f], conv = s.view ? Math.round(s.submit / s.view * 1000) / 10 : 0;
             return '<section class="card"><h2>' + FORMS[f] + '</h2><div class="sub">' + FORM_SUB[f] + '</div><div class="mk"><div><b>' + s.view + '</b><span>Visto</span></div><div><b>' + s.start +
@@ -428,21 +466,235 @@
         app.innerHTML = html;
         app.querySelectorAll("[data-days]").forEach(function (b) { b.onclick = function () { mDays = +b.getAttribute("data-days"); showMetrics(); }; });
         document.getElementById("mreload").onclick = showMetrics;
-        document.getElementById("csv").onclick = function () {
-            var rows = [["fecha", "formulario", "evento", "motivo", "idioma", "cantidad"]];
-            Object.keys(mData.counts).sort().forEach(function (k) { rows.push(k.split("|").concat(mData.counts[k])); });
-            var a = document.createElement("a");
-            a.href = URL.createObjectURL(new Blob(["﻿" + rows.map(function (x) { return x.join(";"); }).join("\n")], { type: "text/csv;charset=utf-8" }));
-            a.download = "metricas-formularios-" + mData.since + ".csv"; a.click();
-        };
+    }
+
+    /* ---------- visitas de la web (en directo) ---------- */
+    var PAGE_NAMES = { "/": "Inicio", "/html/contacto": "Contacto", "/html/misas": "Eucaristías", "/html/noticias": "Noticias", "/html/adminsacra": "Sacramentos",
+        "/html/catequesis": "Catequesis", "/html/comuniones": "Primera Comunión", "/html/dinamicapastoral": "Dinámica pastoral", "/html/historia": "Historia",
+        "/html/imagenes": "Imágenes y vídeos", "/html/jovenes2alternativa": "Jóvenes", "/html/organigramaparroquial": "Organigrama", "/html/humiliasmenu": "Reflexiones",
+        "/html/evangelio-familia": "Evangelio para la familia", "/html/privacidad": "Privacidad", "/html/cookies": "Cookies", "/html/aviso-legal": "Aviso legal", "/404": "Página no encontrada" };
+    var DEVS = { movil: "📱 Móvil", tablet: "📟 Tableta", ordenador: "💻 Ordenador" };
+    function pageName(p) {
+        try { p = decodeURIComponent(p); } catch (e) { }
+        if (PAGE_NAMES[p]) return PAGE_NAMES[p];
+        var m = /^\/html\/reflexiones\/(\d{4})-(\d{2})-(\d{2})-(.*)$/.exec(p);
+        if (m) return "Reflexión del " + m[3] + "/" + m[2] + "/" + m[1];
+        return p;
+    }
+    function refName(r) { return r === "directo" ? "Directo (enlace guardado, WhatsApp, correo…)" : r; }
+    function dmy(d) { return d.slice(8, 10) + "/" + d.slice(5, 7) + "/" + d.slice(0, 4); }
+    function hm(ts) { return new Date(ts).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Madrid" }); }
+    var vDays = 30, vData = null, liveTimer = null, seen = {};
+    function stopLive() { if (liveTimer) clearInterval(liveTimer); liveTimer = null; }
+    function getVisits(days) {
+        return fetch("/api/visit-stats?days=" + days + "&t=" + Date.now(), { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); });
+    }
+    function showVisits() {
+        app.innerHTML = '<p class="empty">Cargando visitas…</p>';
+        getVisits(vDays).then(function (j) { vData = j; renderVisits(); startLive(); })
+            .catch(function (e) { app.innerHTML = '<div class="card"><h2>No se han podido cargar las visitas</h2><p class="notice">' + esc(e.message) + '</p><button class="btn" onclick="location.reload()">Reintentar</button></div>'; });
+    }
+    function startLive() {
+        stopLive();
+        liveTimer = setInterval(function () {
+            if (document.hidden) return;
+            fetch("/api/visit-stats?live=1&t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+                if (!j || !vData || location.hash !== "#visitas") return;
+                // hoy cambia: se actualiza su punto de la serie y el total del periodo
+                var last = vData.series[vData.series.length - 1];
+                if (last && last.day === j.day) {
+                    vData.total.views += j.today.views - last.views; vData.total.entries += j.today.entries - last.entries;
+                    last.views = j.today.views; last.entries = j.today.entries;
+                }
+                vData.now = j.now; vData.today = j.today; vData.generated = j.generated;
+                renderVisits(true);
+            }).catch(function () { });
+        }, 15000);
+    }
+    function vChart(series) {
+        var W = 1000, H = 240, L = 34, B = 26, T = 12, R = 10, n = series.length, max = 1;
+        series.forEach(function (s) { max = Math.max(max, s.views); });
+        var x = function (i) { return L + (n === 1 ? (W - L - R) / 2 : i * (W - L - R) / (n - 1)); }, y = function (v) { return T + (H - T - B) * (1 - v / max); };
+        var g = "";
+        for (var i = 0; i <= 4; i++) { var v = Math.round(max * i / 4), yy = y(v); g += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy + '" y2="' + yy + '" stroke="#ece3d1"/><text x="' + (L - 6) + '" y="' + (yy + 4) + '" text-anchor="end" font-size="11" fill="#9a8e78">' + v + "</text>"; }
+        var step = Math.max(1, Math.ceil(n / 8));
+        series.forEach(function (s, i) { if (i % step === 0 || i === n - 1) g += '<text x="' + x(i) + '" y="' + (H - 6) + '" text-anchor="middle" font-size="11" fill="#9a8e78">' + s.day.slice(8, 10) + "/" + s.day.slice(5, 7) + "</text>"; });
+        var pts = function (k) { return series.map(function (s, i) { return x(i).toFixed(1) + "," + y(s[k]).toFixed(1); }).join(" "); };
+        g += '<polygon points="' + L + "," + y(0) + " " + pts("views") + " " + x(n - 1) + "," + y(0) + '" fill="rgba(191,160,101,.16)"/>';
+        g += '<polyline points="' + pts("views") + '" fill="none" stroke="#8f7340" stroke-width="2.6" stroke-linejoin="round"/>';
+        g += '<polyline points="' + pts("entries") + '" fill="none" stroke="#3b6a8f" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round"/>';
+        return '<svg class="chart" style="height:240px" viewBox="0 0 ' + W + " " + H + '" preserveAspectRatio="none">' + g + '</svg><div class="legend"><span><i style="background:#8f7340"></i>Páginas vistas</span><span><i style="background:repeating-linear-gradient(90deg,#3b6a8f 0 5px,transparent 5px 9px)"></i>Visitas (personas que entran en la web)</span></div>';
+    }
+    function renderVisits(isLive) {
+        var v = vData, t = v.total, nDays = v.series.length;
+        var pages = {}; Object.keys(t.pages).forEach(function (p) { var k = pageName(p); pages[k] = (pages[k] || 0) + t.pages[p]; });
+        var refs = {}; Object.keys(t.refs).forEach(function (r) { refs[refName(r)] = t.refs[r]; });
+        var hrs = []; for (var h = 0; h < 24; h++) hrs.push(t.hours[String(h).padStart(2, "0")] || 0);
+        var hmax = Math.max.apply(null, hrs.concat(1));
+        var feed = (v.now.recent || []).map(function (r) {
+            var id = r.ts + r.path, fresh = isLive && !seen[id]; seen[id] = 1;
+            return '<li' + (fresh ? ' class="fresh"' : "") + '><time>' + hm(r.ts) + '</time><div><span class="pg">' + esc(pageName(r.path)) + '</span><span class="meta">' + esc((DEVS[r.dev] || r.dev) + " · " + (LANGS[r.lang] || r.lang) + (r.entry ? " · llega desde " + refName(r.ref) : " · navegando por la web")) + "</span></div></li>";
+        }).join("");
+        var html = '<div class="bar"><b>Periodo:</b>' + [7, 30, 90, 365].map(function (d) {
+            return '<button class="chip state-f" data-vdays="' + d + '" aria-pressed="' + (d === vDays) + '">' + (d === 365 ? "1 año" : "Últimos " + d + " días") + "</button>";
+        }).join("") + '<span class="sp"></span><small>En directo · se actualiza cada 15 s · ' + new Date(v.generated).toLocaleTimeString("es-ES") + '</small><a class="btn" href="#exportar">⬇ Exportar</a></div>';
+        html += '<div class="vk"><div class="kpi now"><b><span class="live-dot"></span>' + v.now.active + "</b><span>Personas ahora mismo</span></div>" +
+            '<div class="kpi"><b>' + v.now.last30 + "</b><span>Páginas vistas · últimos 30 min</span></div>" +
+            '<div class="kpi"><b>' + v.today.entries + "</b><span>Visitas hoy</span><small>" + v.today.views + " páginas vistas</small></div>" +
+            '<div class="kpi"><b>' + t.entries + "</b><span>Visitas en el periodo</span><small>media " + Math.round(t.entries / nDays * 10) / 10 + " al día</small></div>" +
+            '<div class="kpi"><b>' + t.views + "</b><span>Páginas vistas en el periodo</span><small>" + (t.entries ? Math.round(t.views / t.entries * 10) / 10 : 0) + " por visita</small></div></div>";
+        html += '<div class="two" style="margin-top:0"><section class="card"><h2>Evolución diaria</h2><div class="sub">' + dmy(v.since) + " – " + dmy(v.day) + "</div>" + vChart(v.series) + "</section>" +
+            '<section class="card"><h2>Ahora mismo</h2><div class="sub">Últimas páginas abiertas hoy (hora de Barcelona)</div>' + (feed ? '<ul class="feed">' + feed + "</ul>" : '<p class="empty">Todavía no hay visitas hoy.</p>') + "</section></div>";
+        html += '<div class="two"><section class="card"><h2>Páginas más vistas</h2>' + hbars(pages, {}) + "</section>" +
+            '<section class="card"><h2>¿Desde dónde llegan?</h2><div class="sub">Web o aplicación desde la que se entra</div>' + hbars(refs, {}) + "</section></div>";
+        html += '<div class="two"><section class="card"><h2>Dispositivos</h2>' + hbars(t.devs, DEVS) + '</section><section class="card"><h2>Idioma de la web</h2>' + hbars(t.langs, LANGS) + "</section></div>";
+        html += '<section class="card wide"><h2>¿A qué hora se visita más?</h2><div class="sub">Páginas vistas por hora del día en el periodo</div><div class="hours">' +
+            hrs.map(function (n, i) { return '<i style="height:' + Math.max(1.5, n / hmax * 100) + '%" title="' + i + ":00 · " + n + '"></i>'; }).join("") + '</div><div class="hours-x">' +
+            hrs.map(function (n, i) { return "<span>" + (i % 3 === 0 ? i + "h" : "") + "</span>"; }).join("") + "</div></section>";
+        html += '<p class="help" style="margin-top:1.2rem"><b>Visita:</b> alguien entra en la web desde fuera (Google, Instagram, un enlace…). <b>Página vista:</b> cada página que se abre. ' +
+            "<b>Ahora mismo:</b> pestañas con la web abierta y a la vista en el último minuto. Las cifras son anónimas: sin cookies, sin IP y sin guardar nada en el navegador de quien visita. No se cuentan el panel ni los robots de los buscadores.</p>";
+        var y = window.scrollY;
+        app.innerHTML = html;
+        if (isLive) window.scrollTo(0, y);
+        app.querySelectorAll("[data-vdays]").forEach(function (b) { b.onclick = function () { vDays = +b.getAttribute("data-vdays"); showVisits(); }; });
+    }
+
+    /* ---------- exportar: PDF, Excel y CSV ---------- */
+    var LIBS = {
+        xlsx: ["https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js", "sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw"],
+        pdf: ["https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js", "sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk"],
+        table: ["https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js", "sha384-fCAW/rDWORTbQXSiB7mOg0QtQ5c+r0f544y6XoKjuVva0nMBlCpNUjiFeG5iMdS3"]
+    };
+    var loaded = {};
+    function lib(name) {
+        if (!loaded[name]) loaded[name] = new Promise(function (ok, ko) {
+            var s = document.createElement("script"); s.src = LIBS[name][0]; s.integrity = LIBS[name][1]; s.crossOrigin = "anonymous";
+            s.onload = ok; s.onerror = function () { delete loaded[name]; ko(new Error("no se pudo cargar la librería")); };
+            document.head.appendChild(s);
+        });
+        return loaded[name];
+    }
+    var xWhat = "todo", xDays = 30;
+    function sorted(obj, names) {
+        return Object.keys(obj).sort(function (a, b) { return obj[b] - obj[a]; }).map(function (k) { return [names ? (names[k] || k) : k, obj[k]]; });
+    }
+    function visitTables(v) {
+        var t = v.total, pages = {};
+        Object.keys(t.pages).forEach(function (p) { var k = pageName(p) + (pageName(p) !== p ? " (" + p + ")" : ""); pages[k] = (pages[k] || 0) + t.pages[p]; });
+        var top = sorted(pages)[0];
+        var hrs = []; for (var h = 0; h < 24; h++) hrs.push([String(h).padStart(2, "0") + ":00", t.hours[String(h).padStart(2, "0")] || 0]);
+        return [
+            { name: "Resumen de visitas", cols: ["Dato", "Valor"], rows: [["Periodo", dmy(v.since) + " - " + dmy(v.day)], ["Visitas (personas que entran en la web)", t.entries],
+                ["Páginas vistas", t.views], ["Media de visitas al día", Math.round(t.entries / v.series.length * 10) / 10], ["Páginas por visita", t.entries ? Math.round(t.views / t.entries * 10) / 10 : 0],
+                ["Página más vista", top ? top[0] + " (" + top[1] + ")" : "-"]] },
+            { name: "Visitas por día", cols: ["Fecha", "Visitas", "Páginas vistas"], rows: v.series.map(function (s) { return [dmy(s.day), s.entries, s.views]; }) },
+            { name: "Páginas más vistas", cols: ["Página", "Vistas"], rows: sorted(pages) },
+            { name: "Procedencia", cols: ["Desde", "Visitas"], rows: sorted(t.refs).map(function (r) { return [refName(r[0]), r[1]]; }) },
+            { name: "Dispositivos", cols: ["Dispositivo", "Páginas vistas"], rows: sorted(t.devs, { movil: "Móvil", tablet: "Tableta", ordenador: "Ordenador" }) },
+            { name: "Idiomas", cols: ["Idioma", "Páginas vistas"], rows: sorted(t.langs, LANGS) },
+            { name: "Visitas por hora", cols: ["Hora", "Páginas vistas"], rows: hrs }
+        ];
+    }
+    function formTables(m) {
+        var r = tally(m), daily = [], purp = [];
+        r.days.forEach(function (d) { Object.keys(FORMS).forEach(function (f) { var x = r.t[f].daily[d]; if (x.view || x.submit) daily.push([dmy(d), FORMS[f], x.view, x.submit]); }); });
+        Object.keys(FORMS).forEach(function (f) { sorted(r.t[f].purpose).forEach(function (p) { purp.push([FORMS[f], nice(p[0]), p[1]]); }); });
+        return [
+            { name: "Resumen de formularios", cols: ["Formulario", "Vistos", "Empezados", "Enviados", "Errores", "Conversión %"], rows: Object.keys(FORMS).map(function (f) {
+                var s = r.t[f]; return [FORMS[f], s.view, s.start, s.submit, s.error, s.view ? Math.round(s.submit / s.view * 1000) / 10 : 0]; }) },
+            { name: "Formularios por día", cols: ["Fecha", "Formulario", "Vistos", "Enviados"], rows: daily },
+            { name: "Envíos por motivo", cols: ["Formulario", "Motivo o curso", "Envíos"], rows: purp }
+        ];
+    }
+    function collect() {
+        var jobs = [];
+        if (xWhat !== "formularios") jobs.push(getVisits(xDays).then(visitTables));
+        if (xWhat !== "visitas") jobs.push(fetch("/api/form-stats?days=" + xDays + "&t=" + Date.now(), { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then(formTables));
+        return Promise.all(jobs).then(function (parts) { return [].concat.apply([], parts); });
+    }
+    function fileName(ext) { return "metricas-parroquia-" + xWhat + "-" + xDays + "dias-" + TODAY + "." + ext; }
+    function download(blob, name) { var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000); }
+    var EXPORTERS = {
+        csv: function (tables) {
+            var cell = function (c) { c = String(c == null ? "" : c); return /[;"\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c; };
+            var out = [];
+            tables.forEach(function (tb) { out.push(cell(tb.name)); out.push(tb.cols.map(cell).join(";")); tb.rows.forEach(function (r) { out.push(r.map(cell).join(";")); }); out.push(""); });
+            download(new Blob(["﻿" + out.join("\r\n")], { type: "text/csv;charset=utf-8" }), fileName("csv"));
+            return Promise.resolve();
+        },
+        xlsx: function (tables) {
+            return lib("xlsx").then(function () {
+                var wb = XLSX.utils.book_new(), used = {};
+                tables.forEach(function (tb) {
+                    var ws = XLSX.utils.aoa_to_sheet([tb.cols].concat(tb.rows));
+                    ws["!cols"] = tb.cols.map(function (c, i) { return { wch: Math.min(60, Math.max(String(c).length, ...tb.rows.map(function (r) { return String(r[i]).length; })) + 2) }; });
+                    var n = tb.name.slice(0, 31); while (used[n]) n = n.slice(0, 29) + "_" + (used[n]++); used[n] = 1;
+                    XLSX.utils.book_append_sheet(wb, ws, n);
+                });
+                XLSX.writeFile(wb, fileName("xlsx"));
+            });
+        },
+        pdf: function (tables) {
+            return lib("pdf").then(function () { return lib("table"); }).then(function () {
+                var doc = new window.jspdf.jsPDF({ unit: "pt", format: "a4" }), W = doc.internal.pageSize.getWidth();
+                doc.setFillColor(29, 26, 22); doc.rect(0, 0, W, 78, "F");
+                doc.setTextColor(240, 215, 154); doc.setFontSize(9); doc.text("PARROQUIA SANTA TERESA DE JESÚS · BARCELONA", 40, 30);
+                doc.setTextColor(255, 255, 255); doc.setFont("times", "italic"); doc.setFontSize(21);
+                doc.text({ todo: "Informe de visitas y formularios", visitas: "Informe de visitas de la web", formularios: "Informe de formularios" }[xWhat], 40, 57);
+                doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(120, 110, 95);
+                doc.text("Últimos " + xDays + " días · generado el " + new Date().toLocaleString("es-ES") + " · datos anónimos", 40, 98);
+                var y = 120;
+                tables.forEach(function (tb) {
+                    if (y > doc.internal.pageSize.getHeight() - 110) { doc.addPage(); y = 50; }
+                    doc.setFont("times", "italic"); doc.setFontSize(14); doc.setTextColor(29, 26, 22); doc.text(tb.name, 40, y);
+                    doc.autoTable({ startY: y + 8, head: [tb.cols], body: tb.rows.length ? tb.rows : [[ "Sin datos en este periodo" ].concat(tb.cols.slice(1).map(function () { return ""; }))],
+                        theme: "grid", margin: { left: 40, right: 40 }, styles: { font: "helvetica", fontSize: 8.5, cellPadding: 4, lineColor: [230, 218, 194], textColor: [40, 35, 30] },
+                        headStyles: { fillColor: [143, 115, 64], textColor: 255, fontStyle: "bold" }, alternateRowStyles: { fillColor: [250, 246, 238] } });
+                    y = doc.lastAutoTable.finalY + 30;
+                });
+                var pages = doc.internal.getNumberOfPages();
+                for (var i = 1; i <= pages; i++) { doc.setPage(i); doc.setFontSize(8); doc.setTextColor(150, 140, 120); doc.text("Página " + i + " de " + pages, W - 40, doc.internal.pageSize.getHeight() - 20, { align: "right" }); }
+                doc.save(fileName("pdf"));
+            });
+        }
+    };
+    function showExport() {
+        var opt = function (attr, val, cur, txt) { return '<button class="chip state-f" ' + attr + '="' + val + '" aria-pressed="' + (val === cur) + '">' + txt + "</button>"; };
+        var incl = { visitas: ["Resumen de visitas", "Visitas y páginas vistas por día", "Páginas más vistas", "Procedencia, dispositivos e idiomas", "Visitas por hora"],
+            formularios: ["Resumen de cada formulario (vistos, empezados, enviados, conversión)", "Evolución por día", "Envíos por motivo o curso escolar"] };
+        var list = (xWhat === "todo" ? incl.visitas.concat(incl.formularios) : incl[xWhat]);
+        app.innerHTML = '<div class="exp-grid"><section class="card"><h2>¿Qué quieres exportar?</h2><div class="sub">Elige los datos y el periodo; después, el formato.</div>' +
+            '<div class="opt-title">Datos</div><div class="opt">' + opt("data-xw", "todo", xWhat, "Todo") + opt("data-xw", "visitas", xWhat, "Visitas de la web") + opt("data-xw", "formularios", xWhat, "Formularios") + "</div>" +
+            '<div class="opt-title">Periodo</div><div class="opt">' + [7, 30, 90, 365].map(function (d) { return opt("data-xd", String(d), String(xDays), d === 365 ? "1 año" : "Últimos " + d + " días"); }).join("") + "</div>" +
+            '<div class="opt-title">Incluye</div><ul class="incl">' + list.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></section>" +
+            '<section class="card"><h2>Formato</h2><div class="sub">El archivo se descarga en este ordenador.</div><div class="fmt">' +
+            '<button class="pdf" data-fmt="pdf"><span class="ic">PDF</span><b>PDF</b><small>Informe listo para imprimir o enviar</small></button>' +
+            '<button class="xls" data-fmt="xlsx"><span class="ic">XLS</span><b>Excel</b><small>Una hoja por tabla, para hacer cálculos</small></button>' +
+            '<button class="csv" data-fmt="csv"><span class="ic">CSV</span><b>CSV</b><small>Texto separado por «;», para cualquier programa</small></button></div>' +
+            '<p class="note" id="xstatus"></p></section></div>';
+        app.querySelectorAll("[data-xw]").forEach(function (b) { b.onclick = function () { xWhat = b.getAttribute("data-xw"); showExport(); }; });
+        app.querySelectorAll("[data-xd]").forEach(function (b) { b.onclick = function () { xDays = +b.getAttribute("data-xd"); showExport(); }; });
+        app.querySelectorAll("[data-fmt]").forEach(function (b) {
+            b.onclick = function () {
+                var st = document.getElementById("xstatus"), all = app.querySelectorAll("[data-fmt]");
+                all.forEach(function (x) { x.disabled = true; }); st.textContent = "Preparando el archivo…";
+                collect().then(function (tables) { return EXPORTERS[b.getAttribute("data-fmt")](tables); })
+                    .then(function () { st.textContent = "✓ Descargado."; toast("✓ Archivo descargado"); })
+                    .catch(function (e) { st.textContent = ""; toast("No se pudo exportar: " + e.message, true); })
+                    .then(function () { all.forEach(function (x) { x.disabled = false; }); });
+            };
+        });
     }
 
     /* ---------- pestañas ---------- */
+    var TABS = { tareas: ["Tareas", showTasks], visitas: ["Visitas", showVisits], metricas: ["Formularios", showMetrics], exportar: ["Exportar", showExport] };
     function route() {
-        var tab = location.hash === "#metricas" ? "metricas" : "tareas";
+        var tab = location.hash.slice(1);
+        if (!TABS[tab]) tab = "tareas";
+        stopLive();
         document.querySelectorAll("nav.tabs a").forEach(function (a) { a.setAttribute("aria-current", a.getAttribute("data-tab") === tab ? "page" : "false"); });
-        document.title = (tab === "tareas" ? "Tareas" : "Métricas") + " · Dashboard · Parroquia Santa Teresa de Jesús";
-        if (tab === "tareas") showTasks(); else showMetrics();
+        document.title = TABS[tab][0] + " · Dashboard · Parroquia Santa Teresa de Jesús";
+        TABS[tab][1]();
     }
     window.addEventListener("hashchange", route);
     route();

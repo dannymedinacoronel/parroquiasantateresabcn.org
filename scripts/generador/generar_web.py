@@ -802,8 +802,20 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
             <div class="section-head" style="margin-bottom:0;">
                 <span class="subtitulo">Vida Parroquial</span>
                 <h2>Actualidad y Evangelio</h2>
-                <hr class="section-divider" style="margin-bottom:1.5rem;">
-                <a href="html/noticias.html" class="link-arrow">Noticias del Vaticano y del Arzobispado <span>&rarr;</span></a>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            <a class="family-entry family-entry-top" href="html/evangelio-familia.html">
+                <span class="family-entry-img" style="background-image:url('fotosdefinitivas/web/familia-parroquia.jpg')" aria-hidden="true"></span>
+                <span class="family-entry-body">
+                    <span class="subtitulo">Para leer en casa</span>
+                    <strong>El Evangelio para la familia</strong>
+                    <span class="family-entry-text">Cada día, el Evangelio explicado para los niños: texto, comentario, ilustración y juegos para leerlo juntos.</span>
+                    <span class="btn btn-solid">Leer en familia</span>
+                </span>
+            </a>
+            <div class="act-actions">
+                <a href="https://evangeli.net/evangelio" class="btn btn-solid" target="_blank" rel="noopener">Leer el Evangelio de hoy completo &rarr;</a>
+                <a href="html/noticias.html" class="btn">Noticias del Vaticano y del Arzobispado &rarr;</a>
             </div>
 
             <div class="grid-container">
@@ -818,8 +830,6 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
                     <div class="gospel-frame">
                         <iframe title="Evangelio de hoy" width="100%" height="680" frameborder="0" loading="lazy" src="https://evangeli.net/evangelio/widget/web"></iframe>
                     </div>
-                    <a href="https://evangeli.net/evangelio" class="btn gospel-more" target="_blank" rel="noopener">Leer el Evangelio completo &rarr;</a>
-                    <a href="html/evangelio-familia.html" class="link-arrow gospel-family">El Evangelio para la familia <span>&rarr;</span></a>
                 </div>
 
                 <div class="widget-container">
@@ -829,15 +839,6 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
                 </div>
             </div>
 
-            <a class="family-entry" href="html/evangelio-familia.html">
-                <span class="family-entry-img" style="background-image:url('fotosdefinitivas/web/familia-parroquia.jpg')" aria-hidden="true"></span>
-                <span class="family-entry-body">
-                    <span class="subtitulo">Para leer en casa</span>
-                    <strong>El Evangelio para la familia</strong>
-                    <span class="family-entry-text">Cada día, el Evangelio explicado para los niños: texto, comentario, ilustración y juegos para leerlo juntos.</span>
-                    <span class="btn btn-solid">Leer en familia</span>
-                </span>
-            </a>
         </section>
 
         <section class="visit">
@@ -1905,7 +1906,7 @@ PAGES["html/privacidad.html"] = page(1, "Política de privacidad", "Cómo trata 
 
                 <h3>4. Destinatarios</h3>
                 <p>No cedemos datos a terceros salvo obligación legal. Para prestar algunos servicios usamos proveedores que tratan datos por nuestra cuenta (encargados del tratamiento): Google (calendario y mapas), FormSubmit (envía por correo a la parroquia los formularios de contacto y de inscripción a la Primera Comunión; no instala cookies), Netlify (alojamiento de la web) y Tawk.to (chat). Algunos están en Estados Unidos; las transferencias se amparan en el Marco de Privacidad de Datos UE-EE. UU. cuando el proveedor está adherido o, en su defecto, en las cláusulas contractuales tipo aprobadas por la Comisión Europea.</p>
-                <p>Para saber cómo se usan los formularios, la web cuenta de forma anónima cuántas veces se ven, se empiezan a rellenar y se envían, y el motivo elegido. No se guardan nombres, correos, mensajes ni direcciones IP, y no se usan cookies.</p>
+                <p>Para saber cómo se usa la web, se cuenta de forma anónima qué páginas se visitan (con el idioma, el tipo de pantalla y la web desde la que se llega) y cuántas veces se ven, se empiezan a rellenar y se envían los formularios, con el motivo elegido. No se guardan nombres, correos, mensajes ni direcciones IP, no se usan cookies ni se guarda nada en tu navegador.</p>
 
                 <h3>5. Tus derechos</h3>
                 <p>Puedes ejercer en cualquier momento tus derechos de <strong>acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad</strong>, así como <strong>retirar tu consentimiento</strong>, escribiendo a <a href="mailto:""" + LEGAL["email"] + """">""" + LEGAL["email"] + """</a> o por correo postal a la dirección de la parroquia, indicando el derecho que ejerces.</p>

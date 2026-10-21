@@ -639,7 +639,7 @@ TR = {
 "no se ceden datos a terceros, salvo obligación legal; el envío por correo lo gestiona FormSubmit.": ("no se cedeixen dades a tercers, llevat d'obligació legal; l'enviament per correu el gestiona FormSubmit.", "data is not disclosed to third parties unless legally required; the email delivery is handled by FormSubmit."),
 "Formulario de inscripción": ("Formulari d'inscripció", "Registration form"),
 "Para inscribir a un niño o una niña en la catequesis de Primera Comunión": ("Per inscriure un nen o una nena a la catequesi de Primera Comunió", "To register a child for First Communion catechesis"),
-"Para saber cómo se usan los formularios, la web cuenta de forma anónima cuántas veces se ven, se empiezan a rellenar y se envían, y el motivo elegido. No se guardan nombres, correos, mensajes ni direcciones IP, y no se usan cookies.": ("Per saber com es fan servir els formularis, el web compta de manera anònima quantes vegades es veuen, es comencen a omplir i s'envien, i el motiu escollit. No es guarden noms, correus, missatges ni adreces IP, i no es fan servir galetes.", "To understand how the forms are used, the website anonymously counts how many times they are viewed, started and sent, and the reason chosen. No names, email addresses, messages or IP addresses are stored, and no cookies are used."),
+"Para saber cómo se usa la web, se cuenta de forma anónima qué páginas se visitan (con el idioma, el tipo de pantalla y la web desde la que se llega) y cuántas veces se ven, se empiezan a rellenar y se envían los formularios, con el motivo elegido. No se guardan nombres, correos, mensajes ni direcciones IP, no se usan cookies ni se guarda nada en tu navegador.": ("Per saber com s'utilitza el web, es compta de manera anònima quines pàgines es visiten (amb l'idioma, el tipus de pantalla i el web des del qual s'hi arriba) i quantes vegades es veuen, es comencen a omplir i s'envien els formularis, amb el motiu triat. No es desen noms, correus, missatges ni adreces IP, no s'utilitzen galetes ni es desa res al teu navegador.", "To understand how the website is used, we anonymously count which pages are visited (with the language, type of screen and the website people arrive from) and how many times the forms are seen, started and sent, with the reason chosen. No names, emails, messages or IP addresses are stored, no cookies are used and nothing is saved in your browser."),
 # --- Primera Comunión ---
 "Primera Comunión": ("Primera Comunió", "First Communion"),
 "Primera Comunión | Parroquia Santa Teresa de Jesús": ("Primera Comunió | Parròquia Santa Teresa de Jesús", "First Communion | Parish of Saint Teresa of Jesus"),
@@ -773,6 +773,8 @@ TR = {
 "Vatican News (Santa Sede) / Arzobispado de Barcelona": ("Vatican News (Santa Seu) / Arquebisbat de Barcelona", "Vatican News (Holy See) / Archdiocese of Barcelona"),
 "Mostrar las fotos de las noticias.": ("Mostrar les fotos de les notícies.", "Shows the news photos."),
 "Consulta nuestra": ("Consulta la nostra", "See our"),
+"Leer el Evangelio de hoy completo &rarr;": ("Llegir l'Evangeli d'avui complet &rarr;", "Read today's full Gospel &rarr;"),
+"Noticias del Vaticano y del Arzobispado &rarr;": ("Notícies del Vaticà i de l'Arquebisbat &rarr;", "News from the Vatican and the Archdiocese &rarr;"),
 # formularios con botones y enlaces con el motivo ya elegido
 "¿En qué te podemos ayudar? *": ("En què et podem ajudar? *", "How can we help you? *"),
 "Aniversario de boda": ("Aniversari de casament", "Wedding anniversary"),
