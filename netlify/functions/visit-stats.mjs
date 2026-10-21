@@ -109,7 +109,8 @@ export async function stats(store, days, now = new Date()) {
 
 export default async (req) => {
     const url = new URL(req.url);
-    const store = getStore(STORE);
+    // lectura «fuerte»: siempre lo último que ha llegado, sin el retraso de hasta 1 min de la caché
+    const store = getStore({ name: STORE, consistency: "strong" });
     const headers = { "Cache-Control": "no-store", "Access-Control-Allow-Origin": "*" };
     if (url.searchParams.get("live") === "1") return Response.json(Object.assign({ generated: new Date().toISOString() }, await live(store)), { headers });
     const days = Math.min(400, Math.max(1, parseInt(url.searchParams.get("days") || "30", 10) || 30));
