@@ -302,7 +302,7 @@ __LANGSWITCH__    </header>
                 <ul class="footer-links">
                     <li><a href="{href('html/contacto.html', depth)}">Contactar</a></li>
                     <li><a href="tel:{TEL}">Llamar: {TEL_TXT}</a></li>
-                    <li><a href="https://www.instagram.com/parroquiasantateresadejesusbcn/" target="_blank" rel="noopener">Instagram</a></li>
+                    <li><a href="https://www.instagram.com/p.santateresadejesusbcn/" target="_blank" rel="noopener">Instagram</a></li>
                 </ul>
             </div>
         </div>
@@ -458,7 +458,7 @@ MOMENTOS = [
 
 # Vista de Instagram propia: fotos de la parroquia en cuadrícula, cada una lleva al perfil.
 # (Antes era un widget de Elfsight; su plan gratuito se queda sin visitas cada mes y el recuadro salía vacío.)
-IG_URL = "https://www.instagram.com/parroquiasantateresadejesusbcn/"
+IG_URL = "https://www.instagram.com/p.santateresadejesusbcn/"
 ICON_IG = ('<svg class="ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">'
            '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>')
 IG_PHOTOS = [
@@ -485,7 +485,7 @@ def ig_grid(depth):
 def ig_profile(depth, cls=""):
     return f'''<div class="ig-phone-top {cls}">
                         <img src="{"../" * depth}fotosdefinitivas/web/santateresa-retrato.jpg" alt="" loading="lazy">
-                        <div><strong>parroquiasantateresadejesusbcn</strong><span>Parroquia Santa Teresa de Jesús · Barcelona</span></div>
+                        <div><strong>p.santateresadejesusbcn</strong><span>Parroquia Santa Teresa de Jesús · Barcelona</span></div>
                         <a href="{IG_URL}" target="_blank" rel="noopener">Seguir</a>
                     </div>'''
 
@@ -870,7 +870,7 @@ INDEX_HEAD = """    <link rel="preload" as="image" href="fotosdefinitivas/web/po
         "addressLocality": "Barcelona",
         "addressCountry": "ES"
       },
-      "sameAs": ["https://www.instagram.com/parroquiasantateresadejesusbcn/"]
+      "sameAs": ["https://www.instagram.com/p.santateresadejesusbcn/"]
     }
     </script>
 """
@@ -1186,7 +1186,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
                 </div>
 
                 <div class="widget-container">
-                    <h3>@parroquiasantateresadejesusbcn</h3>
+                    <h3>@p.santateresadejesusbcn</h3>
                     <div class="ig-card">
                     """ + ig_profile(0, "flat") + """
                     """ + ig_grid(0) + """
@@ -1556,7 +1556,7 @@ PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia San
                         <li>""" + ICON_CLOCK + """<div><strong>Despacho parroquial</strong><span>Viernes por la tarde, y antes o después de cada misa</span></div></li>
                         <li>""" + ICON_PIN + """<div><strong>Carrer del Llobregós, 132</strong><span>08032 Barcelona · El Carmel · <a href="#mapa">ver el mapa ↓</a></span></div></li>
                         <li>""" + SAC_ICONS["mail"].replace('<svg ', '<svg class="icon" ') + """<div><strong>Correo electrónico</strong><span><a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a></span></div></li>
-                        <li>""" + SAC_ICONS["insta"].replace('<svg ', '<svg class="icon" ') + """<div><strong>Instagram</strong><span><a href="https://www.instagram.com/parroquiasantateresadejesusbcn/" target="_blank" rel="noopener">@parroquiasantateresadejesusbcn</a></span></div></li>
+                        <li>""" + SAC_ICONS["insta"].replace('<svg ', '<svg class="icon" ') + """<div><strong>Instagram</strong><span><a href="https://www.instagram.com/p.santateresadejesusbcn/" target="_blank" rel="noopener">@p.santateresadejesusbcn</a></span></div></li>
                     </ul>
                 </aside>
             </div>
@@ -2031,7 +2031,7 @@ PAGES["html/jovenes2alternativa.html"] = page(1, "Jóvenes", "Grupo de jóvenes 
                 <p class="lead" style="text-align:center;">¿Quieres formar parte de nuestro club? ¿Todavía lo estás pensando?</p>
                 <div class="btn-group center">
                     <a href="contacto.html?motivo=Grupo%20de%20jóvenes#escribenos" class="btn btn-solid">Quiero apuntarme</a>
-                    <a href="https://www.instagram.com/parroquiasantateresadejesusbcn/" class="btn" target="_blank" rel="noopener">Síguenos en Instagram</a>
+                    <a href="https://www.instagram.com/p.santateresadejesusbcn/" class="btn" target="_blank" rel="noopener">Síguenos en Instagram</a>
                 </div>
             </div>
         </section>
@@ -2058,7 +2058,7 @@ PAGES["html/noticias.html"] = page(1, "Noticias", "Noticias de la Parroquia Sant
                         <li>Fotos de las celebraciones y fiestas</li>
                         <li>Actividades de catequesis, jóvenes y Cáritas</li>
                     </ul>
-                    <a class="ig-handle" href="{IG_URL}" target="_blank" rel="noopener">{ICON_IG}<span>@parroquiasantateresadejesusbcn</span></a>
+                    <a class="ig-handle" href="{IG_URL}" target="_blank" rel="noopener">{ICON_IG}<span>@p.santateresadejesusbcn</span></a>
                     <div class="btn-group">
                         <a class="btn btn-solid" href="{IG_URL}" target="_blank" rel="noopener">Seguir en Instagram</a>
                         <a class="btn" href="#actualidad-iglesia">Noticias de la Iglesia</a>
@@ -2067,7 +2067,7 @@ PAGES["html/noticias.html"] = page(1, "Noticias", "Noticias de la Parroquia Sant
                 <div class="ig-phone" aria-label="Vista previa de nuestro Instagram">
                     <div class="ig-phone-top">
                         <img src="../fotosdefinitivas/web/santateresa-retrato.jpg" alt="" loading="lazy">
-                        <div><strong>parroquiasantateresadejesusbcn</strong><span>Parroquia Santa Teresa de Jesús · Barcelona</span></div>
+                        <div><strong>p.santateresadejesusbcn</strong><span>Parroquia Santa Teresa de Jesús · Barcelona</span></div>
                         <a href="{IG_URL}" target="_blank" rel="noopener">Seguir</a>
                     </div>
                     <div class="ig-phone-feed">
@@ -2562,16 +2562,18 @@ for rel, base in PAGES.items():
             fh.write(html)
         written.append((lang, rel))
 
-# ---------- revista: borrar las páginas de números o artículos que ya no están publicados ----------
-_rev_keep = {out_path(l, r) for l, r in written}
-for _lang in LANGS:
-    _dir = os.path.join(ROOT, out_path(_lang, "html/revista"))
-    if os.path.isdir(_dir):
-        for _f in os.listdir(_dir):
-            _rel = out_path(_lang, "html/revista/" + _f)
-            if _f.endswith(".html") and _rel not in _rev_keep:
-                os.remove(os.path.join(_dir, _f))
-                print("Revista: página retirada", _rel)
+# ---------- borrar las páginas de reflexiones, números o artículos que ya no están publicados ----------
+# (las carpetas html/reflexiones y html/revista solo contienen páginas generadas desde el panel)
+_keep = {out_path(l, r) for l, r in written}
+for _sub in ("html/reflexiones", "html/revista"):
+    for _lang in LANGS:
+        _dir = os.path.join(ROOT, out_path(_lang, _sub))
+        if os.path.isdir(_dir):
+            for _f in os.listdir(_dir):
+                _rel = out_path(_lang, _sub + "/" + _f)
+                if _f.endswith(".html") and _rel not in _keep:
+                    os.remove(os.path.join(_dir, _f))
+                    print("Página retirada (ya no está publicada):", _rel)
 
 # ---------- sitemap.xml y robots.txt ----------
 today = date.today().isoformat()

@@ -739,7 +739,7 @@ TR = {
 "Vista previa de nuestro Instagram": ("Vista prèvia del nostre Instagram", "Preview of our Instagram"),
 "Seguir": ("Segueix", "Follow"),
 "Parroquia Santa Teresa de Jesús · Barcelona": ("Parròquia Santa Teresa de Jesús · Barcelona", "Parish of Saint Teresa of Jesus · Barcelona"),
-"parroquiasantateresadejesusbcn": SAME,
+"p.santateresadejesusbcn": SAME,
 "Todas las reflexiones": ("Totes les reflexions", "All reflections"),
 "Ver todas las reflexiones": ("Veure totes les reflexions", "See all reflections"),
 "Reflexiones del Evangelio": ("Reflexions de l'Evangeli", "Gospel reflections"),

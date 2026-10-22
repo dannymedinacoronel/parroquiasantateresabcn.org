@@ -2642,3 +2642,50 @@ a.revista-cover { display: block; color: inherit; }
 .rv-next-img { flex-shrink: 0; width: 84px; height: 84px; border-radius: 50%; overflow: hidden; border: 2px solid var(--accent-color); padding: 2px; display: grid; place-items: center; background: #fbf5e8; }
 .rv-next-img img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 0; padding: 0; }
 .rv-next-img .logo-mark { width: 26px; height: 34px; }
+
+/* ==========================================================================
+   VISÍTANOS en blanco (antes beige dorado)
+   ========================================================================== */
+.visit { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.visit-img img { box-shadow: 0 0 0 6px var(--white), 0 0 0 7px rgba(191,160,101,0.45), 0 26px 50px rgba(60,40,10,0.18); }
+
+/* ==========================================================================
+   REVISTA DIGITAL: sección granate con oro, distinta del resto y en el mismo estilo
+   (la cabecera de cada número, .rv-issue-intro, se queda clara)
+   ========================================================================== */
+.revista:not(.rv-issue-intro) {
+    position: relative; overflow: hidden; isolation: isolate; color: #eadfca;
+    background:
+        radial-gradient(ellipse at 22% 35%, rgba(191,160,101,.22), transparent 55%),
+        radial-gradient(ellipse at 90% 110%, rgba(191,160,101,.14), transparent 50%),
+        linear-gradient(135deg, #3d1619 0%, #2a1012 55%, #1d0c0c 100%);
+}
+/* marco dorado fino */
+.revista:not(.rv-issue-intro)::after {
+    content: ""; position: absolute; inset: clamp(10px, 1.6vw, 22px); z-index: -1; pointer-events: none;
+    border: 1px solid rgba(230,211,168,.22); border-radius: 2px;
+}
+/* la palabra «Revista» grabada al fondo */
+.revista:not(.rv-issue-intro)::before {
+    content: "Revista"; position: absolute; z-index: -1; right: -0.04em; bottom: -0.22em; pointer-events: none;
+    font-family: var(--header-font); font-style: italic; font-weight: 500; line-height: 1;
+    font-size: clamp(7rem, 21vw, 19rem); color: transparent; -webkit-text-stroke: 1px rgba(230,211,168,.13);
+    white-space: nowrap;
+}
+html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
+.revista:not(.rv-issue-intro) .subtitulo { color: var(--accent-light); }
+.revista:not(.rv-issue-intro) h2 { color: #fff8ea; }
+.revista:not(.rv-issue-intro) .lead { color: #eadfca; }
+.revista:not(.rv-issue-intro) .revista-cover {
+    box-shadow: 0 40px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(230,211,168,.2), 0 0 70px rgba(191,160,101,.16);
+}
+.revista:not(.rv-issue-intro) .btn:not(.btn-solid) { color: #f3e6c8; border-color: rgba(230,211,168,.55); }
+.revista:not(.rv-issue-intro) .btn:not(.btn-solid):hover { background: var(--accent-color); border-color: var(--accent-color); color: #1b1610; }
+.revista:not(.rv-issue-intro) .btn-solid { color: #1b1610; background: linear-gradient(120deg, #c9ab6b, #e6d3a8); border-color: #d9c08a; }
+.revista:not(.rv-issue-intro) .btn-solid:hover { background: #f0dfb6; color: #1b1610; }
+.revista:not(.rv-issue-intro) .btn.is-soon { opacity: .85; }
+.revista:not(.rv-issue-intro) .revista-toc-title { color: var(--accent-light); }
+.revista:not(.rv-issue-intro) .revista-toc, .revista:not(.rv-issue-intro) .revista-toc li { border-color: rgba(230,211,168,.2); }
+.revista:not(.rv-issue-intro) .revista-toc a { color: #fff3dc; }
+.revista:not(.rv-issue-intro) .revista-toc a:hover { color: var(--accent-light); }
+@media (max-width: 860px) { .revista:not(.rv-issue-intro)::before { bottom: auto; top: 38%; right: 50%; transform: translateX(50%); } }

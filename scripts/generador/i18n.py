@@ -26,7 +26,7 @@ def _restore(html, blocks):
 def _is_text(s):
     if re.fullmatch(r"(&\w+;\s*)+|__[A-Z_]+__", s):   # entidades (&copy;, &rarr;) y marcadores internos
         return False
-    return bool(re.search(r"[A-Za-zÁÉÍÓÚáéíóúÑñÜü]", s)) and not s.startswith(("http", "@parroquia"))
+    return bool(re.search(r"[A-Za-zÁÉÍÓÚáéíóúÑñÜü]", s)) and not s.startswith(("http", "@"))
 
 
 def extract(html, rel):
