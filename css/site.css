@@ -2584,3 +2584,61 @@ main > section:not(.hero):not(:first-child), .site-footer, body > footer { conte
     .revista .btn-group { justify-content: center; }
 }
 @media (prefers-reduced-motion: reduce) { .revista-cover { transform: none; transition: none; } }
+
+/* ==========================================================================
+   REVISTA DIGITAL: página general, números y artículos
+   ========================================================================== */
+a.revista-cover { display: block; color: inherit; }
+.revista-cover.is-complete::after, .revista-cover.is-complete::before { display: none; }
+.revista-toc-title { margin: 1.4rem 0 .5rem; font-size: .72rem; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent-dark); }
+.revista-toc { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(191,160,101,.35); }
+.revista-toc li { margin: 0; padding: 0; border-bottom: 1px solid rgba(191,160,101,.35); }
+.revista-toc li::before { content: none; }
+.revista-toc a { display: flex; align-items: baseline; gap: .7rem; padding: .6rem 0; font-family: var(--header-font); font-size: 1.25rem; font-style: italic; color: var(--heading-color); text-decoration: none; }
+.revista-toc a::after { content: "→"; margin-left: auto; font-family: var(--body-font); font-style: normal; font-size: .9rem; color: var(--accent-color); transition: transform .2s; }
+.revista-toc a:hover::after { transform: translateX(4px); }
+@media (max-width: 860px) { .revista-toc { text-align: left; } }
+
+/* archivo de números */
+.rv-issues { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 240px)); justify-content: center; gap: 2rem 1.5rem; max-width: 1080px; margin: 0 auto; }
+.rv-issue { display: grid; gap: .35rem; text-decoration: none; color: inherit; text-align: center; }
+.rv-issue-cover { position: relative; display: block; aspect-ratio: 210 / 297; overflow: hidden; border-radius: 3px 8px 8px 3px; background: #1d1a16; box-shadow: 0 18px 36px rgba(40,25,5,.22); margin-bottom: .7rem; transition: transform .35s var(--ease), box-shadow .35s; }
+.rv-issue-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rv-issue-cover:not(.is-complete)::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,14,8,.45), transparent 40%); }
+.rv-issue:hover .rv-issue-cover { transform: translateY(-5px); box-shadow: 0 26px 46px rgba(40,25,5,.28); }
+.rv-issue-num { font-size: .7rem; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent-dark); }
+.rv-issue strong { font-family: var(--header-font); font-style: italic; font-weight: 500; font-size: 1.45rem; line-height: 1.2; color: var(--heading-color); }
+.rv-issue-date { font-size: .82rem; color: var(--muted); }
+
+/* página de un número */
+.rv-issue-intro { padding-top: clamp(3rem, 6vw, 5rem); }
+.rv-presentacion { margin: 0; max-width: none; }
+.rv-presentacion p { text-align: left; }
+@media (max-width: 860px) { .rv-presentacion p { text-align: center; } }
+.rv-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.6rem; max-width: 1140px; margin: 0 auto; }
+.rv-card { display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius); background: var(--white); box-shadow: var(--shadow-sm); text-decoration: none; color: inherit; transition: transform .3s var(--ease), box-shadow .3s; }
+.rv-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+.rv-card-img { position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; background: linear-gradient(135deg, #f3e8d2, #e6d4ad); }
+.rv-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s var(--ease); }
+.rv-card:hover .rv-card-img img { transform: scale(1.04); }
+.rv-card-img.is-empty { aspect-ratio: auto; height: 74px; }
+.rv-card-mark { position: absolute; inset: 0; display: grid; place-items: center; }
+.rv-card-img.is-empty .logo-mark { width: 22px; height: 30px; }
+.rv-card-mark .logo-mark { width: 34px; height: 46px; color: rgba(143,115,64,.55); }
+.rv-card-body { display: flex; flex-direction: column; gap: .45rem; padding: 1.3rem 1.4rem 1.5rem; flex: 1; }
+.rv-card-body .book-kicker { margin: 0; }
+.rv-card-body strong { font-family: var(--header-font); font-style: italic; font-weight: 500; font-size: 1.55rem; line-height: 1.15; color: var(--heading-color); }
+.rv-card-text { font-size: .92rem; line-height: 1.6; color: var(--text-color); }
+.rv-card-author { margin-top: auto; padding-top: .5rem; font-size: .8rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-dark); }
+
+/* página de un artículo */
+.rv-back { display: inline-flex; align-items: center; gap: .5rem; margin-bottom: 1.5rem; font-size: .78rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-dark); text-decoration: none; }
+.rv-back:hover { color: var(--heading-color); }
+.rv-issue-tag { font-size: .72rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.prose.rv-article p.rv-lead { margin: 0 0 1.5rem; font-family: var(--body-font); font-size: 1.12rem; line-height: 1.75; font-style: italic; color: var(--heading-color); }
+.rv-figure { margin: 1.8rem 0 2rem; }
+.rv-figure img { width: 100%; height: auto; max-height: min(70vh, 560px); object-fit: cover; border-radius: var(--radius); display: block; box-shadow: var(--shadow-sm); }
+.rv-figure figcaption { margin-top: .6rem; font-size: .85rem; color: var(--muted); text-align: center; font-style: italic; }
+.rv-next-img { flex-shrink: 0; width: 84px; height: 84px; border-radius: 50%; overflow: hidden; border: 2px solid var(--accent-color); padding: 2px; display: grid; place-items: center; background: #fbf5e8; }
+.rv-next-img img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 0; padding: 0; }
+.rv-next-img .logo-mark { width: 26px; height: 34px; }

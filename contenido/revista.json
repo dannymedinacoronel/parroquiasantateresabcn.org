@@ -1,16 +1,13 @@
 {
-  "enlace": "",
   "mostrar": true,
+  "titulo": "Revista digital de la Parroquia",
   "texto": "Estamos preparando la revista de nuestra parroquia, con la vida de la comunidad, las celebraciones y la voz de sus grupos. Muy pronto podrás leerla aquí.",
+  "numero": "Número 1",
+  "portada": "",
   "traducciones": {
     "titulo_ca": "Revista digital de la Parròquia",
     "texto_ca": "Estem preparant la revista de la nostra parròquia, amb la vida de la comunitat, les celebracions i la veu dels seus grups. Ben aviat la podràs llegir aquí.",
     "titulo_en": "The Parish digital magazine",
     "texto_en": "We are preparing our parish magazine, with the life of the community, our celebrations and the voice of our groups. You will soon be able to read it here."
-  },
-  "estado": "proximamente",
-  "pdf": "",
-  "titulo": "Revista digital de la Parroquia",
-  "numero": "Número 1",
-  "portada": ""
+  }
 }

@@ -126,14 +126,177 @@ collections:
         default: true
         hint: "Desactívalo para guardarla como borrador sin que aparezca en la web."
 
-  # Revista digital: el módulo de la portada. Mientras se prepara, «Próximamente»; cuando
-  # esté lista, se sube el PDF (o se pega el enlace) y se cambia el estado a «Ya disponible».
+  # ---------------------------------------------------------------------------
+  # REVISTA DIGITAL
+  # Cada número es una entrada; cada artículo, otra (así varias personas pueden escribir a la
+  # vez sin pisarse). Un número no sale en la web hasta que se marca «Publicado».
+  # Páginas que se generan: html/revista.html, html/revista/<número>.html y una por artículo.
+  # ---------------------------------------------------------------------------
+  - name: revista_numeros
+    label: "Revista · Números"
+    label_singular: "número de la revista"
+    description: >
+      Cada número de la revista: portada, presentación y, si la revista también está en PDF, el archivo.
+      Mientras no actives «Publicado» es un borrador y no se ve en la web. Los artículos se escriben
+      en «Revista · Artículos»; desde la vista previa de un número puedes añadirle artículos.
+    folder: contenido/revista/numeros
+    extension: json
+    format: json
+    create: true
+    delete: true
+    slug: "{{numero}}-{{titulo}}"
+    identifier_field: titulo
+    summary: "Nº {{numero}} · {{titulo}} ({{publicado | ternary('publicado', 'borrador')}})"
+    preview_path: "html/revista/{{slug}}.html"
+    sortable_fields: ["numero", "fecha", "titulo"]
+    media_folder: /fotosdefinitivas/web/revista
+    public_folder: /fotosdefinitivas/web/revista
+    view_filters:
+      - { label: "Publicados", field: publicado, pattern: true }
+      - { label: "Borradores", field: publicado, pattern: false }
+    fields:
+      - label: Número
+        name: numero
+        widget: number
+        value_type: int
+        min: 1
+        hint: "1 para el primero, 2 para el segundo… Sale en la portada como «Número 1»."
+      - label: Título
+        name: titulo
+        widget: string
+        hint: "Ej.: «Adviento 2026» o «Fiesta de Santa Teresa»."
+      - label: Fecha de publicación
+        name: fecha
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "DD/MM/YYYY"
+        time_format: false
+        picker_utc: true
+        default: "{{now}}"
+        hint: "El número con la fecha más reciente es el que sale en la portada de la web."
+      - label: Portada
+        name: portada
+        widget: image
+        required: false
+        hint: "Mejor en vertical. Si no pones ninguna, se usa una foto de la parroquia."
+      - label: La imagen ya es la portada completa (con su título)
+        name: portada_completa
+        widget: boolean
+        default: false
+        required: false
+        hint: "Actívalo si subes la portada ya diseñada (por ejemplo, hecha en Canva). Si está desactivado, la web le pone encima «Santa Teresa» y el número."
+      - label: Presentación
+        name: presentacion
+        widget: markdown
+        buttons: ["bold", "italic", "heading-three", "quote", "bulleted-list"]
+        editor_components: []
+        modes: ["rich_text", "raw"]
+        required: false
+        hint: "Unas líneas de bienvenida al número. El primer párrafo sale también en la portada de la web."
+      - label: Revista en PDF
+        name: pdf
+        widget: file
+        required: false
+        hint: "Solo si la revista también está maquetada en PDF. Procura que no pase de 15 MB para que cargue bien en el móvil."
+      - label: Enlace a la revista
+        name: enlace
+        widget: string
+        required: false
+        hint: "Si la revista está en Issuu, Calameo, Canva u otra web, pega aquí su dirección (empieza por https://)."
+      - label: Publicado
+        name: publicado
+        widget: boolean
+        default: false
+        hint: "Actívalo cuando el número esté listo: entonces sale en la web con todos sus artículos terminados."
+
+  - name: revista_articulos
+    label: "Revista · Artículos"
+    label_singular: "artículo de la revista"
+    description: >
+      Cada artículo de la revista. Elige a qué número pertenece y escríbelo; saldrá en la web en
+      cuanto ese número esté publicado. El orden decide en qué posición aparece en el índice.
+    folder: contenido/revista/articulos
+    extension: json
+    format: json
+    create: true
+    delete: true
+    slug: "{{titulo}}"
+    identifier_field: titulo
+    summary: "{{titulo}} — {{autor}}"
+    preview_path: "html/revista/{{numero}}--{{slug}}.html"
+    sortable_fields: ["numero", "orden", "titulo"]
+    view_groups:
+      - { label: "Número", field: numero }
+    media_folder: /fotosdefinitivas/web/revista
+    public_folder: /fotosdefinitivas/web/revista
+    fields:
+      - label: Número de la revista
+        name: numero
+        widget: relation
+        collection: revista_numeros
+        value_field: "{{slug}}"
+        search_fields: ["titulo", "numero"]
+        display_fields: ["titulo"]
+        hint: "Si el número aún no existe, créalo antes en «Revista · Números» (puede quedarse como borrador)."
+      - label: Sección
+        name: seccion
+        widget: select
+        required: false
+        options: ["Editorial", "Vida parroquial", "Entrevista", "Liturgia", "Catequesis", "Jóvenes", "Cáritas", "Testimonio", "Historia", "Opinión", "Agenda"]
+        hint: "Sale encima del título."
+      - label: Título
+        name: titulo
+        widget: string
+      - label: Firma
+        name: autor
+        widget: string
+        required: false
+        hint: "Quién lo escribe. Ej.: «Mn. Albert Sols», «Magdalena» o «Grupo de jóvenes»."
+      - label: Entradilla
+        name: entradilla
+        widget: text
+        required: false
+        hint: "Una o dos frases que resumen el artículo. Salen en el índice del número y al compartir el enlace."
+      - label: Foto
+        name: foto
+        widget: image
+        required: false
+        hint: "Si sale gente reconocible, asegúrate de tener su permiso (y el de los padres si son menores)."
+      - label: Pie de foto
+        name: pie
+        widget: string
+        required: false
+      - label: Texto
+        name: texto
+        widget: markdown
+        buttons: ["bold", "italic", "heading-three", "quote", "bulleted-list"]
+        editor_components: []
+        modes: ["rich_text", "raw"]
+        hint: >
+          Separa los párrafos con una línea en blanco. Usa «Subtítulo» (H3) para los apartados y
+          «Cita» para destacar una frase en grande.
+      - label: Orden en el número
+        name: orden
+        widget: number
+        value_type: int
+        min: 1
+        default: 10
+        required: false
+        hint: "Los artículos se ordenan de menor a mayor: el 1 sale el primero (por ejemplo, la editorial)."
+      - label: Listo para publicar
+        name: publicado
+        widget: boolean
+        default: true
+        hint: "Desactívalo si aún no está terminado: no saldrá en la web aunque su número esté publicado."
+
+  # Recuadro de la revista en la portada mientras no haya ningún número publicado («Próximamente»).
+  # En cuanto se publica un número, la portada muestra ese número automáticamente.
   - name: revista
-    label: Revista digital
-    description: "El recuadro de la revista en la portada de la web. Cambia el texto, la portada o el estado y pulsa «Publicar»: en unos minutos se ve en la web."
+    label: "Revista · Recuadro de la portada"
+    description: "Lo que se ve en la portada de la web mientras aún no hay ningún número publicado. En cuanto publiques uno, la portada mostrará ese número automáticamente."
     files:
       - name: revista
-        label: Revista digital (portada de la web)
+        label: Recuadro «Próximamente» de la portada
         file: contenido/revista.json
         format: json
         fields:
@@ -141,15 +304,7 @@ collections:
             name: mostrar
             widget: boolean
             default: true
-            hint: "Desactívalo para ocultar el recuadro de la revista (y su enlace en el menú)."
-          - label: Estado
-            name: estado
-            widget: select
-            default: proximamente
-            options:
-              - { label: "Próximamente (aún no se puede leer)", value: proximamente }
-              - { label: "Ya disponible (se puede leer)", value: disponible }
-            hint: "Para «Ya disponible» hace falta subir el PDF o poner un enlace más abajo."
+            hint: "Desactívalo para ocultar el recuadro mientras no haya números publicados."
           - { label: Título, name: titulo, widget: string, default: "Revista digital de la Parroquia" }
           - label: Texto
             name: texto
@@ -167,18 +322,6 @@ collections:
             media_folder: /fotosdefinitivas/web/revista
             public_folder: /fotosdefinitivas/web/revista
             hint: "Mejor en vertical (como una revista). Si no pones ninguna, se usa una foto de la parroquia."
-          - label: Revista en PDF
-            name: pdf
-            widget: file
-            required: false
-            media_folder: /fotosdefinitivas/web/revista
-            public_folder: /fotosdefinitivas/web/revista
-            hint: "Sube aquí el PDF del número. Procura que no pase de 15 MB para que cargue bien en el móvil."
-          - label: Enlace a la revista
-            name: enlace
-            widget: string
-            required: false
-            hint: "Si la revista está en Issuu, Calameo, Canva u otra web, pega aquí su dirección (empieza por https://)."
           - label: Traducciones al catalán y al inglés
             name: traducciones
             widget: object

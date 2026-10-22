@@ -506,6 +506,8 @@
             ".pv{font-size:16px}",
             ".pv-label{position:sticky;top:0;z-index:3000;display:flex;align-items:center;gap:.6rem;padding:.7rem 1.2rem;background:#1b1610;color:#f0d79a;font:600 .72rem/1.2 Montserrat,sans-serif;letter-spacing:2.5px;text-transform:uppercase}",
             ".pv-label i{width:8px;height:8px;border-radius:50%;background:#bfa065;display:inline-block}",
+            ".pv-add{margin-left:auto;margin-right:56px;padding:.35rem .8rem;border-radius:20px;background:#bfa065;color:#1b1610!important;text-decoration:none;letter-spacing:1px;pointer-events:auto}",
+            ".pv-add.is-off{background:none;color:#bba67a!important;text-transform:none;letter-spacing:.3px;font-weight:400}",
             ".pv-label small{margin-left:auto;margin-right:56px;font-weight:400;letter-spacing:.5px;text-transform:none;color:#bba67a}",
             ".pv-page{position:relative;background:#fbf9f6;overflow:hidden}",
             ".pv-page header{position:relative!important;z-index:5}",
@@ -882,47 +884,103 @@
         CMS.registerPreviewTemplate("tareas", TasksPreview);
 
         /* ------------------------------------------------------------------
-           Vista previa de la revista digital: el recuadro tal cual saldrá en
-           la portada (mismo HTML que genera la web y sus estilos reales)
+           Vista previa de la revista digital: el mismo HTML que genera la web
+           (scripts/generador → revista) con sus estilos reales
            ------------------------------------------------------------------ */
-        var CROSS = '<svg class="logo-mark" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.3"/></svg>';
+        var CROSS_SVG = '<svg class="logo-mark" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.3"/></svg>';
+        var REV_COVER = "/fotosdefinitivas/web/dsc_0546.jpg";
+        function revData(props) {
+            var d = props.entry.get("data");
+            var get = function (k) { var v = d && d.get(k); return v == null ? "" : String(v); };
+            var asset = function (k) { var v = get(k); if (!v) return ""; var a = props.getAsset(v); return a ? a.toString() : v; };
+            return { get: get, asset: asset };
+        }
+        /* portada de revista dibujada (o la imagen tal cual si ya es la portada completa) */
+        function revCover(img, label, ribbon, complete) {
+            var inner = complete && img ? [h("img", { key: "i", src: img, alt: "" })] : [
+                h("img", { key: "i", src: img || REV_COVER, alt: "" }),
+                h("div", { key: "m", className: "revista-mast" }, h("span", { dangerouslySetInnerHTML: { __html: CROSS_SVG } }), h("strong", null, "Santa Teresa"), h("small", null, "Revista digital de la parroquia")),
+                label ? h("span", { key: "l", className: "revista-issue" }, label) : null];
+            return h("div", { className: "revista-cover-wrap" },
+                h("div", { className: "revista-cover" + (complete && img ? " is-complete" : "") }, inner),
+                ribbon ? h("span", { className: "revista-ribbon" }, ribbon) : null);
+        }
+        function revLabel(n) { return n ? "Número " + n : ""; }
+
+        /* Recuadro «Próximamente» de la portada */
         var RevistaPreview = createClass({
             render: function () {
-                var d = this.props.entry.get("data");
-                var get = function (k) { var v = d && d.get(k); return v == null ? "" : String(v); };
-                var asset = function (k) { var v = get(k); if (!v) return ""; var a = this.props.getAsset(v); return a ? a.toString() : v; }.bind(this);
-                var ready = get("estado") === "disponible" && (get("pdf") || get("enlace"));
-                var cover = asset("portada") || "/fotosdefinitivas/web/dsc_0546.jpg";
+                var r = revData(this.props), get = r.get;
                 var pars = get("texto").split(/\n\s*\n/).map(function (p) { return p.replace(/\s+/g, " ").trim(); }).filter(Boolean);
-                var label = get("mostrar") === "false" ? "Oculto: ahora no sale en la portada" : (ready ? "Así sale en la portada · ya se puede leer" : "Así sale en la portada · próximamente");
-                var aviso = get("estado") === "disponible" && !ready ? h("p", { style: { margin: "0", padding: ".8rem 1.2rem", background: "#fff4dc", color: "#6b5400", font: "500 .85rem/1.4 system-ui,sans-serif" } },
-                    "Para que se pueda leer, sube el PDF o pega el enlace de la revista. Mientras tanto se sigue mostrando «Próximamente».") : null;
+                var oculto = get("mostrar") === "false";
                 return h("div", { className: "pv" },
-                    h("div", { className: "pv-label" }, h("i"), label),
-                    aviso,
-                    h("div", { className: "pv-page", style: { opacity: get("mostrar") === "false" ? .45 : 1 } },
-                        h("section", { className: "revista" + (ready ? "" : " is-soon") },
+                    h("div", { className: "pv-label" }, h("i"), oculto ? "Oculto: ahora no sale en la portada" : "Así sale en la portada mientras no haya ningún número publicado"),
+                    h("div", { className: "pv-page", style: { opacity: oculto ? .45 : 1 } },
+                        h("section", { className: "revista is-soon" },
                             h("div", { className: "revista-grid" },
-                                h("div", { className: "revista-cover-wrap" },
-                                    h("div", { className: "revista-cover" },
-                                        h("img", { src: cover, alt: "" }),
-                                        h("div", { className: "revista-mast" },
-                                            h("span", { dangerouslySetInnerHTML: { __html: CROSS } }),
-                                            h("strong", null, "Santa Teresa"),
-                                            h("small", null, "Revista digital de la parroquia")),
-                                        get("numero") ? h("span", { className: "revista-issue" }, get("numero")) : null),
-                                    ready ? null : h("span", { className: "revista-ribbon" }, "Próximamente")),
+                                revCover(r.asset("portada"), get("numero"), "Próximamente", false),
                                 h("div", { className: "revista-body" },
                                     h("span", { className: "subtitulo text-left" }, "Revista digital"),
                                     h("h2", { className: "text-left" }, get("titulo") || "Revista digital de la Parroquia"),
                                     h("hr", { className: "section-divider left" }),
                                     pars.map(function (p, i) { return h("p", { className: "lead", key: i }, p); }),
                                     h("div", { className: "btn-group" },
-                                        ready ? h("a", { className: "btn btn-solid" }, "Leer la revista →") : h("span", { className: "btn btn-solid is-soon" }, "Próximamente disponible"),
-                                        ready ? (get("pdf") && get("enlace") ? h("a", { className: "btn" }, "Descargar en PDF") : null) : h("a", { className: "btn" }, "Te avisaremos en Instagram")))))));
+                                        h("span", { className: "btn btn-solid is-soon" }, "Próximamente disponible"),
+                                        h("a", { className: "btn" }, "Te avisaremos en Instagram")))))));
             }
         });
         CMS.registerPreviewTemplate("revista", RevistaPreview);
+
+        /* Un número: su cabecera tal cual en la web y un atajo para añadirle artículos */
+        var RevistaNumeroPreview = createClass({
+            render: function () {
+                var r = revData(this.props), get = r.get;
+                var slug = this.props.entry.get("slug") || "";
+                var publicado = get("publicado") === "true";
+                var btns = [];
+                if (get("pdf")) btns.push(h("a", { key: "p", className: "btn btn-solid" }, "Leer en PDF"));
+                if (get("enlace")) btns.push(h("a", { key: "e", className: "btn" }, "Ver la revista en línea"));
+                var nuevo = slug ? h("a", { className: "pv-add", href: "/admin/#/collections/revista_articulos/new?numero=" + encodeURIComponent(slug) + (ME ? "&autor=" + encodeURIComponent(ME.nombre) : ""), target: "_top" }, "＋ Añadir un artículo a este número")
+                                 : h("span", { className: "pv-add is-off" }, "Guarda el número para poder añadirle artículos");
+                return h("div", { className: "pv" },
+                    h("div", { className: "pv-label" }, h("i"), publicado ? "Publicado · así sale en la web" : "Borrador · aún no sale en la web", nuevo),
+                    h("div", { className: "pv-page" },
+                        h("section", { className: "revista rv-issue-intro" },
+                            h("div", { className: "revista-grid" },
+                                revCover(r.asset("portada"), revLabel(get("numero")), "", get("portada_completa") === "true"),
+                                h("div", { className: "revista-body" },
+                                    h("span", { className: "subtitulo text-left" }, fechaLarga(get("fecha"))),
+                                    h("h2", { className: "text-left" }, get("titulo") || "Título del número"),
+                                    h("hr", { className: "section-divider left" }),
+                                    h("div", { className: "prose rv-presentacion", dangerouslySetInnerHTML: { __html: md(get("presentacion")).replace(' class="illuminated"', "") } }),
+                                    btns.length ? h("div", { className: "btn-group" }, btns) : null)))));
+            }
+        });
+        CMS.registerPreviewTemplate("revista_numeros", RevistaNumeroPreview);
+
+        /* Un artículo: la página de lectura tal cual en la web */
+        var RevistaArticuloPreview = createClass({
+            render: function () {
+                var r = revData(this.props), get = r.get;
+                var foto = r.asset("foto");
+                var listo = get("publicado") !== "false";
+                return h("div", { className: "pv" },
+                    h("div", { className: "pv-label" }, h("i"), listo ? "Así sale en la web (cuando su número esté publicado)" : "Sin terminar · no saldrá en la web todavía"),
+                    h("div", { className: "pv-page" },
+                        h("section", { className: "reading" },
+                            h("div", { className: "reading-wrap" },
+                                h("article", { className: "prose book-page reading-book rv-article" },
+                                    h("div", { className: "reading-head" },
+                                        h("span", { className: "book-kicker" }, get("seccion") || "Revista digital")),
+                                    h("h2", { className: "reading-title" }, get("titulo") || "Título del artículo"),
+                                    ORNAMENT,
+                                    get("entradilla") ? h("p", { className: "lead rv-lead" }, get("entradilla")) : null,
+                                    foto ? h("figure", { className: "rv-figure" }, h("img", { src: foto, alt: "" }), get("pie") ? h("figcaption", null, get("pie")) : null) : null,
+                                    h("div", { dangerouslySetInnerHTML: { __html: md(get("texto")) } }),
+                                    get("autor") ? h("p", { className: "firma" }, get("autor")) : null)))));
+            }
+        });
+        CMS.registerPreviewTemplate("revista_articulos", RevistaArticuloPreview);
     })();
     </script>
 </body>

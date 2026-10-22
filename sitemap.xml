@@ -352,6 +352,33 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/reflexiones/2019-05-05-remar-mar-adentro"/>
   </url>
   <url>
+    <loc>https://parroquiasantateresabcn.netlify.app/html/revista</loc>
+    <lastmod>2026-10-22</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.netlify.app/html/revista"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.netlify.app/ca/html/revista"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.netlify.app/en/html/revista"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/revista"/>
+  </url>
+  <url>
+    <loc>https://parroquiasantateresabcn.netlify.app/ca/html/revista</loc>
+    <lastmod>2026-10-22</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.netlify.app/html/revista"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.netlify.app/ca/html/revista"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.netlify.app/en/html/revista"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/revista"/>
+  </url>
+  <url>
+    <loc>https://parroquiasantateresabcn.netlify.app/en/html/revista</loc>
+    <lastmod>2026-10-22</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.netlify.app/html/revista"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.netlify.app/ca/html/revista"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.netlify.app/en/html/revista"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/revista"/>
+  </url>
+  <url>
     <loc>https://parroquiasantateresabcn.netlify.app/html/humiliasmenu</loc>
     <lastmod>2026-10-22</lastmod>
     <priority>0.7</priority>

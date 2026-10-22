@@ -8,6 +8,7 @@ _hs = _ilu.spec_from_file_location("homilias", os.path.join(os.path.dirname(os.p
 HOM = _ilu.module_from_spec(_hs); _hs.loader.exec_module(HOM)
 HOMILIAS, AUTORES = HOM.load(ROOT)
 esc = lambda t: _html.escape(t or "", quote=False)
+qesc = lambda t: _html.escape(t or "", quote=True)   # para textos que acaban dentro de un atributo
 
 # Revista digital: el módulo de la portada se edita desde el panel (colección «Revista digital»)
 import json as _json
@@ -17,6 +18,12 @@ try:
 except (OSError, ValueError):
     REVISTA = {}
 REVISTA_ON = REVISTA.get("mostrar", True) is not False
+# Números y artículos de la revista (colecciones «Revista · Números» y «Revista · Artículos» del panel)
+_rs = _ilu.spec_from_file_location("revista", os.path.join(os.path.dirname(os.path.abspath(__file__)), "revista.py"))
+REV = _ilu.module_from_spec(_rs); _rs.loader.exec_module(REV)
+REV_ISSUES = REV.load(ROOT, HOM)
+# En Netlify las fotos subidas desde el panel se sirven reducidas (Image CDN); en local, tal cual
+ON_NETLIFY = os.environ.get("NETLIFY") == "true"
 
 # Versión de cada archivo común (huella de su contenido): al cambiar el archivo cambia su
 # dirección (site.css?v=...) y ningún navegador puede seguir usando una copia antigua.
@@ -52,7 +59,7 @@ NAV = [
         ("+Noticias de la parroquia", "html/noticias.html#parroquia"),
         ("+Última reflexión", "__ULTIMA__"),
         ("+Todas las reflexiones", "html/humiliasmenu.html"),
-    ] + ([("+Revista digital", "index.html#revista")] if REVISTA_ON else []) + [
+    ] + ([("+Revista digital", "html/revista.html")] if REVISTA_ON or REV_ISSUES else []) + [
         ("§", "Actualidad de la Iglesia"),
         ("Vaticano y Arzobispado de Barcelona", "html/noticias.html#actualidad-iglesia"),
     ]),
@@ -483,62 +490,298 @@ def ig_profile(depth, cls=""):
                     </div>'''
 
 
-# ---------------------------------------------------------------- REVISTA DIGITAL (portada)
-# Todo sale de contenido/revista.json, que se edita en el panel → «Revista digital».
-#   estado «proximamente»: portada con la cinta «Próximamente» y sin enlace a la revista
-#   estado «disponible»:   botón «Leer la revista» (PDF subido o enlace a Issuu, Canva, Calameo…)
+# ---------------------------------------------------------------- REVISTA DIGITAL
+# Recuadro de la portada (contenido/revista.json, panel → «Revista · Recuadro de la portada»):
+#   sin números publicados → «Próximamente» con el texto del recuadro
+#   con números publicados → el último número, con su portada y enlace a leerlo
+# Números y artículos (panel → «Revista · Números» y «Revista · Artículos») generan:
+#   html/revista.html                       último número y archivo de todos
+#   html/revista/<número>.html              presentación, PDF y artículos de un número
+#   html/revista/<número>--<artículo>.html  cada artículo
 def _paragraphs(text):
     return [re.sub(r"\s+", " ", p).strip() for p in re.split(r"\n\s*\n", text or "") if p.strip()]
 
 
 def _media(path, depth):
-    """Ruta guardada por el panel («/fotosdefinitivas/...») → relativa a la página."""
+    """Ruta guardada por el panel («/fotosdefinitivas/...» o «fotosdefinitivas/...») → relativa a la página."""
     path = (path or "").strip()
     if not path or re.match(r"^(https?:)?//", path):
         return path
     return "../" * depth + path.lstrip("/")
 
 
-def revista_module(depth):
-    r = REVISTA
-    if not REVISTA_ON:
+def rev_img(path, depth, width, alt="", cls="", lazy=True):
+    """Foto subida desde el panel. En Netlify se sirve reducida al ancho necesario (Image CDN) y,
+    si eso fallara, el navegador carga el original."""
+    if not path:
         return ""
-    pdf = _media(r.get("pdf"), depth)
-    link = (r.get("enlace") or "").strip()
-    ready = r.get("estado") == "disponible" and (pdf or link)
-    cover = _media(r.get("portada"), depth) or "../" * depth + "fotosdefinitivas/web/dsc_0546.jpg"
-    numero = esc(r.get("numero") or "")
-    pars = "".join(f'\n                    <p class="lead">{esc(p)}</p>' for p in _paragraphs(r.get("texto")))
-    if ready:
-        main = link or pdf
-        buttons = f'<a class="btn btn-solid" href="{esc(main)}" target="_blank" rel="noopener">Leer la revista &rarr;</a>'
-        if pdf and link:
-            buttons += f'\n                        <a class="btn" href="{esc(pdf)}" download>Descargar en PDF</a>'
+    attrs = (f' class="{cls}"' if cls else "") + (' loading="lazy"' if lazy else "") + ' decoding="async"'
+    if ON_NETLIFY and not re.match(r"^(https?:)?//", path):
+        from urllib.parse import quote
+        original = "/" + path.lstrip("/")
+        src = f"/.netlify/images?url={quote(original)}&amp;w={width}&amp;q=78"
+        return f'<img src="{src}" alt="{esc(alt)}"{attrs} onerror="this.onerror=null;this.src=\'{original}\'">'
+    return f'<img src="{_media(path, depth)}" alt="{esc(alt)}"{attrs}>'
+
+
+REV_DEFAULT_COVER = "fotosdefinitivas/web/dsc_0546.jpg"
+
+
+def rev_label(n):
+    return f"Número {n['num']}" if n.get("num") else ""
+
+
+def rev_cover(depth, img="", label="", ribbon="", complete=False, link=""):
+    """Portada de revista dibujada. Si la imagen ya es la portada completa, se muestra tal cual."""
+    if complete and img:
+        inner = rev_img(img, depth, 640)
+        cls = "revista-cover is-complete"
     else:
-        buttons = (f'<span class="btn btn-solid is-soon" aria-disabled="true">Próximamente disponible</span>'
-                   f'\n                        <a class="btn" href="{IG_URL}" target="_blank" rel="noopener">Te avisaremos en Instagram</a>')
-    ribbon = "" if ready else '\n                    <span class="revista-ribbon">Próximamente</span>'
-    return f"""
-        <section id="revista" class="revista{' is-soon' if not ready else ''}">
+        inner = (rev_img(img or REV_DEFAULT_COVER, depth, 640)
+                 + f'\n                        <div class="revista-mast">{LOGO_MARK}<strong>Santa Teresa</strong><small>Revista digital de la parroquia</small></div>'
+                 + (f'\n                        <span class="revista-issue">{esc(label)}</span>' if label else ""))
+        cls = "revista-cover"
+    tag, attr = ("a", f' href="{link}" aria-label="Abrir la revista"') if link else ("div", "")
+    rib = f'\n                    <span class="revista-ribbon">{ribbon}</span>' if ribbon else ""
+    return f"""<div class="revista-cover-wrap">
+                    <{tag} class="{cls}"{attr}>
+                        {inner}
+                    </{tag}>{rib}
+                </div>"""
+
+
+def rev_is_new(n, days=45):
+    from datetime import date as _date
+    try:
+        return 0 <= (_date.today() - _date.fromisoformat(n["fecha"])).days <= days
+    except (KeyError, ValueError):
+        return False
+
+
+def rev_buttons(n, depth, here=""):
+    """Botones de un número: leerlo en la web y, si los tiene, el PDF y el enlace externo."""
+    root = "../" * depth
+    out = []
+    if here != "numero":
+        out.append(f'<a class="btn btn-solid" href="{root}{n["url"]}">Leer la revista &rarr;</a>')
+    if n["pdf"]:
+        out.append(f'<a class="btn{" btn-solid" if here == "numero" else ""}" href="{_media(n["pdf"], depth)}" target="_blank" rel="noopener">Leer en PDF</a>')
+    if n["enlace"]:
+        out.append(f'<a class="btn" href="{esc(n["enlace"])}" target="_blank" rel="noopener">Ver la revista en línea</a>')
+    return "\n                        ".join(out)
+
+
+def revista_module(depth, in_archive=False):
+    """Recuadro de la portada (y cabecera de la página de la revista)."""
+    r = REVISTA
+    if not REVISTA_ON and not REV_ISSUES:
+        return ""
+    if REV_ISSUES:
+        n = REV_ISSUES[0]
+        root = "../" * depth
+        arts = n["articulos"][:4]
+        toc = ""
+        if arts:
+            items = "".join(f'\n                        <li><a href="{root}{a["url"]}">{esc(a["titulo"])}</a></li>' for a in arts)
+            toc = f"""
+                    <p class="revista-toc-title">En este número</p>
+                    <ul class="revista-toc">{items}
+                    </ul>"""
+        more = f'\n                        <a class="btn" href="{root}html/revista.html">Todos los números</a>' if len(REV_ISSUES) > 1 and not in_archive else ""
+        kicker = "Revista digital" + (f" · {rev_label(n)}" if n.get("num") else "")
+        return f"""
+        <section id="revista" class="revista">
             <div class="revista-grid">
-                <div class="revista-cover-wrap">
-                    <div class="revista-cover">
-                        <img src="{esc(cover)}" alt="" loading="lazy" decoding="async">
-                        <div class="revista-mast">{LOGO_MARK}<strong>Santa Teresa</strong><small>Revista digital de la parroquia</small></div>
-                        {f'<span class="revista-issue">{numero}</span>' if numero else ''}
-                    </div>{ribbon}
-                </div>
+                {rev_cover(depth, n["portada"], rev_label(n), "Nuevo número" if rev_is_new(n) else "", n.get("portada_completa") is True, root + n["url"])}
                 <div class="revista-body">
-                    <span class="subtitulo text-left">Revista digital</span>
-                    <h2 class="text-left">{esc(r.get("titulo") or "Revista digital de la Parroquia")}</h2>
-                    <hr class="section-divider left">{pars}
+                    <span class="subtitulo text-left">{kicker}</span>
+                    <h2 class="text-left">{esc(n["titulo"])}</h2>
+                    <hr class="section-divider left">
+                    {f'<p class="lead">{esc(n["extracto"])}</p>' if n["extracto"] else ""}{toc}
                     <div class="btn-group">
-                        {buttons}
+                        {rev_buttons(n, depth)}{more}
                     </div>
                 </div>
             </div>
         </section>
 """
+    pars = "".join(f'\n                    <p class="lead">{esc(p)}</p>' for p in _paragraphs(r.get("texto")))
+    return f"""
+        <section id="revista" class="revista is-soon">
+            <div class="revista-grid">
+                {rev_cover(depth, (r.get("portada") or "").lstrip("/"), r.get("numero") or "", "Próximamente")}
+                <div class="revista-body">
+                    <span class="subtitulo text-left">Revista digital</span>
+                    <h2 class="text-left">{esc(r.get("titulo") or "Revista digital de la Parroquia")}</h2>
+                    <hr class="section-divider left">{pars}
+                    <div class="btn-group">
+                        <span class="btn btn-solid is-soon" aria-disabled="true">Próximamente disponible</span>
+                        <a class="btn" href="{IG_URL}" target="_blank" rel="noopener">Te avisaremos en Instagram</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+"""
+
+
+def rev_issue_card(n, depth):
+    root = "../" * depth
+    return f"""
+                <a class="rv-issue" href="{root}{n["url"]}">
+                    <span class="rv-issue-cover{' is-complete' if n.get('portada_completa') is True and n['portada'] else ''}">{rev_img(n["portada"] or REV_DEFAULT_COVER, depth, 420)}</span>
+                    <span class="rv-issue-num">{esc(rev_label(n))}</span>
+                    <strong>{esc(n["titulo"])}</strong>
+                    {date_long(n, "rv-issue-date")}
+                </a>"""
+
+
+def rev_article_card(a, depth):
+    root = "../" * depth
+    thumb = rev_img(a["foto"], depth, 520) if a["foto"] else f'<span class="rv-card-mark">{LOGO_MARK}</span>'
+    return f"""
+                <a class="rv-card" href="{root}{a["url"]}">
+                    <span class="rv-card-img{'' if a["foto"] else ' is-empty'}">{thumb}</span>
+                    <span class="rv-card-body">
+                        {f'<span class="book-kicker">{esc(a["seccion"])}</span>' if a.get("seccion") else ""}
+                        <strong>{esc(a["titulo"])}</strong>
+                        {f'<span class="rv-card-text">{esc(a["extracto"])}</span>' if a["extracto"] else ""}
+                        {f'<span class="rv-card-author">{esc(a["autor"])}</span>' if a.get("autor") else ""}
+                    </span>
+                </a>"""
+
+
+def _hero2(eyebrow, title, crumb, photo="web/dsc_0546.jpg"):
+    """Cabecera para las páginas de html/revista/ (una carpeta más abajo)."""
+    return (page_hero(eyebrow, title, photo, crumb)
+            .replace('href="../index.html"', 'href="../../index.html"')
+            .replace("url('../fotosdefinitivas/", "url('../../fotosdefinitivas/"))
+
+
+def rev_og(html, path):
+    """Imagen al compartir la página (WhatsApp, redes): la portada o la foto del artículo."""
+    return html.replace(f'content="{SITE}fotosdefinitivas/web/portada3.jpg"', f'content="{SITE}{path}"', 1) if path else html
+
+
+def revista_archive_page():
+    if not REV_ISSUES:
+        body = page_hero("Parroquia Santa Teresa de Jesús", "Revista digital", "web/dsc_0546.jpg") + revista_module(1)
+        return page(1, "Revista digital", "La revista digital de la Parroquia Santa Teresa de Jesús de Barcelona.", body=body, active="noticias")
+    latest, rest = REV_ISSUES[0], REV_ISSUES[1:]
+    grid = ""
+    if rest:
+        grid = f"""
+        <section class="section-alt">
+            <div class="section-head">
+                <span class="subtitulo">Archivo</span>
+                <h2>Números anteriores</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            <div class="rv-issues">{"".join(rev_issue_card(n, 1) for n in rest)}
+            </div>
+        </section>
+"""
+    body = page_hero("Parroquia Santa Teresa de Jesús", "Revista digital", "web/dsc_0546.jpg") + revista_module(1, in_archive=True) + grid
+    return rev_og(page(1, "Revista digital", "La revista digital de la Parroquia Santa Teresa de Jesús de Barcelona: todos sus números.", body=body, active="noticias"), latest["portada"])
+
+
+def revista_issue_page(i, n):
+    arts = n["articulos"]
+    cards = ""
+    if arts:
+        cards = f"""
+        <section class="section-alt" id="articulos">
+            <div class="section-head">
+                <span class="subtitulo">{esc(rev_label(n) or "Revista digital")}</span>
+                <h2>En este número</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            <div class="rv-cards">{"".join(rev_article_card(a, 2) for a in arts)}
+            </div>
+        </section>
+"""
+    btns = rev_buttons(n, 2, here="numero")
+    others = [o for o in REV_ISSUES if o is not n][:3]
+    more = ""
+    if others:
+        more = f"""
+        <section>
+            <div class="section-head">
+                <span class="subtitulo">Archivo</span>
+                <h2>Otros números</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            <div class="rv-issues">{"".join(rev_issue_card(o, 2) for o in others)}
+            </div>
+            <div class="btn-group center" style="margin-top:2.5rem;"><a class="btn" href="../revista.html">Todos los números</a></div>
+        </section>
+"""
+    body = _hero2("Revista digital" + (f" · {rev_label(n)}" if n.get("num") else ""), esc(n["titulo"]), "Revista digital") + f"""
+        <section class="revista rv-issue-intro">
+            <div class="revista-grid">
+                {rev_cover(2, n["portada"], rev_label(n), "", n.get("portada_completa") is True)}
+                <div class="revista-body">
+                    <span class="subtitulo text-left">{date_long(n)}</span>
+                    <h2 class="text-left">{esc(n["titulo"])}</h2>
+                    <hr class="section-divider left">
+                    <div class="prose rv-presentacion">
+{HOM.markdown(n.get("presentacion", "")).replace(' class="illuminated"', "", 1)}
+                    </div>
+                    <div class="btn-group">
+                        {btns}{'<a class="btn" href="#articulos">Ver los artículos</a>' if arts and not btns else ''}
+                    </div>
+                </div>
+            </div>
+        </section>
+""" + cards + more
+    desc = f"{n['titulo']} — revista digital de la Parroquia Santa Teresa de Jesús."
+    return rev_og(page(2, qesc(n["titulo"]) + " · Revista digital", qesc(desc), body=body, active="noticias"), n["portada"])
+
+
+def revista_article_page(n, j, a):
+    arts = n["articulos"]
+    prev_a = arts[j - 1] if j > 0 else None
+    next_a = arts[j + 1] if j + 1 < len(arts) else None
+
+    def nav_card(o, label):
+        thumb = rev_img(o["foto"], 2, 200) if o["foto"] else LOGO_MARK
+        return f"""
+                    <a class="reading-next rv-next" href="{n["slug"]}--{o["slug"]}.html">
+                        <span class="rv-next-img">{thumb}</span>
+                        <div class="reading-next-text"><span class="book-kicker">{label}</span><strong>{esc(o["titulo"])}</strong>{f'<p>{esc(o["autor"])}</p>' if o.get("autor") else ""}</div>
+                        <span class="reading-arrow" aria-hidden="true">&rarr;</span>
+                    </a>"""
+    cards = (nav_card(next_a, "Siguiente artículo") if next_a else "") + (nav_card(prev_a, "Artículo anterior") if prev_a else "")
+    figure = ""
+    if a["foto"]:
+        cap = f"\n                        <figcaption>{esc(a['pie'])}</figcaption>" if (a.get("pie") or "").strip() else ""
+        figure = f"""
+                    <figure class="rv-figure">
+                        {rev_img(a["foto"], 2, 1100, a.get("pie") or a["titulo"], lazy=False)}{cap}
+                    </figure>"""
+    entradilla = f'\n                    <p class="lead rv-lead">{esc(a["entradilla"])}</p>' if (a.get("entradilla") or "").strip() else ""
+    firma = f'\n                    <p class="firma">{esc(a["autor"])}</p>' if (a.get("autor") or "").strip() else ""
+    body = _hero2(esc(a.get("seccion") or n["titulo"]), esc(a["titulo"]), "Revista digital") + f"""
+        <section class="reading">
+            <div class="reading-wrap">
+                <a class="rv-back" href="{n["slug"]}.html">&larr; <span>{esc(rev_label(n) + " · " if n.get("num") else "")}{esc(n["titulo"])}</span></a>
+                <article class="prose book-page reading-book rv-article">
+                    <div class="reading-head">
+                        <span class="book-kicker">{esc(a.get("seccion") or "Revista digital")}</span>
+                        <span class="rv-issue-tag">{esc(rev_label(n) or n["titulo"])}</span>
+                    </div>
+                    <h2 class="reading-title">{esc(a["titulo"])}</h2>
+                    {ORNAMENT}{entradilla}{figure}
+{HOM.markdown(a.get("texto", ""))}{firma}
+                </article>
+                <nav class="reading-nav" aria-label="Otros artículos">
+                    {'<span class="subtitulo">Sigue leyendo</span>' if cards else ''}{cards}
+                    <a class="link-arrow" href="{n["slug"]}.html">Volver al índice del número <span>&rarr;</span></a>
+                </nav>
+            </div>
+        </section>
+"""
+    desc = a["extracto"][:180] if a["extracto"] else f"{a['titulo']} — revista digital de la Parroquia Santa Teresa de Jesús."
+    return rev_og(page(2, qesc(a["titulo"]), qesc(desc), body=body, active="noticias"), a["foto"] or n["portada"])
 
 
 # Mapa de la portada (el mismo de la página de contacto) y ruta en Google Maps
@@ -1697,6 +1940,14 @@ def homily_page(i, h):
 for _i, _h in enumerate(HOMILIAS):
     PAGES[_h["url"]] = homily_page(_i, _h)
 
+# Revista digital: página general, una por número y una por artículo
+if REVISTA_ON or REV_ISSUES:
+    PAGES["html/revista.html"] = revista_archive_page()
+for _i, _n in enumerate(REV_ISSUES):
+    PAGES[_n["url"]] = revista_issue_page(_i, _n)
+    for _j, _a in enumerate(_n["articulos"]):
+        PAGES[_a["url"]] = revista_article_page(_n, _j, _a)
+
 
 def archive_body():
     if not HOMILIAS:
@@ -2143,6 +2394,39 @@ for _i, _p in enumerate(_rev_es):
     _rev_pair(_p, _rev_ca[_i] if len(_rev_ca) == len(_rev_es) else "", _rev_en[_i] if len(_rev_en) == len(_rev_es) else "")
 if REVISTA.get("numero"):
     TABLE.setdefault(esc(REVISTA["numero"]).strip(), {"ca": esc(REVISTA["numero"]).strip(), "en": esc(REVISTA["numero"]).strip()})
+# Números y artículos: títulos, firmas, entradillas, pies de foto y presentaciones se muestran tal cual.
+# El cuerpo de cada artículo no: así, en catalán e inglés sale el aviso «texto original en castellano».
+_rev_frag = []
+for _n in REV_ISSUES:
+    _rev_frag += [_n["titulo"], _n["extracto"], f"{rev_label(_n)} · {_n['titulo']}" if _n.get("num") else ""]
+    _rev_frag += [HOM.markdown(_n.get("presentacion", ""))]
+    for _a in _n["articulos"]:
+        _rev_frag += [_a["titulo"], _a.get("autor"), _a.get("seccion"), _a.get("pie"), _a.get("entradilla"), _a["extracto"]]
+def _rev_tr(es_txt, ca_txt, en_txt):
+    TABLE[es_txt.strip()] = {"ca": ca_txt.strip(), "en": en_txt.strip()}
+_SUF = ("| Parroquia Santa Teresa de Jesús", "| Parròquia de Santa Teresa de Jesús", "| Santa Teresa de Jesús Parish")
+_DESC = ("revista digital de la Parroquia Santa Teresa de Jesús.", "revista digital de la Parròquia de Santa Teresa de Jesús.", "digital magazine of Santa Teresa de Jesús Parish.")
+for _n in REV_ISSUES:
+    _t = qesc(_n["titulo"])
+    _rev_tr(f"{_t} · Revista digital {_SUF[0]}", f"{_t} · Revista digital {_SUF[1]}", f"{_t} · Digital magazine {_SUF[2]}")
+    _rev_tr(f"{_t} — {_DESC[0]}", f"{_t} — {_DESC[1]}", f"{_t} — {_DESC[2]}")
+    if _n.get("num"):
+        _k, _te = _n["num"], esc(_n["titulo"])
+        _rev_tr(f"Número {_k}", f"Número {_k}", f"Issue {_k}")
+        _rev_tr(f"Revista digital · Número {_k}", f"Revista digital · Número {_k}", f"Digital magazine · Issue {_k}")
+        _rev_tr(f"Número {_k} · {_te}", f"Número {_k} · {_te}", f"Issue {_k} · {_te}")
+    for _a in _n["articulos"]:
+        _at = qesc(_a["titulo"])
+        _rev_tr(f"{_at} {_SUF[0]}", f"{_at} {_SUF[1]}", f"{_at} {_SUF[2]}")
+        _rev_tr(f"{_at} — {_DESC[0]}", f"{_at} — {_DESC[1]}", f"{_at} — {_DESC[2]}")
+        if _a["extracto"]:
+            TABLE.setdefault(qesc(_a["extracto"][:180]).strip(), {"ca": qesc(_a["extracto"][:180]).strip(), "en": qesc(_a["extracto"][:180]).strip()})
+for _frag in _rev_frag:
+    if not _frag:
+        continue
+    _html_frag = _frag if "<" in _frag else f"<p>{esc(_frag)}</p>"
+    for _k in i18n.extract(_html_frag, "html/revista.html") + ([esc(_frag).strip()] if "<" not in _frag else []):
+        TABLE.setdefault(_k.strip(), {"ca": _k.strip(), "en": _k.strip()})
 # El texto de la última reflexión aparece entero en la portada: sin traducción, se queda tal cual
 if HOMILIAS:
     for _k in i18n.extract(HOM.markdown(HOM.home_text(HOMILIAS[0].get("texto", ""))[0]), "index.html") + [notice_text(HOMILIAS[0])]:
@@ -2151,6 +2435,7 @@ LANGS = ["es", "ca", "en"]
 LOCALES = {"es": "es_ES", "ca": "ca_ES", "en": "en_GB"}
 LANG_NAMES = [("es", "ES", "Español"), ("ca", "CA", "Català"), ("en", "EN", "English")]
 HOMILY_NOTE = {"ca": "Text original en castellà.", "en": "Original text in Spanish."}
+REVISTA_NOTE = {"ca": "Article original en castellà.", "en": "Original article in Spanish."}
 
 
 def out_path(lang, rel):
@@ -2250,14 +2535,15 @@ for rel, base in PAGES.items():
     for lang in LANGS:
         html = base
         if lang != "es":
-            if rel.startswith("html/reflexiones/"):
+            if rel.startswith("html/reflexiones/") or "--" in rel and rel.startswith("html/revista/"):
                 # reflexión subida desde el panel: si su texto aún no está traducido, se muestra
                 # en castellano con un aviso (sin contarla como texto pendiente del generador)
                 _art = re.search(r'<article class="prose.*?</article>', html, re.S)
                 _pend = _art and any(k not in TABLE for k in i18n.extract(_art.group(0), rel))
                 html = i18n.translate(html, rel, lang, TABLE, set())
                 if _pend:
-                    html = html.replace('<article class="prose', f'<p class="lang-note">{HOMILY_NOTE[lang]}</p>\n                <article class="prose', 1)
+                    _note = (REVISTA_NOTE if rel.startswith("html/revista/") else HOMILY_NOTE)[lang]
+                    html = html.replace('<article class="prose', f'<p class="lang-note">{_note}</p>\n                <article class="prose', 1)
             else:
                 html = i18n.translate(html, rel, lang, TABLE, missing)
             html = html.replace('<html lang="es">', f'<html lang="{lang}">', 1)
@@ -2275,6 +2561,17 @@ for rel, base in PAGES.items():
         with open(path, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(html)
         written.append((lang, rel))
+
+# ---------- revista: borrar las páginas de números o artículos que ya no están publicados ----------
+_rev_keep = {out_path(l, r) for l, r in written}
+for _lang in LANGS:
+    _dir = os.path.join(ROOT, out_path(_lang, "html/revista"))
+    if os.path.isdir(_dir):
+        for _f in os.listdir(_dir):
+            _rel = out_path(_lang, "html/revista/" + _f)
+            if _f.endswith(".html") and _rel not in _rev_keep:
+                os.remove(os.path.join(_dir, _f))
+                print("Revista: página retirada", _rel)
 
 # ---------- sitemap.xml y robots.txt ----------
 today = date.today().isoformat()

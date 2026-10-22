@@ -2,3 +2,7 @@ _backup_original/
 desktop.ini
 node_modules/
 package-lock.json
+
+# Archivos compilados de Python (se regeneran solos)
+__pycache__/
+*.pyc
