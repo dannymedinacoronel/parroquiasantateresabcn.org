@@ -50,7 +50,7 @@ NAV = [
         ("Misa con coro góspel", "html/misas.html#gospel"),
         ("Calendario de eucaristías y actividades", "html/misas.html#calendario"),
         ("Sacramentos", "html/adminsacra.html"),
-        ("Bodas y aniversarios", "html/adminsacra.html#aniversarios"),
+        ("Bodas y aniversarios", "html/matrimonio.html#aniversarios"),
         ("Primera Comunión", "html/comuniones.html"),
         ("Catequesis", "html/catequesis.html"),
     ]),
@@ -1130,11 +1130,11 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
             </div>
             <div class="icon-grid five">
 """ + "\n".join([
-    icon_card("agua", "Bautismo", "Ceremonias bautismales al mediodía en cualquier domingo del año que se pida.", "html/adminsacra.html"),
-    icon_card("paloma", "Confirmación", "Se celebra cada tres años, con catequesis a partir de los 14 años.", "html/catequesis.html"),
-    icon_card("anillos", "Matrimonio", "Bodas, preparación y aniversarios de plata, oro o diamante: consulta en el despacho los viernes por la tarde.", "html/adminsacra.html#aniversarios"),
-    icon_card("manos", "Perdón", "Los sábados de 18:30 a 19:00 h y siempre un rato antes de cada misa.", "html/adminsacra.html"),
-    icon_card("oleo", "Unción de los enfermos", UNCION_TXT, "html/adminsacra.html#uncion"),
+    icon_card("agua", "Bautismo", "Ceremonias bautismales al mediodía en cualquier domingo del año que se pida.", "html/bautismo.html"),
+    icon_card("paloma", "Confirmación", "Se celebra cada tres años, con catequesis a partir de los 14 años.", "html/confirmacion.html"),
+    icon_card("anillos", "Matrimonio", "Bodas, preparación y aniversarios de plata, oro o diamante: consulta en el despacho los viernes por la tarde.", "html/matrimonio.html"),
+    icon_card("manos", "Perdón", "Los sábados de 18:30 a 19:00 h y siempre un rato antes de cada misa.", "html/perdon.html"),
+    icon_card("oleo", "Unción de los enfermos", UNCION_TXT, "html/uncion.html"),
 ]) + """
             </div>
         </section>
@@ -1635,27 +1635,114 @@ PAGES["html/misas.html"] = page(1, "Eucaristías", "Horarios de misas y calendar
         </section>
 """)
 
-# ---------------------------------------------------------------- SACRAMENTOS
-PAGES["html/adminsacra.html"] = page(1, "Sacramentos", "Sacramento del Perdón, bautizos, confirmación y despacho parroquial en la Parroquia Santa Teresa de Jesús.", body=page_hero("Administración de", "Sacramentos", "web/sacramentos-hero.jpg", pos="center 40%") + """
-        <section>
-            <div class="section-head">
-                """ + ORNAMENT + """
-                <span class="subtitulo">Cuándo y cómo</span>
-                <h2>Celebrar los sacramentos</h2>
-                <p>Te acompañamos en los momentos más importantes de la vida cristiana.</p>
-            </div>
-            <div class="icon-grid five">
-""" + "\n".join([
-    icon_card("manos", "Perdón", "Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:30 a 19:00 horas y siempre un rato antes de cada misa.", "contacto.html?motivo=Sacramento%20del%20Perdón#escribenos", "Pedir otro horario"),
-    icon_card("agua", "Bautismo", "Hay ceremonias bautismales al mediodía en cualquier domingo del año que se pida.", "contacto.html?motivo=Bautizo#escribenos", "Pedir un bautizo"),
-    icon_card("paloma", "Confirmación", "Cada tres años se celebra la Confirmación. La catequesis prepara a los adolescentes a partir de los 14 años.", "contacto.html?motivo=Confirmación#escribenos", "Pedir información"),
-    icon_card("anillos", "Matrimonio", "Bodas, su preparación y aniversarios de plata, oro o diamante: consulta en el despacho parroquial los viernes por la tarde.", "contacto.html?motivo=Boda#escribenos", "Preparar una boda"),
-    icon_card("oleo", "Unción de los enfermos", UNCION_TXT, "contacto.html?motivo=Unción%20de%20los%20enfermos#escribenos", "Pedir la Unción", aid="uncion"),
-]) + """
+# ---------------------------------------------------------------- PÁGINAS DE CADA SACRAMENTO
+# Cada texto va en (castellano, catalán, inglés). El botón principal abre el formulario de
+# contacto con ese motivo ya marcado (contacto.html?motivo=...).
+SAC_TR = []
+
+
+def _t(es, ca, en):
+    SAC_TR.append((es, ca, en))
+    return es
+
+
+SACRAMENTOS = [
+    dict(slug="bautismo", icon="agua", photo="dsc_0546.jpg", motivo="Bautizo",
+         title=_t("Bautismo", "Baptisme", "Baptism"),
+         h2=_t("Bautizar a vuestro hijo", "Batejar el vostre fill", "Baptising your child"),
+         text=_t("El Bautismo es la puerta de la vida cristiana. En la parroquia hay ceremonias bautismales al mediodía en cualquier domingo del año que se pida.",
+                 "El Baptisme és la porta de la vida cristiana. A la parròquia hi ha cerimònies baptismals al migdia qualsevol diumenge de l'any que es demani.",
+                 "Baptism is the gateway to Christian life. The parish celebrates baptisms at midday on any Sunday of the year you request."),
+         info=[(_t("Cuándo", "Quan", "When"), _t("Cualquier domingo del año, al mediodía", "Qualsevol diumenge de l'any, al migdia", "Any Sunday of the year, at midday")),
+               (_t("Cómo pedirlo", "Com demanar-ho", "How to request it"), _t("En el despacho parroquial, los viernes por la tarde, o con el formulario", "Al despatx parroquial, els divendres a la tarda, o amb el formulari", "At the parish office on Friday afternoons, or using the form"))],
+         cta=_t("Pedir un bautizo", "Demanar un bateig", "Request a baptism")),
+    dict(slug="confirmacion", icon="paloma", photo="catequesis.jpg", motivo="Confirmación",
+         title=_t("Confirmación", "Confirmació", "Confirmation"),
+         h2=_t("Confirmar la fe", "Confirmar la fe", "Confirming the faith"),
+         text=_t("La Confirmación completa la gracia del Bautismo. Se celebra cada tres años y la catequesis prepara a los adolescentes a partir de los 14 años.",
+                 "La Confirmació completa la gràcia del Baptisme. Se celebra cada tres anys i la catequesi prepara els adolescents a partir dels 14 anys.",
+                 "Confirmation completes the grace of Baptism. It is celebrated every three years, and catechesis prepares teenagers from the age of 14."),
+         info=[(_t("Cuándo", "Quan", "When"), _t("Cada tres años", "Cada tres anys", "Every three years")),
+               (_t("Edad", "Edat", "Age"), _t("A partir de los 14 años, con catequesis previa", "A partir dels 14 anys, amb catequesi prèvia", "From 14 years old, after catechesis"))],
+         cta=_t("Pedir información", "Demanar informació", "Ask for information")),
+    dict(slug="matrimonio", icon="anillos", photo="dsc_0541.jpg", motivo="Boda",
+         title=_t("Matrimonio", "Matrimoni", "Marriage"),
+         h2=_t("Casarse en la parroquia", "Casar-se a la parròquia", "Getting married in the parish"),
+         text=_t("Os acompañamos en la preparación de vuestra boda y en cada aniversario. Para empezar, pasad por el despacho parroquial los viernes por la tarde o escribidnos.",
+                 "Us acompanyem en la preparació del vostre casament i en cada aniversari. Per començar, passeu pel despatx parroquial els divendres a la tarda o escriviu-nos.",
+                 "We accompany you as you prepare your wedding and on every anniversary. To start, visit the parish office on Friday afternoons or write to us."),
+         info=[(_t("Despacho parroquial", "Despatx parroquial", "Parish office"), _t("Viernes por la tarde", "Divendres a la tarda", "Friday afternoons")),
+               (_t("Aniversarios", "Aniversaris", "Anniversaries"), _t("Bodas de plata, rubí, oro, diamante…", "Noces d'argent, robí, or, diamant…", "Silver, ruby, golden, diamond…"))],
+         cta=_t("Preparar una boda", "Preparar un casament", "Plan a wedding")),
+    dict(slug="perdon", icon="manos", photo="img_5434.jpg", motivo="Sacramento del Perdón",
+         title=_t("Perdón", "Perdó", "Confession"),
+         h2=_t("El sacramento del Perdón", "El sagrament del Perdó", "The sacrament of Confession"),
+         text=_t("Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:30 a 19:00 horas y siempre un rato antes de cada misa.",
+                 "Mn. Sols administra el sagrament del Perdó de manera fixa els dissabtes de 18:30 a 19:00 hores i sempre una estona abans de cada missa.",
+                 "Fr. Sols hears confessions every Saturday from 18:30 to 19:00 and always a while before every Mass."),
+         info=[(_t("Sábados", "Dissabtes", "Saturdays"), _t("De 18:30 a 19:00", "De 18:30 a 19:00", "From 18:30 to 19:00")),
+               (_t("Cada día", "Cada dia", "Every day"), _t("Un rato antes de cada misa", "Una estona abans de cada missa", "A while before every Mass"))],
+         cta=_t("Pedir otro horario", "Demanar un altre horari", "Ask for another time")),
+    dict(slug="uncion", icon="oleo", photo="rezando.jpg", motivo="Unción de los enfermos",
+         title=_t("Unción de los enfermos", "Unció dels malalts", "Anointing of the Sick"),
+         h2=_t("Consuelo y fuerza para los enfermos", "Consol i força per als malalts", "Comfort and strength for the sick"),
+         text=_t("La Unción da fuerza y consuelo a los enfermos y a las personas mayores. El párroco va a casa, al hospital o a la residencia.",
+                 "La Unció dona força i consol als malalts i a la gent gran. El rector va a casa, a l'hospital o a la residència.",
+                 "The Anointing brings strength and comfort to the sick and the elderly. The parish priest visits homes, hospitals and care homes."),
+         info=[(_t("Dónde", "On", "Where"), _t("En casa, en el hospital o en la residencia", "A casa, a l'hospital o a la residència", "At home, in hospital or in a care home")),
+               (_t("Si es urgente", "Si és urgent", "If it is urgent"), _t("Llamad a la parroquia", "Truqueu a la parròquia", "Call the parish"))],
+         cta=_t("Pedir la Unción", "Demanar la Unció", "Request the Anointing")),
+]
+_t("Sacramento", "Sagrament", "Sacrament")
+_t("Otros sacramentos", "Altres sagraments", "Other sacraments")
+_t("Llamar a la parroquia", "Trucar a la parròquia", "Call the parish")
+_t("Más información &rarr;", "Més informació &rarr;", "More information &rarr;")
+for _sc in SACRAMENTOS:
+    _t(_sc["title"] + " | Parroquia Santa Teresa de Jesús",
+       dict(SAC_TR)[_sc["title"]][0] if False else next(c for e, c, n in SAC_TR if e == _sc["title"]) + " | Parròquia de Santa Teresa de Jesús",
+       next(n for e, c, n in SAC_TR if e == _sc["title"]) + " | Santa Teresa de Jesús Parish")
+    _t(_sc["text"][:150], next(c for e, c, n in SAC_TR if e == _sc["text"])[:150], next(n for e, c, n in SAC_TR if e == _sc["text"])[:150])
+SAC_BY = {x["slug"]: x for x in SACRAMENTOS}
+
+
+def sacrament_page(sc):
+    info = "".join(f"\n                        <li><strong>{k}</strong>{v}</li>" for k, v in sc["info"])
+    others = "\n".join(icon_card(o["icon"], o["title"], "", o["slug"] + ".html") for o in SACRAMENTOS if o is not sc)
+    body = page_hero("Sacramento", sc["title"], "web/sacramentos-hero.jpg", pos="center 40%") + f"""
+        <section class="section-warm">
+            <div class="two-col center">
+                <div class="framed-img">
+                    <img src="../fotosdefinitivas/web/{sc["photo"]}" alt="{sc["title"]}" loading="lazy">
+                </div>
+                <div>
+                    <span class="subtitulo text-left">{sc["title"]}</span>
+                    <h2 class="text-left">{sc["h2"]}</h2>
+                    <hr class="section-divider" style="margin-left:0;">
+                    <p>{sc["text"]}</p>
+                    <ul class="info-list" style="margin:1.5rem 0 2rem;">{info}
+                    </ul>
+                    <div class="btn-group">
+                        <a href="contacto.html?motivo={sc["motivo"].replace(" ", "%20")}#escribenos" class="btn btn-solid">{sc["cta"]}</a>
+                        <a href="tel:{TEL}" class="btn btn-call">{ICON_PHONE}<span>Llamar a la parroquia</span></a>
+                    </div>
+                </div>
             </div>
         </section>
+{ANIV_HTML if sc["slug"] == "matrimonio" else ""}
+        <section>
+            <div class="section-head">
+                <span class="subtitulo">Sacramentos</span>
+                <h2>Otros sacramentos</h2>
+            </div>
+            <div class="icon-grid sac-others">
+{others}
+            </div>
+        </section>
+"""
+    return page(1, sc["title"], sc["text"][:150], body=body)
 
-        <section class="section-warm" id="aniversarios">
+
+ANIV_HTML = """        <section class="section-warm" id="aniversarios">
             <div class="two-col center">
                 <div class="framed-img">
                     <img src="../fotosdefinitivas/web/fotobodapepi.jpg" alt="Celebración de un aniversario de boda en la parroquia" loading="lazy">
@@ -1674,9 +1761,34 @@ PAGES["html/adminsacra.html"] = page(1, "Sacramentos", "Sacramento del Perdón, 
                     <p class="caption" style="text-align:left;">Y cualquier otro aniversario que queráis celebrar.</p>
                     <div class="btn-group">
                         <a href="contacto.html?motivo=Aniversario%20de%20boda#escribenos" class="btn btn-solid">Pedir la celebración</a>
-                        <a href=\"tel:""" + TEL + """\" class="btn btn-call">""" + ICON_PHONE + """<span>Llamar</span></a>
+                        <a href="tel:""" + TEL + """" class="btn btn-call">""" + ICON_PHONE + """<span>Llamar</span></a>
                     </div>
                 </div>
+            </div>
+        </section>
+
+"""
+
+
+# ---------------------------------------------------------------- SACRAMENTOS
+for _sc in SACRAMENTOS:
+    PAGES[f"html/{_sc['slug']}.html"] = sacrament_page(_sc)
+PAGES["html/adminsacra.html"] = page(1, "Sacramentos", "Sacramento del Perdón, bautizos, confirmación y despacho parroquial en la Parroquia Santa Teresa de Jesús.", body=page_hero("Administración de", "Sacramentos", "web/sacramentos-hero.jpg", pos="center 40%") + """
+        <section>
+            <div class="section-head">
+                """ + ORNAMENT + """
+                <span class="subtitulo">Cuándo y cómo</span>
+                <h2>Celebrar los sacramentos</h2>
+                <p>Te acompañamos en los momentos más importantes de la vida cristiana.</p>
+            </div>
+            <div class="icon-grid five">
+""" + "\n".join([
+    icon_card("manos", "Perdón", "Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:30 a 19:00 horas y siempre un rato antes de cada misa.", "perdon.html", "Más información"),
+    icon_card("agua", "Bautismo", "Hay ceremonias bautismales al mediodía en cualquier domingo del año que se pida.", "bautismo.html", "Más información"),
+    icon_card("paloma", "Confirmación", "Cada tres años se celebra la Confirmación. La catequesis prepara a los adolescentes a partir de los 14 años.", "confirmacion.html", "Más información"),
+    icon_card("anillos", "Matrimonio", "Bodas, su preparación y aniversarios de plata, oro o diamante: consulta en el despacho parroquial los viernes por la tarde.", "matrimonio.html", "Más información"),
+    icon_card("oleo", "Unción de los enfermos", UNCION_TXT, "uncion.html", "Más información", aid="uncion"),
+]) + """
             </div>
         </section>
 
@@ -2381,6 +2493,8 @@ for _h in HOMILIAS:
                _h.get("autor_cargo"), _first_quote(_h.get("texto"))):
         if _k:
             TABLE.setdefault(_k.strip(), {"ca": _k.strip(), "en": _k.strip()})
+for _es, _ca, _en in SAC_TR:
+    TABLE[_es] = {"ca": _ca, "en": _en}
 # Revista digital: los textos escritos en el panel con sus traducciones opcionales (sin traducción, tal cual)
 _rt = REVISTA.get("traducciones") or {}
 def _rev_pair(es_txt, ca_txt, en_txt):

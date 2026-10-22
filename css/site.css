@@ -2689,3 +2689,5 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 .revista:not(.rv-issue-intro) .revista-toc a { color: #fff3dc; }
 .revista:not(.rv-issue-intro) .revista-toc a:hover { color: var(--accent-light); }
 @media (max-width: 860px) { .revista:not(.rv-issue-intro)::before { bottom: auto; top: 38%; right: 50%; transform: translateX(50%); } }
+
+.sac-others .icon-card p { display: none; }
