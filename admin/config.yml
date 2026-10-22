@@ -126,6 +126,71 @@ collections:
         default: true
         hint: "Desactívalo para guardarla como borrador sin que aparezca en la web."
 
+  # Revista digital: el módulo de la portada. Mientras se prepara, «Próximamente»; cuando
+  # esté lista, se sube el PDF (o se pega el enlace) y se cambia el estado a «Ya disponible».
+  - name: revista
+    label: Revista digital
+    description: "El recuadro de la revista en la portada de la web. Cambia el texto, la portada o el estado y pulsa «Publicar»: en unos minutos se ve en la web."
+    files:
+      - name: revista
+        label: Revista digital (portada de la web)
+        file: contenido/revista.json
+        format: json
+        fields:
+          - label: Mostrar en la portada
+            name: mostrar
+            widget: boolean
+            default: true
+            hint: "Desactívalo para ocultar el recuadro de la revista (y su enlace en el menú)."
+          - label: Estado
+            name: estado
+            widget: select
+            default: proximamente
+            options:
+              - { label: "Próximamente (aún no se puede leer)", value: proximamente }
+              - { label: "Ya disponible (se puede leer)", value: disponible }
+            hint: "Para «Ya disponible» hace falta subir el PDF o poner un enlace más abajo."
+          - { label: Título, name: titulo, widget: string, default: "Revista digital de la Parroquia" }
+          - label: Texto
+            name: texto
+            widget: text
+            hint: "Unas pocas líneas. Deja una línea en blanco para empezar otro párrafo."
+          - label: Número o edición
+            name: numero
+            widget: string
+            required: false
+            hint: "Sale en la portada dibujada, p. ej. «Número 1» o «Adviento 2026»."
+          - label: Imagen de portada
+            name: portada
+            widget: image
+            required: false
+            media_folder: /fotosdefinitivas/web/revista
+            public_folder: /fotosdefinitivas/web/revista
+            hint: "Mejor en vertical (como una revista). Si no pones ninguna, se usa una foto de la parroquia."
+          - label: Revista en PDF
+            name: pdf
+            widget: file
+            required: false
+            media_folder: /fotosdefinitivas/web/revista
+            public_folder: /fotosdefinitivas/web/revista
+            hint: "Sube aquí el PDF del número. Procura que no pase de 15 MB para que cargue bien en el móvil."
+          - label: Enlace a la revista
+            name: enlace
+            widget: string
+            required: false
+            hint: "Si la revista está en Issuu, Calameo, Canva u otra web, pega aquí su dirección (empieza por https://)."
+          - label: Traducciones al catalán y al inglés
+            name: traducciones
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Si las dejas vacías, la web en catalán y en inglés muestra el texto en castellano."
+            fields:
+              - { label: Título en catalán, name: titulo_ca, widget: string, required: false }
+              - { label: Texto en catalán, name: texto_ca, widget: text, required: false }
+              - { label: Título en inglés, name: titulo_en, widget: string, required: false }
+              - { label: Texto en inglés, name: texto_en, widget: text, required: false }
+
   - name: ajustes
     label: Personas que escriben
     files:

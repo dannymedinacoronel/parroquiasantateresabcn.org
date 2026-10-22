@@ -772,6 +772,19 @@ TR = {
 "Vatican News (Santa Sede) / Arzobispado de Barcelona": ("Vatican News (Santa Seu) / Arquebisbat de Barcelona", "Vatican News (Holy See) / Archdiocese of Barcelona"),
 "Mostrar las fotos de las noticias.": ("Mostrar les fotos de les notícies.", "Shows the news photos."),
 "Consulta nuestra": ("Consulta la nostra", "See our"),
+# Unción de los enfermos
+"Unción de los enfermos": ("Unció dels malalts", "Anointing of the Sick"),
+"Para enfermos y personas mayores, en casa, en el hospital o en la residencia. Si es urgente, llamad a la parroquia.": ("Per a malalts i gent gran, a casa, a l'hospital o a la residència. Si és urgent, truqueu a la parròquia.", "For the sick and the elderly, at home, in hospital or in a care home. If it is urgent, please call the parish."),
+"Pedir la Unción &rarr;": ("Demanar la Unció &rarr;", "Request the Anointing &rarr;"),
+"Nombre de la persona, dónde está (casa, hospital o residencia) y un teléfono. Si es urgente, mejor llama": ("Nom de la persona, on és (casa, hospital o residència) i un telèfon. Si és urgent, millor truca", "The person's name, where they are (home, hospital or care home) and a phone number. If it is urgent, please call"),
+# revista digital (portada)
+"Revista digital": ("Revista digital", "Digital magazine"),
+"Revista digital de la parroquia": ("Revista digital de la parròquia", "The parish digital magazine"),
+"Próximamente": ("Properament", "Coming soon"),
+"Próximamente disponible": ("Disponible properament", "Available soon"),
+"Te avisaremos en Instagram": ("T'avisarem a Instagram", "We'll let you know on Instagram"),
+"Leer la revista &rarr;": ("Llegir la revista &rarr;", "Read the magazine &rarr;"),
+"Descargar en PDF": ("Descarregar en PDF", "Download as PDF"),
 # horario semanal de la página de Eucaristías (sustituye al calendario de Google)
 "Semana a semana": ("Setmana a setmana", "Week by week"),
 "Lunes": ("Dilluns", "Monday"),

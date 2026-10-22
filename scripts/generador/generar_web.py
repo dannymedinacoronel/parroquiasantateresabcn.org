@@ -9,6 +9,15 @@ HOM = _ilu.module_from_spec(_hs); _hs.loader.exec_module(HOM)
 HOMILIAS, AUTORES = HOM.load(ROOT)
 esc = lambda t: _html.escape(t or "", quote=False)
 
+# Revista digital: el módulo de la portada se edita desde el panel (colección «Revista digital»)
+import json as _json
+try:
+    with open(os.path.join(ROOT, "contenido", "revista.json"), encoding="utf-8") as _fh:
+        REVISTA = _json.load(_fh) or {}
+except (OSError, ValueError):
+    REVISTA = {}
+REVISTA_ON = REVISTA.get("mostrar", True) is not False
+
 # Versión de cada archivo común (huella de su contenido): al cambiar el archivo cambia su
 # dirección (site.css?v=...) y ningún navegador puede seguir usando una copia antigua.
 import hashlib as _hashlib
@@ -43,6 +52,7 @@ NAV = [
         ("+Noticias de la parroquia", "html/noticias.html#parroquia"),
         ("+Última reflexión", "__ULTIMA__"),
         ("+Todas las reflexiones", "html/humiliasmenu.html"),
+    ] + ([("+Revista digital", "index.html#revista")] if REVISTA_ON else []) + [
         ("§", "Actualidad de la Iglesia"),
         ("Vaticano y Arzobispado de Barcelona", "html/noticias.html#actualidad-iglesia"),
     ]),
@@ -348,6 +358,8 @@ SAC_ICONS = {
 
 
 SAC_ICONS.update({
+    # Unción de los enfermos: frasco del óleo con la cruz
+    "oleo": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 2.5h5M10.2 2.5v3.6L7 10v8.6A2.4 2.4 0 0 0 9.4 21h5.2a2.4 2.4 0 0 0 2.4-2.4V10l-3.2-3.9V2.5"/><path d="M12 11.5v6M9.6 13.8h4.8"/></svg>',
     "pin": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
     "mail": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="M3.5 6.5l8.5 7 8.5-7"/></svg>',
     "phone": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11 11 0 0 0 5.2 5.2l1.4-2.1 4.2 1.6V17a2.5 2.5 0 0 1-2.5 2.5A15.5 15.5 0 0 1 2.5 6 2.5 2.5 0 0 1 5 3.5z"/></svg>',
@@ -388,9 +400,14 @@ NEWS_HEAD_0 = '    <script src="data/noticias.js"></script>\n'
 NEWS_HEAD_1 = '    <script src="../data/noticias.js"></script>\n'
 
 
-def icon_card(icon, title, text, link, cta=None):
+# Unción de los enfermos: el mismo texto en la portada y en Sacramentos
+UNCION_TXT = "Para enfermos y personas mayores, en casa, en el hospital o en la residencia. Si es urgente, llamad a la parroquia."
+
+
+def icon_card(icon, title, text, link, cta=None, aid=None):
     more = f'\n                    <span class="icon-card-cta">{cta} &rarr;</span>' if cta else ""
-    return f"""                <a class="icon-card" href="{link}">
+    anchor = f' id="{aid}"' if aid else ""
+    return f"""                <a class="icon-card"{anchor} href="{link}">
                     <div class="icon-circle">{SAC_ICONS[icon]}</div>
                     <h3>{title}</h3>
                     <p>{text}</p>{more}
@@ -464,6 +481,64 @@ def ig_profile(depth, cls=""):
                         <div><strong>parroquiasantateresadejesusbcn</strong><span>Parroquia Santa Teresa de Jesús · Barcelona</span></div>
                         <a href="{IG_URL}" target="_blank" rel="noopener">Seguir</a>
                     </div>'''
+
+
+# ---------------------------------------------------------------- REVISTA DIGITAL (portada)
+# Todo sale de contenido/revista.json, que se edita en el panel → «Revista digital».
+#   estado «proximamente»: portada con la cinta «Próximamente» y sin enlace a la revista
+#   estado «disponible»:   botón «Leer la revista» (PDF subido o enlace a Issuu, Canva, Calameo…)
+def _paragraphs(text):
+    return [re.sub(r"\s+", " ", p).strip() for p in re.split(r"\n\s*\n", text or "") if p.strip()]
+
+
+def _media(path, depth):
+    """Ruta guardada por el panel («/fotosdefinitivas/...») → relativa a la página."""
+    path = (path or "").strip()
+    if not path or re.match(r"^(https?:)?//", path):
+        return path
+    return "../" * depth + path.lstrip("/")
+
+
+def revista_module(depth):
+    r = REVISTA
+    if not REVISTA_ON:
+        return ""
+    pdf = _media(r.get("pdf"), depth)
+    link = (r.get("enlace") or "").strip()
+    ready = r.get("estado") == "disponible" and (pdf or link)
+    cover = _media(r.get("portada"), depth) or "../" * depth + "fotosdefinitivas/web/dsc_0546.jpg"
+    numero = esc(r.get("numero") or "")
+    pars = "".join(f'\n                    <p class="lead">{esc(p)}</p>' for p in _paragraphs(r.get("texto")))
+    if ready:
+        main = link or pdf
+        buttons = f'<a class="btn btn-solid" href="{esc(main)}" target="_blank" rel="noopener">Leer la revista &rarr;</a>'
+        if pdf and link:
+            buttons += f'\n                        <a class="btn" href="{esc(pdf)}" download>Descargar en PDF</a>'
+    else:
+        buttons = (f'<span class="btn btn-solid is-soon" aria-disabled="true">Próximamente disponible</span>'
+                   f'\n                        <a class="btn" href="{IG_URL}" target="_blank" rel="noopener">Te avisaremos en Instagram</a>')
+    ribbon = "" if ready else '\n                    <span class="revista-ribbon">Próximamente</span>'
+    return f"""
+        <section id="revista" class="revista{' is-soon' if not ready else ''}">
+            <div class="revista-grid">
+                <div class="revista-cover-wrap">
+                    <div class="revista-cover">
+                        <img src="{esc(cover)}" alt="" loading="lazy" decoding="async">
+                        <div class="revista-mast">{LOGO_MARK}<strong>Santa Teresa</strong><small>Revista digital de la parroquia</small></div>
+                        {f'<span class="revista-issue">{numero}</span>' if numero else ''}
+                    </div>{ribbon}
+                </div>
+                <div class="revista-body">
+                    <span class="subtitulo text-left">Revista digital</span>
+                    <h2 class="text-left">{esc(r.get("titulo") or "Revista digital de la Parroquia")}</h2>
+                    <hr class="section-divider left">{pars}
+                    <div class="btn-group">
+                        {buttons}
+                    </div>
+                </div>
+            </div>
+        </section>
+"""
 
 
 # Mapa de la portada (el mismo de la página de contacto) y ruta en Google Maps
@@ -810,12 +885,13 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
                 <h2>Sacramentos</h2>
                 <p>Te acompañamos en los momentos más importantes de la vida cristiana.</p>
             </div>
-            <div class="icon-grid">
+            <div class="icon-grid five">
 """ + "\n".join([
     icon_card("agua", "Bautismo", "Ceremonias bautismales al mediodía en cualquier domingo del año que se pida.", "html/adminsacra.html"),
     icon_card("paloma", "Confirmación", "Se celebra cada tres años, con catequesis a partir de los 14 años.", "html/catequesis.html"),
     icon_card("anillos", "Matrimonio", "Bodas, preparación y aniversarios de plata, oro o diamante: consulta en el despacho los viernes por la tarde.", "html/adminsacra.html#aniversarios"),
     icon_card("manos", "Perdón", "Los sábados de 18:30 a 19:00 h y siempre un rato antes de cada misa.", "html/adminsacra.html"),
+    icon_card("oleo", "Unción de los enfermos", UNCION_TXT, "html/adminsacra.html#uncion"),
 ]) + """
             </div>
         </section>
@@ -877,6 +953,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extr
             </div>
 
         </section>
+""" + revista_module(0) + """
 
         <section class="visit">
             <div class="two-col center">
@@ -1172,6 +1249,7 @@ MOTIVOS = [
     ("Confirmación", "Confirmación", "Nombre y edad de quien quiere confirmarse"),
     ("Sacramento del Perdón", "Perdón (confesión)", "Si necesitas otro horario distinto al de los sábados, dinos cuándo te va bien"),
     ("Visita a enfermos", "Visita a enfermos", "Nombre de la persona, dirección y qué días va mejor"),
+    ("Unción de los enfermos", "Unción de los enfermos", "Nombre de la persona, dónde está (casa, hospital o residencia) y un teléfono. Si es urgente, mejor llama"),
     ("Funeral", "Funeral", "Nombre del difunto y fecha prevista. Te llamaremos cuanto antes"),
     ("Cáritas", "Cáritas", "Cuéntanos qué necesitas o cómo te gustaría colaborar"),
     ("Grupo de jóvenes", "Grupo de jóvenes", "Tu edad y cómo te has enterado del grupo"),
@@ -1323,12 +1401,13 @@ PAGES["html/adminsacra.html"] = page(1, "Sacramentos", "Sacramento del Perdón, 
                 <h2>Celebrar los sacramentos</h2>
                 <p>Te acompañamos en los momentos más importantes de la vida cristiana.</p>
             </div>
-            <div class="icon-grid">
+            <div class="icon-grid five">
 """ + "\n".join([
     icon_card("manos", "Perdón", "Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:30 a 19:00 horas y siempre un rato antes de cada misa.", "contacto.html?motivo=Sacramento%20del%20Perdón#escribenos", "Pedir otro horario"),
     icon_card("agua", "Bautismo", "Hay ceremonias bautismales al mediodía en cualquier domingo del año que se pida.", "contacto.html?motivo=Bautizo#escribenos", "Pedir un bautizo"),
     icon_card("paloma", "Confirmación", "Cada tres años se celebra la Confirmación. La catequesis prepara a los adolescentes a partir de los 14 años.", "contacto.html?motivo=Confirmación#escribenos", "Pedir información"),
     icon_card("anillos", "Matrimonio", "Bodas, su preparación y aniversarios de plata, oro o diamante: consulta en el despacho parroquial los viernes por la tarde.", "contacto.html?motivo=Boda#escribenos", "Preparar una boda"),
+    icon_card("oleo", "Unción de los enfermos", UNCION_TXT, "contacto.html?motivo=Unción%20de%20los%20enfermos#escribenos", "Pedir la Unción", aid="uncion"),
 ]) + """
             </div>
         </section>
@@ -2051,6 +2130,19 @@ for _h in HOMILIAS:
                _h.get("autor_cargo"), _first_quote(_h.get("texto"))):
         if _k:
             TABLE.setdefault(_k.strip(), {"ca": _k.strip(), "en": _k.strip()})
+# Revista digital: los textos escritos en el panel con sus traducciones opcionales (sin traducción, tal cual)
+_rt = REVISTA.get("traducciones") or {}
+def _rev_pair(es_txt, ca_txt, en_txt):
+    es_txt = esc(es_txt).strip()
+    if es_txt:
+        TABLE[es_txt] = {"ca": esc(ca_txt).strip() or es_txt, "en": esc(en_txt).strip() or es_txt}
+_rev_pair(REVISTA.get("titulo"), _rt.get("titulo_ca"), _rt.get("titulo_en"))
+_rev_es, _rev_ca, _rev_en = _paragraphs(REVISTA.get("texto")), _paragraphs(_rt.get("texto_ca")), _paragraphs(_rt.get("texto_en"))
+for _i, _p in enumerate(_rev_es):
+    # cada párrafo con el suyo; si el número de párrafos no coincide, ese idioma se queda en castellano
+    _rev_pair(_p, _rev_ca[_i] if len(_rev_ca) == len(_rev_es) else "", _rev_en[_i] if len(_rev_en) == len(_rev_es) else "")
+if REVISTA.get("numero"):
+    TABLE.setdefault(esc(REVISTA["numero"]).strip(), {"ca": esc(REVISTA["numero"]).strip(), "en": esc(REVISTA["numero"]).strip()})
 # El texto de la última reflexión aparece entero en la portada: sin traducción, se queda tal cual
 if HOMILIAS:
     for _k in i18n.extract(HOM.markdown(HOM.home_text(HOMILIAS[0].get("texto", ""))[0]), "index.html") + [notice_text(HOMILIAS[0])]:
