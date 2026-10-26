@@ -1647,7 +1647,7 @@ def _t(es, ca, en):
 
 
 SACRAMENTOS = [
-    dict(slug="bautismo", icon="agua", photo="dsc_0546.jpg", motivo="Bautizo",
+    dict(slug="bautismo", icon="agua", photo="sac-bautismo.jpg", motivo="Bautizo",
          title=_t("Bautismo", "Baptisme", "Baptism"),
          h2=_t("Bautizar a vuestro hijo", "Batejar el vostre fill", "Baptising your child"),
          text=_t("El Bautismo es la puerta de la vida cristiana. En la parroquia hay ceremonias bautismales al mediodía en cualquier domingo del año que se pida.",
@@ -1656,7 +1656,7 @@ SACRAMENTOS = [
          info=[(_t("Cuándo", "Quan", "When"), _t("Cualquier domingo del año, al mediodía", "Qualsevol diumenge de l'any, al migdia", "Any Sunday of the year, at midday")),
                (_t("Cómo pedirlo", "Com demanar-ho", "How to request it"), _t("En el despacho parroquial, los viernes por la tarde, o con el formulario", "Al despatx parroquial, els divendres a la tarda, o amb el formulari", "At the parish office on Friday afternoons, or using the form"))],
          cta=_t("Pedir un bautizo", "Demanar un bateig", "Request a baptism")),
-    dict(slug="confirmacion", icon="paloma", photo="catequesis.jpg", motivo="Confirmación",
+    dict(slug="confirmacion", icon="paloma", photo="sac-confirmacion.jpg", motivo="Confirmación",
          title=_t("Confirmación", "Confirmació", "Confirmation"),
          h2=_t("Confirmar la fe", "Confirmar la fe", "Confirming the faith"),
          text=_t("La Confirmación completa la gracia del Bautismo. Se celebra cada tres años y la catequesis prepara a los adolescentes a partir de los 14 años.",
@@ -1665,7 +1665,7 @@ SACRAMENTOS = [
          info=[(_t("Cuándo", "Quan", "When"), _t("Cada tres años", "Cada tres anys", "Every three years")),
                (_t("Edad", "Edat", "Age"), _t("A partir de los 14 años, con catequesis previa", "A partir dels 14 anys, amb catequesi prèvia", "From 14 years old, after catechesis"))],
          cta=_t("Pedir información", "Demanar informació", "Ask for information")),
-    dict(slug="matrimonio", icon="anillos", photo="dsc_0541.jpg", motivo="Boda",
+    dict(slug="matrimonio", icon="anillos", photo="sac-matrimonio.jpg", motivo="Boda",
          title=_t("Matrimonio", "Matrimoni", "Marriage"),
          h2=_t("Casarse en la parroquia", "Casar-se a la parròquia", "Getting married in the parish"),
          text=_t("Os acompañamos en la preparación de vuestra boda y en cada aniversario. Para empezar, pasad por el despacho parroquial los viernes por la tarde o escribidnos.",
@@ -1674,7 +1674,7 @@ SACRAMENTOS = [
          info=[(_t("Despacho parroquial", "Despatx parroquial", "Parish office"), _t("Viernes por la tarde", "Divendres a la tarda", "Friday afternoons")),
                (_t("Aniversarios", "Aniversaris", "Anniversaries"), _t("Bodas de plata, rubí, oro, diamante…", "Noces d'argent, robí, or, diamant…", "Silver, ruby, golden, diamond…"))],
          cta=_t("Preparar una boda", "Preparar un casament", "Plan a wedding")),
-    dict(slug="perdon", icon="manos", photo="img_5434.jpg", motivo="Sacramento del Perdón",
+    dict(slug="perdon", icon="manos", photo="sac-perdon.jpg", motivo="Sacramento del Perdón",
          title=_t("Perdón", "Perdó", "Confession"),
          h2=_t("El sacramento del Perdón", "El sagrament del Perdó", "The sacrament of Confession"),
          text=_t("Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:30 a 19:00 horas y siempre un rato antes de cada misa.",
@@ -1683,7 +1683,7 @@ SACRAMENTOS = [
          info=[(_t("Sábados", "Dissabtes", "Saturdays"), _t("De 18:30 a 19:00", "De 18:30 a 19:00", "From 18:30 to 19:00")),
                (_t("Cada día", "Cada dia", "Every day"), _t("Un rato antes de cada misa", "Una estona abans de cada missa", "A while before every Mass"))],
          cta=_t("Pedir otro horario", "Demanar un altre horari", "Ask for another time")),
-    dict(slug="uncion", icon="oleo", photo="rezando.jpg", motivo="Unción de los enfermos",
+    dict(slug="uncion", icon="oleo", photo="sac-uncion.jpg", motivo="Unción de los enfermos",
          title=_t("Unción de los enfermos", "Unció dels malalts", "Anointing of the Sick"),
          h2=_t("Consuelo y fuerza para los enfermos", "Consol i força per als malalts", "Comfort and strength for the sick"),
          text=_t("La Unción da fuerza y consuelo a los enfermos y a las personas mayores. El párroco va a casa, al hospital o a la residencia.",
@@ -1711,9 +1711,10 @@ def sacrament_page(sc):
     body = page_hero("Sacramento", sc["title"], "web/sacramentos-hero.jpg", pos="center 40%") + f"""
         <section class="section-warm">
             <div class="two-col center">
-                <div class="framed-img">
-                    <img src="../fotosdefinitivas/web/{sc["photo"]}" alt="{sc["title"]}" loading="lazy">
-                </div>
+                <figure class="sac-arch">
+                    <img src="../fotosdefinitivas/web/{sc["photo"]}" alt="{sc["title"]}" width="900" height="1125" loading="lazy">
+                    <span class="sac-medal">{SAC_ICONS[sc["icon"]]}</span>
+                </figure>
                 <div>
                     <span class="subtitulo text-left">{sc["title"]}</span>
                     <h2 class="text-left">{sc["h2"]}</h2>
