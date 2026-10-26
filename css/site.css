@@ -2801,3 +2801,13 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 .finder-own span { font-size: .9rem; color: var(--muted); }
 @media (max-width: 640px) { .finder-frame iframe { height: 900px; } }
 .sub-cta-link span i { font-style: normal; }
+
+/* Mapa «Cómo llegar»: en ordenador la tarjeta va a la izquierda y el mapa empieza a su derecha,
+   para no tapar la ficha de Google Maps (que sale en la esquina superior izquierda del mapa) */
+@media (min-width: 801px) {
+    .location { background: radial-gradient(circle at 15% 30%, rgba(191,160,101,.18), transparent 55%), var(--bg-warm); }
+    .location-map { left: calc(clamp(1.25rem, 7vw, 8rem) + min(500px, 100% - 2.5rem) + 2.5rem); }
+    .location-big .location-map { left: calc(clamp(1.25rem, 7vw, 8rem) + min(520px, 100% - 2.5rem) + 2.5rem); }
+    .location-map .consent-placeholder, .location-big .location-map .consent-placeholder { padding-left: 1.5rem !important; }
+    .location-map::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 1px; background: rgba(191,160,101,.5); z-index: 1; }
+}
