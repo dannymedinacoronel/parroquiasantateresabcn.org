@@ -88,6 +88,7 @@ NAV = [
         ("Nuestra historia", "html/historia.html#parroquia", "torre"),
         ("Línea del tiempo", "html/historia.html#linea-del-tiempo", "cal"),
         ("Archivo histórico", "html/historia.html#archivo", "libro"),
+        ("Fuentes", "html/historia.html#fuentes", "libro"),
         ("Imágenes y vídeos", "html/imagenes.html", "foto"),
         ("§", "Organización", "html/organigramaparroquial.html"),
         ("Organigrama", "html/organigramaparroquial.html#estructura", "persona"),
@@ -1598,7 +1599,7 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
                         <p>La nave se cubre con un techo de vigas que descansa sobre dos arcos de medio punto, y termina en un ábside semicircular. Los muros, encalados, dan al interior esa luz blanca tan característica. A la entrada se encuentran el cancel y el coro.</p>
                         <p>Delante de la iglesia se abre un atrio porticado de tres arcos de medio punto —el central, más alto— apoyados en columnas sobre un muro bajo y cerrado con rejas.</p>
                         <p>El campanario, de la misma época que el templo, es sencillo y funcional: planta casi cuadrada, cornisa moldurada, tejado a cuatro aguas y una ventana de arco en cada cara. Sus muros, revocados y pintados en tono crema, se adosan al muro sur, junto al porche.</p>
-                        <p class="tl-source">Según la ficha de la parroquia en el inventario de campanarios de Cataluña (campaners.com).</p>
+                        <p class="tl-source"><a href="https://www.campaners.com/php/torrepdf.php?numer=7084" target="_blank" rel="noopener">Fuente: ficha de la parroquia en el inventario de campanarios de Cataluña (campaners.com)</a></p>
                     </details>
                 </div>
                 <div class="timeline-item">
@@ -1620,7 +1621,7 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
                         <summary>Seguir leyendo</summary>
                         <p>Los vecinos llevaban semanas avisando de grietas y ruidos. El 25 de enero un primer desprendimiento obligó a desalojar el número 10 del pasaje de Calafell, y dos días después el túnel cedió y se tragó un garaje. Se vaciaron 84 edificios, cerraron comercios y dos escuelas —entre ellas la Escola Santa Teresa— y muchas familias vivieron en hoteles casi dos años.</p>
                         <p>Hubo que derribar cinco edificios y rellenar el subsuelo con miles de metros cúbicos de hormigón. Los vecinos fueron realojados a lo largo de 2006, algunos en un bloque nuevo de la misma calle Llobregós.</p>
-                        <p class="tl-source">Fuentes: El Nacional, Tot Barcelona y Ara (enero de 2025).</p>
+                        <p class="tl-source">Fuentes: <a href="https://www.elnacional.cat/es/barcelona/hundimiento-carmel-veinte-anos-boquete-marco-barrio_1350826_102.html" target="_blank" rel="noopener">El Nacional</a> · <a href="https://www.totbarcelona.cat/es/politica-es/vint-anys-del-socavon-del-carmel-la-tragedia-que-cambio-la-obra-publica-en-cataluna-585251/" target="_blank" rel="noopener">Tot Barcelona</a> · <a href="https://es.ara.cat/sociedad/barcelona/20-anos-boquete-carmel-hizo-temblar-politica-catalana_1_5267430.html" target="_blank" rel="noopener">Ara</a> (enero de 2025)</p>
                     </details>
                     <a href="revista/1-bienvenidos-a-santa-teresa--memoria-el-socavon-del-carmel.html" class="link-arrow">Léelo en la revista <span>&rarr;</span></a>
                 </div>
@@ -1636,13 +1637,32 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
                     <a href="dinamicapastoral.html" class="link-arrow">Conoce la vida parroquial <span>&rarr;</span></a>
                 </div>
             </div>
+            <aside class="hist-sources" id="fuentes">
+                <h3>Fuentes</h3>
+                <p>De dónde sale lo que contamos en esta página. Los enlaces se abren en una pestaña nueva.</p>
+                <ul>
+                    <li><strong>Archivo parroquial</strong> <span>Fotografías de la primera piedra (1923) y documentos de la parroquia.</span></li>
+                    <li><a href="https://esglesia.barcelona/parroquies/santa-teresa-de-jesus/" target="_blank" rel="noopener">Arzobispado de Barcelona: ficha de la parroquia</a> <span>Nacimiento de la comunidad en 1924, el obispo Guillamet, mosén Deix y el padre Moré.</span></li>
+                    <li><a href="https://es.wikipedia.org/wiki/Santuario_de_Nuestra_Se%C3%B1ora_del_Monte_Carmelo" target="_blank" rel="noopener">Wikipedia: Santuario de Nuestra Señora del Monte Carmelo</a> <span>La ermita de 1864, la capilla de Can Grau (1913) y los años de la guerra.</span></li>
+                    <li><a href="https://www.campaners.com/php/torrepdf.php?numer=7084" target="_blank" rel="noopener">Inventario de campanarios de Cataluña (campaners.com)</a> <span>Descripción del templo y del campanario, levantados entre 1923 y 1927.</span></li>
+                    <li><a href="https://www.poblesdecatalunya.cat/element.php?e=14551" target="_blank" rel="noopener">Pobles de Catalunya: ficha de la iglesia</a> <span>Construcción del templo y su reconstrucción de 1939.</span></li>
+                    <li><a href="https://agora.xtec.cat/colegiosantateresa/linstitut/historia/" target="_blank" rel="noopener">Escola Santa Teresa: historia</a> <span>El origen de la escuela en los locales parroquiales en 1928.</span></li>
+                    <li><a href="https://hemeroteca.lavanguardia.com/" target="_blank" rel="noopener">Hemeroteca de La Vanguardia</a> <span>Reseña de la bendición del templo, 20 de octubre de 1928.</span></li>
+                    <li><a href="https://www.elnacional.cat/es/barcelona/hundimiento-carmel-veinte-anos-boquete-marco-barrio_1350826_102.html" target="_blank" rel="noopener">El Nacional: «Hundimiento del Carmel, veinte años después»</a> <span>Las señales previas, los desalojos y los realojos (enero de 2025).</span></li>
+                    <li><a href="https://www.totbarcelona.cat/es/politica-es/vint-anys-del-socavon-del-carmel-la-tragedia-que-cambio-la-obra-publica-en-cataluna-585251/" target="_blank" rel="noopener">Tot Barcelona: «Vint anys del socavón del Carmel»</a> <span>Cronología del hundimiento y edificios derribados (enero de 2025).</span></li>
+                    <li><a href="https://es.ara.cat/sociedad/barcelona/20-anos-boquete-carmel-hizo-temblar-politica-catalana_1_5267430.html" target="_blank" rel="noopener">Ara: «20 años del boquete del Carmel»</a> <span>Las consecuencias para el barrio (enero de 2025).</span></li>
+                    <li><a href="https://es.wikipedia.org/wiki/Estaci%C3%B3n_de_El_Carmel" target="_blank" rel="noopener">Wikipedia: Estación de El Carmel</a> <span>Inauguración de la estación de la línea 5 el 30 de julio de 2010.</span></li>
+                    <li><a href="https://es.wikipedia.org/wiki/Teresa_de_Jes%C3%BAs" target="_blank" rel="noopener">Wikipedia: Teresa de Jesús</a> <span>Vida de nuestra titular y su doctorado de 1970.</span></li>
+                    <li><a href="https://commons.wikimedia.org/wiki/File:EscudoTeresianas.png" target="_blank" rel="noopener">Wikimedia Commons: emblema teresiano</a> <span>Grabado de dominio público que usamos en «Nuestra titular».</span></li>
+                </ul>
+            </aside>
         </section>
 
         <section id="titular">
             <div class="two-col center">
                 <figure class="teresa-emblem">
                     <span class="teresa-emblem-art" role="img" aria-label="Emblema teresiano: el monte Carmelo con la cruz, dos corazones, plumas y corona"></span>
-                    <figcaption>Emblema de la Compañía de Santa Teresa de Jesús (teresianas), fundada por san Enrique de Ossó. Grabado de hacia 1880-1890, de dominio público (Wikimedia Commons).</figcaption>
+                    <figcaption>Emblema de la Compañía de Santa Teresa de Jesús (teresianas), fundada por san Enrique de Ossó. Grabado de hacia 1880-1890, de dominio público: <a href="https://commons.wikimedia.org/wiki/File:EscudoTeresianas.png" target="_blank" rel="noopener">Wikimedia Commons</a></figcaption>
                 </figure>
                 <div class="prose">
                     <span class="subtitulo text-left">Nuestra titular</span>
@@ -2856,6 +2876,42 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ('Fuentes', 'Fonts', 'Sources'),
+                      ('Fuente: ficha de la parroquia en el inventario de campanarios de Cataluña (campaners.com)', "Font: fitxa de la parròquia a l'inventari de campanars de Catalunya (campaners.com)", "Source: the parish's record in the inventory of Catalan bell towers (campaners.com)"),
+                      ('Fuentes:', 'Fonts:', 'Sources:'),
+                      ('El Nacional', 'El Nacional', 'El Nacional'),
+                      ('Tot Barcelona', 'Tot Barcelona', 'Tot Barcelona'),
+                      ('Ara', 'Ara', 'Ara'),
+                      ('(enero de 2025)', '(gener de 2025)', '(January 2025)'),
+                      ('Emblema de la Compañía de Santa Teresa de Jesús (teresianas), fundada por san Enrique de Ossó. Grabado de hacia 1880-1890, de dominio público:', "Emblema de la Companyia de Santa Teresa de Jesús (teresianes), fundada per sant Enric d'Ossó. Gravat de cap al 1880-1890, de domini públic:", 'Emblem of the Society of Saint Teresa of Jesus (Teresian sisters), founded by Saint Enrique de Ossó. Engraving from around 1880-1890, public domain:'),
+                      ('Wikimedia Commons', 'Wikimedia Commons', 'Wikimedia Commons'),
+                      ('Archivo parroquial', 'Arxiu parroquial', 'Parish archive'),
+                      ('Fotografías de la primera piedra (1923) y documentos de la parroquia.', 'Fotografies de la primera pedra (1923) i documents de la parròquia.', 'Photographs of the laying of the first stone (1923) and parish documents.'),
+                      ('Arzobispado de Barcelona: ficha de la parroquia', 'Arquebisbat de Barcelona: fitxa de la parròquia', 'Archdiocese of Barcelona: parish profile'),
+                      ('Nacimiento de la comunidad en 1924, el obispo Guillamet, mosén Deix y el padre Moré.', 'Naixement de la comunitat el 1924, el bisbe Guillamet, mossèn Deix i el pare Moré.', 'Birth of the community in 1924, Bishop Guillamet, Fr Deix and Fr Moré.'),
+                      ('Wikipedia: Santuario de Nuestra Señora del Monte Carmelo', 'Viquipèdia: Santuari de la Mare de Déu del Carmel', 'Wikipedia: Sanctuary of Our Lady of Mount Carmel'),
+                      ('La ermita de 1864, la capilla de Can Grau (1913) y los años de la guerra.', "L'ermita del 1864, la capella de Can Grau (1913) i els anys de la guerra.", 'The 1864 hermitage, the Can Grau chapel (1913) and the war years.'),
+                      ('Inventario de campanarios de Cataluña (campaners.com)', 'Inventari de campanars de Catalunya (campaners.com)', 'Inventory of Catalan bell towers (campaners.com)'),
+                      ('Descripción del templo y del campanario, levantados entre 1923 y 1927.', 'Descripció del temple i del campanar, aixecats entre el 1923 i el 1927.', 'Description of the church and bell tower, built between 1923 and 1927.'),
+                      ('Pobles de Catalunya: ficha de la iglesia', "Pobles de Catalunya: fitxa de l'església", 'Pobles de Catalunya: church record'),
+                      ('Construcción del templo y su reconstrucción de 1939.', 'Construcció del temple i la seva reconstrucció del 1939.', 'Construction of the church and its 1939 rebuilding.'),
+                      ('Escola Santa Teresa: historia', 'Escola Santa Teresa: història', 'Escola Santa Teresa: history'),
+                      ('El origen de la escuela en los locales parroquiales en 1928.', "L'origen de l'escola als locals parroquials el 1928.", 'How the school began in the parish rooms in 1928.'),
+                      ('Hemeroteca de La Vanguardia', 'Hemeroteca de La Vanguardia', 'La Vanguardia newspaper archive'),
+                      ('Reseña de la bendición del templo, 20 de octubre de 1928.', "Ressenya de la benedicció del temple, 20 d'octubre de 1928.", 'Report on the blessing of the church, 20 October 1928.'),
+                      ('El Nacional: «Hundimiento del Carmel, veinte años después»', 'El Nacional: «Enfonsament del Carmel, vint anys després»', 'El Nacional: «The Carmel collapse, twenty years on»'),
+                      ('Las señales previas, los desalojos y los realojos (enero de 2025).', 'Els senyals previs, els desallotjaments i els reallotjaments (gener de 2025).', 'The warning signs, evacuations and rehousing (January 2025).'),
+                      ('Tot Barcelona: «Vint anys del socavón del Carmel»', 'Tot Barcelona: «Vint anys del socavón del Carmel»', 'Tot Barcelona: «Twenty years since the Carmel sinkhole»'),
+                      ('Cronología del hundimiento y edificios derribados (enero de 2025).', "Cronologia de l'enfonsament i edificis enderrocats (gener de 2025).", 'Timeline of the collapse and demolished buildings (January 2025).'),
+                      ('Ara: «20 años del boquete del Carmel»', 'Ara: «20 anys del forat del Carmel»', 'Ara: «20 years since the Carmel hole»'),
+                      ('Las consecuencias para el barrio (enero de 2025).', 'Les conseqüències per al barri (gener de 2025).', 'What it meant for the neighbourhood (January 2025).'),
+                      ('Wikipedia: Estación de El Carmel', "Viquipèdia: Estació d'El Carmel", 'Wikipedia: El Carmel station'),
+                      ('Inauguración de la estación de la línea 5 el 30 de julio de 2010.', "Inauguració de l'estació de la línia 5 el 30 de juliol de 2010.", 'Opening of the line 5 station on 30 July 2010.'),
+                      ('Wikipedia: Teresa de Jesús', 'Viquipèdia: Teresa de Jesús', 'Wikipedia: Teresa of Ávila'),
+                      ('Vida de nuestra titular y su doctorado de 1970.', 'Vida de la nostra titular i el seu doctorat del 1970.', 'Life of our patron saint and her 1970 doctorate.'),
+                      ('Wikimedia Commons: emblema teresiano', 'Wikimedia Commons: emblema teresià', 'Wikimedia Commons: Teresian emblem'),
+                      ('Grabado de dominio público que usamos en «Nuestra titular».', 'Gravat de domini públic que fem servir a «La nostra titular».', 'Public-domain engraving used in «Our patron saint».'),
+                      ('De dónde sale lo que contamos en esta página. Los enlaces se abren en una pestaña nueva.', "D'on surt el que expliquem en aquesta pàgina. Els enllaços s'obren en una pestanya nova.", 'Where the information on this page comes from. Links open in a new tab.'),
                       ('Este emblema teresiano nace del escudo del Carmelo, la orden que Santa Teresa reformó: el monte Carmelo coronado por la cruz y la estrella. A él se añaden dos corazones con los lemas «Viva Jesús» y «Sólo Dios basta», las plumas de la escritora y la corona.', "Aquest emblema teresià neix de l'escut del Carmel, l'orde que Santa Teresa va reformar: el mont Carmel coronat per la creu i l'estrella. S'hi afegeixen dos cors amb els lemes «Viva Jesús» i «Sólo Dios basta», les plomes de l'escriptora i la corona.", "This Teresian emblem grows out of the coat of arms of Carmel, the Order Saint Teresa reformed: Mount Carmel crowned by the cross and the star. To it are added two hearts with the mottos «Viva Jesús» and «Sólo Dios basta» (God alone suffices), the writer's quills and the crown."),
                       ('El escudo carmelitano completo, con la cruz, las tres estrellas y la corona, está pintado en lo alto del presbiterio de nuestra iglesia. Y el monte Carmelo nos toca de cerca: de él toma el nombre la ermita de 1864 y, con ella, nuestro barrio.', "L'escut carmelità complet, amb la creu, les tres estrelles i la corona, està pintat a dalt del presbiteri de la nostra església. I el mont Carmel ens toca de prop: d'ell pren el nom l'ermita del 1864 i, amb ella, el nostre barri.", 'The full Carmelite coat of arms, with the cross, the three stars and the crown, is painted high above the sanctuary of our church. And Mount Carmel is close to home: the 1864 hermitage takes its name from it, and so does our neighbourhood.'),
                       ('Voluntariado | Parroquia Santa Teresa de Jesús', 'Voluntariat | Parròquia de Santa Teresa de Jesús', 'Volunteering | Santa Teresa de Jesús Parish'),

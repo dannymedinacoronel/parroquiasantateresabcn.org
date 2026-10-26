@@ -2958,3 +2958,20 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 .teresa-emblem-art { display: block; width: min(300px, 70vw); aspect-ratio: 1; border-radius: 50%; background: #fbf5e8; border: 1px solid #e2d1ad; box-shadow: var(--shadow-md), inset 0 0 0 10px #fffaf0, inset 0 0 0 11px #e2d1ad; position: relative; }
 .teresa-emblem-art::after { content: ""; position: absolute; inset: 15%; background: #7a2e2e; -webkit-mask: url('../fotosdefinitivas/web/escudo-teresiano.png') center / contain no-repeat; mask: url('../fotosdefinitivas/web/escudo-teresiano.png') center / contain no-repeat; }
 .teresa-emblem figcaption { max-width: 300px; text-align: center; font-size: .78rem; font-style: italic; color: var(--muted); }
+
+/* Historia: fuentes con enlace */
+.hist-sources { max-width: 900px; margin: 3.5rem auto 0; padding: 2rem 2.25rem; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+.hist-sources h3 { font-family: var(--header-font); font-size: 1.7rem; color: var(--heading-color); margin-bottom: .35rem; }
+.hist-sources > p { font-size: .85rem; color: var(--muted); margin-bottom: 1.25rem; }
+.hist-sources ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: .9rem 2rem; }
+.hist-sources li { font-size: .85rem; line-height: 1.5; padding-left: 1rem; border-left: 2px solid var(--accent-light); }
+.hist-sources li a, .hist-sources li strong { display: block; font-weight: 600; color: var(--accent-dark); }
+.hist-sources li a { text-decoration: underline; text-decoration-color: var(--accent-light); text-underline-offset: 3px; overflow-wrap: anywhere; }
+.hist-sources li a:hover { color: var(--heading-color); text-decoration-color: currentColor; }
+.hist-sources li span { color: var(--muted); }
+.tl-source a, .teresa-emblem figcaption a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.tl-source a:hover, .teresa-emblem figcaption a:hover { color: var(--accent-dark); }
+@media (max-width: 700px) {
+    .hist-sources { padding: 1.5rem 1.25rem; margin-top: 2.5rem; }
+    .hist-sources ul { grid-template-columns: 1fr; }
+}
