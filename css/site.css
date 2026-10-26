@@ -2785,3 +2785,4 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
     .sub-cta-link { margin: .6rem .5rem .5rem 1.1rem; }
 }
 @media (min-width: 1281px) { .sub-menu.cols > .col-break { padding-top: .35rem !important; } }
+.sub-cta-link span::after { content: " a092"; }

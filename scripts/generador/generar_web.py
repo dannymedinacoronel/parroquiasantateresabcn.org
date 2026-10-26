@@ -54,9 +54,9 @@ NAV = [
     ("dinamica", "Comunidad", "html/dinamicapastoral.html", [
         ("§", "Vida de la comunidad", "html/dinamicapastoral.html"),
         ("Grupos y servicios", "html/dinamicapastoral.html", "grupo"),
-        ("Catequesis", "html/catequesis.html", "libro"),
         ("Jóvenes", "html/jovenes2alternativa.html", "persona"),
         ("Momentos de la comunidad", "html/dinamicapastoral.html#momentos", "foto"),
+        ("¶", "¿Quieres colaborar?", "html/contacto.html#escribenos", "Únete a un grupo de la parroquia"),
     ]),
     ("noticias|familia", "Actualidad", "html/noticias.html", [
         ("§parish", "Parroquia", "html/noticias.html#parroquia"),
@@ -1848,16 +1848,10 @@ PAGES["html/catequesis.html"] = page(1, "Catequesis", "Inscripciones a la catequ
                 <p>Niños y adolescentes reciben, de forma periódica, una formación cristiana que les prepara para recibir el sacramento de la eucaristía y el de la confirmación.</p>
             </div>
             <div class="icon-grid two">
-                <div class="icon-card">
-                    <div class="icon-circle">""" + SAC_ICONS["caliz"] + """</div>
-                    <h3>Primera comunión</h3>
-                    <p>Preparación de los niños para recibir por primera vez el sacramento de la eucaristía.</p>
-                </div>
-                <div class="icon-card">
-                    <div class="icon-circle">""" + SAC_ICONS["paloma"] + """</div>
-                    <h3>Confirmación</h3>
-                    <p>Para adolescentes a partir de los 14 años. Cada tres años se celebra la Confirmación en la parroquia.</p>
-                </div>
+""" + "\n".join([
+    icon_card("caliz", "Primera comunión", "Preparación de los niños para recibir por primera vez el sacramento de la eucaristía.", "comuniones.html", "Información e inscripción"),
+    icon_card("paloma", "Confirmación", "Para adolescentes a partir de los 14 años. Cada tres años se celebra la Confirmación en la parroquia.", "confirmacion.html", "Más información"),
+]) + """
             </div>
         </section>
 
@@ -2524,6 +2518,9 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ("¿Quieres colaborar?", "Vols col·laborar?", "Would you like to help?"),
+                      ("Únete a un grupo de la parroquia", "Uneix-te a un grup de la parròquia", "Join a parish group"),
+                      ("Información e inscripción &rarr;", "Informació i inscripció &rarr;", "Information and registration &rarr;"),
                       ("Parroquia", "Parròquia", "Parish"), ("Vida de la comunidad", "Vida de la comunitat", "Community life"),
                       ("Organización", "Organització", "Organisation"), ("Estamos para ayudarte", "Som aquí per ajudar-te", "We are here to help"),
                       ("¿Quieres pedir un sacramento?", "Vols demanar un sagrament?", "Would you like to request a sacrament?"),
