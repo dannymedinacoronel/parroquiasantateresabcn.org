@@ -2581,10 +2581,14 @@ def out_path(lang, rel):
 
 
 def page_url(lang, rel):
+    """Dirección pública de la página (tildes y eñes codificadas, como piden Google y los sitemaps)."""
+    from urllib.parse import quote
     p = out_path(lang, rel)
     if p.endswith("index.html"):
-        return SITE + p[:-len("index.html")]
-    return SITE + (p[:-len(".html")] if p.endswith(".html") else p)
+        p = p[:-len("index.html")]
+    elif p.endswith(".html"):
+        p = p[:-len(".html")]
+    return SITE + quote(p)
 
 
 def relurl(from_path, to_path):
