@@ -160,7 +160,11 @@
         function grab(h) {
             try {
                 var a = h && (typeof h.get === "function" ? h.get("Authorization") : (h.Authorization || h.authorization));
-                if (a && /^(Bearer|token) /i.test(a)) localStorage.setItem("pst-gw-token", JSON.stringify({ t: a.replace(/^(Bearer|token) /i, ""), at: Date.now() }));
+                if (a && /^(Bearer|token) /i.test(a)) {
+                    localStorage.setItem("pst-gw-token", JSON.stringify({ t: a.replace(/^(Bearer|token) /i, ""), at: Date.now() }));
+                    // con la web en «Próximamente», quien ha entrado en el panel ve la web completa
+                    document.cookie = "pst_vista=1; path=/; max-age=31536000; samesite=lax; secure";
+                }
             } catch (e) { }
         }
         window.fetch = function (input, init) {
