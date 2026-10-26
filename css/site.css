@@ -2772,7 +2772,7 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 }
 .sub-cta-link strong { font-family: var(--header-font); font-style: italic; font-weight: 500; font-size: 1.12rem; line-height: 1.2; color: #fff8ea; }
 .sub-cta-link span { font-size: .72rem; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-light); }
-.sub-cta-link span::after { content: " →"; }
+.sub-cta-link span::after { content: "\00a0\2192"; }
 .sub-cta-link:hover, .sub-cta-link:focus-visible { transform: translateY(-2px); box-shadow: inset 0 0 0 1px rgba(230,211,168,.5), 0 10px 22px rgba(42,16,18,.3); }
 @media (min-width: 1281px) {
     /* todos los desplegables empiezan igual: título arriba */
@@ -2785,4 +2785,4 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
     .sub-cta-link { margin: .6rem .5rem .5rem 1.1rem; }
 }
 @media (min-width: 1281px) { .sub-menu.cols > .col-break { padding-top: .35rem !important; } }
-.sub-cta-link span::after { content: " a092"; }
+.sub-cta-link span::after { content: "\00a0\2192"; }
