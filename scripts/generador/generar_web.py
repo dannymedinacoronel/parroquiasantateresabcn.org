@@ -38,11 +38,11 @@ for _f in ("css/fonts.css", "css/site.css", "js/site.js", "js/liturgia.js", "dat
 # La clave del apartado admite varias páginas («historia|organigrama») para marcarlo como activo.
 NAV = [
     ("eucaristias", "Celebraciones", "html/misas.html", [
-        ("§", "Eucaristía"),
+        ("§", "Eucaristía", "html/misas.html"),
         ("Horarios de misa", "html/misas.html#horarios", "reloj"),
         ("Misa con coro góspel", "html/misas.html#gospel", "nota"),
         ("Calendario semanal", "html/misas.html#calendario", "cal"),
-        ("§", "Sacramentos"),
+        ("§", "Sacramentos", "html/adminsacra.html"),
         ("Bautismo", "html/bautismo.html", "agua"),
         ("Primera Comunión", "html/comuniones.html", "caliz"),
         ("Confirmación", "html/confirmacion.html", "paloma"),
@@ -57,7 +57,7 @@ NAV = [
         ("Momentos de la comunidad", "html/dinamicapastoral.html#momentos", "foto"),
     ]),
     ("noticias|familia", "Actualidad", "html/noticias.html", [
-        ("§parish", "De nuestra parroquia"),
+        ("§parish", "De nuestra parroquia", "html/noticias.html#parroquia"),
         ("+Noticias de la parroquia", "html/noticias.html#parroquia"),
         ("+Última reflexión", "__ULTIMA__"),
         ("+Todas las reflexiones", "html/humiliasmenu.html"),
@@ -107,7 +107,10 @@ def nav_items(depth, active):
             if l.startswith("§"):   # título de grupo dentro del submenú (el segundo abre la otra columna)
                 heads += 1
                 cls = "sub-heading" + (" parish" if l == "§parish" else "") + (" col-break" if heads == 2 else "")
-                rows.append(f'                    <li class="{cls}">{p}</li>')
+                if len(c) > 2:   # el título lleva a la página general del grupo (p. ej. Sacramentos)
+                    rows.append(f'                    <li class="{cls}"><a href="{href(c[2], depth)}" class="sub-heading-link"><span>{p}</span><small>Ver todo</small></a></li>')
+                else:
+                    rows.append(f'                    <li class="{cls}">{p}</li>')
             elif l.startswith("+"):  # contenido propio de la parroquia: con la cruz
                 rows.append(f'                    <li class="parish-item"><a href="{href(p, depth)}" class="sub-link parish-link">{PARISH_ICON}<span>{l[1:]}</span></a></li>')
             else:
@@ -2512,7 +2515,7 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Matrimonio y aniversarios", "Matrimoni i aniversaris", "Marriage and anniversaries"),
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
-                      ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Contacto", "Contacte", "Contact")]:
+                      ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"), ("Contacto", "Contacte", "Contact")]:
     TABLE[_es] = {"ca": _ca, "en": _en}
 for _k, _l, _p, _c in NAV:
     _tl = TABLE.get(_l, {"ca": _l, "en": _l})

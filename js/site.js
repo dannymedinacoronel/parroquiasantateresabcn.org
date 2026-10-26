@@ -381,6 +381,15 @@
         });
     }
 
+    /* --- Menú: marcar la página en la que estás (también para lectores de pantalla) --- */
+    (function () {
+        var here = location.pathname.replace(/\.html$/, "").replace(/\/index$/, "/");
+        document.querySelectorAll(".sub-link, .sub-heading-link").forEach(function (a) {
+            if (a.hash || a.protocol !== location.protocol) return;
+            if (a.pathname.replace(/\.html$/, "").replace(/\/index$/, "/") === here) a.setAttribute("aria-current", "page");
+        });
+    })();
+
     /* --- Horario: resaltar el día de hoy --- */
     var todayIdx = new Date().getDay();
     document.querySelectorAll("[data-days]").forEach(function (el) {
