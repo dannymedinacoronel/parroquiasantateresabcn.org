@@ -2802,14 +2802,19 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 @media (max-width: 640px) { .finder-frame iframe { height: 900px; } }
 .sub-cta-link span i { font-style: normal; }
 
-/* Mapa «Cómo llegar»: en ordenador la tarjeta va a la izquierda y el mapa empieza a su derecha,
-   para no tapar la ficha de Google Maps (que sale en la esquina superior izquierda del mapa) */
-@media (min-width: 801px) {
-    .location { background: radial-gradient(circle at 15% 30%, rgba(191,160,101,.18), transparent 55%), var(--bg-warm); }
-    .location-map { left: calc(clamp(1.25rem, 7vw, 8rem) + min(500px, 100% - 2.5rem) + 2.5rem); }
-    .location-big .location-map { left: calc(clamp(1.25rem, 7vw, 8rem) + min(520px, 100% - 2.5rem) + 2.5rem); }
+/* Mapa «Cómo llegar»: el mapa a todo lo ancho y la tarjeta a la DERECHA, para que la ficha de
+   Google Maps (esquina superior izquierda) y la chincheta (centro) se vean. Con menos de 1200 px
+   la tarjeta tapaba la chincheta: ahí el mapa va arriba y la tarjeta debajo, como en el móvil. */
+@media (min-width: 1200px) {
+    .location { justify-content: flex-end; }
+    .location-card, .location-big .location-card { margin: 4.5rem clamp(1.5rem, 6vw, 7rem) 4.5rem auto; }
+    .location-map .consent-placeholder, .location-big .location-map .consent-placeholder { padding-left: 1.5rem !important; padding-right: min(48%, 600px); }
+}
+@media (min-width: 801px) and (max-width: 1199px) {
+    .location { display: block; min-height: 0; background: var(--bg-warm); }
+    .location-map { position: relative; height: 440px; }
     .location-map .consent-placeholder, .location-big .location-map .consent-placeholder { padding-left: 1.5rem !important; }
-    .location-map::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 1px; background: rgba(191,160,101,.5); z-index: 1; }
+    .location-card, .location-big .location-card { margin: -80px auto 4rem; }
 }
 
 /* ==========================================================================
@@ -2896,3 +2901,30 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 .mag-hint { margin: .9rem 0 0; text-align: center; font-size: .8rem; color: rgba(243,230,200,.7); }
 .mag-actions { margin: 2.5rem auto 0; }
 @media (max-width: 640px) { .mag-sep { display: none; } .mag-btn-text { padding: 0 .8rem; font-size: .7rem; } }
+
+/* Portada: una frase de Santa Teresa con cada foto */
+.hero-quote { display: grid; justify-items: end; gap: .15rem; text-align: right; max-width: 30rem; }
+.hero-quote .hero-caption { font-size: 1.35rem; line-height: 1.25; }
+.hero-quote small { font: 600 .62rem/1 var(--body-font); letter-spacing: .22em; text-transform: uppercase; color: var(--accent-light); text-shadow: 0 1px 8px rgba(0,0,0,.45); }
+@media (max-width: 768px) {
+    .hero > .hero-slider-ui { flex-direction: column; gap: .7rem; bottom: 1rem; }
+    .hero-quote { justify-items: center; text-align: center; padding: 0 1.25rem; }
+    .hero-quote .hero-caption { display: block; font-size: 1.1rem; }
+}
+
+/* Revista: «Descargar o imprimir». js/revista.js monta la revista entera en páginas A4 dentro
+   de .mag-print (fuera de la pantalla) y al imprimir solo se ve eso. */
+.mag-btn-print { border-color: var(--accent-color); color: #f0d79a; }
+.mag-print { position: fixed; left: -99999px; top: 0; visibility: hidden; }
+@media print {
+    @page { size: A4; margin: 0; }
+    html.mag-printing, html.mag-printing body { margin: 0 !important; padding: 0 !important; background: #fff !important; overflow: visible !important; }
+    html.mag-printing body > *:not(.mag-print) { display: none !important; }
+    html.mag-printing .mag-print { position: static; visibility: visible; }
+    .mag-print .mag-page { break-after: page; page-break-after: always; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .mag-print .mag-page:last-child { break-after: auto; page-break-after: auto; }
+    .mag-print .mag-text .mag-inner, .mag-print .mag-index .mag-inner, .mag-print .mag-blank .mag-inner { background: none; }
+}
+
+/* Historia: varios párrafos en un mismo año */
+.timeline-item > p + p { margin-top: .6rem; }

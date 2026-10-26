@@ -738,7 +738,7 @@ def mag_book(n):
             </template>"""
     return f"""
         <section class="mag-section" id="hojear">
-            <div class="mag" data-mag data-run="{qesc(run)}" data-label-page="Página" data-label-index="En este número" tabindex="0" aria-label="Revista para hojear: usa las flechas del teclado para pasar página">
+            <div class="mag" data-mag data-run="{qesc(run)}" data-label-page="Página" data-label-index="En este número" data-label-wait="Preparando la revista para imprimir…" tabindex="0" aria-label="Revista para hojear: usa las flechas del teclado para pasar página">
                 <p class="mag-loading">Abriendo la revista…</p>
                 <div class="mag-host"></div>
                 <div class="mag-bar">
@@ -748,8 +748,10 @@ def mag_book(n):
                     <span class="mag-sep"></span>
                     <button type="button" class="mag-btn mag-btn-text" data-mag-index>Índice</button>
                     <button type="button" class="mag-btn mag-btn-text" data-mag-full>Pantalla completa</button>
+                    <button type="button" class="mag-btn mag-btn-text mag-btn-print" data-mag-print>Descargar o imprimir</button>
                 </div>
                 <p class="mag-hint">Arrastra la esquina de la página o usa las flechas para pasar página.</p>
+                <p class="mag-hint">Para guardarla en PDF, pulsa «Descargar o imprimir» y elige «Guardar como PDF».</p>
                 <template class="mag-fixed" data-kind="mag-cover">{cover}
                 </template>
                 <template class="mag-fixed" data-kind="mag-text mag-intro"><div class="mag-run">{esc(run)}</div><div class="mag-flow"><span class="mag-kicker">Presentación</span><h2 class="mag-title">{esc(n["titulo"])}</h2>{date_long(n, "mag-date")}
@@ -904,13 +906,14 @@ def location_block(big=False, sid="ubicacion"):
 
 # Fotos del pase de la portada (fotosdefinitivas/web/portada/portada-N-1920.jpg y -1280.jpg).
 # Cada una se descarga justo antes de mostrarse; la primera, enseguida.
+# Una frase de Santa Teresa con cada foto de la portada (su poema «Nada te turbe»)
 HERO_SLIDES = [
-    "Eucaristía dominical",
-    "Nuestro campanario",
-    "Domingo de Ramos",
-    "La comunidad en la plaza",
-    "Bendición de los ramos",
-    "Una parroquia viva",
+    "Nada te turbe, nada te espante",
+    "Todo se pasa",
+    "Dios no se muda",
+    "La paciencia todo lo alcanza",
+    "Quien a Dios tiene nada le falta",
+    "Sólo Dios basta",
 ]
 
 INDEX_HEAD = """    <link rel="preload" as="image" href="fotosdefinitivas/web/portada/portada-1-1920.jpg" media="(min-width: 1281px)" fetchpriority="high">
@@ -1101,7 +1104,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", ext
             </div>
             <a href="#horarios" class="scroll-cue" aria-label="Bajar a los horarios"></a>
             <div class="hero-slider-ui" aria-hidden="true">
-                <span class="hero-caption" data-hero-caption></span>
+                <span class="hero-quote"><span class="hero-caption" data-hero-caption></span><small>Santa Teresa de Jesús</small></span>
                 <span class="hero-dots">""" + "".join('<i></i>' for _ in HERO_SLIDES) + """</span>
             </div>
         </section>
@@ -1482,14 +1485,24 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
             </div>
             <div class="timeline">
                 <div class="timeline-item">
+                    <div class="year" data-count="1864" data-from="1850">1864</div>
+                    <h3>La ermita que dio nombre al barrio</h3>
+                    <p>El 11 de abril de 1864 abre al culto la ermita de la Virgen del Carmen, en lo alto del antiguo Turó d'en Móra. Desde entonces la colina se llama monte Carmelo, y el barrio que creció a sus pies tomó su nombre.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="year" data-count="1913" data-from="1850">1913</div>
+                    <h3>Una capilla en Can Grau</h3>
+                    <p>El padre Moré, que atendía la ermita del Carmel, se hace cargo de una capilla nueva levantada en la finca de Can Grau: el germen de nuestra parroquia. En 1930 la propia ermita pasará a depender de ella.</p>
+                </div>
+                <div class="timeline-item">
                     <div class="year" data-count="1923" data-from="1900">1923</div>
                     <h3>La primera piedra</h3>
                     <p>Hemos localizado unas fotografías pertenecientes a la colocación de la 1ª piedra de nuestra querida parroquia, fechadas en 1923 (posiblemente en el mes de mayo).</p>
                 </div>
                 <div class="timeline-item">
                     <div class="year" data-count="1924" data-from="1900">1924</div>
-                    <h3>Construcción de la iglesia</h3>
-                    <p>La iglesia se construyó en terrenos de la antigua finca de Can Grau (actual cruce entre Llobregós y Conca de Tremp) y era tenencia parroquial de Sant Joan d'Horta.</p>
+                    <h3>Nace la comunidad</h3>
+                    <p>La iglesia se construye en terrenos de la antigua finca de Can Grau (actual cruce entre Llobregós y Conca de Tremp). El obispo Ramon Guillamet la erige en tenencia parroquial de Sant Joan d'Horta, y su primer teniente, mosén Francesc Deix, inaugura la vida de la comunidad el 17 de febrero de 1924.</p>
                 </div>
                 <div class="timeline-item">
                     <div class="year" data-count="1927" data-from="1900">1927</div>
@@ -1507,11 +1520,29 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
                     <div class="year" data-count="1928" data-from="1900">1928</div>
                     <h3>Bendición del templo</h3>
                     <p>Su bendición se produjo en octubre de 1928, tal como recoge la reseña de La Vanguardia del día 20.</p>
+                    <p>Ese mismo año, un grupo de jesuitas empieza a dar clase a los niños del barrio en los locales parroquiales: así nace la Escola Santa Teresa, que sigue siendo nuestra vecina.</p>
                 </div>
                 <div class="timeline-item">
-                    <div class="year" data-count="2005" data-from="1900">2005</div>
-                    <h3>El hundimiento del túnel</h3>
-                    <p>En febrero de 2005 la parroquia se situó en el centro de las miradas, al estar afectada por el desgraciado hundimiento del túnel de maniobra durante las obras del metro. El patio de la iglesia está situado justo enfrente, al otro lado de la calle, de donde se formó el agujero.</p>
+                    <div class="year" data-count="1936" data-from="1850">1936</div>
+                    <h3>Los años de la guerra</h3>
+                    <p>La Guerra Civil golpea con dureza al barrio: la ermita del Carmel es incendiada y el padre Moré, asesinado. Nuestra iglesia también queda muy dañada y, según las fichas de patrimonio, en 1939 se rehace con unas dimensiones más reducidas. Acabada la guerra, la tenencia ya es parroquia, con mosén Deix como rector.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="year" data-count="2005" data-from="1850">2005</div>
+                    <h3>El socavón del Carmel</h3>
+                    <p>El 27 de enero de 2005 se hundió un túnel de las obras de la línea 5 del metro y se abrió un socavón de unos 30 metros de profundidad justo enfrente del patio de la iglesia, al otro lado de la calle. No hubo heridos, pero más de mil vecinos tuvieron que dejar sus casas.</p>
+                    <details class="tl-more">
+                        <summary>Seguir leyendo</summary>
+                        <p>Los vecinos llevaban semanas avisando de grietas y ruidos. El 25 de enero un primer desprendimiento obligó a desalojar el número 10 del pasaje de Calafell, y dos días después el túnel cedió y se tragó un garaje. Se vaciaron 84 edificios, cerraron comercios y dos escuelas —entre ellas la Escola Santa Teresa— y muchas familias vivieron en hoteles casi dos años.</p>
+                        <p>Hubo que derribar cinco edificios y rellenar el subsuelo con miles de metros cúbicos de hormigón. Los vecinos fueron realojados a lo largo de 2006, algunos en un bloque nuevo de la misma calle Llobregós.</p>
+                        <p class="tl-source">Fuentes: El Nacional, Tot Barcelona y Ara (enero de 2025).</p>
+                    </details>
+                    <a href="revista/1-bienvenidos-a-santa-teresa--memoria-el-socavon-del-carmel.html" class="link-arrow">Léelo en la revista <span>&rarr;</span></a>
+                </div>
+                <div class="timeline-item">
+                    <div class="year" data-count="2010" data-from="1850">2010</div>
+                    <h3>El metro llega al Carmel</h3>
+                    <p>El 30 de julio de 2010 se inaugura la estación de El Carmel de la línea 5, en la misma calle Llobregós, frente al mercado: cinco años después del socavón, el barrio tiene por fin su metro.</p>
                 </div>
                 <div class="timeline-item timeline-now">
                     <div class="year">Hoy</div>
@@ -2712,7 +2743,32 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ('La ermita que dio nombre al barrio', "L'ermita que va donar nom al barri", 'The hermitage that named the neighbourhood'),
+                      ("El 11 de abril de 1864 abre al culto la ermita de la Virgen del Carmen, en lo alto del antiguo Turó d'en Móra. Desde entonces la colina se llama monte Carmelo, y el barrio que creció a sus pies tomó su nombre.", "L'11 d'abril de 1864 s'obre al culte l'ermita de la Mare de Déu del Carme, dalt de l'antic Turó d'en Móra. Des d'aleshores el turó es diu del Carmel, i el barri que va créixer als seus peus en va prendre el nom.", "On 11 April 1864 the hermitage of Our Lady of Mount Carmel opened for worship on top of the old Turó d'en Móra. Since then the hill has been called Mount Carmel, and the neighbourhood that grew at its foot took its name."),
+                      ('Una capilla en Can Grau', 'Una capella a Can Grau', 'A chapel at Can Grau'),
+                      ('El padre Moré, que atendía la ermita del Carmel, se hace cargo de una capilla nueva levantada en la finca de Can Grau: el germen de nuestra parroquia. En 1930 la propia ermita pasará a depender de ella.', "El pare Moré, que tenia cura de l'ermita del Carmel, es fa càrrec d'una capella nova aixecada a la finca de Can Grau: el germen de la nostra parròquia. El 1930 la mateixa ermita en passarà a dependre.", 'Father Moré, who looked after the Carmel hermitage, takes charge of a new chapel built on the Can Grau estate: the seed of our parish. In 1930 the hermitage itself would come under it.'),
+                      ('Nace la comunidad', 'Neix la comunitat', 'The community is born'),
+                      ("La iglesia se construye en terrenos de la antigua finca de Can Grau (actual cruce entre Llobregós y Conca de Tremp). El obispo Ramon Guillamet la erige en tenencia parroquial de Sant Joan d'Horta, y su primer teniente, mosén Francesc Deix, inaugura la vida de la comunidad el 17 de febrero de 1924.", "L'església es construeix en terrenys de l'antiga finca de Can Grau (actual cruïlla entre Llobregós i Conca de Tremp). El bisbe Ramon Guillamet l'erigeix en tinença parroquial de Sant Joan d'Horta, i el seu primer tinent, mossèn Francesc Deix, inaugura la vida de la comunitat el 17 de febrer de 1924.", "The church is built on land of the old Can Grau estate (today the corner of Llobregós and Conca de Tremp). Bishop Ramon Guillamet makes it a parish outpost of Sant Joan d'Horta, and its first priest, Fr Francesc Deix, begins the life of the community on 17 February 1924."),
+                      ('Ese mismo año, un grupo de jesuitas empieza a dar clase a los niños del barrio en los locales parroquiales: así nace la Escola Santa Teresa, que sigue siendo nuestra vecina.', "Aquell mateix any, un grup de jesuïtes comença a fer classe als nens del barri als locals parroquials: així neix l'Escola Santa Teresa, que continua sent la nostra veïna.", "That same year a group of Jesuits began teaching the neighbourhood's children in the parish rooms: this was the start of the Escola Santa Teresa, still our next-door neighbour."),
+                      ('Los años de la guerra', 'Els anys de la guerra', 'The war years'),
+                      ('La Guerra Civil golpea con dureza al barrio: la ermita del Carmel es incendiada y el padre Moré, asesinado. Nuestra iglesia también queda muy dañada y, según las fichas de patrimonio, en 1939 se rehace con unas dimensiones más reducidas. Acabada la guerra, la tenencia ya es parroquia, con mosén Deix como rector.', "La Guerra Civil colpeja durament el barri: l'ermita del Carmel és incendiada i el pare Moré, assassinat. La nostra església també queda molt malmesa i, segons les fitxes de patrimoni, el 1939 es refà amb unes dimensions més reduïdes. Acabada la guerra, la tinença ja és parròquia, amb mossèn Deix com a rector.", 'The Civil War hit the neighbourhood hard: the Carmel hermitage was burned and Father Moré was killed. Our church was also badly damaged and, according to heritage records, it was rebuilt on a smaller scale in 1939. After the war the outpost was already a parish, with Fr Deix as its parish priest.'),
+                      ('El socavón del Carmel', "L'esvoranc del Carmel", 'The Carmel sinkhole'),
+                      ('El 27 de enero de 2005 se hundió un túnel de las obras de la línea 5 del metro y se abrió un socavón de unos 30 metros de profundidad justo enfrente del patio de la iglesia, al otro lado de la calle. No hubo heridos, pero más de mil vecinos tuvieron que dejar sus casas.', "El 27 de gener de 2005 es va enfonsar un túnel de les obres de la línia 5 del metro i es va obrir un esvoranc d'uns 30 metres de fondària just davant del pati de l'església, a l'altra banda del carrer. No hi va haver ferits, però més de mil veïns van haver de deixar casa seva.", 'On 27 January 2005 a tunnel being dug for metro line 5 collapsed, opening a sinkhole some 30 metres deep right opposite the church playground, across the street. Nobody was hurt, but more than a thousand residents had to leave their homes.'),
+                      ('Los vecinos llevaban semanas avisando de grietas y ruidos. El 25 de enero un primer desprendimiento obligó a desalojar el número 10 del pasaje de Calafell, y dos días después el túnel cedió y se tragó un garaje. Se vaciaron 84 edificios, cerraron comercios y dos escuelas —entre ellas la Escola Santa Teresa— y muchas familias vivieron en hoteles casi dos años.', "Els veïns feia setmanes que avisaven d'esquerdes i sorolls. El 25 de gener un primer despreniment va obligar a desallotjar el número 10 del passatge de Calafell, i dos dies després el túnel va cedir i es va empassar un garatge. Es van buidar 84 edificis, van tancar comerços i dues escoles —entre elles l'Escola Santa Teresa— i moltes famílies van viure en hotels gairebé dos anys.", 'Residents had been warning of cracks and noises for weeks. On 25 January a first rockfall forced the evacuation of no. 10 Passatge de Calafell, and two days later the tunnel gave way and swallowed a garage. 84 buildings were emptied, shops and two schools closed (one of them the Escola Santa Teresa) and many families lived in hotels for almost two years.'),
+                      ('Hubo que derribar cinco edificios y rellenar el subsuelo con miles de metros cúbicos de hormigón. Los vecinos fueron realojados a lo largo de 2006, algunos en un bloque nuevo de la misma calle Llobregós.', "Es van haver d'enderrocar cinc edificis i omplir el subsòl amb milers de metres cúbics de formigó. Els veïns van ser reallotjats al llarg del 2006, alguns en un bloc nou del mateix carrer Llobregós.", 'Five buildings had to be demolished and the ground filled with thousands of cubic metres of concrete. Residents were rehoused during 2006, some in a new block on Llobregós itself.'),
+                      ('Fuentes: El Nacional, Tot Barcelona y Ara (enero de 2025).', 'Fonts: El Nacional, Tot Barcelona i Ara (gener de 2025).', 'Sources: El Nacional, Tot Barcelona and Ara (January 2025).'),
+                      ('Léelo en la revista', 'Llegeix-ho a la revista', 'Read it in the magazine'),
+                      ('El metro llega al Carmel', 'El metro arriba al Carmel', 'The metro reaches El Carmel'),
+                      ('El 30 de julio de 2010 se inaugura la estación de El Carmel de la línea 5, en la misma calle Llobregós, frente al mercado: cinco años después del socavón, el barrio tiene por fin su metro.', "El 30 de juliol de 2010 s'inaugura l'estació del Carmel de la línia 5, al mateix carrer Llobregós, davant del mercat: cinc anys després de l'esvoranc, el barri té per fi el seu metro.", 'On 30 July 2010 the El Carmel station on line 5 opened on Llobregós itself, opposite the market: five years after the sinkhole, the neighbourhood finally had its metro.'),
+                      ("Nada te turbe, nada te espante", "Res no et torbi, res no t'espanti", "Let nothing disturb you, let nothing frighten you"),
+                      ("Todo se pasa", "Tot passa", "All things pass"), ("Dios no se muda", "Déu no canvia", "God never changes"),
+                      ("La paciencia todo lo alcanza", "La paciència tot ho aconsegueix", "Patience obtains all things"),
+                      ("Quien a Dios tiene nada le falta", "Qui té Déu res no li manca", "Whoever has God lacks nothing"),
+                      ("Sólo Dios basta", "Només Déu basta", "God alone suffices"),
                       ("Página", "Pàgina", "Page"), ("Índice", "Índex", "Contents"), ("Pantalla completa", "Pantalla completa", "Full screen"),
+                      ("Descargar o imprimir", "Descarregar o imprimir", "Download or print"),
+                      ("Para guardarla en PDF, pulsa «Descargar o imprimir» y elige «Guardar como PDF».", "Per desar-la en PDF, prem «Descarregar o imprimir» i tria «Desa com a PDF».", "To save it as a PDF, press “Download or print” and choose “Save as PDF”."),
+                      ("Preparando la revista para imprimir…", "Preparant la revista per imprimir…", "Getting the magazine ready to print…"),
                       ("Presentación", "Presentació", "Introduction"), ("Abriendo la revista…", "Obrint la revista…", "Opening the magazine…"),
                       ("También en formato texto", "També en format text", "Also as text"),
                       ("Página anterior", "Pàgina anterior", "Previous page"), ("Página siguiente", "Pàgina següent", "Next page"),
@@ -2796,6 +2852,7 @@ for _n in REV_ISSUES:
     if _n.get("num"):
         _k, _te = _n["num"], esc(_n["titulo"])
         _rev_tr(f"Número {_k}", f"Número {_k}", f"Issue {_k}")
+        _rev_tr(f"Santa Teresa · Número {_k}", f"Santa Teresa · Número {_k}", f"Santa Teresa · Issue {_k}")
         _rev_tr(f"Revista digital · Número {_k}", f"Revista digital · Número {_k}", f"Digital magazine · Issue {_k}")
         _rev_tr(f"Número {_k} · {_te}", f"Número {_k} · {_te}", f"Issue {_k} · {_te}")
     for _a in _n["articulos"]:

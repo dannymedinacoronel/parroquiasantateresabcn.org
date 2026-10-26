@@ -55,6 +55,13 @@
             cur.flow.appendChild(b);
             if (!overflows(cur.flow)) continue;
             cur.flow.removeChild(b);
+            // la firma no se queda sola en una página: se lleva consigo el último párrafo
+            if (b.classList.contains("mag-firma") && cur.flow.children.length > 1) {
+                blocks.unshift(b);
+                blocks.unshift(cur.flow.removeChild(cur.flow.lastElementChild));
+                fresh();
+                continue;
+            }
             if (b.tagName === "P" && b.children.length === 0 && b.textContent.split(" ").length > 6) {
                 var words = b.textContent.split(" "), lo = 0, hi = words.length, part = b.cloneNode(false);
                 cur.flow.appendChild(part);
@@ -82,16 +89,8 @@
         return pages;
     }
 
-    function build() {
-        size = measure();
-        host.innerHTML = "";
-        mag.style.setProperty("--mag-pw", size.pw + "px");
-        mag.style.setProperty("--mag-ph", size.ph + "px");
-        // en el móvil (una sola página) la letra un poco más grande, para leer sin hacer zoom
-        mag.style.setProperty("--mag-fs", (size.pw / (size.portrait ? 25 : 30)).toFixed(2) + "px");
-        var stage = el("div", "mag-stage");
-        host.appendChild(stage);
-
+    /* todas las páginas de la revista, repartidas en «stage» (que ya tiene el tamaño de página) */
+    function makePages(stage) {
         var all = [];
         // portada y presentación (vienen ya maquetadas)
         mag.querySelectorAll("template.mag-fixed").forEach(function (t) {
@@ -110,7 +109,7 @@
         idx.inner.appendChild(idx.folio);
         stage.appendChild(idx.pg);
         all.push(idx);
-        indexPage = all.length - 1;
+        var idxAt = all.length - 1;
         var entries = [];
         mag.querySelectorAll("template.mag-src").forEach(function (t) {
             var start = all.length;
@@ -139,6 +138,20 @@
             p.pg.classList.add(i % 2 ? "mag-left" : "mag-right");
             if (p.folio) p.folio.textContent = String(i + 1);
         });
+        return { all: all, indexPage: idxAt };
+    }
+
+    function build() {
+        size = measure();
+        host.innerHTML = "";
+        mag.style.setProperty("--mag-pw", size.pw + "px");
+        mag.style.setProperty("--mag-ph", size.ph + "px");
+        // en el móvil (una sola página) la letra un poco más grande, para leer sin hacer zoom
+        mag.style.setProperty("--mag-fs", (size.pw / (size.portrait ? 25 : 30)).toFixed(2) + "px");
+        var stage = el("div", "mag-stage");
+        host.appendChild(stage);
+        var made = makePages(stage), all = made.all;
+        indexPage = made.indexPage;
 
         // el libro
         var book = el("div", "mag-book");
@@ -179,6 +192,43 @@
         });
         document.addEventListener("fullscreenchange", function () { rebuild(true); });
     }
+
+    /* Descargar o imprimir: la revista entera en páginas A4, una detrás de otra. El navegador
+       ofrece «Guardar como PDF» en el mismo cuadro de impresión. También sirve para Ctrl+P. */
+    var btnPrint = mag.querySelector("[data-mag-print]"), printBox = null;
+    function preparePrint() {
+        if (printBox) return printBox;
+        printBox = el("div", "mag-print");
+        printBox.style.setProperty("--mag-pw", "793px");   // A4 a 96 ppp
+        printBox.style.setProperty("--mag-ph", "1122px");
+        printBox.style.setProperty("--mag-fs", "18px");
+        document.body.appendChild(printBox);
+        makePages(printBox);
+        printBox.querySelectorAll("img").forEach(function (im) { im.loading = "eager"; });
+        document.documentElement.classList.add("mag-printing");
+        return printBox;
+    }
+    function endPrint() {
+        if (printBox) { printBox.parentNode.removeChild(printBox); printBox = null; }
+        document.documentElement.classList.remove("mag-printing");
+    }
+    window.addEventListener("beforeprint", preparePrint);
+    window.addEventListener("afterprint", endPrint);
+    if (btnPrint) btnPrint.addEventListener("click", function () {
+        var label = btnPrint.textContent;
+        btnPrint.disabled = true;
+        btnPrint.textContent = mag.getAttribute("data-label-wait") || label;
+        var imgs = Array.prototype.slice.call(preparePrint().querySelectorAll("img"));
+        var waits = imgs.map(function (im) {
+            return im.complete ? Promise.resolve() : new Promise(function (ok) { im.onload = im.onerror = ok; });
+        });
+        // como mucho 8 s esperando a las fotos
+        Promise.race([Promise.all(waits), new Promise(function (ok) { setTimeout(ok, 8000); })]).then(function () {
+            btnPrint.disabled = false;
+            btnPrint.textContent = label;
+            window.print();
+        });
+    });
 
     var timer = null, lastW = 0;
     function rebuild(force) {

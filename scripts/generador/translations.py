@@ -830,6 +830,8 @@ TR = {
 "Preguntar un horario": ("Preguntar un horari", "Ask about a time"),
 "Inicio, Contacto": ("Inici, Contacte", "Home, Contact"),
 "Mapa.": ("Mapa.", "Map."),
+"Carrer del Llobregós, 132 · 08032 Barcelona": SAME,
+"parroquiasantateresabcn.netlify.app": SAME,
 "Ver las últimas publicaciones en Instagram &rarr;": ("Veure les darreres publicacions a Instagram &rarr;", "See our latest posts on Instagram &rarr;"),
 "Ver todas las publicaciones": ("Veure totes les publicacions", "See all posts"),
 "Leer el Evangelio de hoy completo &rarr;": ("Llegir l'Evangeli d'avui complet &rarr;", "Read today's full Gospel &rarr;"),

@@ -3,7 +3,7 @@ import re
 
 SKIP_BLOCKS = re.compile(r"<(script|style)\b[^>]*>.*?</\1>", re.S)
 HOMILY_PAGES = ("html/humilias.html", "html/humiliasmagdalena3domingo.html")
-ATTRS = ("alt", "title", "aria-label", "placeholder", "data-service", "data-hint", "data-label-page", "data-label-index", "data-sec")
+ATTRS = ("alt", "title", "aria-label", "placeholder", "data-service", "data-hint", "data-label-page", "data-label-index", "data-label-wait", "data-sec")
 META_RE = re.compile(r'(<meta (?:name="description"|property="og:(?:title|description)") content=")([^"]*)(")')
 
 
