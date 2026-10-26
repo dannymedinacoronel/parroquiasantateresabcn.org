@@ -42,6 +42,7 @@ NAV = [
         ("Horarios de misa", "html/misas.html#horarios", "reloj"),
         ("Misa con coro góspel", "html/misas.html#gospel", "nota"),
         ("Calendario semanal", "html/misas.html#calendario", "cal"),
+        ("¶", "¿Quieres pedir un sacramento?", "html/contacto.html#escribenos", "Escríbenos y te acompañamos"),
         ("§", "Sacramentos", "html/adminsacra.html"),
         ("Bautismo", "html/bautismo.html", "agua"),
         ("Primera Comunión", "html/comuniones.html", "caliz"),
@@ -51,13 +52,14 @@ NAV = [
         ("Unción de los enfermos", "html/uncion.html", "oleo"),
     ]),
     ("dinamica", "Comunidad", "html/dinamicapastoral.html", [
+        ("§", "Vida de la comunidad", "html/dinamicapastoral.html"),
         ("Grupos y servicios", "html/dinamicapastoral.html", "grupo"),
         ("Catequesis", "html/catequesis.html", "libro"),
         ("Jóvenes", "html/jovenes2alternativa.html", "persona"),
         ("Momentos de la comunidad", "html/dinamicapastoral.html#momentos", "foto"),
     ]),
     ("noticias|familia", "Actualidad", "html/noticias.html", [
-        ("§parish", "De nuestra parroquia", "html/noticias.html#parroquia"),
+        ("§parish", "Parroquia", "html/noticias.html#parroquia"),
         ("+Noticias de la parroquia", "html/noticias.html#parroquia"),
         ("+Última reflexión", "__ULTIMA__"),
         ("+Todas las reflexiones", "html/humiliasmenu.html"),
@@ -69,14 +71,18 @@ NAV = [
         ("Vaticano y Arzobispado", "html/noticias.html#actualidad-iglesia", "globo"),
     ]),
     ("historia|organigrama", "La parroquia", "html/historia.html", [
+        ("§", "Historia", "html/historia.html"),
         ("Nuestra historia", "html/historia.html#parroquia", "torre"),
         ("Línea del tiempo", "html/historia.html#linea-del-tiempo", "cal"),
         ("Archivo histórico", "html/historia.html#archivo", "libro"),
+        ("Imágenes y vídeos", "html/imagenes.html", "foto"),
+        ("§", "Organización", "html/organigramaparroquial.html"),
         ("Organigrama", "html/organigramaparroquial.html#estructura", "persona"),
         ("Consejos parroquiales", "html/organigramaparroquial.html#consejos", "cuentas"),
-        ("Imágenes y vídeos", "html/imagenes.html", "foto"),
+        ("¶", "¿Guardas fotos antiguas?", "html/contacto.html?motivo=Archivo%20histórico#escribenos", "Compártelas con el archivo"),
     ]),
     ("contacto", "Contacto", "html/contacto.html", [
+        ("§", "Estamos para ayudarte", "html/contacto.html"),
         ("Escríbenos", "html/contacto.html#escribenos", "mail"),
         ("Llamar a la parroquia", "tel:+34619040913", "phone"),
         ("Despacho parroquial", "html/adminsacra.html#despacho", "reloj"),
@@ -111,6 +117,8 @@ def nav_items(depth, active):
                     rows.append(f'                    <li class="{cls}"><a href="{href(c[2], depth)}" class="sub-heading-link"><span>{p}</span><small>Ver todo</small></a></li>')
                 else:
                     rows.append(f'                    <li class="{cls}">{p}</li>')
+            elif l == "¶":  # tarjeta de acción (rellena el hueco de la columna corta)
+                rows.append(f'                    <li class="sub-cta"><a href="{href(c[2], depth)}" class="sub-cta-link"><strong>{p}</strong><span>{c[3]}</span></a></li>')
             elif l.startswith("+"):  # contenido propio de la parroquia: con la cruz
                 rows.append(f'                    <li class="parish-item"><a href="{href(p, depth)}" class="sub-link parish-link">{PARISH_ICON}<span>{l[1:]}</span></a></li>')
             else:
@@ -2515,7 +2523,13 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Matrimonio y aniversarios", "Matrimoni i aniversaris", "Marriage and anniversaries"),
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
-                      ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"), ("Contacto", "Contacte", "Contact")]:
+                      ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ("Parroquia", "Parròquia", "Parish"), ("Vida de la comunidad", "Vida de la comunitat", "Community life"),
+                      ("Organización", "Organització", "Organisation"), ("Estamos para ayudarte", "Som aquí per ajudar-te", "We are here to help"),
+                      ("¿Quieres pedir un sacramento?", "Vols demanar un sagrament?", "Would you like to request a sacrament?"),
+                      ("Escríbenos y te acompañamos", "Escriu-nos i t'acompanyem", "Write to us and we will help you"),
+                      ("¿Guardas fotos antiguas?", "Guardes fotos antigues?", "Do you have old photos?"),
+                      ("Compártelas con el archivo", "Comparteix-les amb l'arxiu", "Share them with the archive"), ("Contacto", "Contacte", "Contact")]:
     TABLE[_es] = {"ca": _ca, "en": _en}
 for _k, _l, _p, _c in NAV:
     _tl = TABLE.get(_l, {"ca": _l, "en": _l})
