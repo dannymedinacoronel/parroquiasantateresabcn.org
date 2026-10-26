@@ -63,12 +63,13 @@ NAV = [
         ("Perdón", "html/perdon.html", "manos"),
         ("Unción de los enfermos", "html/uncion.html", "oleo"),
     ]),
-    ("dinamica", "Comunidad", "html/dinamicapastoral.html", [
+    ("dinamica|voluntariado", "Comunidad", "html/dinamicapastoral.html", [
         ("§", "Vida de la comunidad", "html/dinamicapastoral.html"),
         ("Grupos y servicios", "html/dinamicapastoral.html", "grupo"),
         ("Jóvenes", "html/jovenes2alternativa.html", "persona"),
         ("Momentos de la comunidad", "html/dinamicapastoral.html#momentos", "foto"),
-        ("¶", "¿Quieres colaborar?", "html/contacto.html#escribenos", "Únete a un grupo de la parroquia"),
+        ("Voluntariado", "html/voluntariado.html", "manos"),
+        ("¶", "¿Quieres colaborar?", "html/voluntariado.html", "Únete a un grupo de la parroquia"),
     ]),
     ("noticias|familia", "Actualidad", "html/noticias.html", [
         ("§parish", "Parroquia", "html/noticias-parroquia.html"),
@@ -388,6 +389,7 @@ SAC_ICONS = {
 
 
 SAC_ICONS.update({
+    "escoba": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 3.5l-5 8"/><path d="M8.5 10.5l5 3-1.6 2.6c-1.6 2.6-4.4 4.2-7.4 4.4l-1 .1 .6-1.1c1.4-2.6 2.1-5.6 2-8.6z"/><path d="M6.8 14.6l3 1.8M5.6 17.2l2.4 1.4"/></svg>',
     "nota": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>',
     "cal": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
     "foto": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6.5" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8.5 6.5l1.5-2h4l1.5 2"/></svg>',
@@ -1465,6 +1467,86 @@ PAGES["html/organigramaparroquial.html"] = page(1, "Organigrama Parroquial", "Es
         </section>
 """)
 
+# ---------------------------------------------------------------- VOLUNTARIADO
+PAGES["html/voluntariado.html"] = page(1, "Voluntariado", "Hazte voluntario en la Parroquia Santa Teresa de Jesús (El Carmel, Barcelona): Cáritas, catequesis, visita a enfermos, liturgia y coro, cuidado del templo y fiestas.", active="voluntariado", body=page_hero('Comunidad', "Voluntariado", "web/caritas.jpg", None, "center 45%") + f"""
+        <section>
+            <div class="section-head">
+                <span class="subtitulo">Voluntariado en la parroquia</span>
+                <h2>Hay un sitio para ti</h2>
+                <hr class="section-divider" style="margin-bottom:1.25rem;">
+                <p class="lead">Muchas de las cosas que hacemos salen adelante gracias a personas que regalan un poco de su tiempo. No hace falta experiencia ni mucho tiempo: cada uno aporta lo que puede, aunque sea una hora al mes.</p>
+            </div>
+        </section>
+
+        <section class="section-warm" id="areas">
+            <div class="section-head">
+                <span class="subtitulo">Dónde puedes ayudar</span>
+                <h2>Elige cómo colaborar</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            <div class="vol-grid">
+                <article class="vol-card">
+                    <div class="icon-circle">{SAC_ICONS["manos"]}</div>
+                    <h3>Cáritas parroquial</h3>
+                    <p>Un día al mes repartimos alimentos a varias docenas de familias del barrio. Hacen falta manos para recoger, preparar los lotes y acoger a quien viene.</p>
+                    <a class="link-arrow" href="contacto.html?motivo=Cáritas#escribenos">Quiero colaborar <span>&rarr;</span></a>
+                </article>
+                <article class="vol-card">
+                    <div class="icon-circle">{SAC_ICONS["libro"]}</div>
+                    <h3>Catequesis</h3>
+                    <p>Acompaña a los niños y adolescentes que se preparan para la Primera Comunión y la Confirmación. Te ayudamos con los materiales.</p>
+                    <a class="link-arrow" href="contacto.html?motivo=Voluntariado#escribenos">Quiero colaborar <span>&rarr;</span></a>
+                </article>
+                <article class="vol-card">
+                    <div class="icon-circle">{SAC_ICONS["persona"]}</div>
+                    <h3>Visita a enfermos y mayores</h3>
+                    <p>Un rato de compañía y conversación para quienes ya no pueden venir a la parroquia, en su casa o en la residencia.</p>
+                    <a class="link-arrow" href="contacto.html?motivo=Voluntariado#escribenos">Quiero colaborar <span>&rarr;</span></a>
+                </article>
+                <article class="vol-card">
+                    <div class="icon-circle">{SAC_ICONS["escoba"]}</div>
+                    <h3>Cuidado del templo</h3>
+                    <p>Desde hace muchos años, un equipo limpia la iglesia un día al mes. También se agradece ayuda con las flores y la sacristía.</p>
+                    <a class="link-arrow" href="contacto.html?motivo=Voluntariado#escribenos">Quiero colaborar <span>&rarr;</span></a>
+                </article>
+                <article class="vol-card">
+                    <div class="icon-circle">{SAC_ICONS["nota"]}</div>
+                    <h3>Liturgia y coro</h3>
+                    <p>Lee en misa, ayuda a prepararla o canta en el coro góspel de la misa de las 11:00 de los domingos.</p>
+                    <a class="link-arrow" href="contacto.html?motivo=Voluntariado#escribenos">Quiero colaborar <span>&rarr;</span></a>
+                </article>
+                <article class="vol-card">
+                    <div class="icon-circle">{SAC_ICONS["cal"]}</div>
+                    <h3>Fiestas y salidas</h3>
+                    <p>Echa una mano para organizar las salidas parroquiales, las fiestas y los grandes días como el Domingo de Ramos.</p>
+                    <a class="link-arrow" href="contacto.html?motivo=Voluntariado#escribenos">Quiero colaborar <span>&rarr;</span></a>
+                </article>
+            </div>
+        </section>
+
+        <section id="empezar">
+            <div class="section-head">
+                <span class="subtitulo">Cómo empezar</span>
+                <h2>Tres pasos sencillos</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            <ol class="communion-steps vol-steps">
+                <li>{SAC_ICONS["mail"]}<strong>Escríbenos</strong><span>Cuéntanos en qué te gustaría ayudar y cuándo tienes tiempo.</span></li>
+                <li>{ICON_PHONE}<strong>Te conocemos</strong><span>Te llamamos y te presentamos al grupo que más encaja contigo.</span></li>
+                <li>{SAC_ICONS["manos"]}<strong>Empiezas a tu ritmo</strong><span>Te acompañamos los primeros días. Puedes dejarlo cuando quieras.</span></li>
+            </ol>
+            <blockquote class="vol-quote">Obras quiere el Señor.<cite>Santa Teresa de Jesús, Moradas V</cite></blockquote>
+            <div class="vol-cta">
+                <h3>¿Te animas?</h3>
+                <p>Escríbenos o pásate por el despacho parroquial. Te esperamos.</p>
+                <div class="btn-group center">
+                    <a href="contacto.html?motivo=Voluntariado#escribenos" class="btn btn-solid">Quiero ser voluntario</a>
+                    <a href="tel:{TEL}" class="btn btn-call">{ICON_PHONE}<span>Llamar a la parroquia</span></a>
+                </div>
+            </div>
+        </section>
+""")
+
 # ---------------------------------------------------------------- HISTORIA
 PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfico de la Parroquia Santa Teresa de Jesús, en el Carmel (Barcelona), desde 1924.", active="historia", body=page_hero("Desde 1924", "Nuestra Historia", "web/nuevalife.jpg", "Historia", "center 15%") + """
         <section id="parroquia">
@@ -1556,6 +1638,23 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
             </div>
         </section>
 
+        <section id="titular">
+            <div class="two-col center">
+                <figure class="teresa-emblem">
+                    <span class="teresa-emblem-art" role="img" aria-label="Emblema teresiano: el monte Carmelo con la cruz, dos corazones, plumas y corona"></span>
+                    <figcaption>Emblema de la Compañía de Santa Teresa de Jesús (teresianas), fundada por san Enrique de Ossó. Grabado de hacia 1880-1890, de dominio público (Wikimedia Commons).</figcaption>
+                </figure>
+                <div class="prose">
+                    <span class="subtitulo text-left">Nuestra titular</span>
+                    <h2 class="text-left">Santa Teresa de Jesús</h2>
+                    <hr class="section-divider" style="margin-left:0;">
+                    <p class="lead">Nuestra parroquia lleva el nombre de Santa Teresa de Jesús (Ávila, 1515 – Alba de Tormes, 1582): reformadora del Carmelo, maestra de oración y, desde 1970, la primera mujer doctora de la Iglesia.</p>
+                    <p>Este emblema teresiano reúne sus símbolos: el monte Carmelo coronado por la cruz, la estrella, dos corazones con los lemas «Viva Jesús» y «Sólo Dios basta», las plumas de la escritora y la corona.</p>
+                    <p>Y el monte Carmelo nos toca de cerca: de él toma el nombre la ermita de 1864 y, con ella, nuestro barrio.</p>
+                </div>
+            </div>
+        </section>
+
         <section id="archivo" class="archive-section">
             <div class="section-head">
                 <span class="subtitulo">Álbum de la parroquia</span>
@@ -1600,6 +1699,7 @@ MOTIVOS = [
     ("Funeral", "Funeral", "Nombre del difunto y fecha prevista. Te llamaremos cuanto antes"),
     ("Cáritas", "Cáritas", "Cuéntanos qué necesitas o cómo te gustaría colaborar"),
     ("Grupo de jóvenes", "Grupo de jóvenes", "Tu edad y cómo te has enterado del grupo"),
+    ("Voluntariado", "Voluntariado", "En qué te gustaría colaborar y qué días u horas tienes libres"),
     ("Archivo histórico", "Fotos antiguas", "Qué fotos tienes, de qué año aproximado y de qué celebración"),
     ("Otro", "Otro", "Cuéntanos en qué podemos ayudarte"),
 ]
@@ -2275,6 +2375,12 @@ PAGES["html/buscador-parroquias.html"] = page(1, "Buscar una parroquia", "Encuen
                 <hr class="section-divider" style="margin-bottom:1.25rem;">
                 <p>Busca por nombre, barrio o población con el buscador oficial del Arzobispado de Barcelona, aquí mismo.</p>
             </div>
+            <h3 class="finder-title">Mapa de parroquias</h3>
+            <p class="finder-note">Escribe tu calle o tu barrio en «Encuentra tu parroquia» o mueve el mapa.</p>
+            <div class="finder-frame finder-map">
+                <iframe title="Mapa de parroquias del Arzobispado de Barcelona" src="https://esglesia.barcelona/mapa/?lang=es" height="640" loading="lazy"></iframe>
+            </div>
+            <h3 class="finder-title">Buscador por nombre</h3>
             <div class="finder-frame">
                 <iframe title="Buscador de parroquias del Arzobispado de Barcelona" src="https://esglesia.barcelona/es/parroquia/" height="1100" loading="lazy"></iframe>
             </div>
@@ -2750,6 +2856,53 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ('Voluntariado | Parroquia Santa Teresa de Jesús', 'Voluntariat | Parròquia de Santa Teresa de Jesús', 'Volunteering | Santa Teresa de Jesús Parish'),
+                      ('Hazte voluntario en la Parroquia Santa Teresa de Jesús (El Carmel, Barcelona): Cáritas, catequesis, visita a enfermos, liturgia y coro, cuidado del templo y fiestas.', 'Fes-te voluntari a la Parròquia de Santa Teresa de Jesús (el Carmel, Barcelona): Càritas, catequesi, visita a malalts, litúrgia i cor, cura del temple i festes.', 'Volunteer at Santa Teresa de Jesús Parish (El Carmel, Barcelona): Caritas, catechesis, visiting the sick, liturgy and choir, caring for the church and celebrations.'),
+                      ('Emblema teresiano: el monte Carmelo con la cruz, dos corazones, plumas y corona', 'Emblema teresià: el mont Carmel amb la creu, dos cors, plomes i corona', 'Teresian emblem: Mount Carmel with the cross, two hearts, quills and a crown'),
+                      ('Emblema de la Compañía de Santa Teresa de Jesús (teresianas), fundada por san Enrique de Ossó. Grabado de hacia 1880-1890, de dominio público (Wikimedia Commons).', "Emblema de la Companyia de Santa Teresa de Jesús (teresianes), fundada per sant Enric d'Ossó. Gravat de cap al 1880-1890, de domini públic (Wikimedia Commons).", 'Emblem of the Society of Saint Teresa of Jesus (Teresian sisters), founded by Saint Enrique de Ossó. Engraving from around 1880-1890, public domain (Wikimedia Commons).'),
+                      ('Nuestra titular', 'La nostra titular', 'Our patron saint'),
+                      ('Nuestra parroquia lleva el nombre de Santa Teresa de Jesús (Ávila, 1515 – Alba de Tormes, 1582): reformadora del Carmelo, maestra de oración y, desde 1970, la primera mujer doctora de la Iglesia.', "La nostra parròquia porta el nom de Santa Teresa de Jesús (Àvila, 1515 – Alba de Tormes, 1582): reformadora del Carmel, mestra d'oració i, des del 1970, la primera dona doctora de l'Església.", 'Our parish is named after Saint Teresa of Jesus (Ávila, 1515 – Alba de Tormes, 1582): reformer of the Carmelite Order, teacher of prayer and, since 1970, the first woman Doctor of the Church.'),
+                      ('Este emblema teresiano reúne sus símbolos: el monte Carmelo coronado por la cruz, la estrella, dos corazones con los lemas «Viva Jesús» y «Sólo Dios basta», las plumas de la escritora y la corona.', "Aquest emblema teresià reuneix els seus símbols: el mont Carmel coronat per la creu, l'estrella, dos cors amb els lemes «Viva Jesús» i «Sólo Dios basta», les plomes de l'escriptora i la corona.", "This Teresian emblem brings together her symbols: Mount Carmel crowned by the cross, the star, two hearts with the mottos «Viva Jesús» and «Sólo Dios basta» (God alone suffices), the writer's quills and the crown."),
+                      ('Y el monte Carmelo nos toca de cerca: de él toma el nombre la ermita de 1864 y, con ella, nuestro barrio.', "I el mont Carmel ens toca de prop: d'ell pren el nom l'ermita del 1864 i, amb ella, el nostre barri.", 'And Mount Carmel is close to home: the 1864 hermitage takes its name from it, and so does our neighbourhood.'),
+                      ('En qué te gustaría colaborar y qué días u horas tienes libres', "En què t'agradaria col·laborar i quins dies o hores tens lliures", 'What you would like to help with and which days or times you are free'),
+                      ('Voluntariado', 'Voluntariat', 'Volunteering'),
+                      ('Cáritas parroquial', 'Càritas parroquial', 'Parish Caritas'),
+                      ('Un día al mes repartimos alimentos a varias docenas de familias del barrio. Hacen falta manos para recoger, preparar los lotes y acoger a quien viene.', 'Un dia al mes repartim aliments a unes quantes desenes de famílies del barri. Calen mans per recollir, preparar els lots i acollir qui ve.', 'One day a month we hand out food to several dozen families in the neighbourhood. We need help collecting, packing and welcoming those who come.'),
+                      ('Catequesis', 'Catequesi', 'Catechesis'),
+                      ('Acompaña a los niños y adolescentes que se preparan para la Primera Comunión y la Confirmación. Te ayudamos con los materiales.', "Acompanya els infants i adolescents que es preparen per a la Primera Comunió i la Confirmació. T'ajudem amb els materials.", 'Accompany the children and teenagers preparing for First Communion and Confirmation. We will help you with the materials.'),
+                      ('Visita a enfermos y mayores', 'Visita a malalts i gent gran', 'Visiting the sick and elderly'),
+                      ('Un rato de compañía y conversación para quienes ya no pueden venir a la parroquia, en su casa o en la residencia.', 'Una estona de companyia i conversa per a qui ja no pot venir a la parròquia, a casa seva o a la residència.', 'Some company and conversation for those who can no longer come to the parish, at home or in their care home.'),
+                      ('Cuidado del templo', 'Cura del temple', 'Caring for the church'),
+                      ('Desde hace muchos años, un equipo limpia la iglesia un día al mes. También se agradece ayuda con las flores y la sacristía.', "Des de fa molts anys, un equip neteja l'església un dia al mes. També s'agraeix ajuda amb les flors i la sagristia.", 'For many years a team has cleaned the church one day a month. Help with the flowers and the sacristy is also welcome.'),
+                      ('Liturgia y coro', 'Litúrgia i cor', 'Liturgy and choir'),
+                      ('Lee en misa, ayuda a prepararla o canta en el coro góspel de la misa de las 11:00 de los domingos.', 'Llegeix a missa, ajuda a preparar-la o canta al cor gòspel de la missa de les 11:00 dels diumenges.', 'Read at Mass, help prepare it or sing in the gospel choir at the 11:00 Sunday Mass.'),
+                      ('Fiestas y salidas', 'Festes i sortides', 'Celebrations and outings'),
+                      ('Echa una mano para organizar las salidas parroquiales, las fiestas y los grandes días como el Domingo de Ramos.', 'Dona un cop de mà per organitzar les sortides parroquials, les festes i els grans dies com el Diumenge de Rams.', 'Help organise parish outings, celebrations and big days such as Palm Sunday.'),
+                      ('Quiero colaborar', 'Vull col·laborar', 'I want to help'),
+                      ('Comunidad', 'Comunitat', 'Community'),
+                      ('Voluntariado en la parroquia', 'Voluntariat a la parròquia', 'Volunteering at the parish'),
+                      ('Hay un sitio para ti', 'Hi ha un lloc per a tu', 'There is a place for you'),
+                      ('Muchas de las cosas que hacemos salen adelante gracias a personas que regalan un poco de su tiempo. No hace falta experiencia ni mucho tiempo: cada uno aporta lo que puede, aunque sea una hora al mes.', 'Moltes de les coses que fem tiren endavant gràcies a persones que regalen una mica del seu temps. No cal experiència ni gaire temps: cadascú aporta el que pot, encara que sigui una hora al mes.', "Much of what we do happens thanks to people who give a little of their time. You don't need experience or lots of time: everyone gives what they can, even an hour a month."),
+                      ('Dónde puedes ayudar', 'On pots ajudar', 'Where you can help'),
+                      ('Elige cómo colaborar', 'Tria com col·laborar', 'Choose how to help'),
+                      ('Cómo empezar', 'Com començar', 'How to start'),
+                      ('Tres pasos sencillos', 'Tres passos senzills', 'Three simple steps'),
+                      ('Escríbenos', 'Escriu-nos', 'Write to us'),
+                      ('Cuéntanos en qué te gustaría ayudar y cuándo tienes tiempo.', "Explica'ns en què t'agradaria ajudar i quan tens temps.", 'Tell us what you would like to help with and when you are free.'),
+                      ('Te conocemos', 'Et coneixem', 'We meet you'),
+                      ('Te llamamos y te presentamos al grupo que más encaja contigo.', 'Et truquem i et presentem el grup que encaixa més amb tu.', 'We call you and introduce you to the group that suits you best.'),
+                      ('Empiezas a tu ritmo', 'Comences al teu ritme', 'Start at your own pace'),
+                      ('Te acompañamos los primeros días. Puedes dejarlo cuando quieras.', "T'acompanyem els primers dies. Ho pots deixar quan vulguis.", 'We accompany you for the first few days. You can stop whenever you like.'),
+                      ('Obras quiere el Señor.', 'Obres vol el Senyor.', 'The Lord wants deeds.'),
+                      ('Santa Teresa de Jesús, Moradas V', 'Santa Teresa de Jesús, Moradas V', 'Saint Teresa of Jesus, Interior Castle V'),
+                      ('¿Te animas?', "T'hi animes?", 'Will you join us?'),
+                      ('Escríbenos o pásate por el despacho parroquial. Te esperamos.', "Escriu-nos o passa pel despatx parroquial. T'esperem.", 'Write to us or drop by the parish office. We look forward to meeting you.'),
+                      ('Quiero ser voluntario', 'Vull ser voluntari', 'I want to volunteer'),
+                      ('Llamar a la parroquia', 'Trucar a la parròquia', 'Call the parish'),
+                      ('Mapa de parroquias', 'Mapa de parròquies', 'Map of parishes'),
+                      ('Escribe tu calle o tu barrio en «Encuentra tu parroquia» o mueve el mapa.', 'Escriu el teu carrer o el teu barri a «Troba la teva parròquia» o mou el mapa.', 'Type your street or neighbourhood in the search box or move the map.'),
+                      ('Mapa de parroquias del Arzobispado de Barcelona', "Mapa de parròquies de l'Arquebisbat de Barcelona", 'Map of parishes of the Archdiocese of Barcelona'),
+                      ('Buscador por nombre', 'Cercador per nom', 'Search by name'),
                       ('La ermita que dio nombre al barrio', "L'ermita que va donar nom al barri", 'The hermitage that named the neighbourhood'),
                       ("El 11 de abril de 1864 abre al culto la ermita de la Virgen del Carmen, en lo alto del antiguo Turó d'en Móra. Desde entonces la colina se llama monte Carmelo, y el barrio que creció a sus pies tomó su nombre.", "L'11 d'abril de 1864 s'obre al culte l'ermita de la Mare de Déu del Carme, dalt de l'antic Turó d'en Móra. Des d'aleshores el turó es diu del Carmel, i el barri que va créixer als seus peus en va prendre el nom.", "On 11 April 1864 the hermitage of Our Lady of Mount Carmel opened for worship on top of the old Turó d'en Móra. Since then the hill has been called Mount Carmel, and the neighbourhood that grew at its foot took its name."),
                       ('Una capilla en Can Grau', 'Una capella a Can Grau', 'A chapel at Can Grau'),
@@ -3008,6 +3161,8 @@ for rel, base in PAGES.items():
             html = relocate_assets(html)
             # Evangelio para la familia: la versión de evangeli.net en el idioma de la página
             html = html.replace(FAMILY_URL, FAMILY_URL[:-2] + lang)
+            if lang == "ca":
+                html = html.replace("esglesia.barcelona/mapa/?lang=es", "esglesia.barcelona/mapa/?lang=ca")
         html = (html.replace("__URL__", page_url(lang, rel))
                     .replace("__HREFLANG__", hreflang_links(rel))
                     .replace("__LOCALE__", LOCALES[lang])
