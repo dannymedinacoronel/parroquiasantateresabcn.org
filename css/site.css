@@ -2699,3 +2699,6 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 .sac-arch::after { content: ""; position: absolute; inset: 10px; border: 1px solid rgba(255,255,255,.55); border-radius: 50% 50% 4px 4px / 40% 40% 4px 4px; pointer-events: none; }
 .sac-medal { position: absolute; left: 50%; bottom: -32px; transform: translateX(-50%); width: 66px; height: 66px; border-radius: 50%; display: grid; place-items: center; background: var(--white); color: var(--accent-dark); border: 1px solid var(--accent-color); box-shadow: 0 0 0 6px var(--bg-warm), 0 12px 26px rgba(40,25,5,.2); }
 .sac-medal svg { width: 30px; height: 30px; }
+.sac-arch { margin-bottom: 5.5rem; }
+.sac-credit { position: absolute; top: 100%; left: -10%; right: -10%; margin-top: 3.2rem; text-align: center; font-size: .72rem; letter-spacing: .5px; color: var(--muted); font-style: italic; }
+.sac-arch img { background: #f3ead8; }
