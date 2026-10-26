@@ -36,6 +36,19 @@ LOCATION:Parroquia Santa Teresa de Jesús\, Carrer del Llobregós 132\, 080
 URL:https://parroquiasantateresabcn.netlify.app/html/misas.html
 END:VEVENT
 BEGIN:VEVENT
+UID:adoracion-miercoles@parroquiasantateresabcn
+DTSTAMP:20261021T000000Z
+DTSTART;TZID=Europe/Madrid:20261021T193000
+DTEND;TZID=Europe/Madrid:20261021T200000
+RRULE:FREQ=WEEKLY;BYDAY=WE
+SUMMARY:Adoración al Santísimo
+DESCRIPTION:Media hora de adoración con bendición. https://parroquiasanta
+ teresabcn.netlify.app/html/misas.html
+LOCATION:Parroquia Santa Teresa de Jesús\, Carrer del Llobregós 132\, 080
+ 32 Barcelona
+URL:https://parroquiasantateresabcn.netlify.app/html/misas.html
+END:VEVENT
+BEGIN:VEVENT
 UID:perdon-sabado@parroquiasantateresabcn
 DTSTAMP:20261021T000000Z
 DTSTART;TZID=Europe/Madrid:20261024T183000

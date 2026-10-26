@@ -89,11 +89,13 @@
         #pst-ev-tab { position: fixed; left: 22px; bottom: 22px; z-index: 399; display: none; padding: .65rem 1rem; border: 0; border-radius: 30px; cursor: pointer;
             background: #2a1d17; color: #f0d79a; font: 700 .72rem system-ui, sans-serif; letter-spacing: 1.5px; text-transform: uppercase; box-shadow: 0 10px 25px rgba(40,25,5,.3); }
         #pst-ev-tab.on { display: block; }
-        .pst-toast { position: fixed; left: 50%; top: 78px; z-index: 500; width: min(520px, calc(100vw - 32px)); padding: .95rem 1.2rem;
+        .pst-toast { position: fixed; left: 50%; top: auto; bottom: 24px; z-index: 500; width: min(520px, calc(100vw - 32px)); padding: .95rem 1.2rem;
             background: #1f3b2c; color: #e9f5ec; border-radius: 8px; box-shadow: 0 18px 40px rgba(0,0,0,.25);
             font: 400 .88rem/1.5 system-ui, sans-serif; opacity: 0; transform: translate(-50%, -12px); transition: opacity .35s, transform .35s;
             pointer-events: none; /* no tapa los botones que hay debajo */ }
         .pst-toast.on { opacity: 1; transform: translate(-50%, 0); }
+        .pst-toast { transform: translate(-50%, 12px); }
+        .pst-toast.on { transform: translate(-50%, 0); }
         .pst-toast-photo { float: left; width: 44px; height: 44px; margin: 0 .8rem .2rem 0; border-radius: 50%; object-fit: cover; border: 2px solid #bfa065; }
 
         /* Perfil de quien ha entrado */
@@ -981,6 +983,31 @@
             }
         });
         CMS.registerPreviewTemplate("revista_articulos", RevistaArticuloPreview);
+
+        /* Una noticia de la parroquia: la página tal cual en la web */
+        var NoticiaPreview = createClass({
+            render: function () {
+                var r = revData(this.props), get = r.get;
+                var foto = r.asset("foto");
+                var publicada = get("publicado") !== "false";
+                return h("div", { className: "pv" },
+                    h("div", { className: "pv-label" }, h("i"), publicada ? "Así sale en la web" : "Borrador · aún no sale en la web"),
+                    h("div", { className: "pv-page" },
+                        h("section", { className: "reading" },
+                            h("div", { className: "reading-wrap" },
+                                h("article", { className: "prose book-page reading-book rv-article" },
+                                    h("div", { className: "reading-head" },
+                                        h("span", { className: "book-kicker" }, "Noticias de la parroquia"),
+                                        h("span", { className: "rv-issue-tag" }, fechaLarga(get("fecha")))),
+                                    h("h2", { className: "reading-title" }, get("titulo") || "Título de la noticia"),
+                                    ORNAMENT,
+                                    get("resumen") ? h("p", { className: "lead rv-lead" }, get("resumen")) : null,
+                                    foto ? h("figure", { className: "rv-figure" }, h("img", { src: foto, alt: "" }), get("pie") ? h("figcaption", null, get("pie")) : null) : null,
+                                    h("div", { dangerouslySetInnerHTML: { __html: md(get("texto")) } }),
+                                    get("enlace") ? h("p", { className: "btn-group" }, h("a", { className: "btn" }, "Más información")) : null)))));
+            }
+        });
+        CMS.registerPreviewTemplate("noticias", NoticiaPreview);
     })();
     </script>
 </body>

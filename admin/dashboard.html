@@ -340,7 +340,7 @@
                 (shown.length ? shown.map(taskHTML).join("") : '<div class="none">' + (filterS === "hecha" ? "Ninguna tarea hecha todavía." : "Nada pendiente. ✨") + "</div>") + "</section>";
         }).join("") + "</div>";
         html += '<p class="help" style="margin-top:1.4rem">Pulsa el círculo de una tarea para pasarla de <b>Pendiente</b> a <b>En curso</b> y a <b>Hecha</b>. Los cambios se guardan al momento y todo el equipo los ve. ' +
-            "También se pueden editar todas a la vez en el panel, en «Tareas del equipo».</p>";
+            "Pulsa el lápiz para cambiar la persona, la fecha o las notas, y la papelera para borrarla.</p>";
         app.innerHTML = html;
     }
 
@@ -456,7 +456,7 @@
         var g = "";
         for (var i = 0; i <= 4; i++) { var v = Math.round(max * i / 4), yy = y(v); g += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy + '" y2="' + yy + '" stroke="#ece3d1"/><text x="' + (L - 6) + '" y="' + (yy + 4) + '" text-anchor="end" font-size="11" fill="#9a8e78">' + v + "</text>"; }
         var step = Math.max(1, Math.ceil(n / 8));
-        days.forEach(function (d, i) { if (i % step === 0 || i === n - 1) g += '<text x="' + x(i) + '" y="' + (H - 6) + '" text-anchor="middle" font-size="11" fill="#9a8e78">' + d.slice(8, 10) + "/" + d.slice(5, 7) + "</text>"; });
+        days.forEach(function (d, i) { if ((i % step === 0 && n - 1 - i >= step / 2) || i === n - 1) g += '<text x="' + x(i) + '" y="' + (H - 6) + '" text-anchor="middle" font-size="11" fill="#9a8e78">' + d.slice(8, 10) + "/" + d.slice(5, 7) + "</text>"; });
         series.forEach(function (s) {
             g += '<polyline points="' + days.map(function (d, i) { return x(i).toFixed(1) + "," + y(r.t[s.f].daily[d][s.k]).toFixed(1); }).join(" ") + '" fill="none" stroke="' + s.c + '" stroke-width="' + s.w + '" stroke-linejoin="round"' + (s.dash ? ' stroke-dasharray="' + s.dash + '"' : "") + "/>";
         });
@@ -531,7 +531,7 @@
         var g = "";
         for (var i = 0; i <= 4; i++) { var v = Math.round(max * i / 4), yy = y(v); g += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy + '" y2="' + yy + '" stroke="#ece3d1"/><text x="' + (L - 6) + '" y="' + (yy + 4) + '" text-anchor="end" font-size="11" fill="#9a8e78">' + v + "</text>"; }
         var step = Math.max(1, Math.ceil(n / 8));
-        series.forEach(function (s, i) { if (i % step === 0 || i === n - 1) g += '<text x="' + x(i) + '" y="' + (H - 6) + '" text-anchor="middle" font-size="11" fill="#9a8e78">' + s.day.slice(8, 10) + "/" + s.day.slice(5, 7) + "</text>"; });
+        series.forEach(function (s, i) { if ((i % step === 0 && n - 1 - i >= step / 2) || i === n - 1) g += '<text x="' + x(i) + '" y="' + (H - 6) + '" text-anchor="middle" font-size="11" fill="#9a8e78">' + s.day.slice(8, 10) + "/" + s.day.slice(5, 7) + "</text>"; });
         var pts = function (k) { return series.map(function (s, i) { return x(i).toFixed(1) + "," + y(s[k]).toFixed(1); }).join(" "); };
         g += '<polygon points="' + L + "," + y(0) + " " + pts("views") + " " + x(n - 1) + "," + y(0) + '" fill="rgba(191,160,101,.16)"/>';
         g += '<polyline points="' + pts("views") + '" fill="none" stroke="#8f7340" stroke-width="2.6" stroke-linejoin="round"/>';

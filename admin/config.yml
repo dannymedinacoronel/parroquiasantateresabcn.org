@@ -126,6 +126,67 @@ collections:
         default: true
         hint: "Desactívalo para guardarla como borrador sin que aparezca en la web."
 
+  # Noticias de la parroquia: salen en Actualidad › Noticias de la parroquia y en la página de Noticias
+  - name: noticias
+    label: Noticias de la parroquia
+    label_singular: noticia
+    description: >
+      Avisos y noticias de la parroquia: celebraciones, actividades, fiestas… Escribe la noticia y
+      pulsa «Publicar»; en unos minutos sale en la web, en el menú Actualidad › Noticias de la parroquia.
+    folder: contenido/noticias
+    extension: json
+    format: json
+    create: true
+    delete: true
+    slug: "{{fecha}}-{{titulo}}"
+    identifier_field: titulo
+    summary: "{{fecha}} · {{titulo}}"
+    preview_path: "html/noticias/{{slug}}.html"
+    sortable_fields: ["fecha", "titulo"]
+    media_folder: /fotosdefinitivas/web/noticias
+    public_folder: /fotosdefinitivas/web/noticias
+    view_filters:
+      - { label: "Publicadas", field: publicado, pattern: true }
+      - { label: "Borradores", field: publicado, pattern: false }
+    fields:
+      - { label: Título, name: titulo, widget: string }
+      - label: Fecha
+        name: fecha
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "DD/MM/YYYY"
+        time_format: false
+        picker_utc: true
+        default: "{{now}}"
+        hint: "Las noticias se ordenan por fecha: la más reciente sale la primera."
+      - label: Foto
+        name: foto
+        widget: image
+        required: false
+        hint: "Si sale gente reconocible, asegúrate de tener su permiso (y el de los padres si son menores)."
+      - { label: Pie de foto, name: pie, widget: string, required: false }
+      - label: Resumen
+        name: resumen
+        widget: text
+        required: false
+        hint: "Una o dos frases. Salen en la tarjeta de la noticia y al compartir el enlace."
+      - label: Texto
+        name: texto
+        widget: markdown
+        buttons: ["bold", "italic", "heading-three", "quote", "bulleted-list"]
+        editor_components: []
+        modes: ["rich_text", "raw"]
+      - label: Enlace con más información
+        name: enlace
+        widget: string
+        required: false
+        hint: "Opcional: una web, un cartel en PDF o un formulario externo (empieza por https://)."
+      - label: Publicada
+        name: publicado
+        widget: boolean
+        default: true
+        hint: "Desactívala para guardarla como borrador sin que salga en la web."
+
   # ---------------------------------------------------------------------------
   # REVISTA DIGITAL
   # Cada número es una entrada; cada artículo, otra (así varias personas pueden escribir a la

@@ -37,6 +37,15 @@ for _f in ("css/fonts.css", "css/site.css", "js/site.js", "js/liturgia.js", "dat
 # «§» abre un grupo con título; «+» marca contenido propio de la parroquia (con la cruz).
 # La clave del apartado admite varias páginas («historia|organigrama») para marcarlo como activo.
 NAV = [
+    ("portada|buscador", "Inicio", "index.html", [
+        ("§", "Bienvenidos", "index.html"),
+        ("Quiénes somos", "index.html#bienvenida", "torre"),
+        ("Próxima misa y horarios", "index.html#horarios", "reloj"),
+        ("Reflexión de la semana", "index.html#reflexion", "libro"),
+        ("Cómo llegar", "index.html#ubicacion", "pin"),
+        ("Buscar una parroquia", "html/buscador-parroquias.html", "globo"),
+        ("¶", "¿Es tu primera visita?", "html/contacto.html#mapa", "Horarios y cómo llegar"),
+    ]),
     ("eucaristias", "Celebraciones", "html/misas.html", [
         ("§", "Eucaristía", "html/misas.html"),
         ("Horarios de misa", "html/misas.html#horarios", "reloj"),
@@ -59,8 +68,8 @@ NAV = [
         ("¶", "¿Quieres colaborar?", "html/contacto.html#escribenos", "Únete a un grupo de la parroquia"),
     ]),
     ("noticias|familia", "Actualidad", "html/noticias.html", [
-        ("§parish", "Parroquia", "html/noticias.html#parroquia"),
-        ("+Noticias de la parroquia", "html/noticias.html#parroquia"),
+        ("§parish", "Parroquia", "html/noticias-parroquia.html"),
+        ("+Noticias de la parroquia", "html/noticias-parroquia.html"),
         ("+Última reflexión", "__ULTIMA__"),
         ("+Todas las reflexiones", "html/humiliasmenu.html"),
     ] + ([("+Revista digital", "html/revista.html")] if REVISTA_ON or REV_ISSUES else []) + [
@@ -118,7 +127,7 @@ def nav_items(depth, active):
                 else:
                     rows.append(f'                    <li class="{cls}">{p}</li>')
             elif l == "¶":  # tarjeta de acción (rellena el hueco de la columna corta)
-                rows.append(f'                    <li class="sub-cta"><a href="{href(c[2], depth)}" class="sub-cta-link"><strong>{p}</strong><span>{c[3]}</span></a></li>')
+                rows.append(f'                    <li class="sub-cta"><a href="{href(c[2], depth)}" class="sub-cta-link"><strong>{p}</strong><span>{c[3]}<i aria-hidden="true">&nbsp;&rarr;</i></span></a></li>')
             elif l.startswith("+"):  # contenido propio de la parroquia: con la cruz
                 rows.append(f'                    <li class="parish-item"><a href="{href(p, depth)}" class="sub-link parish-link">{PARISH_ICON}<span>{l[1:]}</span></a></li>')
             else:
@@ -304,7 +313,7 @@ __LANGSWITCH__    </header>
                 <ul class="footer-links">
                     <li><a href="https://esglesia.barcelona/es/" target="_blank" rel="noopener">Arzobispado de Barcelona</a></li>
                     <li><a href="https://caritas.barcelona" target="_blank" rel="noopener">Cáritas Barcelona</a></li>
-                    <li><a href="https://www.esglesiabarcelona.cat/mapa/index.php?view=barcelona-santateresadejesus" target="_blank" rel="noopener">Buscador de Parroquias</a></li>
+                    <li><a href="{href('html/buscador-parroquias.html', depth)}">Buscador de Parroquias</a></li>
                 </ul>
             </div>
 
@@ -1589,7 +1598,7 @@ PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia San
 WEEK_PLAN = [
     ("Lunes", 1, [("19:00", "Eucaristía", "")]),
     ("Martes", 2, [("19:00", "Eucaristía", "")]),
-    ("Miércoles", 3, [("19:00", "Eucaristía", "")]),
+    ("Miércoles", 3, [("19:00", "Eucaristía", ""), ("19:30", "Adoración al Santísimo", "Media hora con bendición")]),
     ("Jueves", 4, [("19:00", "Eucaristía", "")]),
     ("Viernes", 5, [("19:00", "Eucaristía", ""), ("Tarde", "Despacho parroquial", "Para bautizos, bodas y cualquier consulta")]),
     ("Sábado", 6, [("18:30", "Sacramento del Perdón", "Hasta las 19:00"), ("19:00", "Eucaristía", "")]),
@@ -2070,6 +2079,140 @@ def homily_page(i, h):
 for _i, _h in enumerate(HOMILIAS):
     PAGES[_h["url"]] = homily_page(_i, _h)
 
+# ---------------------------------------------------------------- NOTICIAS DE LA PARROQUIA
+# Se escriben en el panel (colección «Noticias de la parroquia», carpeta contenido/noticias).
+# Páginas: html/noticias-parroquia.html (todas) y html/noticias/<fecha-titulo>.html (cada una).
+import glob as _glob
+
+
+def _load_news():
+    out = []
+    for path in sorted(_glob.glob(os.path.join(ROOT, "contenido", "noticias", "*.json"))):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                n = _json.load(fh) or {}
+        except ValueError as e:
+            print("AVISO: no se pudo leer", os.path.basename(path), e)
+            continue
+        if not (n.get("titulo") or "").strip() or n.get("publicado") is False:
+            continue
+        slug = os.path.splitext(os.path.basename(path))[0]
+        n.update(slug=slug, url=f"html/noticias/{slug}.html", fecha=(n.get("fecha") or "")[:10],
+                 foto=REV.media(ROOT, n.get("foto")), enlace=(n.get("enlace") or "").strip(),
+                 extracto=(n.get("resumen") or "").strip() or HOM.first_paragraph(n.get("texto", "")))
+        out.append(n)
+    return sorted(out, key=lambda n: n["fecha"], reverse=True)
+
+
+NEWS = _load_news()
+
+
+def news_card(n, depth):
+    root = "../" * depth
+    img = rev_img(n["foto"], depth, 640) if n["foto"] else f'<span class="rv-card-mark">{LOGO_MARK}</span>'
+    return f"""
+                <a class="rv-card pn-card" href="{root}{n["url"]}">
+                    <span class="rv-card-img{'' if n['foto'] else ' is-empty'}">{img}</span>
+                    <span class="rv-card-body">
+                        {date_long(n, "pn-date")}
+                        <strong>{esc(n["titulo"])}</strong>
+                        {f'<span class="rv-card-text">{esc(n["extracto"])}</span>' if n["extracto"] else ""}
+                    </span>
+                </a>"""
+
+
+def news_list_page():
+    if NEWS:
+        grid = f'<div class="rv-cards">{"".join(news_card(n, 1) for n in NEWS)}\n            </div>'
+    else:
+        grid = '<p class="lead" style="text-align:center;">Muy pronto publicaremos aquí las noticias de la parroquia.</p>'
+    body = page_hero("Actualidad", "Noticias de la parroquia", "web/dsc_0586.jpg") + f"""
+        <section>
+            <div class="section-head">
+                <span class="subtitulo">De nuestra parroquia</span>
+                <h2>Lo que pasa en Santa Teresa</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            {grid}
+            <div class="btn-group center" style="margin-top:2.5rem;">
+                <a class="btn" href="{IG_URL}" target="_blank" rel="noopener">Más en nuestro Instagram</a>
+                <a class="btn" href="noticias.html#actualidad-iglesia">Noticias de la Iglesia</a>
+            </div>
+        </section>
+"""
+    return page(1, "Noticias de la parroquia", "Noticias de la Parroquia Santa Teresa de Jesús, en el barrio del Carmel (Barcelona).", body=body, active="noticias")
+
+
+def news_page(i, n):
+    figure = ""
+    if n["foto"]:
+        cap = f"\n                        <figcaption>{esc(n['pie'])}</figcaption>" if (n.get("pie") or "").strip() else ""
+        figure = f"""
+                    <figure class="rv-figure">
+                        {rev_img(n["foto"], 2, 1100, n.get("pie") or n["titulo"], lazy=False)}{cap}
+                    </figure>"""
+    lead = f'\n                    <p class="lead rv-lead">{esc(n["resumen"])}</p>' if (n.get("resumen") or "").strip() else ""
+    more = f'\n                    <p class="btn-group"><a class="btn" href="{esc(n["enlace"])}" target="_blank" rel="noopener">Más información</a></p>' if n["enlace"] else ""
+    others = [o for o in NEWS if o is not n][:3]
+    other_cards = f"""
+        <section class="section-alt">
+            <div class="section-head">
+                <span class="subtitulo">Sigue leyendo</span>
+                <h2>Más noticias de la parroquia</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            <div class="rv-cards">{"".join(news_card(o, 2) for o in others)}
+            </div>
+        </section>
+""" if others else ""
+    body = _hero2("Noticias de la parroquia", esc(n["titulo"]), "Noticias", "web/dsc_0586.jpg") + f"""
+        <section class="reading">
+            <div class="reading-wrap">
+                <a class="rv-back" href="../noticias-parroquia.html">&larr; <span>Todas las noticias de la parroquia</span></a>
+                <article class="prose book-page reading-book rv-article">
+                    <div class="reading-head">
+                        <span class="book-kicker">Noticias de la parroquia</span>
+                        {date_long(n, "rv-issue-tag")}
+                    </div>
+                    <h2 class="reading-title">{esc(n["titulo"])}</h2>
+                    {ORNAMENT}{lead}{figure}
+{HOM.markdown(n.get("texto", ""))}{more}
+                </article>
+            </div>
+        </section>
+""" + other_cards
+    desc = (n["extracto"] or n["titulo"])[:180]
+    return rev_og(page(2, qesc(n["titulo"]), qesc(desc), body=body, active="noticias"), n["foto"])
+
+
+PAGES["html/noticias-parroquia.html"] = news_list_page()
+for _i, _n in enumerate(NEWS):
+    PAGES[_n["url"]] = news_page(_i, _n)
+
+# ---------------------------------------------------------------- BUSCADOR DE PARROQUIAS
+# El buscador del Arzobispado, dentro de nuestra web (se carga cuando se acepta el contenido externo)
+PAGES["html/buscador-parroquias.html"] = page(1, "Buscar una parroquia", "Encuentra cualquier parroquia de la archidiócesis de Barcelona sin salir de la web de la Parroquia Santa Teresa de Jesús.", active="buscador", body=page_hero("Archidiócesis de Barcelona", "Buscar una parroquia", "web/dsc_0541.jpg") + """
+        <section>
+            <div class="section-head">
+                <span class="subtitulo">Buscador de parroquias</span>
+                <h2>Todas las parroquias de Barcelona</h2>
+                <hr class="section-divider" style="margin-bottom:1.25rem;">
+                <p>Busca por nombre, barrio o población con el buscador oficial del Arzobispado de Barcelona, aquí mismo.</p>
+            </div>
+            <div class="finder-frame">
+                <iframe title="Buscador de parroquias del Arzobispado de Barcelona" src="https://esglesia.barcelona/es/parroquia/" height="1100" loading="lazy"></iframe>
+            </div>
+            <div class="finder-own">
+                <span class="finder-own-mark">""" + LOGO_MARK + """</span>
+                <div>
+                    <strong>Parroquia Santa Teresa de Jesús</strong>
+                    <span>Carrer del Llobregós, 132 · 08032 Barcelona · El Carmel</span>
+                </div>
+                <a class="btn btn-solid" href="contacto.html#mapa">Cómo llegar</a>
+            </div>
+        </section>
+""")
+
 # Revista digital: página general, una por número y una por artículo
 if REVISTA_ON or REV_ISSUES:
     PAGES["html/revista.html"] = revista_archive_page()
@@ -2176,7 +2319,15 @@ PAGES["html/jovenes2alternativa.html"] = page(1, "Jóvenes", "Grupo de jóvenes 
 # ---------------------------------------------------------------- NOTICIAS
 
 PAGES["html/noticias.html"] = page(1, "Noticias", "Noticias de la Parroquia Santa Teresa de Jesús, del Vaticano y del Arzobispado de Barcelona.", active="noticias", extra_head=NEWS_HEAD_1, body=page_hero("Actualidad de la Iglesia", "Noticias", "web/dsc_0541.jpg") + f"""
-        <section id="parroquia" class="parish-news">
+        <section id="parroquia" class="parish-news">""" + ("" if not NEWS else f"""
+            <div class="section-head pn-latest-head">
+                <span class="subtitulo">Noticias de nuestra parroquia</span>
+                <h2>Últimas noticias</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            <div class="rv-cards pn-latest">{"".join(news_card(n, 1) for n in NEWS[:3])}
+            </div>
+            <div class="btn-group center" style="margin:2rem 0 4rem;"><a class="btn btn-solid" href="noticias-parroquia.html">Todas las noticias de la parroquia</a></div>""") + f"""
             <div class="parish-news-grid">
                 <div class="parish-news-text">
                     <span class="subtitulo">Noticias de nuestra parroquia</span>
@@ -2455,6 +2606,7 @@ import re
 SERVICES = [
     ("google.com/maps", "Google Maps"),
     ("calendar.google.com", "Google Calendar"),
+    ("esglesia.barcelona", "Arzobispado de Barcelona (buscador de parroquias)"),
     ("docs.google.com/forms", "Google Forms (formulario)"),
     ("youtube", "YouTube"),
     ("soundcloud.com", "SoundCloud"),
@@ -2518,6 +2670,34 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ("Inicio", "Inici", "Home"), ("Bienvenidos", "Benvinguts", "Welcome"), ("Quiénes somos", "Qui som", "About us"),
+                      ("Próxima misa y horarios", "Propera missa i horaris", "Next Mass and times"),
+                      ("Reflexión de la semana", "Reflexió de la setmana", "This week's reflection"),
+                      ("Buscar una parroquia", "Cercar una parròquia", "Find a parish"),
+                      ("¿Es tu primera visita?", "És la teva primera visita?", "First time here?"),
+                      ("Horarios y cómo llegar", "Horaris i com arribar-hi", "Times and how to get here"),
+                      ("Adoración al Santísimo", "Adoració al Santíssim", "Eucharistic adoration"),
+                      ("Media hora con bendición", "Mitja hora amb benedicció", "Half an hour with benediction"),
+                      ("Noticias de la parroquia", "Notícies de la parròquia", "Parish news"),
+                      ("Lo que pasa en Santa Teresa", "El que passa a Santa Teresa", "What's happening at Santa Teresa"),
+                      ("Muy pronto publicaremos aquí las noticias de la parroquia.", "Ben aviat publicarem aquí les notícies de la parròquia.", "Parish news will be published here very soon."),
+                      ("Más en nuestro Instagram", "Més al nostre Instagram", "More on our Instagram"),
+                      ("Noticias de la Iglesia", "Notícies de l'Església", "Church news"),
+                      ("Todas las noticias de la parroquia", "Totes les notícies de la parròquia", "All parish news"),
+                      ("Más noticias de la parroquia", "Més notícies de la parròquia", "More parish news"),
+                      ("Últimas noticias", "Darreres notícies", "Latest news"),
+                      ("Más información", "Més informació", "More information"),
+                      ("Noticias de la parroquia | Parroquia Santa Teresa de Jesús", "Notícies de la parròquia | Parròquia de Santa Teresa de Jesús", "Parish news | Santa Teresa de Jesús Parish"),
+                      ("Noticias de la Parroquia Santa Teresa de Jesús, en el barrio del Carmel (Barcelona).", "Notícies de la Parròquia de Santa Teresa de Jesús, al barri del Carmel (Barcelona).", "News from Santa Teresa de Jesús Parish, in the Carmel neighbourhood (Barcelona)."),
+                      ("Buscar una parroquia | Parroquia Santa Teresa de Jesús", "Cercar una parròquia | Parròquia de Santa Teresa de Jesús", "Find a parish | Santa Teresa de Jesús Parish"),
+                      ("Encuentra cualquier parroquia de la archidiócesis de Barcelona sin salir de la web de la Parroquia Santa Teresa de Jesús.", "Troba qualsevol parròquia de l'arxidiòcesi de Barcelona sense sortir del web de la Parròquia de Santa Teresa de Jesús.", "Find any parish in the Archdiocese of Barcelona without leaving the Santa Teresa de Jesús Parish website."),
+                      ("Archidiócesis de Barcelona", "Arxidiòcesi de Barcelona", "Archdiocese of Barcelona"),
+                      ("Buscador de parroquias", "Cercador de parròquies", "Parish finder"),
+                      ("Todas las parroquias de Barcelona", "Totes les parròquies de Barcelona", "All the parishes of Barcelona"),
+                      ("Busca por nombre, barrio o población con el buscador oficial del Arzobispado de Barcelona, aquí mismo.", "Cerca per nom, barri o població amb el cercador oficial de l'Arquebisbat de Barcelona, aquí mateix.", "Search by name, neighbourhood or town with the official Archdiocese of Barcelona finder, right here."),
+                      ("Buscador de parroquias del Arzobispado de Barcelona", "Cercador de parròquies de l'Arquebisbat de Barcelona", "Archdiocese of Barcelona parish finder"),
+                      ("Arzobispado de Barcelona (buscador de parroquias)", "Arquebisbat de Barcelona (cercador de parròquies)", "Archdiocese of Barcelona (parish finder)"),
+                      ("Carrer del Llobregós, 132 · 08032 Barcelona · El Carmel", "Carrer del Llobregós, 132 · 08032 Barcelona · El Carmel", "Carrer del Llobregós, 132 · 08032 Barcelona · El Carmel"),
                       ("¿Quieres colaborar?", "Vols col·laborar?", "Would you like to help?"),
                       ("Únete a un grupo de la parroquia", "Uneix-te a un grup de la parròquia", "Join a parish group"),
                       ("Información e inscripción &rarr;", "Informació i inscripció &rarr;", "Information and registration &rarr;"),
@@ -2573,6 +2753,12 @@ for _n in REV_ISSUES:
         _rev_tr(f"{_at} — {_DESC[0]}", f"{_at} — {_DESC[1]}", f"{_at} — {_DESC[2]}")
         if _a["extracto"]:
             TABLE.setdefault(qesc(_a["extracto"][:180]).strip(), {"ca": qesc(_a["extracto"][:180]).strip(), "en": qesc(_a["extracto"][:180]).strip()})
+for _n in NEWS:
+    _rev_frag += [_n["titulo"], _n["extracto"], _n.get("pie"), _n.get("resumen")]
+    _t = qesc(_n["titulo"])
+    _rev_tr(f"{_t} {_SUF[0]}", f"{_t} {_SUF[1]}", f"{_t} {_SUF[2]}")
+    _d = qesc((_n["extracto"] or _n["titulo"])[:180]).strip()
+    TABLE.setdefault(_d, {"ca": _d, "en": _d})
 for _frag in _rev_frag:
     if not _frag:
         continue
@@ -2588,6 +2774,7 @@ LOCALES = {"es": "es_ES", "ca": "ca_ES", "en": "en_GB"}
 LANG_NAMES = [("es", "ES", "Español"), ("ca", "CA", "Català"), ("en", "EN", "English")]
 HOMILY_NOTE = {"ca": "Text original en castellà.", "en": "Original text in Spanish."}
 REVISTA_NOTE = {"ca": "Article original en castellà.", "en": "Original article in Spanish."}
+NEWS_NOTE = {"ca": "Notícia original en castellà.", "en": "Original news item in Spanish."}
 
 
 def out_path(lang, rel):
@@ -2691,14 +2878,14 @@ for rel, base in PAGES.items():
     for lang in LANGS:
         html = base
         if lang != "es":
-            if rel.startswith("html/reflexiones/") or "--" in rel and rel.startswith("html/revista/"):
+            if rel.startswith(("html/reflexiones/", "html/noticias/")) or "--" in rel and rel.startswith("html/revista/"):
                 # reflexión subida desde el panel: si su texto aún no está traducido, se muestra
                 # en castellano con un aviso (sin contarla como texto pendiente del generador)
                 _art = re.search(r'<article class="prose.*?</article>', html, re.S)
                 _pend = _art and any(k not in TABLE for k in i18n.extract(_art.group(0), rel))
                 html = i18n.translate(html, rel, lang, TABLE, set())
                 if _pend:
-                    _note = (REVISTA_NOTE if rel.startswith("html/revista/") else HOMILY_NOTE)[lang]
+                    _note = (REVISTA_NOTE if rel.startswith("html/revista/") else NEWS_NOTE if rel.startswith("html/noticias/") else HOMILY_NOTE)[lang]
                     html = html.replace('<article class="prose', f'<p class="lang-note">{_note}</p>\n                <article class="prose', 1)
             else:
                 html = i18n.translate(html, rel, lang, TABLE, missing)
@@ -2721,7 +2908,7 @@ for rel, base in PAGES.items():
 # ---------- borrar las páginas de reflexiones, números o artículos que ya no están publicados ----------
 # (las carpetas html/reflexiones y html/revista solo contienen páginas generadas desde el panel)
 _keep = {out_path(l, r) for l, r in written}
-for _sub in ("html/reflexiones", "html/revista"):
+for _sub in ("html/reflexiones", "html/revista", "html/noticias"):
     for _lang in LANGS:
         _dir = os.path.join(ROOT, out_path(_lang, _sub))
         if os.path.isdir(_dir):
