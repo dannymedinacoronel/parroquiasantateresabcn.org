@@ -33,68 +33,61 @@ for _f in ("css/fonts.css", "css/site.css", "js/site.js", "js/liturgia.js", "dat
     with open(os.path.join(ROOT, _f), "rb") as _fh:
         V[_f] = _hashlib.md5(_fh.read()).hexdigest()[:10]
 
+# Menú principal: 5 apartados. Cada subapartado: (texto, enlace, icono pequeño de SAC_ICONS).
+# «§» abre un grupo con título; «+» marca contenido propio de la parroquia (con la cruz).
+# La clave del apartado admite varias páginas («historia|organigrama») para marcarlo como activo.
 NAV = [
-    ("inicio", "Inicio", "index.html", [
-        ("Horarios de misa", "index.html#horarios"),
-        ("Bienvenidos", "index.html#bienvenida"),
-        ("Reflexión dominical", "index.html#reflexion"),
-        ("Vida parroquial", "index.html#vida"),
-        ("Sacramentos", "index.html#sacramentos"),
-        ("La parroquia en imágenes", "index.html#galeria"),
-        ("Evangelio de hoy", "index.html#actualidad"),
-        ("Evangelio para la familia", "html/evangelio-familia.html"),
-        ("Cómo llegar", "index.html#ubicacion"),
+    ("eucaristias", "Celebraciones", "html/misas.html", [
+        ("§", "Eucaristía"),
+        ("Horarios de misa", "html/misas.html#horarios", "reloj"),
+        ("Misa con coro góspel", "html/misas.html#gospel", "nota"),
+        ("Calendario semanal", "html/misas.html#calendario", "cal"),
+        ("§", "Sacramentos"),
+        ("Bautismo", "html/bautismo.html", "agua"),
+        ("Primera Comunión", "html/comuniones.html", "caliz"),
+        ("Confirmación", "html/confirmacion.html", "paloma"),
+        ("Matrimonio y aniversarios", "html/matrimonio.html", "anillos"),
+        ("Perdón", "html/perdon.html", "manos"),
+        ("Unción de los enfermos", "html/uncion.html", "oleo"),
     ]),
-    ("eucaristias", "Eucaristías", "html/misas.html", [
-        ("Horarios de Eucaristía", "html/misas.html#horarios"),
-        ("Misa con coro góspel", "html/misas.html#gospel"),
-        ("Calendario de eucaristías y actividades", "html/misas.html#calendario"),
-        ("Sacramentos", "html/adminsacra.html"),
-        ("Bodas y aniversarios", "html/matrimonio.html#aniversarios"),
-        ("Primera Comunión", "html/comuniones.html"),
-        ("Catequesis", "html/catequesis.html"),
+    ("dinamica", "Comunidad", "html/dinamicapastoral.html", [
+        ("Grupos y servicios", "html/dinamicapastoral.html", "grupo"),
+        ("Catequesis", "html/catequesis.html", "libro"),
+        ("Jóvenes", "html/jovenes2alternativa.html", "persona"),
+        ("Momentos de la comunidad", "html/dinamicapastoral.html#momentos", "foto"),
     ]),
-    ("noticias", "Noticias", "html/noticias.html", [
+    ("noticias|familia", "Actualidad", "html/noticias.html", [
         ("§parish", "De nuestra parroquia"),
         ("+Noticias de la parroquia", "html/noticias.html#parroquia"),
         ("+Última reflexión", "__ULTIMA__"),
         ("+Todas las reflexiones", "html/humiliasmenu.html"),
     ] + ([("+Revista digital", "html/revista.html")] if REVISTA_ON or REV_ISSUES else []) + [
-        ("§", "Actualidad de la Iglesia"),
-        ("Vaticano y Arzobispado de Barcelona", "html/noticias.html#actualidad-iglesia"),
+        ("§", "Palabra de Dios"),
+        ("Evangelio de hoy", "index.html#actualidad", "libro"),
+        ("Evangelio para la familia", "html/evangelio-familia.html", "grupo"),
+        ("§", "Iglesia"),
+        ("Vaticano y Arzobispado", "html/noticias.html#actualidad-iglesia", "globo"),
     ]),
-    ("dinamica", "Dinámica Pastoral", "html/dinamicapastoral.html", [
-        ("Grupos y servicios", "html/dinamicapastoral.html"),
-        ("Catequesis", "html/catequesis.html"),
-        ("Primera Comunión", "html/comuniones.html"),
-        ("Jóvenes", "html/jovenes2alternativa.html"),
-        ("Sacramentos", "html/adminsacra.html"),
-        ("Imágenes y vídeos", "html/imagenes.html"),
-    ]),
-    ("organigrama", "Organigrama", "html/organigramaparroquial.html", [
-        ("Nuestra estructura", "html/organigramaparroquial.html#estructura"),
-        ("Consejo parroquial", "html/organigramaparroquial.html#consejos"),
-        ("Consejo económico", "html/organigramaparroquial.html#consejos"),
-    ]),
-    ("historia", "Historia", "html/historia.html", [
-        ("Nuestra historia", "html/historia.html#parroquia"),
-        ("Línea del tiempo", "html/historia.html#linea-del-tiempo"),
-        ("Archivo histórico", "html/historia.html#archivo"),
-        ("Imágenes y vídeos", "html/imagenes.html"),
+    ("historia|organigrama", "La parroquia", "html/historia.html", [
+        ("Nuestra historia", "html/historia.html#parroquia", "torre"),
+        ("Línea del tiempo", "html/historia.html#linea-del-tiempo", "cal"),
+        ("Archivo histórico", "html/historia.html#archivo", "libro"),
+        ("Organigrama", "html/organigramaparroquial.html#estructura", "persona"),
+        ("Consejos parroquiales", "html/organigramaparroquial.html#consejos", "cuentas"),
+        ("Imágenes y vídeos", "html/imagenes.html", "foto"),
     ]),
     ("contacto", "Contacto", "html/contacto.html", [
-        ("Dirección y horarios", "html/contacto.html#datos"),
-        ("Mapa y cómo llegar", "html/contacto.html#mapa"),
-        ("Contacta con nosotros", "html/contacto.html#escribenos"),
-        ("Despacho parroquial", "html/adminsacra.html#despacho"),
-        ("Política de privacidad", "html/privacidad.html"),
+        ("Escríbenos", "html/contacto.html#escribenos", "mail"),
+        ("Llamar a la parroquia", "tel:+34619040913", "phone"),
+        ("Despacho parroquial", "html/adminsacra.html#despacho", "reloj"),
+        ("Mapa y cómo llegar", "html/contacto.html#mapa", "pin"),
     ]),
 ]
 
 if HOMILIAS:
-    NAV = [(k, l, p, [(a, HOMILIAS[0]["url"] if b == "__ULTIMA__" else b) for a, b in ch]) for k, l, p, ch in NAV]
+    NAV = [(k, l, p, [(c[0], HOMILIAS[0]["url"]) + tuple(c[2:]) if c[1] == "__ULTIMA__" else c for c in ch]) for k, l, p, ch in NAV]
 else:
-    NAV = [(k, l, p, [(a, b) for a, b in ch if b != "__ULTIMA__"]) for k, l, p, ch in NAV]
+    NAV = [(k, l, p, [c for c in ch if c[1] != "__ULTIMA__"]) for k, l, p, ch in NAV]
 
 CHEVRON = ('<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" '
            'stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>')
@@ -106,23 +99,27 @@ PARISH_ICON = ('<svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" f
 
 def nav_items(depth, active):
     out = []
-    for key, label, path, children in NAV:
-        cur = key == active
-        rows = []
-        for l, p in children:
-            if l.startswith("§"):   # encabezado de grupo dentro del submenú
-                cls = "sub-heading" + (" parish" if l == "§parish" else "")
-                rows.append(f'                    <li class="{cls}" aria-hidden="true">{p}</li>')
-            elif l.startswith("+"):  # contenido propio de la parroquia: estilo diferenciado
+    for n, (key, label, path, children) in enumerate(NAV):
+        cur = active in key.split("|")
+        rows, heads = [], 0
+        for c in children:
+            l, p = c[0], c[1]
+            if l.startswith("§"):   # título de grupo dentro del submenú (el segundo abre la otra columna)
+                heads += 1
+                cls = "sub-heading" + (" parish" if l == "§parish" else "") + (" col-break" if heads == 2 else "")
+                rows.append(f'                    <li class="{cls}">{p}</li>')
+            elif l.startswith("+"):  # contenido propio de la parroquia: con la cruz
                 rows.append(f'                    <li class="parish-item"><a href="{href(p, depth)}" class="sub-link parish-link">{PARISH_ICON}<span>{l[1:]}</span></a></li>')
             else:
-                rows.append(f'                    <li><a href="{href(p, depth)}" class="sub-link">{l}</a></li>')
+                ico = SAC_ICONS.get(c[2], "") if len(c) > 2 else ""
+                rows.append(f'                    <li><a href="{href(p, depth)}" class="sub-link"><span class="sub-ico">{ico}</span><span>{l}</span></a></li>')
+        cols = " cols" if sum(1 for c in children if c[0].startswith("§")) >= 2 else ""
         subs = "\n".join(rows)
         out.append(
             f'            <li class="nav-item has-sub">\n'
             f'                <a href="{href(path, depth)}" class="nav-link{" active" if cur else ""}"{" aria-current=\"page\"" if cur else ""}>{label}</a>\n'
-            f'                <button type="button" class="sub-toggle" aria-expanded="false" aria-label="Submenú">{CHEVRON}</button>\n'
-            f'                <ul class="sub-menu">\n{subs}\n                </ul>\n'
+            f'                <button type="button" class="sub-toggle" aria-expanded="false" aria-controls="submenu-{n}" aria-label="{label}: submenú">{CHEVRON}</button>\n'
+            f'                <ul class="sub-menu{cols}" id="submenu-{n}">\n{subs}\n                </ul>\n'
             f'            </li>')
     return "\n".join(out)
 
@@ -192,6 +189,8 @@ def img(name, depth=1):
 
 def href(path, depth):
     """Ruta relativa desde la raíz (depth 0) o desde /html (depth 1)."""
+    if path.startswith(("tel:", "mailto:", "http")):
+        return path
     if depth == 0:
         if path.startswith("index.html#"):
             return path[len("index.html"):]
@@ -225,6 +224,7 @@ def page(depth, title, desc, body, active=None, extra_head="", extra_scripts="",
     <meta name="google-site-verification" content="VPnsEJ8eoLn1oCmTMKtjPE2oXmyNlapYjslb4OXHVe8" />
     <title>{full_title or (title + " | Parroquia Santa Teresa de Jesús")}</title>
     <meta name="description" content="{desc}">
+    <meta name="robots" content="index, follow, max-image-preview:large">
     <link rel="canonical" href="__URL__">
 __HREFLANG__
     <meta property="og:type" content="website">
@@ -365,6 +365,11 @@ SAC_ICONS = {
 
 
 SAC_ICONS.update({
+    "nota": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>',
+    "cal": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
+    "foto": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6.5" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8.5 6.5l1.5-2h4l1.5 2"/></svg>',
+    "torre": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4M10 4h4M7 21V11l5-4 5 4v10M4 21h16M10 21v-3.5a2 2 0 0 1 4 0V21"/></svg>',
+    "globo": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.5 3.5 5.5 3.5 8.5s-1 6-3.5 8.5c-2.5-2.5-3.5-5.5-3.5-8.5s1-6 3.5-8.5z"/></svg>',
     # Unción de los enfermos: frasco del óleo con la cruz
     "oleo": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 2.5h5M10.2 2.5v3.6L7 10v8.6A2.4 2.4 0 0 0 9.4 21h5.2a2.4 2.4 0 0 0 2.4-2.4V10l-3.2-3.9V2.5"/><path d="M12 11.5v6M9.6 13.8h4.8"/></svg>',
     "pin": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
@@ -870,6 +875,9 @@ INDEX_HEAD = """    <link rel="preload" as="image" href="fotosdefinitivas/web/po
         "addressLocality": "Barcelona",
         "addressCountry": "ES"
       },
+      "geo": { "@type": "GeoCoordinates", "latitude": 41.4242, "longitude": 2.1558 },
+      "isAccessibleForFree": true,
+      "publicAccess": true,
       "sameAs": ["https://www.instagram.com/p.santateresadejesusbcn/"]
     }
     </script>
@@ -1015,7 +1023,7 @@ def feature(photo, eyebrow, title, text, link):
 
 
 PAGES["index.html"] = page(0, "", "Parroquia Santa Teresa de Jesús, en el barrio del Carmel (Barcelona). Horarios de eucaristías, actividades pastorales y contacto.",
-full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="inicio", extra_head=INDEX_HEAD, body="""        <section class="hero hero-slider">
+full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", extra_head=INDEX_HEAD, body="""        <section class="hero hero-slider">
             <div class="hero-bg hero-slides" aria-hidden="true">""" + "".join(
     f'\n                <span class="hero-slide{" is-on ready" if i == 1 else ""}"><em>{cap}</em></span>'
     for i, cap in enumerate(HERO_SLIDES, 1)) + """
@@ -1979,8 +1987,6 @@ PAGES["html/imagenes.html"] = page(1, "Imágenes y vídeos", "Vídeos y álbumes
                     <hr class="section-divider">
                     <div class="btn-stack">
                         <a href="https://drive.google.com/drive/folders/1jfgSnLel08doU2DFm9UpX_9xhO_O8ZT-?usp=sharing" class="btn" target="_blank" rel="noopener">Fotografías de las comuniones 2021</a>
-                        <a href="https://mega.nz/#F!mkNRDaKA!9RB9WIL2ftWbm_vEexp94g" class="btn" target="_blank" rel="noopener">Fotografías de la Eucaristía dominical</a>
-                        <a href="https://mega.nz/#F!TptljabY!fkMjK3iNmVxgv42GxhD-Wg" class="btn" target="_blank" rel="noopener">Fotografías del Domingo de Ramos 2019</a>
                     </div>
                     """ + cincopa("7e90e2d4-db4c-443c-9da2-f0eae76a49a0", "AUKA6f-1tvEd") + """
                 </div>
@@ -2257,7 +2263,7 @@ PAGES["html/noticias.html"] = page(1, "Noticias", "Noticias de la Parroquia Sant
 # Se inserta la página de evangeli.net tal cual (ellos ofrecen ponerla en otras webs). En catalán
 # e inglés se cambia la dirección por su versión en ese idioma (ver FAMILY_URL más abajo).
 FAMILY_URL = "https://family.evangeli.net/es"
-PAGES["html/evangelio-familia.html"] = page(1, "El Evangelio para la familia", "El Evangelio de cada día explicado para leerlo en familia: texto, comentario, ilustración y juegos para los niños.", active="inicio", body=page_hero("Para leer en casa", "El Evangelio para la familia", "web/familia-pixelada.jpg", "Evangelio para la familia", "center 30%") + """
+PAGES["html/evangelio-familia.html"] = page(1, "El Evangelio para la familia", "El Evangelio de cada día explicado para leerlo en familia: texto, comentario, ilustración y juegos para los niños.", active="familia", body=page_hero("Para leer en casa", "El Evangelio para la familia", "web/familia-pixelada.jpg", "Evangelio para la familia", "center 30%") + """
         <section class="section-warm">
             <div class="family-intro">
                 <div>
@@ -2500,6 +2506,17 @@ for _h in HOMILIAS:
                _h.get("autor_cargo"), _first_quote(_h.get("texto"))):
         if _k:
             TABLE.setdefault(_k.strip(), {"ca": _k.strip(), "en": _k.strip()})
+for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comunidad", "Comunitat", "Community"),
+                      ("Actualidad", "Actualitat", "News"), ("La parroquia", "La parròquia", "The parish"),
+                      ("Eucaristía", "Eucaristia", "Eucharist"), ("Calendario semanal", "Calendari setmanal", "Weekly schedule"),
+                      ("Matrimonio y aniversarios", "Matrimoni i aniversaris", "Marriage and anniversaries"),
+                      ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
+                      ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
+                      ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Contacto", "Contacte", "Contact")]:
+    TABLE[_es] = {"ca": _ca, "en": _en}
+for _k, _l, _p, _c in NAV:
+    _tl = TABLE.get(_l, {"ca": _l, "en": _l})
+    TABLE[f"{_l}: submenú"] = {"ca": f"{_tl['ca']}: submenú", "en": f"{_tl['en']}: submenu"}
 for _es, _ca, _en in SAC_TR:
     TABLE[_es] = {"ca": _ca, "en": _en}
 # Revista digital: los textos escritos en el panel con sus traducciones opcionales (sin traducción, tal cual)

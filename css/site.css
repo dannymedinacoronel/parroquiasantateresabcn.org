@@ -2702,3 +2702,38 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 .sac-arch { margin-bottom: 5.5rem; }
 .sac-credit { position: absolute; top: 100%; left: -10%; right: -10%; margin-top: 3.2rem; text-align: center; font-size: .72rem; letter-spacing: .5px; color: var(--muted); font-style: italic; }
 .sac-arch img { background: #f3ead8; }
+
+/* ==========================================================================
+   MENÚ COMPACTO: 5 apartados, grupos con título e iconos dorados pequeños
+   ========================================================================== */
+.sub-link { display: flex; align-items: center; gap: .6rem; }
+.sub-ico { display: inline-grid; place-items: center; flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: #f6efe0; color: var(--accent-dark); }
+.sub-ico svg { width: 13px; height: 13px; }
+.sub-link:hover .sub-ico, .sub-link:focus-visible .sub-ico { background: var(--accent-color); color: #1b1610; }
+@media (min-width: 1281px) {
+    .sub-link { white-space: nowrap; }
+    .sub-link::before { display: none; }
+    .sub-link:hover, .sub-link:focus-visible { padding-left: 1.75rem; }
+    /* submenús con varios grupos: en dos columnas, un grupo por columna */
+    .sub-menu.cols { columns: 2; column-gap: 0; min-width: 540px; padding: .9rem 0 1rem; }
+    .sub-menu.cols > li { break-inside: avoid; }
+    .sub-menu.cols > .col-break { break-before: column; }
+    .sub-menu.cols > .sub-heading:first-child { margin-top: 0; }
+}
+@media (max-width: 1280px) {
+    .nav-item.open .sub-menu { max-height: 1000px; }
+    .sub-link { gap: .7rem; }
+}
+
+/* ==========================================================================
+   ACCESIBILIDAD: contraste suficiente para personas con baja visión (WCAG AA)
+   ========================================================================== */
+:root { --muted: #69635a; }
+.subtitulo, .sub-heading { color: #84673a; }
+.btn-solid, .btn:hover, .chip input:checked + span, .today-tag, .revista-ribbon { color: #1b1610; }
+.btn-solid:hover { background: var(--accent-dark); border-color: var(--accent-dark); color: #fff; }
+.revista:not(.rv-issue-intro) .subtitulo { color: var(--accent-light); }
+@media (min-width: 1281px) { .sub-menu.cols > .col-break { border-top: 0 !important; margin-top: 0 !important; padding-top: .7rem !important; } }
+:root { --accent-dark: #765b2a; }
+.info-list strong { color: var(--accent-dark); }
+.badge { color: #1b1610 !important; }
