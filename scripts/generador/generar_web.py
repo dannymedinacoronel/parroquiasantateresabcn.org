@@ -29,7 +29,7 @@ ON_NETLIFY = os.environ.get("NETLIFY") == "true"
 # dirección (site.css?v=...) y ningún navegador puede seguir usando una copia antigua.
 import hashlib as _hashlib
 V = {}
-for _f in ("css/fonts.css", "css/site.css", "js/site.js", "js/liturgia.js", "data/avisos.js"):
+for _f in ("css/fonts.css", "css/site.css", "js/site.js", "js/liturgia.js", "js/revista.js", "data/avisos.js"):
     with open(os.path.join(ROOT, _f), "rb") as _fh:
         V[_f] = _hashlib.md5(_fh.read()).hexdigest()[:10]
 
@@ -709,6 +709,60 @@ def revista_archive_page():
     return rev_og(page(1, "Revista digital", "La revista digital de la Parroquia Santa Teresa de Jesús de Barcelona: todos sus números.", body=body, active="noticias"), latest["portada"])
 
 
+PAGEFLIP_JS = ('<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js" '
+               'integrity="sha384-L4eWrYFdqQ+LoGA0MMuqLqzV13x7SKkQaqacy4MED8e815dS37tTKlO/6xBEUpZW" crossorigin="anonymous" defer></script>')
+
+
+def mag_book(n):
+    """Revista para hojear: portada, presentación, índice, artículos y contraportada (js/revista.js la monta)."""
+    label = rev_label(n)
+    run = "Santa Teresa" + (f" · {label}" if label else "")
+    if n.get("portada_completa") is True and n["portada"]:
+        cover = rev_img(n["portada"], 2, 900, n["titulo"], lazy=False)
+    else:
+        cover = (rev_img(n["portada"] or REV_DEFAULT_COVER, 2, 900, "", lazy=False) + f"""
+                <div class="mag-cover-top">{LOGO_MARK}<strong>Santa Teresa</strong><small>Revista digital de la parroquia</small></div>
+                <div class="mag-cover-bottom">{f'<span class="mag-cover-num">{esc(label)}</span>' if label else ''}<strong>{esc(n["titulo"])}</strong>{date_long(n, "mag-cover-date")}</div>""")
+    pres = HOM.markdown(n.get("presentacion", "")).replace(' class="illuminated"', "", 1)
+    arts = ""
+    for a in n["articulos"]:
+        fig = ""
+        if a["foto"]:
+            fig = f'<figure class="mag-fig">{rev_img(a["foto"], 2, 900, a.get("pie") or a["titulo"], lazy=False)}' + \
+                  (f'<figcaption>{esc(a["pie"])}</figcaption>' if (a.get("pie") or "").strip() else "") + "</figure>"
+        lead = f'<p class="mag-lead">{esc(a["entradilla"])}</p>' if (a.get("entradilla") or "").strip() else ""
+        firma = f'\n<p class="mag-firma">{esc(a["autor"])}</p>' if (a.get("autor") or "").strip() else ""
+        arts += f"""
+            <template class="mag-src" data-sec="{qesc(a.get('seccion') or '')}" data-title="{qesc(a['titulo'])}" data-author="{qesc(a.get('autor') or '')}"><div class="mag-art-head">{f'<span class="mag-kicker">{esc(a["seccion"])}</span>' if a.get("seccion") else ''}<h2 class="mag-title">{esc(a["titulo"])}</h2>{lead}{fig}</div>
+{HOM.markdown(a.get("texto", ""))}{firma}
+            </template>"""
+    return f"""
+        <section class="mag-section" id="hojear">
+            <div class="mag" data-mag data-run="{qesc(run)}" data-label-page="Página" data-label-index="En este número" tabindex="0" aria-label="Revista para hojear: usa las flechas del teclado para pasar página">
+                <p class="mag-loading">Abriendo la revista…</p>
+                <div class="mag-host"></div>
+                <div class="mag-bar">
+                    <button type="button" class="mag-btn" data-mag-prev aria-label="Página anterior">&larr;</button>
+                    <span class="mag-count" aria-live="polite"></span>
+                    <button type="button" class="mag-btn" data-mag-next aria-label="Página siguiente">&rarr;</button>
+                    <span class="mag-sep"></span>
+                    <button type="button" class="mag-btn mag-btn-text" data-mag-index>Índice</button>
+                    <button type="button" class="mag-btn mag-btn-text" data-mag-full>Pantalla completa</button>
+                </div>
+                <p class="mag-hint">Arrastra la esquina de la página o usa las flechas para pasar página.</p>
+                <template class="mag-fixed" data-kind="mag-cover">{cover}
+                </template>
+                <template class="mag-fixed" data-kind="mag-text mag-intro"><div class="mag-run">{esc(run)}</div><div class="mag-flow"><span class="mag-kicker">Presentación</span><h2 class="mag-title">{esc(n["titulo"])}</h2>{date_long(n, "mag-date")}
+{pres}
+                </div><div class="mag-folio">2</div>
+                </template>{arts}
+                <template class="mag-back"><div class="mag-back-in">{LOGO_MARK}<strong>Parroquia Santa Teresa de Jesús</strong><span>Carrer del Llobregós, 132 · 08032 Barcelona</span><span class="mag-back-sep"></span><span>Eucaristías: laborables y sábados 19:00 h · Domingos 11:00 y 13:15 h</span><span>{TEL_TXT}</span><span>parroquiasantateresabcn.netlify.app</span><span>@p.santateresadejesusbcn</span></div>
+                </template>
+            </div>
+        </section>
+"""
+
+
 def revista_issue_page(i, n):
     arts = n["articulos"]
     cards = ""
@@ -716,7 +770,7 @@ def revista_issue_page(i, n):
         cards = f"""
         <section class="section-alt" id="articulos">
             <div class="section-head">
-                <span class="subtitulo">{esc(rev_label(n) or "Revista digital")}</span>
+                <span class="subtitulo">También en formato texto</span>
                 <h2>En este número</h2>
                 <hr class="section-divider" style="margin-bottom:0;">
             </div>
@@ -740,26 +794,14 @@ def revista_issue_page(i, n):
             <div class="btn-group center" style="margin-top:2.5rem;"><a class="btn" href="../revista.html">Todos los números</a></div>
         </section>
 """
-    body = _hero2("Revista digital" + (f" · {rev_label(n)}" if n.get("num") else ""), esc(n["titulo"]), "Revista digital") + f"""
-        <section class="revista rv-issue-intro">
-            <div class="revista-grid">
-                {rev_cover(2, n["portada"], rev_label(n), "", n.get("portada_completa") is True)}
-                <div class="revista-body">
-                    <span class="subtitulo text-left">{date_long(n)}</span>
-                    <h2 class="text-left">{esc(n["titulo"])}</h2>
-                    <hr class="section-divider left">
-                    <div class="prose rv-presentacion">
-{HOM.markdown(n.get("presentacion", "")).replace(' class="illuminated"', "", 1)}
-                    </div>
-                    <div class="btn-group">
-                        {btns}{'<a class="btn" href="#articulos">Ver los artículos</a>' if arts and not btns else ''}
-                    </div>
-                </div>
-            </div>
-        </section>
-""" + cards + more
+    body = _hero2("Revista digital" + (f" · {rev_label(n)}" if n.get("num") else ""), esc(n["titulo"]), "Revista digital") + mag_book(n) + (f"""
+        <div class="btn-group center mag-actions">
+            {btns}
+        </div>
+""" if btns else "") + cards + more
     desc = f"{n['titulo']} — revista digital de la Parroquia Santa Teresa de Jesús."
-    return rev_og(page(2, qesc(n["titulo"]) + " · Revista digital", qesc(desc), body=body, active="noticias"), n["portada"])
+    scripts = PAGEFLIP_JS + f'\n    <script src="../../js/revista.js?v={V["js/revista.js"]}" defer></script>'
+    return rev_og(page(2, qesc(n["titulo"]) + " · Revista digital", qesc(desc), body=body, active="noticias", extra_scripts=scripts), n["portada"])
 
 
 def revista_article_page(n, j, a):
@@ -2670,6 +2712,14 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ("Página", "Pàgina", "Page"), ("Índice", "Índex", "Contents"), ("Pantalla completa", "Pantalla completa", "Full screen"),
+                      ("Presentación", "Presentació", "Introduction"), ("Abriendo la revista…", "Obrint la revista…", "Opening the magazine…"),
+                      ("También en formato texto", "També en format text", "Also as text"),
+                      ("Página anterior", "Pàgina anterior", "Previous page"), ("Página siguiente", "Pàgina següent", "Next page"),
+                      ("Revista para hojear: usa las flechas del teclado para pasar página", "Revista per fullejar: fes servir les fletxes del teclat per passar pàgina", "Flip-through magazine: use the arrow keys to turn the page"),
+                      ("Arrastra la esquina de la página o usa las flechas para pasar página.", "Arrossega la cantonada de la pàgina o fes servir les fletxes per passar pàgina.", "Drag the corner of the page or use the arrows to turn the page."),
+                      ("Revista digital de la parroquia", "Revista digital de la parròquia", "The parish digital magazine"),
+                      ("Eucaristías: laborables y sábados 19:00 h · Domingos 11:00 y 13:15 h", "Eucaristies: feiners i dissabtes 19:00 h · Diumenges 11:00 i 13:15 h", "Mass: weekdays and Saturdays 19:00 · Sundays 11:00 and 13:15"),
                       ("Inicio", "Inici", "Home"), ("Bienvenidos", "Benvinguts", "Welcome"), ("Quiénes somos", "Qui som", "About us"),
                       ("Próxima misa y horarios", "Propera missa i horaris", "Next Mass and times"),
                       ("Reflexión de la semana", "Reflexió de la setmana", "This week's reflection"),
@@ -2734,6 +2784,7 @@ for _n in REV_ISSUES:
     _rev_frag += [HOM.markdown(_n.get("presentacion", ""))]
     for _a in _n["articulos"]:
         _rev_frag += [_a["titulo"], _a.get("autor"), _a.get("seccion"), _a.get("pie"), _a.get("entradilla"), _a["extracto"]]
+        _rev_frag += [HOM.markdown(_a.get("texto", ""))]   # el texto completo va también dentro del libro para hojear
 def _rev_tr(es_txt, ca_txt, en_txt):
     TABLE[es_txt.strip()] = {"ca": ca_txt.strip(), "en": en_txt.strip()}
 _SUF = ("| Parroquia Santa Teresa de Jesús", "| Parròquia de Santa Teresa de Jesús", "| Santa Teresa de Jesús Parish")

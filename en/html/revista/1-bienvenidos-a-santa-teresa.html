@@ -27,7 +27,7 @@
     <link rel="manifest" href="../../../site.webmanifest">
 
     <link rel="stylesheet" href="../../../css/fonts.css?v=818b49f2ed">
-    <link rel="stylesheet" href="../../../css/site.css?v=4ff60f5132">
+    <link rel="stylesheet" href="../../../css/site.css?v=21725d0754">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
     <script type="speculationrules">{"prerender":[{"where":{"selector_matches":"a[hreflang]"},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}},{"not":{"selector_matches":"a[hreflang]"}}]},"eagerness":"moderate"}]}</script>
@@ -146,33 +146,106 @@
             <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span>/</span>Digital magazine</nav>
         </section>
 
-        <section class="revista rv-issue-intro">
-            <div class="revista-grid">
-                <div class="revista-cover-wrap">
-                    <div class="revista-cover">
-                        <img src="../../../fotosdefinitivas/web/dsc_0541.jpg" alt="" loading="lazy" decoding="async">
-                        <div class="revista-mast"><svg class="logo-mark" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.3"/></svg><strong>Santa Teresa</strong><small>The parish digital magazine</small></div>
-                        <span class="revista-issue">Issue 1</span>
-                    </div>
+        <section class="mag-section" id="hojear">
+            <div class="mag" data-mag data-run="Santa Teresa · Número 1" data-label-page="Page" data-label-index="In this issue" tabindex="0" aria-label="Flip-through magazine: use the arrow keys to turn the page">
+                <p class="mag-loading">Opening the magazine…</p>
+                <div class="mag-host"></div>
+                <div class="mag-bar">
+                    <button type="button" class="mag-btn" data-mag-prev aria-label="Previous page">&larr;</button>
+                    <span class="mag-count" aria-live="polite"></span>
+                    <button type="button" class="mag-btn" data-mag-next aria-label="Next page">&rarr;</button>
+                    <span class="mag-sep"></span>
+                    <button type="button" class="mag-btn mag-btn-text" data-mag-index>Contents</button>
+                    <button type="button" class="mag-btn mag-btn-text" data-mag-full>Full screen</button>
                 </div>
-                <div class="revista-body">
-                    <span class="subtitulo text-left"><time datetime="2026-10-26" data-fmt="long">26 de octubre de 2026</time></span>
-                    <h2 class="text-left">Bienvenidos a Santa Teresa</h2>
-                    <hr class="section-divider left">
-                    <div class="prose rv-presentacion">
+                <p class="mag-hint">Drag the corner of the page or use the arrows to turn the page.</p>
+                <template class="mag-fixed" data-kind="mag-cover"><img src="../../../fotosdefinitivas/web/dsc_0541.jpg" alt="" decoding="async">
+                <div class="mag-cover-top"><svg class="logo-mark" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.3"/></svg><strong>Santa Teresa</strong><small>The parish digital magazine</small></div>
+                <div class="mag-cover-bottom"><span class="mag-cover-num">Issue 1</span><strong>Bienvenidos a Santa Teresa</strong><time class="mag-cover-date" datetime="2026-10-26" data-fmt="long">26 de octubre de 2026</time></div>
+                </template>
+                <template class="mag-fixed" data-kind="mag-text mag-intro"><div class="mag-run">Santa Teresa · Número 1</div><div class="mag-flow"><span class="mag-kicker">Introduction</span><h2 class="mag-title">Bienvenidos a Santa Teresa</h2><time class="mag-date" datetime="2026-10-26" data-fmt="long">26 de octubre de 2026</time>
                     <p>Estrenamos la revista digital de la Parroquia Santa Teresa de Jesús: un lugar para contar la vida de nuestra comunidad del Carmel.</p>
                     <p>En este primer número repasamos casi un siglo de historia, os presentamos los grupos que dan vida a la parroquia y os dejamos la agenda de cada semana.</p>
-                    </div>
-                    <div class="btn-group">
-                        <a class="btn" href="#articulos">See the articles</a>
-                    </div>
-                </div>
+                </div><div class="mag-folio">2</div>
+                </template>
+            <template class="mag-src" data-sec="Editorial" data-title="Una revista para toda la comunidad" data-author="Equipo de la revista"><div class="mag-art-head"><span class="mag-kicker">Editorial</span><h2 class="mag-title">Una revista para toda la comunidad</h2><p class="mag-lead">Nace la revista digital de la parroquia, abierta a todos los grupos y a todos los vecinos.</p><figure class="mag-fig"><img src="../../../fotosdefinitivas/web/dsc_0512.jpg" alt="The community gathered in the church" decoding="async"><figcaption>The community gathered in the church</figcaption></figure></div>
+                    <p class="illuminated">Queridos amigos:</p>
+                    <p>Con este primer número estrenamos la <strong>revista digital de la Parroquia Santa Teresa de Jesús</strong>. Queremos que sea un punto de encuentro: un lugar donde contar lo que vivimos, dar a conocer a los grupos que hacen posible la vida de la parroquia y acercarla a quienes todavía no la conocen.</p>
+                    <p>En estas páginas encontraréis la historia de nuestro templo, la agenda de cada semana, las actividades de Cáritas, de los jóvenes y de los matrimonios, y las celebraciones que marcan el año.</p>
+                    <blockquote class="pull">Una comunidad abierta a todos, en el corazón del Carmel.</blockquote>
+                    <p>La revista es de todos: si tenéis fotos, testimonios o noticias de vuestro grupo, escribidnos desde el formulario de contacto de la web.</p>
+<p class="mag-firma">Equipo de la revista</p>
+            </template>
+            <template class="mag-src" data-sec="History" data-title="Casi cien años en el corazón del Carmel" data-author="Archivo parroquial"><div class="mag-art-head"><span class="mag-kicker">History</span><h2 class="mag-title">Casi cien años en el corazón del Carmel</h2><p class="mag-lead">De la primera piedra de 1923 a la parroquia de hoy: un templo sencillo que acompaña al barrio desde hace un siglo.</p><figure class="mag-fig"><img src="../../../fotosdefinitivas/web/dsc_0599webog.jpg" alt="El campanario, de 17,82 metros, en un día de fiesta" decoding="async"><figcaption>El campanario, de 17,82 metros, en un día de fiesta</figcaption></figure></div>
+                    <p class="illuminated">La historia de nuestra parroquia empieza en <strong>1923</strong>, con la colocación de la primera piedra, de la que conservamos algunas fotografías.</p>
+                    <h3>Un templo en la antigua finca de Can Grau</h3>
+                    <p>La iglesia se construyó en terrenos de la antigua finca de Can Grau, en el actual cruce entre Llobregós y Conca de Tremp, y era tenencia parroquial de Sant Joan d'Horta. Las obras terminaron en <strong>1927</strong>: una iglesia de una sola nave, con techo de vigas sobre dos arcos de medio punto y un ábside semicircular, y a su lado el campanario de <strong>17,82 metros</strong> que todavía hoy marca la silueta del barrio.</p>
+                    <h3>La bendición de 1928</h3>
+                    <p>El templo se bendijo en <strong>octubre de 1928</strong>, tal como recogió la reseña de La Vanguardia del día 20.</p>
+                    <h3>Siempre junto al barrio</h3>
+                    <p>Desde el primer momento la parroquia estuvo muy integrada en el Carmel: fue sede de una de las primeras cooperativas obreras del barrio y de una escuela para niños y adultos. En febrero de <strong>2005</strong> vivió de cerca el hundimiento del túnel de maniobra de las obras del metro, justo enfrente del patio de la iglesia.</p>
+                    <p>¿Guardas fotos antiguas de la parroquia? Estamos recuperando el archivo histórico y nos encantará incorporarlas.</p>
+<p class="mag-firma">Archivo parroquial</p>
+            </template>
+            <template class="mag-src" data-sec="Liturgy" data-title="La misa de las 11:00, con coro góspel" data-author="Redacción"><div class="mag-art-head"><span class="mag-kicker">Liturgy</span><h2 class="mag-title">La misa de las 11:00, con coro góspel</h2><p class="mag-lead">Todos los domingos, salvo en agosto, un amplio grupo de góspel anima la eucaristía de las 11:00.</p><figure class="mag-fig"><img src="../../../fotosdefinitivas/web/img_5432.jpg" alt="Music at Mass" decoding="async"><figcaption>Music at Mass</figcaption></figure></div>
+                    <p class="illuminated">De las misas del fin de semana, la que más destaca por su animación es la del <strong>domingo a las 11:00</strong>: todos los domingos, salvo en agosto, canta en ella un amplio grupo de góspel.</p>
+                    <h3>Horarios de eucaristía</h3>
+                    <ul>
+                        <li>De lunes a sábado: 19:00</li>
+                        <li>Domingos: 11:00 (con coro góspel) y 13:15</li>
+                    </ul>
+                    <h3>Otras celebraciones</h3>
+                    <ul>
+                        <li><strong>Sacramento del Perdón:</strong> los sábados de 18:30 a 19:00 y siempre un rato antes de cada misa.</li>
+                        <li><strong>Adoración al Santísimo:</strong> cada miércoles a las 19:30, media hora con bendición.</li>
+                    </ul>
+                    <p>En la página de Eucaristías de la web tenéis el calendario semanal y un archivo para añadirlo al calendario del móvil.</p>
+<p class="mag-firma">Redacción</p>
+            </template>
+            <template class="mag-src" data-sec="Parish life" data-title="Grupos que hacen comunidad" data-author="Redacción"><div class="mag-art-head"><span class="mag-kicker">Parish life</span><h2 class="mag-title">Grupos que hacen comunidad</h2><p class="mag-lead">Matrimonios, jóvenes, espiritualidad eucarística, voluntariado de limpieza y la salida de Pascua.</p><figure class="mag-fig"><img src="../../../fotosdefinitivas/web/salidas.jpg" alt="Parish outing with Fr Albert Sols" decoding="async"><figcaption>Parish outing with Fr Albert Sols</figcaption></figure></div>
+                    <p class="illuminated">La vida de la parroquia no se entiende sin sus grupos. Estos son algunos de ellos:</p>
+                    <ul>
+                        <li><strong>Equipo de matrimonios y parejas:</strong> cada 8 sábados, por la noche, un grupo de 6 o 7 matrimonios trabaja con el rector algún documento del papa. La reunión dura una hora y termina con un pequeño pica pica.</li>
+                        <li><strong>Equipo de jóvenes:</strong> aproximadamente cada 8 sábados, un pequeño grupo de jóvenes, acompañados de algún matrimonio, comenta con el rector el evangelio del domingo.</li>
+                        <li><strong>Espiritualidad eucarística:</strong> un grupo de señoras se reúne cada mes con una religiosa para crecer en el amor a la Eucaristía.</li>
+                        <li><strong>Voluntariado de limpieza:</strong> desde hace muchos años, un equipo de voluntarios limpia la iglesia un día al mes.</li>
+                        <li><strong>Salida de Pascua:</strong> cada año, cuando es posible, una jornada con Mn. Sols en la que la convivencia y el descanso ayudan a consolidar la comunidad.</li>
+                    </ul>
+                    <p>¿Te gustaría formar parte de alguno? Escríbenos desde la web y te ponemos en contacto.</p>
+<p class="mag-firma">Redacción</p>
+            </template>
+            <template class="mag-src" data-sec="Caritas" data-title="Cáritas: alimentos cada mes para decenas de familias" data-author="Cáritas parroquial"><div class="mag-art-head"><span class="mag-kicker">Caritas</span><h2 class="mag-title">Cáritas: alimentos cada mes para decenas de familias</h2><p class="mag-lead">Un día al mes, Cáritas parroquial reparte alimentos a varias docenas de familias del barrio.</p><figure class="mag-fig"><img src="../../../fotosdefinitivas/web/caritas.jpg" alt="Cáritas: alimentos cada mes para decenas de familias" decoding="async"></figure></div>
+                    <p class="illuminated">La labor de <strong>Parish Caritas</strong> consiste en repartir alimentos, un día al mes, a varias docenas de familias.</p>
+                    <p>Además, se ha creado un consejo de Cáritas de ámbito arciprestal para unificar criterios y coordinar la ayuda entre las parroquias de la zona.</p>
+                    <blockquote class="pull">Todo lo que hagáis por uno de estos pequeños, a mí me lo hacéis.</blockquote>
+                    <p>Si quieres colaborar como voluntario o necesitas ayuda, escríbenos desde la web eligiendo el motivo «Cáritas».</p>
+<p class="mag-firma">Parish Caritas</p>
+            </template>
+            <template class="mag-src" data-sec="Calendar" data-title="La parroquia, semana a semana" data-author="Redacción"><div class="mag-art-head"><span class="mag-kicker">Calendar</span><h2 class="mag-title">La parroquia, semana a semana</h2><p class="mag-lead">Misas, confesiones, adoración, despacho parroquial y visitas a los enfermos: todo lo que pasa cada semana.</p></div>
+                    <h3>Cada semana</h3>
+                    <ul>
+                        <li><strong>Lunes a viernes:</strong> eucaristía a las 19:00. Los miércoles, además, adoración al Santísimo a las 19:30.</li>
+                        <li><strong>Viernes por la tarde:</strong> despacho parroquial para bautizos, bodas y cualquier consulta.</li>
+                        <li><strong>Sábados:</strong> sacramento del Perdón de 18:30 a 19:00 y eucaristía a las 19:00.</li>
+                        <li><strong>Domingos:</strong> eucaristía a las 11:00 con coro góspel (salvo en agosto) y a las 13:15.</li>
+                    </ul>
+                    <h3>Cada mes</h3>
+                    <ul>
+                        <li><strong>Último domingo:</strong> Mn. Sols visita en casa a las personas mayores y enfermas que lo pidan, ayudado por un grupo de voluntarios.</li>
+                        <li><strong>Un día al mes:</strong> reparto de alimentos de Cáritas y limpieza voluntaria de la iglesia.</li>
+                    </ul>
+                    <h3>Sacraments</h3>
+                    <p class="illuminated">Hay bautizos al mediodía cualquier domingo del año que se pida. La Confirmación se celebra cada tres años, con catequesis a partir de los 14 años. Para las bodas y los aniversarios de boda, pasad por el despacho o escribidnos desde la web.</p>
+<p class="mag-firma">Redacción</p>
+            </template>
+                <template class="mag-back"><div class="mag-back-in"><svg class="logo-mark" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.3"/></svg><strong>Santa Teresa de Jesús Parish</strong><span>Carrer del Llobregós, 132 · 08032 Barcelona</span><span class="mag-back-sep"></span><span>Mass: weekdays and Saturdays 19:00 · Sundays 11:00 and 13:15</span><span>+34 619 040 913</span><span>parroquiasantateresabcn.netlify.app</span><span>@p.santateresadejesusbcn</span></div>
+                </template>
             </div>
         </section>
 
         <section class="section-alt" id="articulos">
             <div class="section-head">
-                <span class="subtitulo">Issue 1</span>
+                <span class="subtitulo">Also as text</span>
                 <h2>In this issue</h2>
                 <hr class="section-divider" style="margin-bottom:0;">
             </div>
@@ -304,6 +377,7 @@
     </template>
     <script src="../../../data/avisos.js?v=d53051e813"></script>
     <script src="../../../js/site.js?v=8962287acf"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js" integrity="sha384-L4eWrYFdqQ+LoGA0MMuqLqzV13x7SKkQaqacy4MED8e815dS37tTKlO/6xBEUpZW" crossorigin="anonymous" defer></script>
+    <script src="../../../js/revista.js?v=d38fc88f80" defer></script>
 </body>
 </html>
