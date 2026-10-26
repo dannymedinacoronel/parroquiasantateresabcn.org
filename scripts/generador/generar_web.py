@@ -18,6 +18,9 @@ try:
 except (OSError, ValueError):
     REVISTA = {}
 REVISTA_ON = REVISTA.get("mostrar", True) is not False
+# Casilla del panel: con la revista en «Próximamente» los números se generan (el equipo los ve),
+# pero la portada y la página Revista enseñan el recuadro «Próximamente» y no se enlazan
+REVISTA_SOON = REVISTA.get("proximamente") is True
 # Números y artículos de la revista (colecciones «Revista · Números» y «Revista · Artículos» del panel)
 _rs = _ilu.spec_from_file_location("revista", os.path.join(os.path.dirname(os.path.abspath(__file__)), "revista.py"))
 REV = _ilu.module_from_spec(_rs); _rs.loader.exec_module(REV)
@@ -599,9 +602,9 @@ def rev_buttons(n, depth, here=""):
 def revista_module(depth, in_archive=False):
     """Recuadro de la portada (y cabecera de la página de la revista)."""
     r = REVISTA
-    if not REVISTA_ON and not REV_ISSUES:
+    if not REVISTA_ON and not in_archive and (REVISTA_SOON or not REV_ISSUES):
         return ""
-    if REV_ISSUES:
+    if REV_ISSUES and not REVISTA_SOON:
         n = REV_ISSUES[0]
         root = "../" * depth
         arts = n["articulos"][:4]
@@ -688,8 +691,8 @@ def rev_og(html, path):
 
 
 def revista_archive_page():
-    if not REV_ISSUES:
-        body = page_hero("Parroquia Santa Teresa de Jesús", "Revista digital", "web/dsc_0546.jpg") + revista_module(1)
+    if not REV_ISSUES or REVISTA_SOON:
+        body = page_hero("Parroquia Santa Teresa de Jesús", "Revista digital", "web/dsc_0546.jpg") + revista_module(1, in_archive=True)
         return page(1, "Revista digital", "La revista digital de la Parroquia Santa Teresa de Jesús de Barcelona.", body=body, active="noticias")
     latest, rest = REV_ISSUES[0], REV_ISSUES[1:]
     grid = ""
@@ -2286,6 +2289,10 @@ PAGES["html/buscador-parroquias.html"] = page(1, "Buscar una parroquia", "Encuen
         </section>
 """)
 
+# Con la revista en «Próximamente», la Historia no enlaza al artículo del socavón
+if REVISTA_SOON:
+    PAGES["html/historia.html"] = re.sub(r'\n\s*<a href="revista/[^"]*" class="link-arrow">.*?</a>', "", PAGES["html/historia.html"])
+
 # Revista digital: página general, una por número y una por artículo
 if REVISTA_ON or REV_ISSUES:
     PAGES["html/revista.html"] = revista_archive_page()
@@ -3026,10 +3033,17 @@ for _sub in ("html/reflexiones", "html/revista", "html/noticias"):
                     os.remove(os.path.join(_dir, _f))
                     print("Página retirada (ya no está publicada):", _rel)
 
+# ---------- revista en «Próximamente»: la función de Netlify que aparta a los visitantes de los números ----------
+_edge = os.path.join(ROOT, "netlify", "edge-functions", "revista-proximamente", "estado.js")
+os.makedirs(os.path.dirname(_edge), exist_ok=True)
+with open(_edge, "w", encoding="utf-8", newline="\n") as fh:
+    fh.write("// Lo escribe el generador según la casilla «Revista en Próximamente» del panel. No editar a mano.\n"
+             f"export const PROXIMAMENTE = {'true' if REVISTA_SOON else 'false'};\n")
+
 # ---------- sitemap.xml y robots.txt ----------
 today = date.today().isoformat()
 urls = []
-for rel in [r for r in PAGES if r != "404.html"]:
+for rel in [r for r in PAGES if r != "404.html" and not (REVISTA_SOON and r.startswith("html/revista/"))]:
     alts = "".join(f'\n    <xhtml:link rel="alternate" hreflang="{l}" href="{page_url(l, rel)}"/>' for l in LANGS)
     alts += f'\n    <xhtml:link rel="alternate" hreflang="x-default" href="{page_url("es", rel)}"/>'
     prio = "1.0" if rel == "index.html" else ("0.3" if rel in ("html/aviso-legal.html", "html/privacidad.html", "html/cookies.html") else "0.7")

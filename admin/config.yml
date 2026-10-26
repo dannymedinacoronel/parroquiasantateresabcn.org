@@ -354,7 +354,7 @@ collections:
   # En cuanto se publica un número, la portada muestra ese número automáticamente.
   - name: revista
     label: "Revista · Recuadro de la portada"
-    description: "Lo que se ve en la portada de la web mientras aún no hay ningún número publicado. En cuanto publiques uno, la portada mostrará ese número automáticamente."
+    description: "La casilla «Revista en Próximamente» decide si la revista ya se puede leer. Mientras esté activada (o no haya ningún número publicado), la portada y la sección Revista muestran este recuadro «Próximamente»."
     files:
       - name: revista
         label: Recuadro «Próximamente» de la portada
@@ -366,6 +366,12 @@ collections:
             widget: boolean
             default: true
             hint: "Desactívalo para ocultar el recuadro mientras no haya números publicados."
+          - label: Revista en «Próximamente»
+            name: proximamente
+            widget: boolean
+            default: false
+            required: false
+            hint: "Activado: los visitantes solo ven «Próximamente» en la sección Revista y en la portada, aunque haya números publicados. Quien ha entrado en este panel sí puede verlos (botón «Ver en la web»). Desactívalo para estrenar la revista."
           - { label: Título, name: titulo, widget: string, default: "Revista digital de la Parroquia" }
           - label: Texto
             name: texto
