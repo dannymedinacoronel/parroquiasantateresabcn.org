@@ -210,6 +210,17 @@
         }
     });
 
+    /* --- Galería: «Ver más fotos» enseña las fotos que estaban guardadas --- */
+    document.querySelectorAll("[data-mosaic-more]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            var wrap = btn.parentNode, gallery = wrap.previousElementSibling;
+            gallery.classList.add("is-expanded");
+            wrap.parentNode.removeChild(wrap);
+            var first = gallery.querySelector(".mosaic-more");
+            if (first) first.focus({ preventScroll: true });
+        });
+    });
+
     /* --- Galería: visor de fotos a pantalla completa (mosaicos y pilas de fotos) --- */
     document.querySelectorAll(".mosaic, [data-gallery]").forEach(function (gallery) {
         var links = Array.prototype.slice.call(gallery.querySelectorAll("a"));

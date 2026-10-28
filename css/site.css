@@ -2997,10 +2997,8 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 .album h3 { font-family: var(--header-font); font-size: 1.35rem; color: var(--heading-color); margin-bottom: .2rem; }
 .album p { font-size: .8rem; line-height: 1.5; color: var(--muted); }
 .album-count { display: block; font-size: .68rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-dark); margin-bottom: .2rem; }
-.photo-pile-paper > i { background: var(--bg-warm); cursor: pointer; }
-.photo-pile-paper > i:nth-child(1) { display: grid; place-items: center; background: repeating-linear-gradient(135deg, #fbf7ef 0 14px, #f6f0e3 14px 28px); color: var(--accent-dark); }
-.photo-pile-paper svg { width: 34%; height: auto; }
-.album-external:hover h3 { color: var(--accent-dark); }
+.album-link { display: block; margin-top: .3rem; font-weight: 600; color: var(--accent-dark); text-decoration: underline; text-decoration-color: var(--accent-light); text-underline-offset: 3px; }
+.album-link:hover { color: var(--heading-color); }
 
 /* Misas: góspel */
 .gospel-feature { margin-top: 2.25rem; }
@@ -3022,3 +3020,8 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 }
 
 .gospel-feature .photo-pile { margin-bottom: 2.1rem; }
+
+/* Galería: fotos guardadas hasta pulsar «Ver más fotos» (sin JavaScript se ven todas) */
+.js .mosaic-more { display: none; }
+.js .mosaic.is-expanded .mosaic-more { display: block; }
+.mosaic-more-wrap { margin-top: 2.5rem; }

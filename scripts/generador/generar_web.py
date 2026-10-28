@@ -450,14 +450,21 @@ def icon_card(icon, title, text, link, cta=None, aid=None):
                 </a>"""
 
 
-def mosaic(photos, depth):
-    """photos: lista de (archivo en web/, texto alternativo, clase opcional)."""
+def mosaic(photos, depth, more=()):
+    """photos: lista de (archivo en web/, texto alternativo, clase opcional).
+    more: fotos que quedan ocultas hasta pulsar «Ver más fotos», para que la galería no se vea saturada."""
     p = "../" * depth + "fotosdefinitivas/web/"
     items = []
-    for name, alt, cls in photos:
+    for name, alt, cls in list(photos) + [(n, a, (c + " mosaic-more").strip()) for n, a, c in more]:
         c = f' class="{cls}"' if cls else ""
         items.append(f'                <a href="{p}{name}"{c}><img src="{p}{name}" alt="{alt}" loading="lazy"></a>')
-    return '            <div class="mosaic">\n' + "\n".join(items) + "\n            </div>"
+    html = '            <div class="mosaic">\n' + "\n".join(items) + "\n            </div>"
+    if more:
+        html += f'''
+            <div class="btn-group center mosaic-more-wrap">
+                <button type="button" class="btn" data-mosaic-more>Ver más fotos ({len(more)})</button>
+            </div>'''
+    return html
 
 # Álbumes de la página Imágenes: (título, descripción, fotos). Las fotos nuevas están en web/album/.
 ALBUMS = [
@@ -485,9 +492,8 @@ ALBUMS = [
         ("img_5471.jpg", "Velas encendidas ante el Cristo"),
         ("nuevalife.jpg", "El campanario y la fachada de la iglesia"),
     ]),
-    ("La misa del domingo", "La comunidad reunida, el coro góspel y la mesa del altar.", [
+    ("La misa del domingo", "La comunidad reunida, la música y la mesa del altar.", [
         ("dsc_0546.jpg", "La iglesia llena durante una celebración"),
-        ("album/gospel.jpg", "El coro góspel junto al altar"),
         ("album/dsc_0459.jpg", "La celebración desde el presbiterio"),
         ("dsc_0541.jpg", "Interior de la iglesia durante la eucaristía"),
         ("album/eucaristia.jpg", "Eucaristía con la iglesia llena"),
@@ -496,27 +502,33 @@ ALBUMS = [
         ("img_5432.jpg", "Música en la eucaristía"),
         ("album/img_5486.jpg", "El altar durante la misa"),
     ]),
+    ("Comuniones 2021", "La promoción de 2021 en nuestra iglesia. Hemos pixelado las caras de los niños.", [
+        ("album/comuniones-2021-1305.jpg", "Los niños de primera comunión ante el presbiterio y la imagen de Santa Teresa"),
+        ("album/comuniones-2021-1313.jpg", "El grupo de primera comunión ante el altar"),
+        ("album/comuniones-2021-1302.jpg", "La celebración de las comuniones bajo el escudo del Carmelo"),
+        ("album/comuniones-2021-1429.jpg", "Flores y música en el presbiterio"),
+        ("album/comuniones-2021-1428.jpg", "La música acompaña la celebración"),
+        ("album/comuniones-2021-1457.jpg", "La iglesia llena al terminar la celebración"),
+        ("album/comuniones-2021-1295.jpg", "La nave desde el fondo de la iglesia"),
+    ], ("https://drive.google.com/drive/folders/1jfgSnLel08doU2DFm9UpX_9xhO_O8ZT-?usp=sharing", "Álbum completo en Drive")),
 ]
 GOSPEL_PHOTOS = [
-    ("album/gospel.jpg", "El coro góspel junto al altar"),
+    ("album/comuniones-2021-1429.jpg", "Flores y música en el presbiterio"),
     ("img_5432.jpg", "Música en la eucaristía"),
+    ("album/comuniones-2021-1428.jpg", "La música acompaña la celebración"),
     ("dsc_0546.jpg", "La iglesia llena durante una celebración"),
 ]
 
 
 def album_shelf(depth):
     cards = []
-    for title, desc, photos in ALBUMS:
+    for title, desc, photos, *link in ALBUMS:
+        more = f' <a class="album-link" href="{link[0][0]}" target="_blank" rel="noopener">{link[0][1]} &#8599;</a>' if link else ""
         cards.append(f'''                <article class="album">
                     {photo_pile(photos, depth, title)}
                     <h3>{title}</h3>
-                    <p><span class="album-count">{len(photos)} fotos</span> {desc}</p>
+                    <p><span class="album-count">{len(photos)} fotos</span> {desc}{more}</p>
                 </article>''')
-    cards.append('''                <a class="album album-external" href="https://drive.google.com/drive/folders/1jfgSnLel08doU2DFm9UpX_9xhO_O8ZT-?usp=sharing" target="_blank" rel="noopener">
-                    <span class="photo-pile photo-pile-paper" aria-hidden="true"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg></i><i></i><i></i></span>
-                    <h3>Comuniones 2021</h3>
-                    <p><span class="album-count">Google Drive &#8599;</span> El álbum completo de aquel día, para ver y descargar.</p>
-                </a>''')
     return '            <div class="album-shelf">\n' + "\n".join(cards) + "\n            </div>"
 
 
@@ -2244,9 +2256,21 @@ PAGES["html/imagenes.html"] = page(1, "Imágenes y vídeos", "Vídeos y álbumes
             </div>
 """ + mosaic(GALLERY + [
     ("dsc_0546.jpg", "La iglesia llena durante una celebración", "wide"),
-    ("dsc_0591.jpg", "Domingo de Ramos en el patio", ""),
-    ("img_5493.jpg", "Capilla del Santísimo", ""),
-], 1) + """
+    ("dsc_0591.jpg", "Domingo de Ramos en el patio", "wide"),
+    ("img_5493.jpg", "Capilla del Santísimo", "wide"),
+    ("album/comuniones-2021-1295.jpg", "La nave desde el fondo de la iglesia", "wide"),
+], 1, more=[
+    ("album/comuniones-2021-1302.jpg", "La celebración de las comuniones bajo el escudo del Carmelo", "wide"),
+    ("album/dsc_0534.jpg", "El escudo del Carmelo, pintado sobre el presbiterio", "tall"),
+    ("album/comuniones-2021-1313.jpg", "El grupo de primera comunión ante el altar", ""),
+    ("album/dsc_0637.jpg", "Un palmón de colores ante el campanario", ""),
+    ("album/comuniones-2021-1429.jpg", "Flores y música en el presbiterio", ""),
+    ("album/dsc_0672.jpg", "La calle llena de vecinos con sus ramos", "wide"),
+    ("vidriera.jpg", "Vidriera de Santa Teresa con el Niño Jesús", "tall"),
+    ("album/comuniones-2021-1305.jpg", "Los niños de primera comunión ante el presbiterio y la imagen de Santa Teresa", "wide"),
+    ("album/dsc_0774.jpg", "El campanario de la parroquia", ""),
+    ("album/comuniones-2021-1457.jpg", "La iglesia llena al terminar la celebración", "wide"),
+]) + """
         </section>
 
         <section>
@@ -2944,6 +2968,19 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ('Álbum completo en Drive &#8599;', 'Àlbum complet a Drive &#8599;', 'Full album on Drive &#8599;'),
+                      ('Los niños de primera comunión ante el presbiterio y la imagen de Santa Teresa', 'Els nens de primera comunió davant del presbiteri i la imatge de Santa Teresa', 'The First Communion children before the sanctuary and the statue of Saint Teresa'),
+                      ('El grupo de primera comunión ante el altar', "El grup de primera comunió davant de l'altar", 'The First Communion group before the altar'),
+                      ('La celebración de las comuniones bajo el escudo del Carmelo', "La celebració de les comunions sota l'escut del Carmel", 'The First Communion Mass beneath the Carmelite coat of arms'),
+                      ('Flores y música en el presbiterio', 'Flors i música al presbiteri', 'Flowers and music in the sanctuary'),
+                      ('La música acompaña la celebración', 'La música acompanya la celebració', 'Music accompanies the celebration'),
+                      ('La iglesia llena al terminar la celebración', "L'església plena en acabar la celebració", 'The church full at the end of the celebration'),
+                      ('La nave desde el fondo de la iglesia', "La nau des del fons de l'església", 'The nave seen from the back of the church'),
+                      ('La comunidad reunida, la música y la mesa del altar.', "La comunitat reunida, la música i la taula de l'altar.", 'The community gathered, the music and the altar.'),
+                      ('La promoción de 2021 en nuestra iglesia. Hemos pixelado las caras de los niños.', 'La promoció del 2021 a la nostra església. Hem pixelat les cares dels nens.', "The class of 2021 in our church. The children's faces have been pixelated."),
+                      ('8 fotos', '8 fotos', '8 photos'),
+                      ('7 fotos', '7 fotos', '7 photos'),
+                      ('Ver más fotos (10)', 'Veure més fotos (10)', 'See more photos (10)'),
                       ('Nuestra iglesia', 'La nostra església', 'Our church'),
                       ('La misa del domingo', 'La missa del diumenge', 'Sunday Mass'),
                       ('Google Drive &#8599;', 'Google Drive &#8599;', 'Google Drive &#8599;'),
