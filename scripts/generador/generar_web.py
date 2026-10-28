@@ -362,16 +362,14 @@ def page_hero(subtitle, title, photo="web/portada3.jpg", crumb=None, pos="center
 """
 
 
-def cincopa(widget_id, fid):
-    return f"""<div class="consent-embed" data-service="Cincopa (galería de fotos)"><div id="cp_widget_{widget_id}">...</div>
-                <script type="text/plain" data-consent="embeds">
-                    var cpo = []; cpo["_object"] = "cp_widget_{widget_id}"; cpo["_fid"] = "{fid}";
-                    var _cpmp = _cpmp || []; _cpmp.push(cpo);
-                    (function() {{ var cp = document.createElement("script"); cp.type = "text/javascript";
-                    cp.async = true; cp.src = "//www.cincopa.com/media-platform/runtime/libasync.js";
-                    var c = document.getElementsByTagName("script")[0];
-                    c.parentNode.insertBefore(cp, c); }})();
-                </script></div>"""
+def photo_pile(photos, depth, label, cls=""):
+    """Pila de fotos: se ven las tres primeras y, al pulsar, el visor (js/site.js) pasa por todas.
+    photos: lista de (archivo en fotosdefinitivas/web/, texto alternativo)."""
+    p = "../" * depth + "fotosdefinitivas/web/"
+    items = "\n".join(f'                        <a href="{p}{f}"><img src="{p}{f}" alt="{alt}" loading="lazy"></a>' for f, alt in photos)
+    return f'''<div class="photo-pile{cls}" data-gallery role="group" aria-label="{label}">
+{items}
+                    </div>'''
 
 
 PAGES = {}
@@ -460,6 +458,79 @@ def mosaic(photos, depth):
         c = f' class="{cls}"' if cls else ""
         items.append(f'                <a href="{p}{name}"{c}><img src="{p}{name}" alt="{alt}" loading="lazy"></a>')
     return '            <div class="mosaic">\n' + "\n".join(items) + "\n            </div>"
+
+# Álbumes de la página Imágenes: (título, descripción, fotos). Las fotos nuevas están en web/album/.
+ALBUMS = [
+    ("Domingo de Ramos", "Palmas, palmones y olivo: el barrio entero en el patio y en la calle.", [
+        ("album/dsc_0633.jpg", "Palmas y palmones frente al campanario"),
+        ("album/dsc_0672.jpg", "La calle llena de vecinos con sus ramos"),
+        ("album/dsc_0637.jpg", "Un palmón de colores ante el campanario"),
+        ("dsc_0599webog.jpg", "El campanario durante el Domingo de Ramos"),
+        ("album/dsc_0635.jpg", "Palmones trenzados en alto"),
+        ("dsc_0589.jpg", "Bendición de ramos en el Domingo de Ramos"),
+        ("album/dsc_0640.jpg", "Palmones de colores en el patio"),
+        ("album/dsc_0642.jpg", "Ramos de olivo y laurel alzados para la bendición"),
+        ("album/dsc_0674.jpg", "La bendición vista desde arriba"),
+        ("album/dsc_0660.jpg", "El patio de la parroquia lleno de ramos"),
+        ("album/dsc_0687.jpg", "Cientos de ramos alzados en la calle"),
+    ]),
+    ("Nuestra iglesia", "El campanario, las vidrieras, el escudo del Carmelo y otros rincones del templo.", [
+        ("album/dsc_0774.jpg", "El campanario de la parroquia"),
+        ("album/dsc_0534.jpg", "El escudo del Carmelo, pintado sobre el presbiterio"),
+        ("vidriera.jpg", "Vidriera de Santa Teresa con el Niño Jesús"),
+        ("album/dsc_0756.jpg", "La reja de entrada con el nombre de la parroquia"),
+        ("album/dsc_0572.jpg", "Santa Teresa de Jesús en el presbiterio"),
+        ("dsc_0574.jpg", "Imágenes del presbiterio"),
+        ("img_5493.jpg", "Capilla del Santísimo"),
+        ("img_5471.jpg", "Velas encendidas ante el Cristo"),
+        ("nuevalife.jpg", "El campanario y la fachada de la iglesia"),
+    ]),
+    ("La misa del domingo", "La comunidad reunida, el coro góspel y la mesa del altar.", [
+        ("dsc_0546.jpg", "La iglesia llena durante una celebración"),
+        ("album/gospel.jpg", "El coro góspel junto al altar"),
+        ("album/dsc_0459.jpg", "La celebración desde el presbiterio"),
+        ("dsc_0541.jpg", "Interior de la iglesia durante la eucaristía"),
+        ("album/eucaristia.jpg", "Eucaristía con la iglesia llena"),
+        ("img_5434.jpg", "Celebración de la eucaristía"),
+        ("album/img_5454.jpg", "La comunión"),
+        ("img_5432.jpg", "Música en la eucaristía"),
+        ("album/img_5486.jpg", "El altar durante la misa"),
+    ]),
+]
+GOSPEL_PHOTOS = [
+    ("album/gospel.jpg", "El coro góspel junto al altar"),
+    ("img_5432.jpg", "Música en la eucaristía"),
+    ("dsc_0546.jpg", "La iglesia llena durante una celebración"),
+]
+
+
+def album_shelf(depth):
+    cards = []
+    for title, desc, photos in ALBUMS:
+        cards.append(f'''                <article class="album">
+                    {photo_pile(photos, depth, title)}
+                    <h3>{title}</h3>
+                    <p><span class="album-count">{len(photos)} fotos</span> {desc}</p>
+                </article>''')
+    cards.append('''                <a class="album album-external" href="https://drive.google.com/drive/folders/1jfgSnLel08doU2DFm9UpX_9xhO_O8ZT-?usp=sharing" target="_blank" rel="noopener">
+                    <span class="photo-pile photo-pile-paper" aria-hidden="true"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg></i><i></i><i></i></span>
+                    <h3>Comuniones 2021</h3>
+                    <p><span class="album-count">Google Drive &#8599;</span> El álbum completo de aquel día, para ver y descargar.</p>
+                </a>''')
+    return '            <div class="album-shelf">\n' + "\n".join(cards) + "\n            </div>"
+
+
+def gospel_feature(depth):
+    return f'''<div class="gospel-feature">
+                    {photo_pile(GOSPEL_PHOTOS, depth, "Fotos del coro góspel", " photo-pile-wide")}
+                    <div class="gospel-next">
+                        <span class="gospel-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                        <div>
+                            <small>Próximo domingo con góspel</small>
+                            <strong data-gospel-next>Cada domingo · 11:00 h</strong>
+                        </div>
+                    </div>
+                </div>'''
 
 
 GALLERY = [
@@ -1842,7 +1913,7 @@ PAGES["html/misas.html"] = page(1, "Eucaristías", "Horarios de misas y calendar
                     <div class="prose">
                         <p>De las misas que se celebran en fin de semana, desde el punto de vista de animación, destaca la dominical de las 11:00 h. Todos los domingos, salvo en agosto, canta en la misa un amplio grupo de góspel.</p>
                     </div>
-                    """ + cincopa("5053ed90-a7d4-4b43-af71-bfb01383be44", "AwFALeeQzr7a") + """
+                    """ + gospel_feature(1) + """
                 </div>
                 <div id="calendario">
                     <span class="subtitulo">Semana a semana</span>
@@ -2195,10 +2266,8 @@ PAGES["html/imagenes.html"] = page(1, "Imágenes y vídeos", "Vídeos y álbumes
                     <span class="subtitulo">Fotografías</span>
                     <h2>Álbumes fotográficos</h2>
                     <hr class="section-divider">
-                    <div class="btn-stack">
-                        <a href="https://drive.google.com/drive/folders/1jfgSnLel08doU2DFm9UpX_9xhO_O8ZT-?usp=sharing" class="btn" target="_blank" rel="noopener">Fotografías de las comuniones 2021</a>
-                    </div>
-                    """ + cincopa("7e90e2d4-db4c-443c-9da2-f0eae76a49a0", "AUKA6f-1tvEd") + """
+                    <p class="album-hint">Pulsa una pila para ver las fotos en grande y pasarlas una a una.</p>
+""" + album_shelf(1) + """
                 </div>
             </div>
         </section>
@@ -2687,7 +2756,6 @@ PAGES["html/cookies.html"] = page(1, "Política de cookies", "Qué cookies utili
                         <tr><td>Google Maps</td><td>Google Ireland Ltd.</td><td>Inicio, Contacto</td><td>Mapa. <a href="https://policies.google.com/technologies/cookies?hl=es" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>YouTube (modo de privacidad mejorada)</td><td>Google Ireland Ltd.</td><td>Imágenes y vídeos</td><td>Reproducir vídeos. <a href="https://policies.google.com/privacy?hl=es" target="_blank" rel="noopener">Política</a></td></tr>
                         <tr><td>SoundCloud</td><td>SoundCloud Global Ltd.</td><td>Homilías</td><td>Reproducir audios. <a href="https://soundcloud.com/pages/cookies" target="_blank" rel="noopener">Política</a></td></tr>
-                        <tr><td>Cincopa</td><td>Cincopa Ltd.</td><td>Historia, Eucaristías, Imágenes</td><td>Galerías de fotos.</td></tr>
                         <tr><td>Evangeli.net</td><td>Evangeli.net</td><td>Inicio</td><td>Mostrar el Evangelio del día.</td></tr>
                         <tr><td>Imágenes de noticias</td><td>Vatican News (Santa Sede) / Arzobispado de Barcelona</td><td>Noticias</td><td>Mostrar las fotos de las noticias.</td></tr>
                     </tbody>
@@ -2876,6 +2944,39 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ('Nuestra iglesia', 'La nostra església', 'Our church'),
+                      ('La misa del domingo', 'La missa del diumenge', 'Sunday Mass'),
+                      ('Google Drive &#8599;', 'Google Drive &#8599;', 'Google Drive &#8599;'),
+                      ('Palmas, palmones y olivo: el barrio entero en el patio y en la calle.', 'Palmes, palmons i olivera: tot el barri al pati i al carrer.', 'Palms, woven palm fronds and olive branches: the whole neighbourhood in the courtyard and the street.'),
+                      ('Palmas y palmones frente al campanario', 'Palmes i palmons davant del campanar', 'Palms and woven fronds in front of the bell tower'),
+                      ('La calle llena de vecinos con sus ramos', 'El carrer ple de veïns amb els seus rams', 'The street full of neighbours with their branches'),
+                      ('Un palmón de colores ante el campanario', 'Un palmó de colors davant del campanar', 'A colourful palm frond before the bell tower'),
+                      ('Palmones trenzados en alto', 'Palmons trenats enlaire', 'Woven palm fronds held high'),
+                      ('Palmones de colores en el patio', 'Palmons de colors al pati', 'Colourful palm fronds in the courtyard'),
+                      ('Ramos de olivo y laurel alzados para la bendición', "Rams d'olivera i llorer alçats per a la benedicció", 'Olive and laurel branches raised for the blessing'),
+                      ('La bendición vista desde arriba', 'La benedicció vista des de dalt', 'The blessing seen from above'),
+                      ('El patio de la parroquia lleno de ramos', 'El pati de la parròquia ple de rams', 'The parish courtyard full of branches'),
+                      ('Cientos de ramos alzados en la calle', 'Centenars de rams alçats al carrer', 'Hundreds of branches raised in the street'),
+                      ('El campanario, las vidrieras, el escudo del Carmelo y otros rincones del templo.', "El campanar, els vitralls, l'escut del Carmel i altres racons del temple.", 'The bell tower, the stained glass, the Carmelite coat of arms and other corners of the church.'),
+                      ('El campanario de la parroquia', 'El campanar de la parròquia', 'The parish bell tower'),
+                      ('El escudo del Carmelo, pintado sobre el presbiterio', "L'escut del Carmel, pintat sobre el presbiteri", 'The Carmelite coat of arms, painted above the sanctuary'),
+                      ('La reja de entrada con el nombre de la parroquia', "La reixa d'entrada amb el nom de la parròquia", 'The entrance gate with the parish name'),
+                      ('Santa Teresa de Jesús en el presbiterio', 'Santa Teresa de Jesús al presbiteri', 'Saint Teresa of Jesus in the sanctuary'),
+                      ('Velas encendidas ante el Cristo', 'Espelmes enceses davant del Crist', 'Candles lit before the crucifix'),
+                      ('La comunidad reunida, el coro góspel y la mesa del altar.', "La comunitat reunida, el cor gòspel i la taula de l'altar.", 'The community gathered, the gospel choir and the altar.'),
+                      ('El coro góspel junto al altar', "El cor gòspel al costat de l'altar", 'The gospel choir by the altar'),
+                      ('La celebración desde el presbiterio', 'La celebració des del presbiteri', 'The celebration seen from the sanctuary'),
+                      ('Eucaristía con la iglesia llena', "Eucaristia amb l'església plena", 'Mass with a full church'),
+                      ('La comunión', 'La comunió', 'Holy Communion'),
+                      ('El altar durante la misa', "L'altar durant la missa", 'The altar during Mass'),
+                      ('Comuniones 2021', 'Comunions 2021', 'First Communions 2021'),
+                      ('El álbum completo de aquel día, para ver y descargar.', "L'àlbum complet d'aquell dia, per veure'l i descarregar-lo.", 'The full album from that day, to view and download.'),
+                      ('Fotos del coro góspel', 'Fotos del cor gòspel', 'Photos of the gospel choir'),
+                      ('Próximo domingo con góspel', 'Proper diumenge amb gòspel', 'Next Sunday with gospel choir'),
+                      ('Cada domingo · 11:00 h', 'Cada diumenge · 11:00 h', 'Every Sunday · 11:00'),
+                      ('11 fotos', '11 fotos', '11 photos'),
+                      ('9 fotos', '9 fotos', '9 photos'),
+                      ('Pulsa una pila para ver las fotos en grande y pasarlas una a una.', 'Prem una pila per veure les fotos en gran i passar-les una a una.', 'Tap a pile to see the photos full size and browse through them.'),
                       ('Fuentes', 'Fonts', 'Sources'),
                       ('Fuente: ficha de la parroquia en el inventario de campanarios de Cataluña (campaners.com)', "Font: fitxa de la parròquia a l'inventari de campanars de Catalunya (campaners.com)", "Source: the parish's record in the inventory of Catalan bell towers (campaners.com)"),
                       ('Fuentes:', 'Fonts:', 'Sources:'),

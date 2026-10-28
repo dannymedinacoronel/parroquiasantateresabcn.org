@@ -286,8 +286,6 @@ TR = {
 "SoundCloud": SAME,
 "SoundCloud Global Ltd.": SAME,
 "Reproducir audios.": ("Reproduir àudios.", "Plays audio."),
-"Cincopa": SAME,
-"Cincopa Ltd.": SAME,
 "Historia, Eucaristías, Imágenes": ("Història, Eucaristies, Imatges", "History, Masses, Photos"),
 "Galerías de fotos.": ("Galeries de fotos.", "Photo galleries."),
 "Evangeli.net": SAME,
@@ -378,7 +376,6 @@ TR = {
 "En febrero de 2005 la parroquia se situó en el centro de las miradas, al estar afectada por el desgraciado hundimiento del túnel de maniobra durante las obras del metro. El patio de la iglesia está situado justo enfrente, al otro lado de la calle, de donde se formó el agujero.": ("El febrer de 2005 la parròquia va ser al centre de totes les mirades, ja que es va veure afectada per l'infaust enfonsament del túnel de maniobres durant les obres del metro. El pati de l'església és just al davant, a l'altra banda del carrer, d'on es va formar el forat.", "In February 2005 the parish was in the spotlight when it was affected by the unfortunate collapse of a shunting tunnel during metro construction work. The church courtyard is directly opposite, across the street from where the hole opened up."),
 "Archivo histórico": ("Arxiu històric", "Historical archive"),
 "Imágenes": ("Imatges", "Photos"),
-"Cincopa (galería de fotos)": ("Cincopa (galeria de fotos)", "Cincopa (photo gallery)"),
 
 # --- homilías ---
 "Reflexión dominical | Parroquia Santa Teresa de Jesús": ("Reflexió dominical | Parròquia de Santa Teresa de Jesús", "Sunday reflection | Santa Teresa de Jesús Parish"),

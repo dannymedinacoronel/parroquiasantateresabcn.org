@@ -8,6 +8,7 @@
             massNow: "Eucaristía <strong>en curso</strong> · comenzó a las ", massNext: "Próxima eucaristía: ",
             today: "hoy", tomorrow: "mañana", at: " a las ", hours: " h",
             days: ["el domingo", "el lunes", "el martes", "el miércoles", "el jueves", "el viernes", "el sábado"],
+            gospelToday: "Hoy", gospelNow: "Ahora mismo, en la iglesia",
             viewer: "Visor de fotos", close: "Cerrar", prev: "Anterior", next: "Siguiente",
             newsEmpty: "No se han podido cargar las noticias. Inténtalo más tarde.", readMore: "Leer en la web original", updated: "Actualizado:",
             srcVatican: "Vaticano", srcDiocese: "Arzobispado", featured: "Noticia destacada",
@@ -21,7 +22,7 @@
             bannerText: "Usamos almacenamiento técnico necesario para que la web funcione. Con tu permiso, también cargaremos contenido de terceros (mapas, vídeos, Instagram, formularios), que pueden instalar sus propias cookies. No usamos cookies de publicidad ni de analítica.",
             policy: "Política de cookies",
             optNecessary: "<strong>Necesarias</strong> Guardan tu elección sobre cookies. Siempre activas.",
-            optEmbeds: "<strong>Contenido externo</strong> Google Maps, YouTube, Instagram, SoundCloud, Cincopa, Evangeli.net y fotos de las noticias.",
+            optEmbeds: "<strong>Contenido externo</strong> Google Maps, YouTube, Instagram, SoundCloud, Evangeli.net y fotos de las noticias.",
             reject: "Rechazar", configure: "Configurar", save: "Guardar selección", acceptAll: "Aceptar todas"
         },
         ca: {
@@ -29,6 +30,7 @@
             massNow: "Eucaristia <strong>en curs</strong> · ha començat a les ", massNext: "Propera eucaristia: ",
             today: "avui", tomorrow: "demà", at: " a les ", hours: " h",
             days: ["diumenge", "dilluns", "dimarts", "dimecres", "dijous", "divendres", "dissabte"],
+            gospelToday: "Avui", gospelNow: "Ara mateix, a l'església",
             viewer: "Visor de fotos", close: "Tancar", prev: "Anterior", next: "Següent",
             newsEmpty: "No s'han pogut carregar les notícies. Torna-ho a provar més tard.", readMore: "Llegir al web original", updated: "Actualitzat:",
             srcVatican: "Vaticà", srcDiocese: "Arquebisbat", featured: "Notícia destacada",
@@ -42,7 +44,7 @@
             bannerText: "Fem servir emmagatzematge tècnic necessari perquè el web funcioni. Amb el teu permís, també carregarem contingut de tercers (mapes, vídeos, Instagram, formularis), que poden instal·lar les seves pròpies galetes. No fem servir galetes de publicitat ni d'analítica.",
             policy: "Política de galetes",
             optNecessary: "<strong>Necessàries</strong> Desen la teva elecció sobre galetes. Sempre actives.",
-            optEmbeds: "<strong>Contingut extern</strong> Google Maps, YouTube, Instagram, SoundCloud, Cincopa, Evangeli.net i fotos de les notícies.",
+            optEmbeds: "<strong>Contingut extern</strong> Google Maps, YouTube, Instagram, SoundCloud, Evangeli.net i fotos de les notícies.",
             reject: "Rebutjar", configure: "Configurar", save: "Desar la selecció", acceptAll: "Acceptar-les totes"
         },
         en: {
@@ -50,6 +52,7 @@
             massNow: "Mass <strong>in progress</strong> · started at ", massNext: "Next Mass: ",
             today: "today", tomorrow: "tomorrow", at: " at ", hours: "",
             days: ["on Sunday", "on Monday", "on Tuesday", "on Wednesday", "on Thursday", "on Friday", "on Saturday"],
+            gospelToday: "Today", gospelNow: "Right now, in church",
             viewer: "Photo viewer", close: "Close", prev: "Previous", next: "Next",
             newsEmpty: "The news could not be loaded. Please try again later.", readMore: "Read on the original website", updated: "Updated:",
             srcVatican: "Vatican", srcDiocese: "Archdiocese", featured: "Top story",
@@ -63,7 +66,7 @@
             bannerText: "We use essential technical storage for the website to work. With your permission, we will also load third-party content (maps, videos, Instagram, forms), which may set their own cookies. We do not use advertising or analytics cookies.",
             policy: "Cookie policy",
             optNecessary: "<strong>Essential</strong> Store your cookie choice. Always active.",
-            optEmbeds: "<strong>External content</strong> Google Maps, YouTube, Instagram, SoundCloud, Cincopa, Evangeli.net and news photos.",
+            optEmbeds: "<strong>External content</strong> Google Maps, YouTube, Instagram, SoundCloud, Evangeli.net and news photos.",
             reject: "Reject", configure: "Settings", save: "Save selection", acceptAll: "Accept all"
         }
     };
@@ -207,8 +210,8 @@
         }
     });
 
-    /* --- Galería: visor de fotos a pantalla completa --- */
-    document.querySelectorAll(".mosaic").forEach(function (gallery) {
+    /* --- Galería: visor de fotos a pantalla completa (mosaicos y pilas de fotos) --- */
+    document.querySelectorAll(".mosaic, [data-gallery]").forEach(function (gallery) {
         var links = Array.prototype.slice.call(gallery.querySelectorAll("a"));
         if (!links.length) return;
         var box = document.createElement("div");
@@ -226,7 +229,7 @@
             current = (i + links.length) % links.length;
             img.src = links[current].href;
             img.alt = links[current].querySelector("img").alt;
-            count.textContent = (current + 1) + " / " + links.length;
+            count.textContent = (current + 1) + " / " + links.length + (img.alt ? " · " + img.alt : "");
         }
         function close() { box.classList.remove("open"); document.body.classList.remove("menu-open"); }
 
@@ -256,6 +259,24 @@
         arzobispado: { es: "arzobispado_es", ca: "arzobispado_ca", en: "arzobispado_es" }
     };
     var LOCALE = { es: "es-ES", ca: "ca-ES", en: "en-GB" }[LANG] || "es-ES";
+
+    /* --- Misas: próximo domingo con coro góspel (11:00 h; en agosto no canta) --- */
+    var gospelNext = document.querySelector("[data-gospel-next]");
+    if (gospelNext) {
+        var gNow = new Date(), g = new Date(gNow);
+        g.setHours(11, 0, 0, 0);
+        g.setDate(g.getDate() + (7 - g.getDay()) % 7);
+        if (gNow - g > 75 * 60000) g.setDate(g.getDate() + 7);   /* la misa de hoy ya ha terminado */
+        while (g.getMonth() === 7) g.setDate(g.getDate() + 7);
+        var gText;
+        if (gNow >= g) gText = T("gospelNow");
+        else if (g.toDateString() === gNow.toDateString()) gText = T("gospelToday") + " · 11:00 h";
+        else {
+            gText = g.toLocaleDateString(LOCALE, { weekday: "long", day: "numeric", month: "long" }) + " · 11:00 h";
+            gText = gText.charAt(0).toUpperCase() + gText.slice(1);
+        }
+        gospelNext.textContent = gText;
+    }
     function escapeHtml(s) {
         return String(s || "").replace(/[&<>"']/g, function (c) {
             return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
