@@ -510,7 +510,7 @@ ALBUMS = [
         ("album/comuniones-2021-1428.jpg", "La música acompaña la celebración"),
         ("album/comuniones-2021-1457.jpg", "La iglesia llena al terminar la celebración"),
         ("album/comuniones-2021-1295.jpg", "La nave desde el fondo de la iglesia"),
-    ], ("https://drive.google.com/drive/folders/1jfgSnLel08doU2DFm9UpX_9xhO_O8ZT-?usp=sharing", "Álbum completo en Drive")),
+    ]),
 ]
 GOSPEL_PHOTOS = [
     ("album/comuniones-2021-1429.jpg", "Flores y música en el presbiterio"),
@@ -522,12 +522,11 @@ GOSPEL_PHOTOS = [
 
 def album_shelf(depth):
     cards = []
-    for title, desc, photos, *link in ALBUMS:
-        more = f' <a class="album-link" href="{link[0][0]}" target="_blank" rel="noopener">{link[0][1]} &#8599;</a>' if link else ""
+    for title, desc, photos in ALBUMS:
         cards.append(f'''                <article class="album">
                     {photo_pile(photos, depth, title)}
                     <h3>{title}</h3>
-                    <p><span class="album-count">{len(photos)} fotos</span> {desc}{more}</p>
+                    <p><span class="album-count">{len(photos)} fotos</span> {desc}</p>
                 </article>''')
     return '            <div class="album-shelf">\n' + "\n".join(cards) + "\n            </div>"
 
@@ -2968,7 +2967,6 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
-                      ('Álbum completo en Drive &#8599;', 'Àlbum complet a Drive &#8599;', 'Full album on Drive &#8599;'),
                       ('Los niños de primera comunión ante el presbiterio y la imagen de Santa Teresa', 'Els nens de primera comunió davant del presbiteri i la imatge de Santa Teresa', 'The First Communion children before the sanctuary and the statue of Saint Teresa'),
                       ('El grupo de primera comunión ante el altar', "El grup de primera comunió davant de l'altar", 'The First Communion group before the altar'),
                       ('La celebración de las comuniones bajo el escudo del Carmelo', "La celebració de les comunions sota l'escut del Carmel", 'The First Communion Mass beneath the Carmelite coat of arms'),

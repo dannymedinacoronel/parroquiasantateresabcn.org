@@ -2997,8 +2997,6 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 .album h3 { font-family: var(--header-font); font-size: 1.35rem; color: var(--heading-color); margin-bottom: .2rem; }
 .album p { font-size: .8rem; line-height: 1.5; color: var(--muted); }
 .album-count { display: block; font-size: .68rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-dark); margin-bottom: .2rem; }
-.album-link { display: block; margin-top: .3rem; font-weight: 600; color: var(--accent-dark); text-decoration: underline; text-decoration-color: var(--accent-light); text-underline-offset: 3px; }
-.album-link:hover { color: var(--heading-color); }
 
 /* Misas: góspel */
 .gospel-feature { margin-top: 2.25rem; }
