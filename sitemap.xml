@@ -82,6 +82,33 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/organigramaparroquial"/>
   </url>
   <url>
+    <loc>https://parroquiasantateresabcn.netlify.app/html/barrio</loc>
+    <lastmod>2026-10-29</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.netlify.app/html/barrio"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.netlify.app/ca/html/barrio"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.netlify.app/en/html/barrio"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/barrio"/>
+  </url>
+  <url>
+    <loc>https://parroquiasantateresabcn.netlify.app/ca/html/barrio</loc>
+    <lastmod>2026-10-29</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.netlify.app/html/barrio"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.netlify.app/ca/html/barrio"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.netlify.app/en/html/barrio"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/barrio"/>
+  </url>
+  <url>
+    <loc>https://parroquiasantateresabcn.netlify.app/en/html/barrio</loc>
+    <lastmod>2026-10-29</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://parroquiasantateresabcn.netlify.app/html/barrio"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://parroquiasantateresabcn.netlify.app/ca/html/barrio"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://parroquiasantateresabcn.netlify.app/en/html/barrio"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://parroquiasantateresabcn.netlify.app/html/barrio"/>
+  </url>
+  <url>
     <loc>https://parroquiasantateresabcn.netlify.app/html/voluntariado</loc>
     <lastmod>2026-10-29</lastmod>
     <priority>0.7</priority>

@@ -83,12 +83,13 @@ NAV = [
         ("§", "Iglesia"),
         ("Vaticano y Arzobispado", "html/noticias.html#actualidad-iglesia", "globo"),
     ]),
-    ("historia|organigrama", "La parroquia", "html/historia.html", [
+    ("historia|organigrama|barrio", "La parroquia", "html/historia.html", [
         ("§", "Historia", "html/historia.html"),
         ("Nuestra historia", "html/historia.html#parroquia", "torre"),
         ("Línea del tiempo", "html/historia.html#linea-del-tiempo", "cal"),
         ("Archivo histórico", "html/historia.html#archivo", "libro"),
         ("Fuentes", "html/historia.html#fuentes", "libro"),
+        ("Nuestro barrio", "html/barrio.html", "barrio"),
         ("Imágenes y vídeos", "html/imagenes.html", "foto"),
         ("§", "Organización", "html/organigramaparroquial.html"),
         ("Organigrama", "html/organigramaparroquial.html#estructura", "persona"),
@@ -155,6 +156,7 @@ PARROQUIA_LINKS = [
     ("Homilías", "html/humiliasmenu.html"),
     ("Jóvenes", "html/jovenes2alternativa.html"),
     ("Imágenes y vídeos", "html/imagenes.html"),
+    ("Nuestro barrio", "html/barrio.html"),
 ]
 
 
@@ -392,6 +394,10 @@ SAC_ICONS.update({
     "nota": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>',
     "cal": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
     "foto": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6.5" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8.5 6.5l1.5-2h4l1.5 2"/></svg>',
+    # Nuestro barrio: casas en la ladera, tienda con toldo y colina con bandera
+    "barrio": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 21h19M4 21v-8l4-3 4 3v8M12 21V10l4.5-3.5L21 10v11M7 21v-3.5h2V21M15 13h3M15 16.5h3"/></svg>',
+    "tienda": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v11h16V10M3 6l1.5-3h15L21 6v1.5a2.5 2.5 0 0 1-4.5 1.5 2.5 2.5 0 0 1-4.5 0 2.5 2.5 0 0 1-4.5 0A2.5 2.5 0 0 1 3 7.5zM9.5 21v-6h5v6"/></svg>',
+    "monte": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20l6.5-9 4 5 3-4L22 20zM8.5 11V4.5l4 1.5-4 1.5"/></svg>',
     "torre": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4M10 4h4M7 21V11l5-4 5 4v10M4 21h16M10 21v-3.5a2 2 0 0 1 4 0V21"/></svg>',
     "globo": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.5 3.5 5.5 3.5 8.5s-1 6-3.5 8.5c-2.5-2.5-3.5-5.5-3.5-8.5s1-6 3.5-8.5z"/></svg>',
     # Unción de los enfermos: frasco del óleo con la cruz
@@ -1551,6 +1557,121 @@ PAGES["html/organigramaparroquial.html"] = page(1, "Organigrama Parroquial", "Es
 """)
 
 # ---------------------------------------------------------------- VOLUNTARIADO
+# ---------------------------------------------------------------- NUESTRO BARRIO (El Carmel y sus asociaciones)
+PAGES["html/barrio.html"] = page(1, "Nuestro barrio", "El Carmel, el barrio de la Parroquia Santa Teresa de Jesús: su historia, sus rincones y las asociaciones vecinas, como Carmel Amunt y 40 p'arriba 40 p'abajo.", active="barrio", body=page_hero("El Carmel · Horta-Guinardó", "Nuestro barrio", "web/album/dsc_0774.jpg", None, "center 35%") + f"""
+        <section id="el-carmel">
+            <div class="two-col center">
+                <div class="prose">
+                    <span class="subtitulo text-left">Horta-Guinardó</span>
+                    <h2 class="text-left">El Carmel</h2>
+                    <hr class="section-divider" style="margin-left:0;">
+                    <p class="lead">Nuestra parroquia está en el corazón del Carmel, un barrio de calles empinadas en las laderas del turó del Carmel y del turó de la Rovira, en la parte alta de Barcelona.</p>
+                    <p>Su nombre viene de la ermita de la Virgen del Carmen, abierta en 1864 en lo alto de la colina. En los años cincuenta y sesenta llegaron miles de familias de toda España, que levantaron muchas de sus casas con sus propias manos, y hoy conviven en él vecinos de toda la vida con familias llegadas de muchos países.</p>
+                    <p>Es un barrio de vecinos que se conocen, con una red de asociaciones muy viva. La parroquia forma parte de esa vida desde 1924.</p>
+                    <a href="historia.html#linea-del-tiempo" class="link-arrow">Un siglo de historia compartida <span>&rarr;</span></a>
+                </div>
+                <div class="framed-img">
+                    <img src="../fotosdefinitivas/web/album/dsc_0672.jpg" alt="La calle llena de vecinos el Domingo de Ramos" loading="lazy">
+                </div>
+            </div>
+            <div class="barrio-stats">
+                <div><strong>31.377</strong><span>vecinos y vecinas</span></div>
+                <div><strong>94</strong><span>hectáreas de calles empinadas</span></div>
+                <div><strong>262 m</strong><span>el mirador del turó de la Rovira</span></div>
+            </div>
+        </section>
+
+        <section class="section-warm" id="rincones">
+            <div class="section-head">
+                <span class="subtitulo">Para conocerlo</span>
+                <h2>Rincones del barrio</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            <div class="vol-grid">
+                <article class="vol-card barrio-card">
+                    <div class="icon-circle">{SAC_ICONS["monte"]}</div>
+                    <h3>Los búnkers del Carmel</h3>
+                    <p>En lo alto del turó de la Rovira quedan los restos de la batería antiaérea que defendió Barcelona durante la Guerra Civil. Después, sus muros sirvieron de refugio al barrio de barracas de Els Canons, que existió hasta 1990. Hoy es un espacio del Museu d'Història de Barcelona y uno de los mejores miradores de la ciudad.</p>
+                    <a class="link-arrow" href="https://www.barcelona.cat/museuhistoria/es/muhba-turo-de-la-rovira" target="_blank" rel="noopener">MUHBA Turó de la Rovira <span>&#8599;</span></a>
+                </article>
+                <article class="vol-card barrio-card">
+                    <div class="icon-circle">{SAC_ICONS["libro"]}</div>
+                    <h3>El Carmel de Juan Marsé</h3>
+                    <p>El novelista Juan Marsé puso el barrio en el mapa de la literatura: el Pijoaparte, protagonista de «Últimas tardes con Teresa» (premio Biblioteca Breve 1965), vive en el Monte Carmelo. La biblioteca del barrio, abierta en 2003, lleva su nombre.</p>
+                    <a class="link-arrow" href="https://ajuntament.barcelona.cat/biblioteques/es/bibelcarmel/colecciones/el-carmel-1424027" target="_blank" rel="noopener">Biblioteca El Carmel - Juan Marsé <span>&#8599;</span></a>
+                </article>
+                <article class="vol-card barrio-card">
+                    <div class="icon-circle">{SAC_ICONS["foto"]}</div>
+                    <h3>La memoria del barrio</h3>
+                    <p>El proyecto Memòria Documental del Carmel reúne fotografías, publicaciones, películas y testimonios de los vecinos para recuperar la historia popular del barrio. Si guardas fotos antiguas, también nos interesan para el archivo de la parroquia.</p>
+                    <a class="link-arrow" href="https://memoriadocumentaldelcarmel.barcelona/" target="_blank" rel="noopener">Memòria Documental del Carmel <span>&#8599;</span></a>
+                </article>
+            </div>
+        </section>
+
+        <section id="asociaciones">
+            <div class="section-head">
+                <span class="subtitulo">Asociaciones vecinas</span>
+                <h2>Gente que hace barrio</h2>
+                <hr class="section-divider" style="margin-bottom:1.25rem;">
+                <p>La parroquia no está sola: en el Carmel hay muchas asociaciones que trabajan por los vecinos. Estas son algunas con las que compartimos calle y barrio.</p>
+            </div>
+            <div class="vol-grid assoc-grid">
+                <article class="vol-card assoc-card">
+                    <div class="assoc-head"><div class="icon-circle">{SAC_ICONS["grupo"]}</div><div><h3>Carmel Amunt</h3><span class="assoc-kind">Plan Comunitario del Carmel</span></div></div>
+                    <p>Es la red que une a entidades, vecinos y servicios públicos para mejorar el barrio: salud comunitaria, educación, gente mayor, convivencia, fiestas y memoria histórica. Nació en 1999 de la mano de varias entidades del Carmel, entre ellas Càritas.</p>
+                    <p class="assoc-contact"><a href="tel:+34934290759">93 429 07 59</a> · <a href="mailto:carmelamunt@carmelamunt.org">carmelamunt@carmelamunt.org</a></p>
+                    <a class="link-arrow" href="https://www.carmelamunt.org/" target="_blank" rel="noopener">carmelamunt.org <span>&#8599;</span></a>
+                </article>
+                <article class="vol-card assoc-card">
+                    <div class="assoc-head"><div class="icon-circle">{SAC_ICONS["nota"]}</div><div><h3>40 p'arriba 40 p'abajo</h3><span class="assoc-kind">Asociación cultural y recreativa</span></div></div>
+                    <p>Una asociación intergeneracional que nació de un grupo de vecinos. La llevan personas voluntarias, sobre todo mujeres, y organiza más de 25 talleres semanales de cultura, tradiciones y ocio. Se reúne en el Casal La Barraca, en nuestra misma calle.</p>
+                    <p class="assoc-contact"><a href="mailto:40parribapabajo@gmail.com">40parribapabajo@gmail.com</a></p>
+                    <a class="link-arrow" href="https://guia.barcelona.cat/es/detall/asociacion-cultural-recreativa-40-p-arriba-40-p-abajo_99400591054.html" target="_blank" rel="noopener">Ficha en la guía de Barcelona <span>&#8599;</span></a>
+                </article>
+                <article class="vol-card assoc-card">
+                    <div class="assoc-head"><div class="icon-circle">{SAC_ICONS["cal"]}</div><div><h3>Coordinadora d'Entitats del Carmel</h3><span class="assoc-kind">Fiestas del barrio</span></div></div>
+                    <p>Reúne a una quincena de entidades del barrio y organiza la Fiesta Mayor y el Carnaval. También participa en la cabalgata de Reyes y en la fiesta del Carmen.</p>
+                    <a class="link-arrow" href="https://elcarmel.org/" target="_blank" rel="noopener">elcarmel.org <span>&#8599;</span></a>
+                </article>
+                <article class="vol-card assoc-card">
+                    <div class="assoc-head"><div class="icon-circle">{SAC_ICONS["tienda"]}</div><div><h3>Carmel Comerç</h3><span class="assoc-kind">Comercio de proximidad</span></div></div>
+                    <p>La asociación de comerciantes del barrio, fundada en 1996 para defender el pequeño comercio. En 2021 recibió la Medalla de Honor de Barcelona.</p>
+                    <a class="link-arrow" href="https://www.botigues3turons.com/" target="_blank" rel="noopener">botigues3turons.com <span>&#8599;</span></a>
+                </article>
+                <article class="vol-card assoc-card">
+                    <div class="assoc-head"><div class="icon-circle">{SAC_ICONS["pin"]}</div><div><h3>Casal de Barri La Barraca</h3><span class="assoc-kind">Punto de encuentro</span></div></div>
+                    <p>El equipamiento municipal donde se reúnen muchas de estas asociaciones, en la calle Llobregós, 107, a dos pasos de la parroquia.</p>
+                    <a class="link-arrow" href="https://ajuntament.barcelona.cat/casalsdebarri/es/casal-de-barri-la-barraca-del-carmel/el-casal" target="_blank" rel="noopener">Web del casal <span>&#8599;</span></a>
+                </article>
+                <article class="vol-card assoc-card assoc-home">
+                    <div class="assoc-head"><div class="icon-circle">{SAC_ICONS["manos"]}</div><div><h3>Cáritas parroquial</h3><span class="assoc-kind">Desde nuestra parroquia</span></div></div>
+                    <p>Un día al mes repartimos alimentos a varias docenas de familias del barrio. Para eso también hacen falta vecinos que regalen un poco de su tiempo.</p>
+                    <a class="link-arrow" href="voluntariado.html">Hazte voluntario <span>&rarr;</span></a>
+                </article>
+            </div>
+            <div class="vol-cta">
+                <h3>¿Formas parte de una entidad del barrio?</h3>
+                <p>Si quieres que aparezca aquí o preparar algo juntos, escríbenos.</p>
+                <div class="btn-group center">
+                    <a href="contacto.html#escribenos" class="btn btn-solid">Escribir a la parroquia</a>
+                </div>
+            </div>
+            <aside class="hist-sources">
+                <h3>Fuentes</h3>
+                <p>De dónde sale lo que contamos en esta página. Los enlaces se abren en una pestaña nueva.</p>
+                <ul>
+                    <li><a href="https://ajuntament.barcelona.cat/horta-guinardo/ca/el-districte-i-els-seus-barris/el-carmel" target="_blank" rel="noopener">Ajuntament de Barcelona: el barrio del Carmel</a> <span>Población y superficie.</span></li>
+                    <li><a href="https://www.barcelona.cat/museuhistoria/es/muhba-turo-de-la-rovira" target="_blank" rel="noopener">MUHBA Turó de la Rovira</a> <span>La batería antiaérea y el barrio de barracas.</span></li>
+                    <li><a href="https://ajuntament.barcelona.cat/biblioteques/es/bibelcarmel/colecciones/el-carmel-1424027" target="_blank" rel="noopener">Biblioteca El Carmel - Juan Marsé</a> <span>Juan Marsé y el barrio.</span></li>
+                    <li><a href="https://www.carmelamunt.org/historia/" target="_blank" rel="noopener">Carmel Amunt: historia</a> <span>Origen del Plan Comunitario en 1999.</span></li>
+                    <li><a href="https://ajuntament.barcelona.cat/casalsdebarri/es/casal-de-barri-la-barraca-del-carmel/el-casal" target="_blank" rel="noopener">Casal de Barri La Barraca del Carmel</a> <span>Las asociaciones que se reúnen en el casal.</span></li>
+                    <li><a href="https://quedeque.barcelona/entitats/asociacion-cultural-recreativa-40-parriba-40-pabajo" target="_blank" rel="noopener">Qué de qué: 40 p'arriba 40 p'abajo</a> <span>Descripción de la asociación.</span></li>
+                </ul>
+            </aside>
+        </section>
+""")
+
 PAGES["html/voluntariado.html"] = page(1, "Voluntariado", "Hazte voluntario en la Parroquia Santa Teresa de Jesús (El Carmel, Barcelona): Cáritas, catequesis, visita a enfermos, liturgia y coro, cuidado del templo y fiestas.", active="voluntariado", body=page_hero('Comunidad', "Voluntariado", "web/caritas.jpg", None, "center 45%") + f"""
         <section>
             <div class="section-head">
@@ -1638,6 +1759,7 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
                     <span class="subtitulo text-left">El Carmel, Barcelona</span>
                     <p class="lead">La parroquia de Santa Teresa de Jesús está situada en el corazón del Carmel, Barcelona.</p>
                     <p>Desde un primer momento la parroquia estuvo muy integrada en el barrio, pues fue la sede de una de las primeras cooperativas obreras del barrio y una escuela para niños y adultos.</p>
+                    <a href="barrio.html" class="link-arrow">Conoce nuestro barrio <span>&rarr;</span></a>
                 </div>
                 <div class="framed-img">
                     <img src=\"""" + img("nuevalife.jpeg") + """\" alt="Campanario y fachada de la parroquia" loading="lazy">
@@ -2967,6 +3089,74 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ('Desde nuestra parroquia', 'Des de la nostra parròquia', 'From our parish'),
+                      ('Un día al mes repartimos alimentos a varias docenas de familias del barrio. Para eso también hacen falta vecinos que regalen un poco de su tiempo.', 'Un dia al mes repartim aliments a unes quantes dotzenes de famílies del barri. Per fer-ho també calen veïns que regalin una mica del seu temps.', 'Once a month we hand out food to several dozen local families. That also takes neighbours willing to give a little of their time.'),
+                      ('Hazte voluntario', 'Fes-te voluntari', 'Become a volunteer'),
+                      ('262 m', '262 m', '262 m'),
+                      ("40 p'arriba 40 p'abajo", "40 p'arriba 40 p'abajo", "40 p'arriba 40 p'abajo"),
+                      ('40parribapabajo@gmail.com', '40parribapabajo@gmail.com', '40parribapabajo@gmail.com'),
+                      ('Carmel Amunt', 'Carmel Amunt', 'Carmel Amunt'),
+                      ('Carmel Comerç', 'Carmel Comerç', 'Carmel Comerç'),
+                      ('Casal de Barri La Barraca', 'Casal de Barri La Barraca', 'Casal de Barri La Barraca'),
+                      ("Coordinadora d'Entitats del Carmel", "Coordinadora d'Entitats del Carmel", "Coordinadora d'Entitats del Carmel"),
+                      ('El Carmel', 'El Carmel', 'El Carmel'),
+                      ('El Carmel · Horta-Guinardó', 'El Carmel · Horta-Guinardó', 'El Carmel · Horta-Guinardó'),
+                      ('botigues3turons.com', 'botigues3turons.com', 'botigues3turons.com'),
+                      ('carmelamunt.org', 'carmelamunt.org', 'carmelamunt.org'),
+                      ('carmelamunt@carmelamunt.org', 'carmelamunt@carmelamunt.org', 'carmelamunt@carmelamunt.org'),
+                      ('elcarmel.org', 'elcarmel.org', 'elcarmel.org'),
+                      ('Nuestro barrio', 'El nostre barri', 'Our neighbourhood'),
+                      ('Conoce nuestro barrio', 'Coneix el nostre barri', 'Get to know our neighbourhood'),
+                      ('Nuestro barrio | Parroquia Santa Teresa de Jesús', 'El nostre barri | Parròquia de Santa Teresa de Jesús', 'Our neighbourhood | Santa Teresa de Jesús Parish'),
+                      ("El Carmel, el barrio de la Parroquia Santa Teresa de Jesús: su historia, sus rincones y las asociaciones vecinas, como Carmel Amunt y 40 p'arriba 40 p'abajo.", "El Carmel, el barri de la Parròquia de Santa Teresa de Jesús: la seva història, els seus racons i les associacions veïnes, com Carmel Amunt i 40 p'arriba 40 p'abajo.", "El Carmel, the neighbourhood of Santa Teresa de Jesús Parish: its history, its corners and local associations such as Carmel Amunt and 40 p'arriba 40 p'abajo."),
+                      ('vecinos y vecinas', 'veïns i veïnes', 'residents'),
+                      ('hectáreas de calles empinadas', 'hectàrees de carrers costeruts', 'hectares of steep streets'),
+                      ('el mirador del turó de la Rovira', 'el mirador del turó de la Rovira', 'the Turó de la Rovira viewpoint'),
+                      ('Los búnkers del Carmel', 'Els búnquers del Carmel', 'The Carmel bunkers'),
+                      ("En lo alto del turó de la Rovira quedan los restos de la batería antiaérea que defendió Barcelona durante la Guerra Civil. Después, sus muros sirvieron de refugio al barrio de barracas de Els Canons, que existió hasta 1990. Hoy es un espacio del Museu d'Història de Barcelona y uno de los mejores miradores de la ciudad.", "Dalt del turó de la Rovira hi ha les restes de la bateria antiaèria que va defensar Barcelona durant la Guerra Civil. Després, els seus murs van fer de refugi al barri de barraques dels Canons, que va existir fins al 1990. Avui és un espai del Museu d'Història de Barcelona i un dels millors miradors de la ciutat.", 'At the top of the Turó de la Rovira stand the remains of the anti-aircraft battery that defended Barcelona during the Civil War. Later its walls sheltered Els Canons, a shanty town that lasted until 1990. Today it is part of the Barcelona History Museum and one of the best viewpoints in the city.'),
+                      ('MUHBA Turó de la Rovira', 'MUHBA Turó de la Rovira', 'MUHBA Turó de la Rovira'),
+                      ('El Carmel de Juan Marsé', 'El Carmel de Juan Marsé', "Juan Marsé's El Carmel"),
+                      ('El novelista Juan Marsé puso el barrio en el mapa de la literatura: el Pijoaparte, protagonista de «Últimas tardes con Teresa» (premio Biblioteca Breve 1965), vive en el Monte Carmelo. La biblioteca del barrio, abierta en 2003, lleva su nombre.', "El novel·lista Juan Marsé va posar el barri al mapa de la literatura: el Pijoaparte, protagonista d'«Últimas tardes con Teresa» (premi Biblioteca Breve 1965), viu al Monte Carmelo. La biblioteca del barri, oberta el 2003, porta el seu nom.", 'The novelist Juan Marsé put the neighbourhood on the literary map: the Pijoaparte, hero of «Últimas tardes con Teresa» (Biblioteca Breve Prize, 1965), lives on Monte Carmelo. The local library, opened in 2003, bears his name.'),
+                      ('Biblioteca El Carmel - Juan Marsé', 'Biblioteca El Carmel - Juan Marsé', 'El Carmel - Juan Marsé Library'),
+                      ('La memoria del barrio', 'La memòria del barri', "The neighbourhood's memory"),
+                      ('El proyecto Memòria Documental del Carmel reúne fotografías, publicaciones, películas y testimonios de los vecinos para recuperar la historia popular del barrio. Si guardas fotos antiguas, también nos interesan para el archivo de la parroquia.', "El projecte Memòria Documental del Carmel reuneix fotografies, publicacions, pel·lícules i testimonis dels veïns per recuperar la història popular del barri. Si guardes fotos antigues, també ens interessen per a l'arxiu de la parròquia.", "The Memòria Documental del Carmel project gathers photographs, publications, films and residents' stories to recover the neighbourhood's popular history. If you keep old photos, we would love them for the parish archive too."),
+                      ('Memòria Documental del Carmel', 'Memòria Documental del Carmel', 'Memòria Documental del Carmel'),
+                      ('Plan Comunitario del Carmel', 'Pla Comunitari del Carmel', 'El Carmel Community Plan'),
+                      ('Es la red que une a entidades, vecinos y servicios públicos para mejorar el barrio: salud comunitaria, educación, gente mayor, convivencia, fiestas y memoria histórica. Nació en 1999 de la mano de varias entidades del Carmel, entre ellas Càritas.', 'És la xarxa que uneix entitats, veïns i serveis públics per millorar el barri: salut comunitària, educació, gent gran, convivència, festes i memòria històrica. Va néixer el 1999 de la mà de diverses entitats del Carmel, entre elles Càritas.', 'The network that brings together local groups, residents and public services to improve the neighbourhood: community health, education, older people, living together, festivals and historical memory. It was founded in 1999 by several El Carmel organisations, Caritas among them.'),
+                      ('Asociación cultural y recreativa', 'Associació cultural i recreativa', 'Cultural and recreational association'),
+                      ('Una asociación intergeneracional que nació de un grupo de vecinos. La llevan personas voluntarias, sobre todo mujeres, y organiza más de 25 talleres semanales de cultura, tradiciones y ocio. Se reúne en el Casal La Barraca, en nuestra misma calle.', "Una associació intergeneracional que va néixer d'un grup de veïns. La porten persones voluntàries, sobretot dones, i organitza més de 25 tallers setmanals de cultura, tradicions i lleure. Es reuneix al Casal La Barraca, al nostre mateix carrer.", 'An intergenerational association started by a group of neighbours. It is run by volunteers, mostly women, and offers more than 25 weekly workshops on culture, traditions and leisure. It meets at the Casal La Barraca, on our very street.'),
+                      ('Ficha en la guía de Barcelona', 'Fitxa a la guia de Barcelona', 'Listing in the Barcelona guide'),
+                      ('Fiestas del barrio', 'Festes del barri', 'Neighbourhood festivals'),
+                      ('Reúne a una quincena de entidades del barrio y organiza la Fiesta Mayor y el Carnaval. También participa en la cabalgata de Reyes y en la fiesta del Carmen.', "Reuneix una quinzena d'entitats del barri i organitza la Festa Major i el Carnaval. També participa en la cavalcada de Reis i en la festa del Carme.", 'Brings together some fifteen local organisations and runs the Festa Major and Carnival. It also takes part in the Three Kings parade and the feast of Our Lady of Mount Carmel.'),
+                      ('Comercio de proximidad', 'Comerç de proximitat', 'Local shops'),
+                      ('La asociación de comerciantes del barrio, fundada en 1996 para defender el pequeño comercio. En 2021 recibió la Medalla de Honor de Barcelona.', "L'associació de comerciants del barri, fundada el 1996 per defensar el petit comerç. El 2021 va rebre la Medalla d'Honor de Barcelona.", "The neighbourhood shopkeepers' association, founded in 1996 to stand up for small local shops. In 2021 it received Barcelona's Medal of Honour."),
+                      ('Punto de encuentro', 'Punt de trobada', 'Meeting place'),
+                      ('El equipamiento municipal donde se reúnen muchas de estas asociaciones, en la calle Llobregós, 107, a dos pasos de la parroquia.', "L'equipament municipal on es reuneixen moltes d'aquestes associacions, al carrer Llobregós, 107, a tocar de la parròquia.", 'The council-run centre where many of these associations meet, at Carrer Llobregós 107, a short walk from the parish.'),
+                      ('Web del casal', 'Web del casal', 'Casal website'),
+                      ('Ajuntament de Barcelona: el barrio del Carmel', 'Ajuntament de Barcelona: el barri del Carmel', 'Barcelona City Council: El Carmel'),
+                      ('Población y superficie.', 'Població i superfície.', 'Population and area.'),
+                      ('La batería antiaérea y el barrio de barracas.', 'La bateria antiaèria i el barri de barraques.', 'The anti-aircraft battery and the shanty town.'),
+                      ('Juan Marsé y el barrio.', 'Juan Marsé i el barri.', 'Juan Marsé and the neighbourhood.'),
+                      ('Carmel Amunt: historia', 'Carmel Amunt: història', 'Carmel Amunt: history'),
+                      ('Origen del Plan Comunitario en 1999.', 'Origen del Pla Comunitari el 1999.', 'How the Community Plan began in 1999.'),
+                      ('Casal de Barri La Barraca del Carmel', 'Casal de Barri La Barraca del Carmel', 'Casal de Barri La Barraca del Carmel'),
+                      ('Las asociaciones que se reúnen en el casal.', 'Les associacions que es reuneixen al casal.', 'The associations that meet at the casal.'),
+                      ("Qué de qué: 40 p'arriba 40 p'abajo", "Què de què: 40 p'arriba 40 p'abajo", "Què de què: 40 p'arriba 40 p'abajo"),
+                      ('Descripción de la asociación.', "Descripció de l'associació.", 'About the association.'),
+                      ('Horta-Guinardó', 'Horta-Guinardó', 'Horta-Guinardó'),
+                      ('Nuestra parroquia está en el corazón del Carmel, un barrio de calles empinadas en las laderas del turó del Carmel y del turó de la Rovira, en la parte alta de Barcelona.', 'La nostra parròquia és al cor del Carmel, un barri de carrers costeruts als vessants del turó del Carmel i del turó de la Rovira, a la part alta de Barcelona.', 'Our parish stands at the heart of El Carmel, a neighbourhood of steep streets on the slopes of the Turó del Carmel and the Turó de la Rovira, high above Barcelona.'),
+                      ('Su nombre viene de la ermita de la Virgen del Carmen, abierta en 1864 en lo alto de la colina. En los años cincuenta y sesenta llegaron miles de familias de toda España, que levantaron muchas de sus casas con sus propias manos, y hoy conviven en él vecinos de toda la vida con familias llegadas de muchos países.', "El seu nom ve de l'ermita de la Mare de Déu del Carme, oberta el 1864 dalt del turó. Als anys cinquanta i seixanta hi van arribar milers de famílies de tot Espanya, que van aixecar moltes de les seves cases amb les seves pròpies mans, i avui hi conviuen veïns de tota la vida amb famílies arribades de molts països.", 'Its name comes from the hermitage of Our Lady of Mount Carmel, opened on the hilltop in 1864. In the fifties and sixties thousands of families arrived from all over Spain and built many of their homes with their own hands; today long-time residents live side by side with families from many countries.'),
+                      ('Es un barrio de vecinos que se conocen, con una red de asociaciones muy viva. La parroquia forma parte de esa vida desde 1924.', "És un barri de veïns que es coneixen, amb una xarxa d'associacions molt viva. La parròquia forma part d'aquesta vida des del 1924.", 'It is a place where neighbours know each other, with a lively network of associations. The parish has been part of that life since 1924.'),
+                      ('Un siglo de historia compartida', "Un segle d'història compartida", 'A century of shared history'),
+                      ('La calle llena de vecinos el Domingo de Ramos', 'El carrer ple de veïns el Diumenge de Rams', 'The street full of neighbours on Palm Sunday'),
+                      ('Para conocerlo', 'Per conèixer-lo', 'Getting to know it'),
+                      ('Rincones del barrio', 'Racons del barri', 'Corners of the neighbourhood'),
+                      ('Asociaciones vecinas', 'Associacions veïnes', 'Local associations'),
+                      ('Gente que hace barrio', 'Gent que fa barri', 'People who make the neighbourhood'),
+                      ('La parroquia no está sola: en el Carmel hay muchas asociaciones que trabajan por los vecinos. Estas son algunas con las que compartimos calle y barrio.', 'La parròquia no està sola: al Carmel hi ha moltes associacions que treballen pels veïns. Aquestes són algunes amb qui compartim carrer i barri.', 'The parish is not alone: El Carmel has many associations working for local people. Here are some of those we share our street and neighbourhood with.'),
+                      ('¿Formas parte de una entidad del barrio?', "Formes part d'una entitat del barri?", 'Are you part of a local organisation?'),
+                      ('Si quieres que aparezca aquí o preparar algo juntos, escríbenos.', 'Si vols que aparegui aquí o preparar alguna cosa junts, escriu-nos.', 'If you would like it listed here, or to plan something together, write to us.'),
+                      ('Escribir a la parroquia', 'Escriure a la parròquia', 'Write to the parish'),
                       ('Los niños de primera comunión ante el presbiterio y la imagen de Santa Teresa', 'Els nens de primera comunió davant del presbiteri i la imatge de Santa Teresa', 'The First Communion children before the sanctuary and the statue of Saint Teresa'),
                       ('El grupo de primera comunión ante el altar', "El grup de primera comunió davant de l'altar", 'The First Communion group before the altar'),
                       ('La celebración de las comuniones bajo el escudo del Carmelo', "La celebració de les comunions sota l'escut del Carmel", 'The First Communion Mass beneath the Carmelite coat of arms'),

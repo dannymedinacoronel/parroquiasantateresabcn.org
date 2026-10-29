@@ -3023,3 +3023,23 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 .js .mosaic-more { display: none; }
 .js .mosaic.is-expanded .mosaic-more { display: block; }
 .mosaic-more-wrap { margin-top: 2.5rem; }
+
+/* Nuestro barrio */
+.barrio-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 900px; margin: 3.5rem auto 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.barrio-stats > div { display: flex; flex-direction: column; align-items: center; gap: .3rem; padding: 1.6rem 1rem; text-align: center; }
+.barrio-stats > div + div { border-left: 1px solid var(--border); }
+.barrio-stats strong { font: 600 clamp(2rem, 4vw, 2.8rem)/1 var(--header-font); color: var(--accent-dark); }
+.barrio-stats span { font-size: .78rem; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+.assoc-head { display: flex; align-items: center; gap: .9rem; }
+.assoc-head .icon-circle { margin: 0; flex: none; }
+.assoc-head h3 { margin: 0; font-size: 1.35rem; line-height: 1.15; }
+.assoc-kind { display: block; margin-top: .2rem; font-size: .66rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-dark); }
+.assoc-contact { flex: 0 0 auto !important; font-size: .82rem !important; color: var(--muted); overflow-wrap: anywhere; }
+.assoc-contact a { color: inherit; text-decoration: underline; text-decoration-color: var(--accent-light); text-underline-offset: 3px; }
+.assoc-card .link-arrow, .barrio-card .link-arrow { overflow-wrap: anywhere; }
+#asociaciones .hist-sources { margin-top: 3rem; }
+@media (max-width: 600px) {
+    .barrio-stats { grid-template-columns: 1fr; }
+    .barrio-stats > div + div { border-left: 0; border-top: 1px solid var(--border); }
+}
+.assoc-home { background: #fbf5e8; border-color: #ecdcb8; }
