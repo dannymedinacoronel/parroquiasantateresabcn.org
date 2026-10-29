@@ -3050,3 +3050,9 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 .assoc-logo.is-photo { padding: 0; }
 .assoc-logo.is-photo img { object-fit: cover; }
 .assoc-logo.is-poster img { object-position: center 12%; }
+
+/* Misa dominical: pila de fotos que pasa sola */
+[data-pile-autoplay] > a { transition: transform .65s var(--ease), opacity .65s var(--ease), box-shadow .55s var(--ease); }
+[data-pile-autoplay] > a:first-child img { animation: pile-zoom 4.4s ease-out both; }
+[data-pile-autoplay] > a.is-leaving { transform: translate(-18%, -6%) rotate(-12deg) !important; opacity: 0; }
+@keyframes pile-zoom { from { transform: scale(1.12); } to { transform: scale(1); } }

@@ -364,12 +364,14 @@ def page_hero(subtitle, title, photo="web/portada3.jpg", crumb=None, pos="center
 """
 
 
-def photo_pile(photos, depth, label, cls=""):
+def photo_pile(photos, depth, label, cls="", autoplay=False):
     """Pila de fotos: se ven las tres primeras y, al pulsar, el visor (js/site.js) pasa por todas.
-    photos: lista de (archivo en fotosdefinitivas/web/, texto alternativo)."""
+    photos: lista de (archivo en fotosdefinitivas/web/, texto alternativo).
+    autoplay: las fotos van pasando solas (la de arriba sale y deja ver la siguiente)."""
     p = "../" * depth + "fotosdefinitivas/web/"
     items = "\n".join(f'                        <a href="{p}{f}"><img src="{p}{f}" alt="{alt}" loading="lazy"></a>' for f, alt in photos)
-    return f'''<div class="photo-pile{cls}" data-gallery role="group" aria-label="{label}">
+    auto = " data-pile-autoplay" if autoplay else ""
+    return f'''<div class="photo-pile{cls}" data-gallery{auto} role="group" aria-label="{label}">
 {items}
                     </div>'''
 
@@ -472,9 +474,10 @@ def mosaic(photos, depth, more=()):
             </div>'''
     return html
 
-# Álbumes de la página Imágenes: (título, descripción, fotos). Las fotos nuevas están en web/album/.
+# Álbumes de la página Imágenes: (título, etiqueta, descripción, fotos). Las fotos nuevas están en web/album/.
+# En las fotos con niños las caras van difuminadas (y los nombres de las estampas de la comunión).
 ALBUMS = [
-    ("Domingo de Ramos", "Palmas, palmones y olivo: el barrio entero en el patio y en la calle.", [
+    ("Domingo de Ramos", "Semana Santa", "Palmas, palmones y olivo: el barrio entero en el patio y en la calle.", [
         ("album/dsc_0633.jpg", "Palmas y palmones frente al campanario"),
         ("album/dsc_0672.jpg", "La calle llena de vecinos con sus ramos"),
         ("album/dsc_0637.jpg", "Un palmón de colores ante el campanario"),
@@ -487,7 +490,7 @@ ALBUMS = [
         ("album/dsc_0660.jpg", "El patio de la parroquia lleno de ramos"),
         ("album/dsc_0687.jpg", "Cientos de ramos alzados en la calle"),
     ]),
-    ("Nuestra iglesia", "El campanario, las vidrieras, el escudo del Carmelo y otros rincones del templo.", [
+    ("Nuestra iglesia", "El templo", "El campanario, las vidrieras, el escudo del Carmelo y otros rincones del templo.", [
         ("album/dsc_0774.jpg", "El campanario de la parroquia"),
         ("album/dsc_0534.jpg", "El escudo del Carmelo, pintado sobre el presbiterio"),
         ("vidriera.jpg", "Vidriera de Santa Teresa con el Niño Jesús"),
@@ -498,7 +501,7 @@ ALBUMS = [
         ("img_5471.jpg", "Velas encendidas ante el Cristo"),
         ("nuevalife.jpg", "El campanario y la fachada de la iglesia"),
     ]),
-    ("La misa del domingo", "La comunidad reunida, la música y la mesa del altar.", [
+    ("La misa del domingo", "Cada domingo", "La comunidad reunida, la música y la mesa del altar.", [
         ("dsc_0546.jpg", "La iglesia llena durante una celebración"),
         ("album/dsc_0459.jpg", "La celebración desde el presbiterio"),
         ("dsc_0541.jpg", "Interior de la iglesia durante la eucaristía"),
@@ -508,38 +511,36 @@ ALBUMS = [
         ("img_5432.jpg", "Música en la eucaristía"),
         ("album/img_5486.jpg", "El altar durante la misa"),
     ]),
-    ("Comuniones 2021", "La promoción de 2021 en nuestra iglesia. Hemos pixelado las caras de los niños.", [
-        ("album/comuniones-2021-1305.jpg", "Los niños de primera comunión ante el presbiterio y la imagen de Santa Teresa"),
-        ("album/comuniones-2021-1313.jpg", "El grupo de primera comunión ante el altar"),
-        ("album/comuniones-2021-1302.jpg", "La celebración de las comuniones bajo el escudo del Carmelo"),
-        ("album/comuniones-2021-1429.jpg", "Flores y música en el presbiterio"),
-        ("album/comuniones-2021-1428.jpg", "La música acompaña la celebración"),
-        ("album/comuniones-2021-1457.jpg", "La iglesia llena al terminar la celebración"),
-        ("album/comuniones-2021-1295.jpg", "La nave desde el fondo de la iglesia"),
+    ("Últimas comuniones", "Sacramentos", "Un día de fiesta para toda la comunidad: los niños reciben a Jesús por primera vez, acompañados de sus familias, sus catequistas y el párroco.", [
+        ("album/comuniones-1444.jpg", "Los niños de primera comunión con el párroco y la catequista ante el altar"),
+        ("album/comuniones-1442.jpg", "El grupo de primera comunión con sus recordatorios y sus velas"),
     ]),
 ]
 GOSPEL_PHOTOS = [
-    ("album/comuniones-2021-1429.jpg", "Flores y música en el presbiterio"),
     ("img_5432.jpg", "Música en la eucaristía"),
-    ("album/comuniones-2021-1428.jpg", "La música acompaña la celebración"),
+    ("album/eucaristia.jpg", "Eucaristía con la iglesia llena"),
+    ("album/img_5454.jpg", "La comunión"),
+    ("album/dsc_0459.jpg", "La celebración desde el presbiterio"),
     ("dsc_0546.jpg", "La iglesia llena durante una celebración"),
+    ("album/img_5486.jpg", "El altar durante la misa"),
+    ("dsc_0541.jpg", "Interior de la iglesia durante la eucaristía"),
 ]
 
 
 def album_shelf(depth):
     cards = []
-    for title, desc, photos in ALBUMS:
+    for title, kicker, desc, photos in ALBUMS:
         cards.append(f'''                <article class="album">
                     {photo_pile(photos, depth, title)}
                     <h3>{title}</h3>
-                    <p><span class="album-count">{len(photos)} fotos</span> {desc}</p>
+                    <p><span class="album-count">{kicker}</span> {desc}</p>
                 </article>''')
     return '            <div class="album-shelf">\n' + "\n".join(cards) + "\n            </div>"
 
 
 def gospel_feature(depth):
     return f'''<div class="gospel-feature">
-                    {photo_pile(GOSPEL_PHOTOS, depth, "Fotos del coro góspel", " photo-pile-wide")}
+                    {photo_pile(GOSPEL_PHOTOS, depth, "Fotos de la misa dominical", " photo-pile-wide", autoplay=True)}
                     <div class="gospel-next">
                         <span class="gospel-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
                         <div>
@@ -2385,18 +2386,18 @@ PAGES["html/imagenes.html"] = page(1, "Imágenes y vídeos", "Vídeos y álbumes
     ("dsc_0546.jpg", "La iglesia llena durante una celebración", "wide"),
     ("dsc_0591.jpg", "Domingo de Ramos en el patio", "wide"),
     ("img_5493.jpg", "Capilla del Santísimo", "wide"),
-    ("album/comuniones-2021-1295.jpg", "La nave desde el fondo de la iglesia", "wide"),
+    ("album/dsc_0459.jpg", "La celebración desde el presbiterio", "wide"),
 ], 1, more=[
-    ("album/comuniones-2021-1302.jpg", "La celebración de las comuniones bajo el escudo del Carmelo", "wide"),
+    ("album/comuniones-1444.jpg", "Los niños de primera comunión con el párroco y la catequista ante el altar", "wide"),
     ("album/dsc_0534.jpg", "El escudo del Carmelo, pintado sobre el presbiterio", "tall"),
-    ("album/comuniones-2021-1313.jpg", "El grupo de primera comunión ante el altar", ""),
+    ("album/img_5454.jpg", "La comunión", ""),
     ("album/dsc_0637.jpg", "Un palmón de colores ante el campanario", ""),
-    ("album/comuniones-2021-1429.jpg", "Flores y música en el presbiterio", ""),
+    ("album/eucaristia.jpg", "Eucaristía con la iglesia llena", ""),
     ("album/dsc_0672.jpg", "La calle llena de vecinos con sus ramos", "wide"),
     ("vidriera.jpg", "Vidriera de Santa Teresa con el Niño Jesús", "tall"),
-    ("album/comuniones-2021-1305.jpg", "Los niños de primera comunión ante el presbiterio y la imagen de Santa Teresa", "wide"),
+    ("album/comuniones-1442.jpg", "El grupo de primera comunión con sus recordatorios y sus velas", "wide"),
     ("album/dsc_0774.jpg", "El campanario de la parroquia", ""),
-    ("album/comuniones-2021-1457.jpg", "La iglesia llena al terminar la celebración", "wide"),
+    ("album/dsc_0640.jpg", "Palmones de colores en el patio", "wide"),
 ]) + """
         </section>
 
@@ -3095,6 +3096,15 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ('Últimas comuniones', 'Darreres comunions', 'Recent First Communions'),
+                      ('Últimas comuniones', 'Darreres comunions', 'Recent First Communions'),
+                      ('Semana Santa', 'Setmana Santa', 'Holy Week'),
+                      ('El templo', 'El temple', 'The church'),
+                      ('Cada domingo', 'Cada diumenge', 'Every Sunday'),
+                      ('Un día de fiesta para toda la comunidad: los niños reciben a Jesús por primera vez, acompañados de sus familias, sus catequistas y el párroco.', 'Un dia de festa per a tota la comunitat: els nens reben Jesús per primera vegada, acompanyats de les seves famílies, els seus catequistes i el rector.', 'A day of celebration for the whole community: the children receive Jesus for the first time, surrounded by their families, their catechists and the parish priest.'),
+                      ('Los niños de primera comunión con el párroco y la catequista ante el altar', "Els nens de primera comunió amb el rector i la catequista davant de l'altar", 'The First Communion children with the parish priest and their catechist before the altar'),
+                      ('El grupo de primera comunión con sus recordatorios y sus velas', 'El grup de primera comunió amb els seus recordatoris i les seves espelmes', 'The First Communion group with their keepsake cards and candles'),
+                      ('Fotos de la misa dominical', 'Fotos de la missa dominical', 'Photos of Sunday Mass'),
                       ('Logotipo de Carmel Amunt', 'Logotip de Carmel Amunt', 'Carmel Amunt logo'),
                       ("Logotipo de 40 p'arriba 40 p'abajo", "Logotip de 40 p'arriba 40 p'abajo", "40 p'arriba 40 p'abajo logo"),
                       ('Cartel de la Fiesta Mayor del Carmel 2026', 'Cartell de la Festa Major del Carmel 2026', 'Poster for the 2026 El Carmel Festa Major'),
@@ -3169,17 +3179,7 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ('¿Formas parte de una entidad del barrio?', "Formes part d'una entitat del barri?", 'Are you part of a local organisation?'),
                       ('Si quieres que aparezca aquí o preparar algo juntos, escríbenos.', 'Si vols que aparegui aquí o preparar alguna cosa junts, escriu-nos.', 'If you would like it listed here, or to plan something together, write to us.'),
                       ('Escribir a la parroquia', 'Escriure a la parròquia', 'Write to the parish'),
-                      ('Los niños de primera comunión ante el presbiterio y la imagen de Santa Teresa', 'Els nens de primera comunió davant del presbiteri i la imatge de Santa Teresa', 'The First Communion children before the sanctuary and the statue of Saint Teresa'),
-                      ('El grupo de primera comunión ante el altar', "El grup de primera comunió davant de l'altar", 'The First Communion group before the altar'),
-                      ('La celebración de las comuniones bajo el escudo del Carmelo', "La celebració de les comunions sota l'escut del Carmel", 'The First Communion Mass beneath the Carmelite coat of arms'),
-                      ('Flores y música en el presbiterio', 'Flors i música al presbiteri', 'Flowers and music in the sanctuary'),
-                      ('La música acompaña la celebración', 'La música acompanya la celebració', 'Music accompanies the celebration'),
-                      ('La iglesia llena al terminar la celebración', "L'església plena en acabar la celebració", 'The church full at the end of the celebration'),
-                      ('La nave desde el fondo de la iglesia', "La nau des del fons de l'església", 'The nave seen from the back of the church'),
                       ('La comunidad reunida, la música y la mesa del altar.', "La comunitat reunida, la música i la taula de l'altar.", 'The community gathered, the music and the altar.'),
-                      ('La promoción de 2021 en nuestra iglesia. Hemos pixelado las caras de los niños.', 'La promoció del 2021 a la nostra església. Hem pixelat les cares dels nens.', "The class of 2021 in our church. The children's faces have been pixelated."),
-                      ('8 fotos', '8 fotos', '8 photos'),
-                      ('7 fotos', '7 fotos', '7 photos'),
                       ('Ver más fotos (10)', 'Veure més fotos (10)', 'See more photos (10)'),
                       ('Nuestra iglesia', 'La nostra església', 'Our church'),
                       ('La misa del domingo', 'La missa del diumenge', 'Sunday Mass'),
@@ -3206,13 +3206,9 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ('Eucaristía con la iglesia llena', "Eucaristia amb l'església plena", 'Mass with a full church'),
                       ('La comunión', 'La comunió', 'Holy Communion'),
                       ('El altar durante la misa', "L'altar durant la missa", 'The altar during Mass'),
-                      ('Comuniones 2021', 'Comunions 2021', 'First Communions 2021'),
                       ('El álbum completo de aquel día, para ver y descargar.', "L'àlbum complet d'aquell dia, per veure'l i descarregar-lo.", 'The full album from that day, to view and download.'),
-                      ('Fotos del coro góspel', 'Fotos del cor gòspel', 'Photos of the gospel choir'),
                       ('Próximo domingo con góspel', 'Proper diumenge amb gòspel', 'Next Sunday with gospel choir'),
                       ('Cada domingo · 11:00 h', 'Cada diumenge · 11:00 h', 'Every Sunday · 11:00'),
-                      ('11 fotos', '11 fotos', '11 photos'),
-                      ('9 fotos', '9 fotos', '9 photos'),
                       ('Pulsa una pila para ver las fotos en grande y pasarlas una a una.', 'Prem una pila per veure les fotos en gran i passar-les una a una.', 'Tap a pile to see the photos full size and browse through them.'),
                       ('Fuentes', 'Fonts', 'Sources'),
                       ('Fuente: ficha de la parroquia en el inventario de campanarios de Cataluña (campaners.com)', "Font: fitxa de la parròquia a l'inventari de campanars de Catalunya (campaners.com)", "Source: the parish's record in the inventory of Catalan bell towers (campaners.com)"),

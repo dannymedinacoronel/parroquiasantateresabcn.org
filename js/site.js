@@ -210,6 +210,26 @@
         }
     });
 
+    /* --- Misa dominical: la pila de fotos va pasando sola (se para al pasar el ratón o fuera de pantalla) --- */
+    document.querySelectorAll("[data-pile-autoplay]").forEach(function (pile) {
+        if (REDUCED || pile.children.length < 2) return;
+        var visible = false, paused = false;
+        function next() {
+            if (!visible || paused || document.hidden) return;
+            var top = pile.firstElementChild;
+            top.classList.add("is-leaving");
+            setTimeout(function () { top.classList.remove("is-leaving"); pile.appendChild(top); }, 650);
+        }
+        setInterval(next, 3800);
+        pile.addEventListener("mouseenter", function () { paused = true; });
+        pile.addEventListener("mouseleave", function () { paused = false; });
+        pile.addEventListener("focusin", function () { paused = true; });
+        pile.addEventListener("focusout", function () { paused = false; });
+        if ("IntersectionObserver" in window) {
+            new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }, { threshold: 0.4 }).observe(pile);
+        } else visible = true;
+    });
+
     /* --- Galería: «Ver más fotos» enseña las fotos que estaban guardadas --- */
     document.querySelectorAll("[data-mosaic-more]").forEach(function (btn) {
         btn.addEventListener("click", function () {
