@@ -1618,34 +1618,40 @@ PAGES["html/barrio.html"] = page(1, "Nuestro barrio", "El Carmel, el barrio de l
             </div>
             <div class="vol-grid assoc-grid">
                 <article class="vol-card assoc-card">
-                    <div class="assoc-head"><div class="icon-circle">{SAC_ICONS["grupo"]}</div><div><h3>Carmel Amunt</h3><span class="assoc-kind">Plan Comunitario del Carmel</span></div></div>
+                    <div class="assoc-logo"><img src="../fotosdefinitivas/web/barrio/carmel-amunt.jpg" alt="Logotipo de Carmel Amunt" loading="lazy"></div>
+                    <div class="assoc-head"><div><h3>Carmel Amunt</h3><span class="assoc-kind">Plan Comunitario del Carmel</span></div></div>
                     <p>Es la red que une a entidades, vecinos y servicios públicos para mejorar el barrio: salud comunitaria, educación, gente mayor, convivencia, fiestas y memoria histórica. Nació en 1999 de la mano de varias entidades del Carmel, entre ellas Càritas.</p>
                     <p class="assoc-contact"><a href="tel:+34934290759">93 429 07 59</a> · <a href="mailto:carmelamunt@carmelamunt.org">carmelamunt@carmelamunt.org</a></p>
                     <a class="link-arrow" href="https://www.carmelamunt.org/" target="_blank" rel="noopener">carmelamunt.org <span>&#8599;</span></a>
                 </article>
                 <article class="vol-card assoc-card">
-                    <div class="assoc-head"><div class="icon-circle">{SAC_ICONS["nota"]}</div><div><h3>40 p'arriba 40 p'abajo</h3><span class="assoc-kind">Asociación cultural y recreativa</span></div></div>
+                    <div class="assoc-logo"><img src="../fotosdefinitivas/web/barrio/40-parriba-40-pabajo.jpg" alt="Logotipo de 40 p'arriba 40 p'abajo" loading="lazy"></div>
+                    <div class="assoc-head"><div><h3>40 p'arriba 40 p'abajo</h3><span class="assoc-kind">Asociación cultural y recreativa</span></div></div>
                     <p>Una asociación intergeneracional que nació de un grupo de vecinos. La llevan personas voluntarias, sobre todo mujeres, y organiza más de 25 talleres semanales de cultura, tradiciones y ocio. Se reúne en el Casal La Barraca, en nuestra misma calle.</p>
                     <p class="assoc-contact"><a href="mailto:40parribapabajo@gmail.com">40parribapabajo@gmail.com</a></p>
                     <a class="link-arrow" href="https://guia.barcelona.cat/es/detall/asociacion-cultural-recreativa-40-p-arriba-40-p-abajo_99400591054.html" target="_blank" rel="noopener">Ficha en la guía de Barcelona <span>&#8599;</span></a>
                 </article>
                 <article class="vol-card assoc-card">
-                    <div class="assoc-head"><div class="icon-circle">{SAC_ICONS["cal"]}</div><div><h3>Coordinadora d'Entitats del Carmel</h3><span class="assoc-kind">Fiestas del barrio</span></div></div>
+                    <div class="assoc-logo is-photo is-poster"><img src="../fotosdefinitivas/web/barrio/festa-major-carmel-2026.jpg" alt="Cartel de la Fiesta Mayor del Carmel 2026" loading="lazy"></div>
+                    <div class="assoc-head"><div><h3>Coordinadora d'Entitats del Carmel</h3><span class="assoc-kind">Fiestas del barrio</span></div></div>
                     <p>Reúne a una quincena de entidades del barrio y organiza la Fiesta Mayor y el Carnaval. También participa en la cabalgata de Reyes y en la fiesta del Carmen.</p>
                     <a class="link-arrow" href="https://elcarmel.org/" target="_blank" rel="noopener">elcarmel.org <span>&#8599;</span></a>
                 </article>
                 <article class="vol-card assoc-card">
-                    <div class="assoc-head"><div class="icon-circle">{SAC_ICONS["tienda"]}</div><div><h3>Carmel Comerç</h3><span class="assoc-kind">Comercio de proximidad</span></div></div>
+                    <div class="assoc-logo"><img src="../fotosdefinitivas/web/barrio/carmel-comerc.jpg" alt="Logotipo de Carmel Comerç" loading="lazy"></div>
+                    <div class="assoc-head"><div><h3>Carmel Comerç</h3><span class="assoc-kind">Comercio de proximidad</span></div></div>
                     <p>La asociación de comerciantes del barrio, fundada en 1996 para defender el pequeño comercio. En 2021 recibió la Medalla de Honor de Barcelona.</p>
                     <a class="link-arrow" href="https://www.botigues3turons.com/" target="_blank" rel="noopener">botigues3turons.com <span>&#8599;</span></a>
                 </article>
                 <article class="vol-card assoc-card">
-                    <div class="assoc-head"><div class="icon-circle">{SAC_ICONS["pin"]}</div><div><h3>Casal de Barri La Barraca</h3><span class="assoc-kind">Punto de encuentro</span></div></div>
+                    <div class="assoc-logo is-photo"><img src="../fotosdefinitivas/web/barrio/casal-la-barraca.jpg" alt="Entrada del Casal de Barri La Barraca" loading="lazy"></div>
+                    <div class="assoc-head"><div><h3>Casal de Barri La Barraca</h3><span class="assoc-kind">Punto de encuentro</span></div></div>
                     <p>El equipamiento municipal donde se reúnen muchas de estas asociaciones, en la calle Llobregós, 107, a dos pasos de la parroquia.</p>
                     <a class="link-arrow" href="https://ajuntament.barcelona.cat/casalsdebarri/es/casal-de-barri-la-barraca-del-carmel/el-casal" target="_blank" rel="noopener">Web del casal <span>&#8599;</span></a>
                 </article>
                 <article class="vol-card assoc-card assoc-home">
-                    <div class="assoc-head"><div class="icon-circle">{SAC_ICONS["manos"]}</div><div><h3>Cáritas parroquial</h3><span class="assoc-kind">Desde nuestra parroquia</span></div></div>
+                    <div class="assoc-logo"><img src="../fotosdefinitivas/web/barrio/logo-parroquia.jpg" alt="Logotipo de la Parroquia Santa Teresa de Jesús" loading="lazy"></div>
+                    <div class="assoc-head"><div><h3>Cáritas parroquial</h3><span class="assoc-kind">Desde nuestra parroquia</span></div></div>
                     <p>Un día al mes repartimos alimentos a varias docenas de familias del barrio. Para eso también hacen falta vecinos que regalen un poco de su tiempo.</p>
                     <a class="link-arrow" href="voluntariado.html">Hazte voluntario <span>&rarr;</span></a>
                 </article>
@@ -3089,6 +3095,12 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ('Logotipo de Carmel Amunt', 'Logotip de Carmel Amunt', 'Carmel Amunt logo'),
+                      ("Logotipo de 40 p'arriba 40 p'abajo", "Logotip de 40 p'arriba 40 p'abajo", "40 p'arriba 40 p'abajo logo"),
+                      ('Cartel de la Fiesta Mayor del Carmel 2026', 'Cartell de la Festa Major del Carmel 2026', 'Poster for the 2026 El Carmel Festa Major'),
+                      ('Logotipo de Carmel Comerç', 'Logotip de Carmel Comerç', 'Carmel Comerç logo'),
+                      ('Entrada del Casal de Barri La Barraca', 'Entrada del Casal de Barri La Barraca', 'Entrance to the Casal de Barri La Barraca'),
+                      ('Logotipo de la Parroquia Santa Teresa de Jesús', 'Logotip de la Parròquia de Santa Teresa de Jesús', 'Santa Teresa de Jesús Parish logo'),
                       ('Desde nuestra parroquia', 'Des de la nostra parròquia', 'From our parish'),
                       ('Un día al mes repartimos alimentos a varias docenas de familias del barrio. Para eso también hacen falta vecinos que regalen un poco de su tiempo.', 'Un dia al mes repartim aliments a unes quantes dotzenes de famílies del barri. Per fer-ho també calen veïns que regalin una mica del seu temps.', 'Once a month we hand out food to several dozen local families. That also takes neighbours willing to give a little of their time.'),
                       ('Hazte voluntario', 'Fes-te voluntari', 'Become a volunteer'),

@@ -3043,3 +3043,10 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
     .barrio-stats > div + div { border-left: 0; border-top: 1px solid var(--border); }
 }
 .assoc-home { background: #fbf5e8; border-color: #ecdcb8; }
+
+/* Nuestro barrio: logos y fotos de las asociaciones en la cabecera de cada tarjeta */
+.assoc-logo { align-self: stretch; display: block; height: 150px; margin: -1.8rem -1.6rem .5rem; padding: 1.25rem 1.75rem; background: var(--white); border-bottom: 1px solid #efe6d3; border-radius: 10px 10px 0 0; overflow: hidden; }
+.assoc-logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.assoc-logo.is-photo { padding: 0; }
+.assoc-logo.is-photo img { object-fit: cover; }
+.assoc-logo.is-poster img { object-position: center 12%; }
