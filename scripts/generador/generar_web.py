@@ -554,7 +554,7 @@ def gospel_feature(depth):
 GALLERY = [
     ("dsc_0541.jpg", "Interior de la iglesia durante la eucaristía", "wide"),
     ("img_5432.jpg", "Música en la eucaristía", "tall"),
-    ("salidas.jpg", "Salida parroquial con Mn. Albert Sols", ""),
+    ("album/salida-2026.jpg", "Salida parroquial", ""),
     ("dsc_0589.jpg", "Bendición de ramos en el Domingo de Ramos", ""),
     ("dsc_0599webog.jpg", "El campanario durante el Domingo de Ramos", "tall"),
     ("fotobodapepi.jpg", "Celebración de un aniversario de boda", ""),
@@ -564,7 +564,7 @@ GALLERY = [
 
 # Galería «Momentos de la comunidad» (Dinámica Pastoral): salidas, celebraciones y vida parroquial
 MOMENTOS = [
-    ("salidas.jpg", "Salida parroquial con Mn. Albert Sols", "wide"),
+    ("album/salida-2026.jpg", "Salida parroquial", "wide"),
     ("fotobodapepi.jpg", "Celebración de un aniversario de boda", "tall"),
     ("dsc_0591.jpg", "Bendición de los ramos en el patio", ""),
     ("img_5495.jpg", "Encuentro en la capilla", ""),
@@ -1227,7 +1227,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", ext
                 <div class="schedule-item" data-days="6">
                     """ + ICON_HEART + """
                     <h3>Confesiones</h3>
-                    <div class="time">18:30 <small>h</small></div>
+                    <div class="time">18:00 <small>h</small></div>
                     <p>Sábados, y antes de cada misa</p>
                 </div>
             </div>
@@ -1301,7 +1301,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", ext
     icon_card("agua", "Bautismo", "Ceremonias bautismales al mediodía en cualquier domingo del año que se pida.", "html/bautismo.html"),
     icon_card("paloma", "Confirmación", "Se celebra cada tres años, con catequesis a partir de los 14 años.", "html/confirmacion.html"),
     icon_card("anillos", "Matrimonio", "Bodas, preparación y aniversarios de plata, oro o diamante: consulta en el despacho los viernes por la tarde.", "html/matrimonio.html"),
-    icon_card("manos", "Perdón", "Los sábados de 18:30 a 19:00 h y siempre un rato antes de cada misa.", "html/perdon.html"),
+    icon_card("manos", "Perdón", "Los sábados de 18:00 a 19:00 h y siempre un rato antes de cada misa.", "html/perdon.html"),
     icon_card("oleo", "Unción de los enfermos", UNCION_TXT, "html/uncion.html"),
 ]) + """
             </div>
@@ -1401,7 +1401,7 @@ FLIP = [
     ("IMG_5471.jpg", "Administración de otros Sacramentos",
      "Mn. Sols administra el sacramento del Perdón de manera fija los sábados.",
      "Administración de otros Sacramentos",
-     "Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:30-19:00 horas y siempre un rato antes de cada misa. Hay ceremonias bautismales al mediodía en cualquier domingo del año que se le pida. Cada tres años se celebra la Confirmación.",
+     "Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:00-19:00 horas y siempre un rato antes de cada misa. Hay ceremonias bautismales al mediodía en cualquier domingo del año que se le pida. Cada tres años se celebra la Confirmación.",
      ("adminsacra.html", "Sacramentos", False)),
     ("caritas.jpg", "Cáritas parroquial y equipo arciprestal de Cáritas",
      "La labor que realiza Cáritas parroquial consiste en repartir alimentos, un día al mes, a varias docenas de familias.",
@@ -2008,7 +2008,7 @@ WEEK_PLAN = [
     ("Miércoles", 3, [("19:00", "Eucaristía", ""), ("19:30", "Adoración al Santísimo", "Media hora con bendición")]),
     ("Jueves", 4, [("19:00", "Eucaristía", "")]),
     ("Viernes", 5, [("19:00", "Eucaristía", ""), ("Tarde", "Despacho parroquial", "Para bautizos, bodas y cualquier consulta")]),
-    ("Sábado", 6, [("18:30", "Sacramento del Perdón", "Hasta las 19:00"), ("19:00", "Eucaristía", "")]),
+    ("Sábado", 6, [("18:00", "Sacramento del Perdón", "Hasta las 19:00"), ("19:00", "Eucaristía", "")]),
     ("Domingo", 0, [("11:00", "Eucaristía con coro góspel", "Salvo en agosto"), ("13:15", "Eucaristía", "")]),
 ]
 
@@ -2116,10 +2116,10 @@ SACRAMENTOS = [
          credit=_t("Grabado de J. A. Riedel según G. M. Crespi · The Met", "Gravat de J. A. Riedel segons G. M. Crespi · The Met", "Engraving by J. A. Riedel after G. M. Crespi · The Met"), motivo="Sacramento del Perdón",
          title=_t("Perdón", "Perdó", "Confession"),
          h2=_t("El sacramento del Perdón", "El sagrament del Perdó", "The sacrament of Confession"),
-         text=_t("Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:30 a 19:00 horas y siempre un rato antes de cada misa.",
-                 "Mn. Sols administra el sagrament del Perdó de manera fixa els dissabtes de 18:30 a 19:00 hores i sempre una estona abans de cada missa.",
-                 "Fr. Sols hears confessions every Saturday from 18:30 to 19:00 and always a while before every Mass."),
-         info=[(_t("Sábados", "Dissabtes", "Saturdays"), _t("De 18:30 a 19:00", "De 18:30 a 19:00", "From 18:30 to 19:00")),
+         text=_t("Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:00 a 19:00 horas y siempre un rato antes de cada misa.",
+                 "Mn. Sols administra el sagrament del Perdó de manera fixa els dissabtes de 18:00 a 19:00 hores i sempre una estona abans de cada missa.",
+                 "Fr. Sols hears confessions every Saturday from 18:00 to 19:00 and always a while before every Mass."),
+         info=[(_t("Sábados", "Dissabtes", "Saturdays"), _t("De 18:00 a 19:00", "De 18:00 a 19:00", "From 18:00 to 19:00")),
                (_t("Cada día", "Cada dia", "Every day"), _t("Un rato antes de cada misa", "Una estona abans de cada missa", "A while before every Mass"))],
          cta=_t("Pedir otro horario", "Demanar un altre horari", "Ask for another time")),
     dict(slug="uncion", icon="oleo", photo="sac-uncion.jpg",
@@ -2225,7 +2225,7 @@ PAGES["html/adminsacra.html"] = page(1, "Sacramentos", "Sacramento del Perdón, 
             </div>
             <div class="icon-grid five">
 """ + "\n".join([
-    icon_card("manos", "Perdón", "Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:30 a 19:00 horas y siempre un rato antes de cada misa.", "perdon.html", "Más información"),
+    icon_card("manos", "Perdón", "Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:00 a 19:00 horas y siempre un rato antes de cada misa.", "perdon.html", "Más información"),
     icon_card("agua", "Bautismo", "Hay ceremonias bautismales al mediodía en cualquier domingo del año que se pida.", "bautismo.html", "Más información"),
     icon_card("paloma", "Confirmación", "Cada tres años se celebra la Confirmación. La catequesis prepara a los adolescentes a partir de los 14 años.", "confirmacion.html", "Más información"),
     icon_card("anillos", "Matrimonio", "Bodas, su preparación y aniversarios de plata, oro o diamante: consulta en el despacho parroquial los viernes por la tarde.", "matrimonio.html", "Más información"),
@@ -3096,6 +3096,7 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ('Salida parroquial', 'Sortida parroquial', 'Parish outing'),
                       ('Últimas comuniones', 'Darreres comunions', 'Recent First Communions'),
                       ('Últimas comuniones', 'Darreres comunions', 'Recent First Communions'),
                       ('Semana Santa', 'Setmana Santa', 'Holy Week'),
