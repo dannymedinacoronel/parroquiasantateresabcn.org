@@ -1003,7 +1003,8 @@ def location_block(big=False, sid="ubicacion"):
 # Cada una se descarga justo antes de mostrarse; la primera, enseguida.
 # Una frase de Santa Teresa con cada foto de la portada (su poema «Nada te turbe»)
 HERO_SLIDES = [
-    "Nada te turbe, nada te espante",
+    "Nada te turbe",
+    "Nada te espante",
     "Todo se pasa",
     "Dios no se muda",
     "La paciencia todo lo alcanza",
@@ -3096,6 +3097,8 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ("Nada te turbe", "Res no et torbi", "Let nothing disturb you"),
+                      ("Nada te espante", "Res no t'espanti", "Let nothing frighten you"),
                       ('Salida parroquial', 'Sortida parroquial', 'Parish outing'),
                       ('Últimas comuniones', 'Darreres comunions', 'Recent First Communions'),
                       ('Últimas comuniones', 'Darreres comunions', 'Recent First Communions'),
