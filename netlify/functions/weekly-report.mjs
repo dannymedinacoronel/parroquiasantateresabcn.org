@@ -6,7 +6,7 @@ import { getStore } from "@netlify/blobs";
 import { STORE, madrid } from "./hit.mjs";
 import { rollup, emptyAgg, merge } from "./visit-stats.mjs";
 
-const TO = "parroquisantateresabarcelona@gmail.com";
+const TO = "c48dd9970dc9c347a64a70397767aab7";   // alias de FormSubmit de parroquisantateresabarcelona@gmail.com (ya activado)
 const SITE = "https://parroquiasantateresabcn.netlify.app";
 const DEVS = { movil: "móvil", tablet: "tableta", ordenador: "ordenador" };
 
