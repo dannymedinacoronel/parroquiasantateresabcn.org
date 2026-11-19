@@ -16,6 +16,8 @@ def _protect(html, rel):
         return f"\x00{len(blocks) - 1}\x00"
     html = SKIP_BLOCKS.sub(keep, html)
     html = re.sub(r"<time\b[^>]*>.*?</time>", keep, html, flags=re.S)
+    # textos escritos en el panel (agenda): se muestran tal cual en los tres idiomas
+    html = re.sub(r"<!--notr-->.*?<!--/notr-->", keep, html, flags=re.S)
     return html, blocks
 
 

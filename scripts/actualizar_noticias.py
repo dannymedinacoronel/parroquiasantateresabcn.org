@@ -1,7 +1,8 @@
 """Descarga las últimas noticias de Vatican News y del Arzobispado de Barcelona
 y las guarda en data/noticias.js para que la web las muestre.
 
-Lo ejecuta cada día GitHub Actions (.github/workflows/noticias.yml).
+Ya no hace falta: la web pide las noticias a netlify/functions/noticias.mjs, que hace lo mismo
+en el momento. Se conserva para generar data/noticias.js a mano si alguna vez hiciera falta.
 Solo usa la biblioteca estándar de Python. Uso manual:  python scripts/actualizar_noticias.py
 """
 import html

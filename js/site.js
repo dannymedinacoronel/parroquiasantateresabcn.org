@@ -320,6 +320,46 @@
         if (withTime) { opts.hour = "2-digit"; opts.minute = "2-digit"; }
         return dt.toLocaleDateString(LOCALE, opts);
     }
+    /* --- Agenda: se esconden los actos ya pasados y las fechas salen en el idioma de la página --- */
+    function cap1(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
+    document.querySelectorAll("[data-agenda]").forEach(function (box) {
+        var now = new Date(), limit = parseInt(box.getAttribute("data-limit") || "0", 10), shown = 0;
+        var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        box.querySelectorAll(".ag-item").forEach(function (li) {
+            var st = new Date(li.getAttribute("data-start")), en = new Date(li.getAttribute("data-end"));
+            if (isNaN(st) || en < now || (limit && shown >= limit)) { li.parentNode.removeChild(li); return; }
+            shown++;
+            li.querySelector(".ag-wd").textContent = st.toLocaleDateString(LOCALE, { weekday: "long" });
+            li.querySelector(".ag-mon").textContent = st.toLocaleDateString(LOCALE, { month: "short" }).replace(".", "");
+            var days = Math.round((new Date(st.getFullYear(), st.getMonth(), st.getDate()) - today) / 864e5);
+            var when = li.querySelector("[data-ag-when]");
+            if (when && days <= 1) { when.textContent = cap1(T(days <= 0 ? "today" : "tomorrow")); li.classList.add("is-soon"); }
+        });
+        box.querySelectorAll("time[data-fmt='month']").forEach(function (t) {
+            var d = new Date(t.getAttribute("datetime") + "-01T12:00:00");
+            if (!isNaN(d)) t.textContent = cap1(d.toLocaleDateString(LOCALE, { month: "long", year: "numeric" }));
+        });
+        function tidy() {
+            box.querySelectorAll(".ag-month").forEach(function (m) {
+                m.hidden = !Array.prototype.some.call(m.querySelectorAll(".ag-item"), function (li) { return !li.hidden; });
+            });
+        }
+        tidy();
+        var empty = box.querySelector("[data-agenda-empty]");
+        if (!shown) {
+            if (empty) empty.hidden = false; else box.hidden = true;
+            var filters = box.querySelector(".ag-filters"); if (filters) filters.hidden = true;
+        }
+        box.querySelectorAll("[data-ag-filter]").forEach(function (chip) {
+            chip.addEventListener("click", function () {
+                var cat = chip.getAttribute("data-ag-filter");
+                box.querySelectorAll("[data-ag-filter]").forEach(function (c) { c.classList.toggle("is-on", c === chip); c.setAttribute("aria-pressed", c === chip); });
+                box.querySelectorAll(".ag-item").forEach(function (li) { li.hidden = !!cat && li.getAttribute("data-cat") !== cat; });
+                tidy();
+            });
+        });
+    });
+
     var data = window.NOTICIAS;
     var CROSS_SVG = '<svg viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round">' +
         '<path d="M13 1.5v31M4.5 10.5h17" stroke-width="2"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.3"/></svg>';

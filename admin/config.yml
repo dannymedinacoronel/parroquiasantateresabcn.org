@@ -187,6 +187,68 @@ collections:
         default: true
         hint: "Desactívala para guardarla como borrador sin que salga en la web."
 
+  # Agenda de la parroquia: sale en Actualidad › Agenda (html/agenda.html) y los tres próximos actos en la portada
+  - name: agenda
+    label: Agenda de la parroquia
+    label_singular: acto
+    description: >
+      Celebraciones y actividades con fecha: Adviento, Navidad, Semana Santa, fiestas, salidas…
+      Añade un acto y pulsa «Publicar»; en unos minutos sale en la agenda de la web y, si es de los
+      tres próximos, también en la portada. Los actos ya pasados desaparecen solos de la web.
+      Las eucaristías de cada semana no hace falta ponerlas: ya salen en Eucaristías y calendario.
+    folder: contenido/agenda
+    extension: json
+    format: json
+    create: true
+    delete: true
+    slug: "{{fecha}}-{{titulo}}"
+    identifier_field: titulo
+    summary: "{{fecha}} · {{titulo}}"
+    preview_path: "html/agenda.html"
+    sortable_fields: ["fecha", "titulo"]
+    media_folder: /fotosdefinitivas/web/agenda
+    public_folder: /fotosdefinitivas/web/agenda
+    view_filters:
+      - { label: "Publicados", field: publicado, pattern: true }
+      - { label: "Borradores", field: publicado, pattern: false }
+    fields:
+      - { label: Título, name: titulo, widget: string, hint: "Por ejemplo: Misa del Gallo, Vía Crucis, Salida a Montserrat…" }
+      - label: Día y hora
+        name: fecha
+        widget: datetime
+        format: "YYYY-MM-DDTHH:mm"
+        date_format: "DD/MM/YYYY"
+        time_format: "HH:mm"
+        picker_utc: false
+      - label: Termina (opcional)
+        name: fin
+        widget: datetime
+        format: "YYYY-MM-DDTHH:mm"
+        date_format: "DD/MM/YYYY"
+        time_format: "HH:mm"
+        picker_utc: false
+        required: false
+        hint: "Si lo dejas vacío, se cuenta hora y media. Para una salida de varios días, pon el último día."
+      - { label: Todo el día, name: todo_el_dia, widget: boolean, default: false, required: false, hint: "Actívalo si no tiene una hora concreta (por ejemplo, una salida de todo el día)." }
+      - label: Tiempo o tipo
+        name: tiempo
+        widget: select
+        options: ["Adviento", "Navidad", "Cuaresma", "Semana Santa", "Pascua", "Fiestas", "Salidas", "Catequesis", "Cáritas", "Celebraciones", "Otros"]
+        default: "Celebraciones"
+      - { label: Lugar, name: lugar, widget: string, required: false, default: "Parroquia Santa Teresa de Jesús" }
+      - label: Descripción
+        name: descripcion
+        widget: text
+        required: false
+        hint: "Dos o tres frases: qué es, para quién, si hay que apuntarse…"
+      - label: Foto o cartel
+        name: foto
+        widget: image
+        required: false
+        hint: "Opcional. Si sale gente reconocible, asegúrate de tener su permiso (y el de los padres si son menores)."
+      - { label: Enlace con más información, name: enlace, widget: string, required: false, hint: "Opcional: un cartel en PDF, un formulario… (empieza por https://)." }
+      - { label: Publicado, name: publicado, widget: boolean, default: true, hint: "Desactívalo para guardarlo como borrador." }
+
   # ---------------------------------------------------------------------------
   # REVISTA DIGITAL
   # Cada número es una entrada; cada artículo, otra (así varias personas pueden escribir a la

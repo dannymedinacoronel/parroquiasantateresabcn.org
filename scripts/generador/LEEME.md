@@ -7,7 +7,7 @@ se generan con este script. Para cambiar un texto o una página, edita `generar_
     python scripts/generador/generar_web.py .
 
 El script avisa de los textos que falten por traducir.
-Las noticias se actualizan solas con `scripts/actualizar_noticias.py` (GitHub Actions, cada día).
+Las noticias del Vaticano y del Arzobispado las sirve al momento `netlify/functions/noticias.mjs` (con caché de 3 horas; sin GitHub Actions).
 
 ## Avisos al entrar en la web
 
@@ -25,7 +25,7 @@ reflexión nueva, el generador avisa de las frases que faltan por traducir.
 
 Las homilías y reflexiones se publican desde `https://parroquiasantateresabcn.netlify.app/admin/`
 (Decap CMS). Cada una se guarda en `contenido/homilias/*.json` y las personas que escriben en
-`contenido/autores.json`. GitHub ejecuta este generador en cada cambio (`.github/workflows/generar-web.yml`),
+`contenido/autores.json`. Netlify ejecuta este generador en cada cambio (comando de `netlify.toml`),
 así que la reflexión aparece sola en la portada (la más reciente), en el menú, en el archivo
 y con su página propia en `html/reflexiones/`.
 

@@ -27,7 +27,7 @@
     <link rel="manifest" href="../site.webmanifest">
 
     <link rel="stylesheet" href="../css/fonts.css?v=818b49f2ed">
-    <link rel="stylesheet" href="../css/site.css?v=d48774198a">
+    <link rel="stylesheet" href="../css/site.css?v=2887a78a7d">
     <meta name="theme-color" content="#bfa065">
     <script>document.documentElement.classList.add("js");</script>
     <script type="speculationrules">{"prerender":[{"where":{"selector_matches":"a[hreflang]"},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}},{"not":{"selector_matches":"a[hreflang]"}}]},"eagerness":"moderate"}]}</script>
@@ -124,6 +124,7 @@
                 <ul class="sub-menu cols" id="submenu-3">
                     <li class="sub-heading parish"><a href="html/noticias-parroquia.html" class="sub-heading-link"><span>Parròquia</span><small>Veure-ho tot</small></a></li>
                     <li class="parish-item"><a href="html/noticias-parroquia.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Notícies de la parròquia</span></a></li>
+                    <li class="parish-item"><a href="html/agenda.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Agenda de la parròquia</span></a></li>
                     <li class="parish-item"><a href="html/reflexiones/2026-10-20-reflexión-de-el-evangelio.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Última reflexió</span></a></li>
                     <li class="parish-item"><a href="html/humiliasmenu.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Totes les reflexions</span></a></li>
                     <li class="parish-item"><a href="html/revista.html" class="sub-link parish-link"><svg class="parish-ico" viewBox="0 0 26 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M13 1.5v31M4.5 10.5h17" stroke-width="2.4"/><circle cx="13" cy="10.5" r="3.4" stroke-width="1.6"/></svg><span>Revista digital</span></a></li>
@@ -393,6 +394,29 @@
             </div>
         </section>
 
+
+        <section id="agenda" class="ag-home" data-agenda data-limit="3">
+            <div class="section-head">
+                <span class="subtitulo">Agenda</span>
+                <h2>Propers actes</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            <ol class="ag-list ag-cards">
+                    <li class="ag-item" data-start="2026-11-29T11:00" data-end="2026-11-29T12:30" data-cat="Adviento">
+                        <time class="ag-date" datetime="2026-11-29"><span class="ag-wd">domingo</span><span class="ag-day">29</span><span class="ag-mon">nov</span></time>
+                        <div class="ag-body">
+                            <span class="ag-cat">Advent</span><span class="ag-when" data-ag-when></span>
+                            <!--notr--><h3>Primer domingo de Adviento</h3><!--/notr-->
+                            <p class="ag-meta"><span><time class="ag-hour">11:00 h</time></span><!--notr--><span>Parroquia Santa Teresa de Jesús</span><!--/notr--></p>
+                            <p class="ag-actions"><a class="link-arrow ag-cal" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Primer%20domingo%20de%20Adviento&amp;dates=20261129T110000/20261129T123000&amp;ctz=Europe/Madrid&amp;location=Parroquia%20Santa%20Teresa%20de%20Jes%C3%BAs%2C%20Carrer%20del%20Llobreg%C3%B3s%2C%20132%2C%20Barcelona&amp;details=Empezamos%20el%20Adviento%2C%20las%20cuatro%20semanas%20en%20que%20nos%20preparamos%20para%20la%20Navidad.%20Eucarist%C3%ADas%20a%20las%2011%3A00%2C%20con%20el%20coro%20g%C3%B3spel%2C%20y%20a%20las%2013%3A15." target="_blank" rel="noopener">Afegir al meu calendari <span>+</span></a></p>
+                        </div>
+                    </li>
+            </ol>
+            <div class="btn-group center" style="margin-top:2.5rem;">
+                <a href="html/agenda.html" class="btn">Veure tota l'agenda</a>
+            </div>
+        </section>
+
         <section id="galeria" class="section-warm">
             <div class="section-head">
                 <span class="subtitulo">Galeria</span>
@@ -626,7 +650,7 @@
         </div>
     </template>
     <script src="../data/avisos.js?v=d53051e813"></script>
-    <script src="../js/site.js?v=e29bb79b27"></script>
+    <script src="../js/site.js?v=45cadfd0a3"></script>
 
 </body>
 </html>

@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Parroquia Santa Teresa de Jesus//Agenda//ES
+CALSCALE:GREGORIAN
+X-WR-CALNAME:Agenda · Parroquia Santa Teresa de Jesús
+X-WR-TIMEZONE:Europe/Madrid
+BEGIN:VEVENT
+UID:2026-11-29-primer-domingo-de-adviento@parroquiasantateresabcn
+DTSTAMP:20261119T000255Z
+DTSTART;TZID=Europe/Madrid:20261129T110000
+DTEND;TZID=Europe/Madrid:20261129T123000
+SUMMARY:Primer domingo de Adviento
+LOCATION:Parroquia Santa Teresa de Jesús\, Carrer del Llobregós\, 132\, 08032 Barcelona
+DESCRIPTION:Empezamos el Adviento\, las cuatro semanas en que nos preparamos para la Navidad. Eucaristías a las 11:00\, con el coro góspel\, y a las 13:15.
+END:VEVENT
+END:VCALENDAR

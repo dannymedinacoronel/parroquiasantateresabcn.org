@@ -71,9 +71,10 @@ NAV = [
         ("Voluntariado", "html/voluntariado.html", "manos"),
         ("¶", "¿Quieres colaborar?", "html/voluntariado.html", "Únete a un grupo de la parroquia"),
     ]),
-    ("noticias|familia", "Actualidad", "html/noticias.html", [
+    ("noticias|familia|agenda", "Actualidad", "html/noticias.html", [
         ("§parish", "Parroquia", "html/noticias-parroquia.html"),
         ("+Noticias de la parroquia", "html/noticias-parroquia.html"),
+        ("+Agenda de la parroquia", "html/agenda.html"),
         ("+Última reflexión", "__ULTIMA__"),
         ("+Todas las reflexiones", "html/humiliasmenu.html"),
     ] + ([("+Revista digital", "html/revista.html")] if REVISTA_ON or REV_ISSUES else []) + [
@@ -1183,6 +1184,171 @@ def feature(photo, eyebrow, title, text, link):
                 </a>"""
 
 
+# ---------------------------------------------------------------- AGENDA DE LA PARROQUIA
+# Se rellena desde el panel (colección «Agenda de la parroquia», carpeta contenido/agenda).
+# La página html/agenda.html lista todos los actos; la portada enseña los tres siguientes.
+# Los actos ya pasados los esconde el JavaScript (js/site.js) según la fecha, así la agenda
+# siempre está al día aunque la web no se vuelva a publicar. Los textos del panel salen igual en
+# los tres idiomas (van entre <!--notr--> para que el traductor no los toque).
+import glob as _glob_ag
+import datetime as _dt
+from urllib.parse import quote as _q
+
+AG_CATS = ["Adviento", "Navidad", "Cuaresma", "Semana Santa", "Pascua", "Fiestas", "Salidas", "Catequesis", "Cáritas", "Celebraciones", "Otros"]
+AG_MONTHS = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
+AG_DAYS = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
+_attr = lambda t: _html.escape(t or "", quote=True)
+
+
+def _ag_time(v):
+    v = (v or "").strip().replace(" ", "T")
+    for f in ("%Y-%m-%dT%H:%M", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d"):
+        try:
+            return _dt.datetime.strptime(v[:len(_dt.datetime(2000, 1, 1).strftime(f))], f)
+        except ValueError:
+            pass
+    return None
+
+
+def _load_agenda():
+    out = []
+    for path in sorted(_glob_ag.glob(os.path.join(ROOT, "contenido", "agenda", "*.json"))):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                e = _json.load(fh) or {}
+        except ValueError as err:
+            print("AVISO: no se pudo leer", os.path.basename(path), err)
+            continue
+        start = _ag_time(e.get("fecha"))
+        if not (e.get("titulo") or "").strip() or e.get("publicado") is False or not start:
+            continue
+        allday = bool(e.get("todo_el_dia"))
+        end = _ag_time(e.get("fin"))
+        if allday:
+            start = start.replace(hour=0, minute=0)
+            end = (end or start).replace(hour=23, minute=59)
+        elif not end or end <= start:
+            end = start + _dt.timedelta(hours=1, minutes=30)
+        e.update(slug=os.path.splitext(os.path.basename(path))[0], start=start, end=end, allday=allday,
+                 cat=e.get("tiempo") if e.get("tiempo") in AG_CATS else "Otros",
+                 lugar=(e.get("lugar") or "").strip() or "Parroquia Santa Teresa de Jesús",
+                 foto=REV.media(ROOT, e.get("foto")), enlace=(e.get("enlace") or "").strip())
+        out.append(e)
+    return sorted(out, key=lambda e: e["start"])
+
+
+AGENDA = _load_agenda()
+
+
+def _gcal(e):
+    f = "%Y%m%d" if e["allday"] else "%Y%m%dT%H%M%S"
+    end = e["end"] + _dt.timedelta(days=1) if e["allday"] else e["end"]
+    return ("https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + _q(e["titulo"]) +
+            "&dates=" + e["start"].strftime(f) + "/" + end.strftime(f) + "&ctz=Europe/Madrid&location=" +
+            _q(e["lugar"] + ", Carrer del Llobregós, 132, Barcelona") + "&details=" + _q((e.get("descripcion") or "")[:600]))
+
+
+def agenda_item(e, depth, card=False):
+    st = e["start"]
+    hours = st.strftime("%H:%M") + ("–" + e["end"].strftime("%H:%M") if e.get("fin") and e["end"].date() == st.date() else "") + " h"
+    when = "<span>Todo el día</span>" if e["allday"] else f'<span><time class="ag-hour">{hours}</time></span>'
+
+    desc = esc(e.get("descripcion") or "").strip().replace("\n", "<br>")
+    desc_html = ('\n                            <!--notr--><p class="ag-desc">' + desc + '</p><!--/notr-->') if desc and not card else ""
+    img = ""
+    if e["foto"] and not card:
+        img = f'\n                        <span class="ag-img">{rev_img(e["foto"], depth, 480, e["titulo"])}</span>'
+    more = f'<a class="link-arrow" href="{_attr(e["enlace"])}" target="_blank" rel="noopener">Más información <span>&#8599;</span></a>' if e["enlace"] else ""
+    cal = f'<a class="link-arrow ag-cal" href="{_attr(_gcal(e))}" target="_blank" rel="noopener">Añadir a mi calendario <span>+</span></a>'
+    return f"""
+                    <li class="ag-item" data-start="{st.strftime('%Y-%m-%dT%H:%M')}" data-end="{e['end'].strftime('%Y-%m-%dT%H:%M')}" data-cat="{_attr(e['cat'])}">
+                        <time class="ag-date" datetime="{st.strftime('%Y-%m-%d')}"><span class="ag-wd">{AG_DAYS[st.weekday()]}</span><span class="ag-day">{st.day}</span><span class="ag-mon">{AG_MONTHS[st.month - 1][:3]}</span></time>
+                        <div class="ag-body">
+                            <span class="ag-cat">{e['cat']}</span><span class="ag-when" data-ag-when></span>
+                            <!--notr--><h3>{esc(e['titulo'])}</h3><!--/notr-->
+                            <p class="ag-meta">{when}<!--notr--><span>{esc(e['lugar'])}</span><!--/notr--></p>{desc_html}
+                            <p class="ag-actions">{cal}{more}</p>
+                        </div>{img}
+                    </li>"""
+
+
+def agenda_home():
+    if not AGENDA:
+        return ""
+    items = "".join(agenda_item(e, 0, card=True) for e in AGENDA)
+    return f"""
+        <section id="agenda" class="ag-home" data-agenda data-limit="3">
+            <div class="section-head">
+                <span class="subtitulo">Agenda</span>
+                <h2>Próximos actos</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            <ol class="ag-list ag-cards">{items}
+            </ol>
+            <div class="btn-group center" style="margin-top:2.5rem;">
+                <a href="html/agenda.html" class="btn">Ver toda la agenda</a>
+            </div>
+        </section>
+"""
+
+
+def agenda_page():
+    groups, cur = [], None
+    for e in AGENDA:
+        key = (e["start"].year, e["start"].month)
+        if key != cur:
+            groups.append((key, [])); cur = key
+        groups[-1][1].append(e)
+    months = "".join(f"""
+            <div class="ag-month">
+                <h3 class="ag-month-title"><time datetime="{y}-{m:02d}" data-fmt="month">{AG_MONTHS[m - 1].capitalize()} de {y}</time></h3>
+                <ol class="ag-list">{"".join(agenda_item(e, 1) for e in es)}
+                </ol>
+            </div>""" for (y, m), es in groups)
+    cats = sorted({e["cat"] for e in AGENDA}, key=AG_CATS.index)
+    chips = "".join(f'<button type="button" class="ag-chip" data-ag-filter="{_attr(c)}">{c}</button>' for c in cats)
+    filters = f"""
+            <div class="ag-filters" role="group" aria-label="Filtrar la agenda"><button type="button" class="ag-chip is-on" data-ag-filter="">Todos</button>{chips}</div>""" if len(cats) > 1 else ""
+    body = page_hero("Actualidad", "Agenda de la parroquia", "web/album/dsc_0633.jpg", None, "center 40%") + f"""
+        <section data-agenda>
+            <div class="section-head">
+                <span class="subtitulo">Próximos actos</span>
+                <h2>Lo que viene en Santa Teresa</h2>
+                <hr class="section-divider" style="margin-bottom:1.25rem;">
+                <p>Adviento, Navidad, Semana Santa, fiestas, salidas… Aquí tienes las celebraciones y actividades de la parroquia. Las eucaristías de cada semana están en <a href="misas.html">Eucaristías y calendario</a>.</p>
+            </div>{filters}
+            <div class="ag-months">{months}
+            </div>
+            <p class="ag-empty lead" data-agenda-empty{"" if not AGENDA else " hidden"}>Muy pronto publicaremos aquí los próximos actos de la parroquia.</p>
+            <div class="btn-group center" style="margin-top:2.5rem;">
+                <a class="btn" href="../data/agenda.ics" download>Suscribirme a la agenda</a>
+                <a class="btn" href="misas.html">Horario de eucaristías</a>
+            </div>
+        </section>
+"""
+    return page(1, "Agenda de la parroquia", "Próximos actos de la Parroquia Santa Teresa de Jesús (El Carmel, Barcelona): Adviento, Navidad, Semana Santa, fiestas y salidas.", body=body, active="agenda")
+
+
+def agenda_ics():
+    stamp = _dt.datetime.now(_dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    ev = []
+    for e in AGENDA:
+        f = (lambda d: "VALUE=DATE:" + d.strftime("%Y%m%d")) if e["allday"] else (lambda d: "TZID=Europe/Madrid:" + d.strftime("%Y%m%dT%H%M%S"))
+        end = e["end"] + _dt.timedelta(days=1) if e["allday"] else e["end"]
+        clean = lambda t: (t or "").replace("\\", "\\\\").replace(",", "\\,").replace(";", "\\;").replace("\n", "\\n")
+        ev.append("\r\n".join([
+            "BEGIN:VEVENT", f"UID:{e['slug']}@parroquiasantateresabcn", f"DTSTAMP:{stamp}",
+            f"DTSTART;{f(e['start'])}", f"DTEND;{f(end)}", "SUMMARY:" + clean(e["titulo"]),
+            "LOCATION:" + clean(e["lugar"] + ", Carrer del Llobregós, 132, 08032 Barcelona"),
+            "DESCRIPTION:" + clean(e.get("descripcion") or ""), "END:VEVENT"]))
+    return "\r\n".join(["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Parroquia Santa Teresa de Jesus//Agenda//ES",
+                        "CALSCALE:GREGORIAN", "X-WR-CALNAME:Agenda · Parroquia Santa Teresa de Jesús", "X-WR-TIMEZONE:Europe/Madrid"] + ev + ["END:VCALENDAR", ""])
+
+
+os.makedirs(os.path.join(ROOT, "data"), exist_ok=True)
+with open(os.path.join(ROOT, "data", "agenda.ics"), "w", encoding="utf-8", newline="") as _fh:
+    _fh.write(agenda_ics())
+
 PAGES["index.html"] = page(0, "", "Parroquia Santa Teresa de Jesús, en el barrio del Carmel (Barcelona). Horarios de eucaristías, actividades pastorales y contacto.",
 full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", extra_head=INDEX_HEAD, body="""        <section class="hero hero-slider">
             <div class="hero-bg hero-slides" aria-hidden="true">""" + "".join(
@@ -1308,6 +1474,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", ext
             </div>
         </section>
 
+""" + agenda_home() + """
         <section id="galeria" class="section-warm">
             <div class="section-head">
                 <span class="subtitulo">Galería</span>
@@ -2267,7 +2434,7 @@ PAGES["html/catequesis.html"] = page(1, "Catequesis", "Inscripciones a la catequ
             <div class="icon-grid two">
 """ + "\n".join([
     icon_card("caliz", "Primera comunión", "Preparación de los niños para recibir por primera vez el sacramento de la eucaristía.", "comuniones.html", "Información e inscripción"),
-    icon_card("paloma", "Confirmación", "Para adolescentes a partir de los 14 años. Cada tres años se celebra la Confirmación en la parroquia.", "confirmacion.html", "Más información"),
+    icon_card("paloma", "Confirmación", "Para adolescentes a partir de los 14 años. Cada tres años se celebra la Confirmación en la parroquia.", "#inscripcion-confirmacion", "Información e inscripción"),
 ]) + """
             </div>
         </section>
@@ -2282,6 +2449,71 @@ PAGES["html/catequesis.html"] = page(1, "Catequesis", "Inscripciones a la catequ
                     <span class="btn btn-solid">Inscribirse a la Primera Comunión</span>
                 </span>
             </a>
+        </section>
+
+        <section class="section-warm" id="inscripcion-confirmacion">
+            <div class="section-head" style="margin-bottom:2rem;">
+                <span class="subtitulo">Inscripciones</span>
+                <h2>Inscripción a la Confirmación</h2>
+                <hr class="section-divider" style="margin-bottom:1rem;">
+                <p>Para chicos y chicas a partir de 14 años y para adultos. La inscripción llega directamente por correo a la parroquia. Los campos con * son obligatorios.</p>
+            </div>
+            <form class="mail-form form-communion" action=\"""" + FORM_MAIL + """\" method="POST" data-form-id="confirmacion" data-subject="Inscripción a la Confirmación · {Nombre} {Apellidos}" data-intro="Hola, soy {Nombre} {Apellidos}. Me gustaría inscribirme en la catequesis de Confirmación. Aquí tenéis mis datos. Podéis responder a este correo[ o llamarme al {Teléfono}]." data-mail-form=\"""" + FORM_MAIL.replace("formsubmit.co/", "formsubmit.co/ajax/") + """\">
+                <div class="form-head">
+                    <span class="form-head-icon">""" + SAC_ICONS["paloma"] + """</span>
+                    <div>
+                        <span class="form-head-kicker">Formulario de inscripción</span>
+                        <strong>Confirmación</strong>
+                        <small>Para prepararse a recibir el sacramento de la Confirmación</small>
+                    </div>
+                </div>
+                <input type="hidden" name="Formulario" value="Inscripción a la Confirmación">
+                <input type="hidden" name="_subject" value="Nueva inscripción a la Confirmación">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <fieldset>
+                    <legend>Datos de quien se inscribe</legend>
+                    <div class="form-grid">
+                        <label>Nombre *<input type="text" name="Nombre" required autocomplete="given-name"></label>
+                        <label>Apellidos *<input type="text" name="Apellidos" required autocomplete="family-name"></label>
+                        <label>Fecha de nacimiento *<input type="date" name="Fecha de nacimiento" required></label>
+                    </div>
+                    <div class="form-grid">
+                        <label>Teléfono *<input type="tel" name="Teléfono" required autocomplete="tel" inputmode="tel"></label>
+                        <label>Correo electrónico *<input type="email" name="Correo electrónico" required autocomplete="email"></label>
+                    </div>
+                    <fieldset class="motive-picker compact">
+                        <legend class="picker-label">¿Está bautizado o bautizada? *</legend>
+                        <div class="chips">
+                            <label class="chip"><input type="radio" name="Bautizado/a" value="Sí" required><span>Sí</span></label>
+                            <label class="chip"><input type="radio" name="Bautizado/a" value="No"><span>No</span></label>
+                            <label class="chip"><input type="radio" name="Bautizado/a" value="No lo sé"><span>No lo sé</span></label>
+                        </div>
+                    </fieldset>
+                    <fieldset class="motive-picker compact">
+                        <legend class="picker-label">¿Ha hecho la Primera Comunión?</legend>
+                        <div class="chips">
+                            <label class="chip"><input type="radio" name="Primera Comunión" value="Sí"><span>Sí</span></label>
+                            <label class="chip"><input type="radio" name="Primera Comunión" value="No"><span>No</span></label>
+                        </div>
+                    </fieldset>
+                    <label>Parroquia donde fue bautizado/a<input type="text" name="Parroquia de bautismo" placeholder="Si lo sabéis"></label>
+                </fieldset>
+                <fieldset>
+                    <legend>Si eres menor de edad</legend>
+                    <div class="form-grid">
+                        <label>Nombre del padre, madre o tutor<input type="text" name="Padre, madre o tutor" autocomplete="off"></label>
+                        <label>Teléfono del padre, madre o tutor<input type="tel" name="Teléfono del tutor" autocomplete="off" inputmode="tel"></label>
+                    </div>
+                    <label>Observaciones<textarea name="Observaciones" rows="4" placeholder="Horarios que te van mejor, dudas…"></textarea></label>
+                </fieldset>
+                <label class="consent"><input type="checkbox" name="Consentimiento" value="Acepto la política de privacidad (y, si soy menor de 14 años, la inscripción la hace mi padre, madre o tutor)" required>
+                    <span>Acepto la <a href="privacidad.html" target="_blank">política de privacidad</a>. Si quien se inscribe es menor de 14 años, este formulario debe rellenarlo su padre, madre o tutor. *</span></label>
+                <button type="submit" class="btn btn-solid">Enviar inscripción</button>
+                <p class="form-status" role="status" aria-live="polite"></p>
+            </form>
+            <p class="form-alt">¿Prefieres hacerlo por teléfono? <a href=\"tel:""" + TEL + """\" class="tel-link"><b>""" + TEL_TXT + """</b></a></p>
         </section>
 """)
 
@@ -2604,6 +2836,7 @@ def news_page(i, n):
 
 
 PAGES["html/noticias-parroquia.html"] = news_list_page()
+PAGES["html/agenda.html"] = agenda_page()
 for _i, _n in enumerate(NEWS):
     PAGES[_n["url"]] = news_page(_i, _n)
 
@@ -3097,6 +3330,44 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ('. Si quien se inscribe es menor de 14 años, este formulario debe rellenarlo su padre, madre o tutor. *', ". Si qui s'inscriu és menor de 14 anys, aquest formulari l'ha d'omplir el seu pare, mare o tutor. *", '. If the person registering is under 14, this form must be filled in by a parent or guardian. *'),
+                      ('Agenda de la parroquia', 'Agenda de la parròquia', 'Parish calendar'),
+                      ('Adviento', 'Advent', 'Advent'),
+                      ('Navidad', 'Nadal', 'Christmas'),
+                      ('Cuaresma', 'Quaresma', 'Lent'),
+                      ('Pascua', 'Pasqua', 'Easter'),
+                      ('Fiestas', 'Festes', 'Celebrations'),
+                      ('Salidas', 'Sortides', 'Outings'),
+                      ('Otros', 'Altres', 'Other'),
+                      ('Agenda de la parroquia | Parroquia Santa Teresa de Jesús', 'Agenda de la parròquia | Parròquia de Santa Teresa de Jesús', 'Parish calendar | Santa Teresa de Jesús Parish'),
+                      ('Próximos actos de la Parroquia Santa Teresa de Jesús (El Carmel, Barcelona): Adviento, Navidad, Semana Santa, fiestas y salidas.', 'Propers actes de la Parròquia de Santa Teresa de Jesús (el Carmel, Barcelona): Advent, Nadal, Setmana Santa, festes i sortides.', 'Upcoming events at Santa Teresa de Jesús Parish (El Carmel, Barcelona): Advent, Christmas, Holy Week, celebrations and outings.'),
+                      ('Agenda', 'Agenda', 'Calendar'),
+                      ('Próximos actos', 'Propers actes', 'Coming up'),
+                      ('Ver toda la agenda', "Veure tota l'agenda", 'See the full calendar'),
+                      ('Lo que viene en Santa Teresa', 'El que ve a Santa Teresa', "What's coming up at Santa Teresa"),
+                      ('Adviento, Navidad, Semana Santa, fiestas, salidas… Aquí tienes las celebraciones y actividades de la parroquia. Las eucaristías de cada semana están en', 'Advent, Nadal, Setmana Santa, festes, sortides… Aquí tens les celebracions i activitats de la parròquia. Les eucaristies de cada setmana són a', "Advent, Christmas, Holy Week, celebrations, outings… Here are the parish's services and activities. The weekly Masses are listed under"),
+                      ('Filtrar la agenda', "Filtrar l'agenda", 'Filter the calendar'),
+                      ('Todos', 'Tots', 'All'),
+                      ('Muy pronto publicaremos aquí los próximos actos de la parroquia.', 'Molt aviat publicarem aquí els propers actes de la parròquia.', "We will publish the parish's upcoming events here very soon."),
+                      ('Suscribirme a la agenda', "Subscriure'm a l'agenda", 'Subscribe to the calendar'),
+                      ('Horario de eucaristías', "Horari d'eucaristies", 'Mass times'),
+                      ('Añadir a mi calendario', 'Afegir al meu calendari', 'Add to my calendar'),
+                      ('Todo el día', 'Tot el dia', 'All day'),
+                      ('Inscripciones', 'Inscripcions', 'Registration'),
+                      ('Inscripción a la Confirmación', 'Inscripció a la Confirmació', 'Confirmation registration'),
+                      ('Para chicos y chicas a partir de 14 años y para adultos. La inscripción llega directamente por correo a la parroquia. Los campos con * son obligatorios.', 'Per a nois i noies a partir de 14 anys i per a adults. La inscripció arriba directament per correu a la parròquia. Els camps amb * són obligatoris.', 'For young people aged 14 and over, and for adults. The form goes straight to the parish by email. Fields marked * are required.'),
+                      ('Formulario de inscripción', "Formulari d'inscripció", 'Registration form'),
+                      ('Para prepararse a recibir el sacramento de la Confirmación', 'Per preparar-se a rebre el sagrament de la Confirmació', 'To prepare for the sacrament of Confirmation'),
+                      ('Datos de quien se inscribe', "Dades de qui s'inscriu", 'Your details'),
+                      ('Nombre *', 'Nom *', 'First name *'),
+                      ('¿Ha hecho la Primera Comunión?', 'Ha fet la Primera Comunió?', 'Has made their First Communion?'),
+                      ('Si eres menor de edad', "Si ets menor d'edat", 'If you are under 18'),
+                      ('Nombre del padre, madre o tutor', 'Nom del pare, mare o tutor', "Parent or guardian's name"),
+                      ('Teléfono del padre, madre o tutor', 'Telèfon del pare, mare o tutor', "Parent or guardian's phone"),
+                      ('Horarios que te van mejor, dudas…', 'Horaris que et van millor, dubtes…', 'Times that suit you, questions…'),
+                      ('Acepto la', 'Accepto la', 'I accept the'),
+                      ('Si quien se inscribe es menor de 14 años, este formulario debe rellenarlo su padre, madre o tutor. *', "Si qui s'inscriu és menor de 14 anys, aquest formulari l'ha d'omplir el seu pare, mare o tutor. *", 'If the person registering is under 14, this form must be filled in by a parent or guardian. *'),
+                      ('Información e inscripción', 'Informació i inscripció', 'Information and registration'),
                       ("Nada te turbe", "Res no et torbi", "Let nothing disturb you"),
                       ("Nada te espante", "Res no t'espanti", "Let nothing frighten you"),
                       ('Salida parroquial', 'Sortida parroquial', 'Parish outing'),

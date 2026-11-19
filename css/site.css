@@ -3058,3 +3058,41 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 [data-pile-autoplay] > a:first-child img { animation: pile-zoom 4.4s ease-out both; }
 [data-pile-autoplay] > a.is-leaving { transform: translate(-18%, -6%) rotate(-12deg) !important; opacity: 0; }
 @keyframes pile-zoom { from { transform: scale(1.12); } to { transform: scale(1); } }
+
+/* Agenda de la parroquia (html/agenda.html y «Próximos actos» en la portada) */
+.ag-filters { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; max-width: 900px; margin: 0 auto 2.5rem; }
+.ag-chip { font: 600 .72rem/1 var(--body-font); letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-dark); background: var(--white); border: 1px solid var(--accent-light); border-radius: 999px; padding: .6rem 1rem; cursor: pointer; transition: background .2s, color .2s; }
+.ag-chip:hover { border-color: var(--accent-color); }
+.ag-chip.is-on { background: var(--accent-color); border-color: var(--accent-color); color: #fff; }
+.ag-months { max-width: 900px; margin: 0 auto; }
+.ag-month + .ag-month { margin-top: 2.5rem; }
+.ag-month-title { font-family: var(--header-font); font-size: 1.6rem; color: var(--heading-color); padding-bottom: .5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.ag-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+.ag-item { display: grid; grid-template-columns: 92px minmax(0, 1fr) auto; gap: 1.25rem; align-items: start; padding: 1.25rem; background: var(--white); border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow-sm); transition: transform .25s, box-shadow .25s; }
+.ag-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.ag-date { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: .7rem .4rem .8rem; border-radius: 8px; background: #fbf5e8; border: 1px solid #ecdcb8; text-align: center; line-height: 1; }
+.ag-wd { font-size: .62rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+.ag-day { font: 600 2.4rem/1 var(--header-font); color: var(--heading-color); margin: .3rem 0 .2rem; }
+.ag-mon { font-size: .7rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-dark); }
+.ag-item.is-soon .ag-date { background: var(--accent-color); border-color: var(--accent-color); }
+.ag-item.is-soon .ag-date span { color: #fff; }
+.ag-cat { font-size: .66rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-dark); }
+.ag-when:not(:empty) { margin-left: .6rem; padding: .2rem .55rem; border-radius: 999px; background: #7a2e2e; color: #fff; font-size: .62rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; }
+.ag-body h3 { font-family: var(--header-font); font-size: 1.45rem; color: var(--heading-color); margin: .35rem 0 .3rem; line-height: 1.2; }
+.ag-meta { display: flex; flex-wrap: wrap; gap: .25rem 1rem; font-size: .85rem; color: var(--muted); margin: 0 0 .5rem; }
+.ag-meta span + span::before { content: "·"; margin-right: 1rem; color: var(--accent-light); }
+.ag-desc { font-size: .92rem; line-height: 1.6; margin: 0 0 .6rem; }
+.ag-actions { display: flex; flex-wrap: wrap; gap: .4rem 1.5rem; margin: 0; }
+.ag-actions .link-arrow { margin: 0; }
+.ag-img { width: 140px; aspect-ratio: 4 / 3; border-radius: 8px; overflow: hidden; }
+.ag-img img { width: 100%; height: 100%; object-fit: cover; }
+.ag-empty { text-align: center; }
+.ag-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 1100px; margin: 0 auto; }
+.ag-cards .ag-item { grid-template-columns: 76px minmax(0, 1fr); }
+.ag-cards .ag-day { font-size: 2rem; }
+@media (max-width: 900px) { .ag-cards { grid-template-columns: 1fr; max-width: 640px; } }
+@media (max-width: 600px) {
+    .ag-item { grid-template-columns: 72px minmax(0, 1fr); gap: 1rem; padding: 1rem; }
+    .ag-img { grid-column: 1 / -1; width: 100%; aspect-ratio: 16 / 9; }
+    .ag-day { font-size: 2rem; }
+}
