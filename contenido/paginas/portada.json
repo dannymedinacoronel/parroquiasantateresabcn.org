@@ -296,6 +296,12 @@
       }
     },
     {
+      "type": "Capsulas",
+      "props": {
+        "id": "Capsulas-40"
+      }
+    },
+    {
       "type": "Actualidad",
       "props": {
         "id": "Actualidad-10"

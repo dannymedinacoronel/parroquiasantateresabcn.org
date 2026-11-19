@@ -320,6 +320,28 @@
         if (withTime) { opts.hour = "2-digit"; opts.minute = "2-digit"; }
         return dt.toLocaleDateString(LOCALE, opts);
     }
+    /* --- Cápsulas de fe: el vídeo (Instagram o YouTube) se carga solo al pulsar «reproducir» --- */
+    document.querySelectorAll("[data-cap-embed]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            var box = document.createElement("div");
+            box.className = "cap-modal";
+            box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true");
+            box.innerHTML = '<div class="cap-modal-in"><iframe allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>' +
+                '<a class="cap-modal-link" target="_blank" rel="noopener"></a></div><button type="button" class="cap-close" aria-label="' + T("close") + '">&times;</button>';
+            box.querySelector("iframe").src = btn.getAttribute("data-cap-embed");
+            var a = box.querySelector(".cap-modal-link");
+            a.href = btn.getAttribute("data-cap-link");
+            a.textContent = (btn.getAttribute("data-cap-src") === "instagram" ? "Instagram" : "YouTube") + " ↗";
+            function close() { box.remove(); document.body.classList.remove("menu-open"); document.removeEventListener("keydown", esc); }
+            function esc(e) { if (e.key === "Escape") close(); }
+            box.addEventListener("click", function (e) { if (e.target === box) close(); });
+            box.querySelector(".cap-close").addEventListener("click", close);
+            document.addEventListener("keydown", esc);
+            document.body.appendChild(box);
+            document.body.classList.add("menu-open");
+        });
+    });
+
     /* --- Agenda: se esconden los actos ya pasados y las fechas salen en el idioma de la página --- */
     function cap1(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
     document.querySelectorAll("[data-agenda]").forEach(function (box) {

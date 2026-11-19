@@ -249,6 +249,38 @@ collections:
       - { label: Enlace con más información, name: enlace, widget: string, required: false, hint: "Opcional: un cartel en PDF, un formulario… (empieza por https://)." }
       - { label: Publicado, name: publicado, widget: boolean, default: true, hint: "Desactívalo para guardarlo como borrador." }
 
+  # Cápsulas de fe: vídeos cortos de formación (reels de Instagram o Shorts de YouTube) en la portada
+  - name: capsulas
+    label: Cápsulas de fe
+    label_singular: cápsula
+    description: >
+      Vídeos cortos de formación (un minuto sobre la oración, los sacramentos, la Biblia, Santa Teresa…).
+      Sube el vídeo a Instagram o a YouTube como siempre, copia su enlace y pégalo aquí con un título y una
+      foto de portada. Salen en la portada (las 8 más recientes) y en Actualidad › Cápsulas de fe.
+    folder: contenido/capsulas
+    extension: json
+    format: json
+    create: true
+    delete: true
+    slug: "{{fecha}}-{{titulo}}"
+    identifier_field: titulo
+    summary: "{{fecha}} · {{titulo}}"
+    sortable_fields: ["fecha", "titulo"]
+    media_folder: /fotosdefinitivas/web/capsulas
+    public_folder: /fotosdefinitivas/web/capsulas
+    fields:
+      - { label: Título, name: titulo, widget: string, hint: "Corto: por ejemplo «¿Qué es el Adviento?»" }
+      - { label: Enlace del vídeo, name: enlace, widget: string, hint: "Pega el enlace del reel de Instagram (instagram.com/reel/…) o del Short de YouTube (youtube.com/shorts/…)." }
+      - label: Tema
+        name: tema
+        widget: select
+        options: ["Oración", "Sacramentos", "Biblia", "Santa Teresa", "Liturgia", "Vida cristiana", "Otros"]
+        default: "Vida cristiana"
+      - { label: Foto de portada, name: portada, widget: image, required: false, hint: "Una captura del vídeo, en vertical. Si sale gente reconocible, con su permiso (y el de los padres si son menores)." }
+      - { label: Duración (opcional), name: duracion, widget: string, required: false, hint: "Por ejemplo 1:05" }
+      - { label: Fecha, name: fecha, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, picker_utc: true, default: "{{now}}" }
+      - { label: Publicada, name: publicado, widget: boolean, default: true }
+
   # ---------------------------------------------------------------------------
   # REVISTA DIGITAL
   # Cada número es una entrada; cada artículo, otra (así varias personas pueden escribir a la

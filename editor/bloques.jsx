@@ -115,7 +115,7 @@ export function makeConfig({ render, imageField, autoPreview, advanced, help, Bl
             tarjetas: { title: "Tarjetas, galerías y vídeo", components: ["TarjetasFoto", "TarjetasIcono", "Galeria", "Video"] },
             listas: { title: "Pasos, preguntas e historia", components: ["Pasos", "Preguntas", "LineaTiempo"] },
             otros: { title: "Espacios", components: ["Separador"] },
-            auto: { title: "Se actualizan solos", components: ["Horario", "Reflexion", "Agenda", "Actualidad", "Revista", "Ubicacion"] },
+            auto: { title: "Se actualizan solos", components: ["Horario", "Reflexion", "Agenda", "Capsulas", "Actualidad", "Revista", "Ubicacion"] },
         },
         components: {
             Carrusel: {
@@ -321,6 +321,7 @@ export function makeConfig({ render, imageField, autoPreview, advanced, help, Bl
             Horario: auto("Horario", "Horario de eucaristías", "Muestra el horario de misas de la parroquia. Por ahora el horario se cambia pidiéndolo al administrador de la web."),
             Reflexion: auto("Reflexion", "Última reflexión", "Muestra sola la última homilía publicada desde el panel (Homilías y reflexiones)."),
             Agenda: auto("Agenda", "Próximos actos", "Muestra solos los tres próximos actos de la Agenda del panel."),
+            Capsulas: auto("Capsulas", "Cápsulas de fe (vídeos)", "Muestra solos los últimos vídeos de la colección «Cápsulas de fe» del panel."),
             Actualidad: auto("Actualidad", "Evangelio, noticias e Instagram", "El Evangelio del día y las últimas publicaciones, que se actualizan solos."),
             Revista: auto("Revista", "Revista digital", "Muestra el último número de la revista (o «Próximamente»)."),
             Ubicacion: auto("Ubicacion", "Mapa y cómo llegar", "El mapa con la dirección y cómo llegar a la parroquia."),

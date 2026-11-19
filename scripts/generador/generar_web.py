@@ -71,10 +71,11 @@ NAV = [
         ("Voluntariado", "html/voluntariado.html", "manos"),
         ("¶", "¿Quieres colaborar?", "html/voluntariado.html", "Únete a un grupo de la parroquia"),
     ]),
-    ("noticias|familia|agenda", "Actualidad", "html/noticias.html", [
+    ("noticias|familia|agenda|capsulas", "Actualidad", "html/noticias.html", [
         ("§parish", "Parroquia", "html/noticias-parroquia.html"),
         ("+Noticias de la parroquia", "html/noticias-parroquia.html"),
         ("+Agenda de la parroquia", "html/agenda.html"),
+        ("+Cápsulas de fe", "html/capsulas.html"),
         ("+Última reflexión", "__ULTIMA__"),
         ("+Todas las reflexiones", "html/humiliasmenu.html"),
     ] + ([("+Revista digital", "html/revista.html")] if REVISTA_ON or REV_ISSUES else []) + [
@@ -1274,6 +1275,93 @@ def agenda_item(e, depth, card=False):
                     </li>"""
 
 
+# ---------------------------------------------------------------- CÁPSULAS DE FE (vídeos cortos de formación)
+# Se suben desde el panel (colección «Cápsulas de fe», carpeta contenido/capsulas): enlace de un reel de
+# Instagram o de un Short de YouTube, título, tema y foto de portada. El vídeo no se guarda en la web:
+# se reproduce desde Instagram o YouTube solo cuando alguien pulsa «reproducir».
+CAPS_TEMAS = ["Oración", "Sacramentos", "Biblia", "Santa Teresa", "Liturgia", "Vida cristiana", "Otros"]
+
+
+def _caps_video(url):
+    url = (url or "").strip()
+    m = re.search(r"instagram\.com/(?:reel|reels|p|tv)/([A-Za-z0-9_-]+)", url)
+    if m:
+        return "instagram", f"https://www.instagram.com/reel/{m.group(1)}/embed", f"https://www.instagram.com/reel/{m.group(1)}/"
+    m = re.search(r"(?:youtu\.be/|v=|embed/|shorts/)([A-Za-z0-9_-]{11})", url)
+    if m:
+        return "youtube", f"https://www.youtube-nocookie.com/embed/{m.group(1)}?autoplay=1&playsinline=1&rel=0", f"https://www.youtube.com/shorts/{m.group(1)}"
+    return None
+
+
+def _load_caps():
+    out = []
+    for path in sorted(_glob_ag.glob(os.path.join(ROOT, "contenido", "capsulas", "*.json"))):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                c = _json.load(fh) or {}
+        except ValueError:
+            continue
+        v = _caps_video(c.get("enlace"))
+        if not (c.get("titulo") or "").strip() or c.get("publicado") is False or not v:
+            continue
+        c.update(src=v[0], embed=v[1], link=v[2], foto=REV.media(ROOT, c.get("portada")), fecha=(c.get("fecha") or "")[:10],
+                 tema=c.get("tema") if c.get("tema") in CAPS_TEMAS else "Otros")
+        out.append(c)
+    return sorted(out, key=lambda c: c["fecha"], reverse=True)
+
+
+CAPSULAS = _load_caps()
+PLAY_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>'
+
+
+def caps_card(c, depth):
+    img = rev_img(c["foto"], depth, 480, c["titulo"]) if c["foto"] else ""
+    via = "Instagram" if c["src"] == "instagram" else "YouTube"
+    dur = f'<span class="cap-dur">{esc(c.get("duracion") or "")}</span>' if (c.get("duracion") or "").strip() else ""
+    return f"""
+                <li class="cap-card">
+                    <button type="button" class="cap-play" data-cap-embed="{_attr(c['embed'])}" data-cap-link="{_attr(c['link'])}" data-cap-src="{c['src']}" aria-label="Reproducir">
+                        <span class="cap-poster{'' if img else ' is-empty'}">{img}</span>
+                        <span class="cap-tema">{c['tema']}</span>{dur}
+                        <span class="cap-btn">{PLAY_SVG}</span>
+                        <span class="cap-info"><!--notr--><strong>{esc(c['titulo'])}</strong><!--/notr--><small>Vídeo de {via}</small></span>
+                    </button>
+                </li>"""
+
+
+def caps_section(depth, limit=None, page=False):
+    items = CAPSULAS[:limit] if limit else CAPSULAS
+    root = "../" * depth
+    if items:
+        cards = "".join(caps_card(c, depth) for c in items)
+    else:
+        cards = "".join(f"""
+                <li class="cap-card cap-soon"><span class="cap-poster is-empty"></span><span class="cap-btn">{PLAY_SVG}</span>
+                    <span class="cap-info"><strong>{t}</strong><small>Próximamente</small></span></li>""" for t in ("Cómo rezar con Santa Teresa", "¿Qué es la Eucaristía?", "La Biblia en un minuto"))
+    more = "" if page or not CAPSULAS else f"""
+            <div class="btn-group center" style="margin-top:2rem;">
+                <a href="{root}html/capsulas.html" class="btn">Ver todas las cápsulas</a>
+            </div>"""
+    head = "" if page else """
+            <div class="section-head">
+                <span class="subtitulo">Formación en un minuto</span>
+                <h2>Cápsulas de fe</h2>
+                <hr class="section-divider" style="margin-bottom:1.25rem;">
+                <p>Vídeos cortos para aprender y rezar: la oración, los sacramentos, la Biblia y la espiritualidad de Santa Teresa.</p>
+            </div>"""
+    return f"""
+        <section id="capsulas" class="capsulas{' capsulas-page' if page else ''}">{head}
+            <ul class="cap-strip">{cards}
+            </ul>
+            <p class="cap-note">Al reproducir un vídeo se carga desde Instagram o YouTube.</p>{more}
+        </section>
+"""
+
+
+def caps_page():
+    body = page_hero("Formación en un minuto", "Cápsulas de fe", "web/img_5432.jpg") + caps_section(1, page=True)
+    return page(1, "Cápsulas de fe", "Vídeos cortos de formación católica de la Parroquia Santa Teresa de Jesús (El Carmel, Barcelona): oración, sacramentos, Biblia y Santa Teresa.", body=body, active="capsulas")
+
 def agenda_home():
     if not AGENDA:
         return ""
@@ -1452,6 +1540,7 @@ HOME_AUTO = {
     "Actualidad": home_actualidad,
     "Revista": lambda: revista_module(0),
     "Ubicacion": location_block,
+    "Capsulas": lambda: caps_section(0, limit=8),
 }
 
 
@@ -2917,6 +3006,7 @@ def news_page(i, n):
 
 PAGES["html/noticias-parroquia.html"] = news_list_page()
 PAGES["html/agenda.html"] = agenda_page()
+PAGES["html/capsulas.html"] = caps_page()
 for _i, _n in enumerate(NEWS):
     PAGES[_n["url"]] = news_page(_i, _n)
 
@@ -3444,6 +3534,25 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ('Formación en un minuto', 'Formació en un minut', 'Faith in a minute'),
+                      ('Cómo rezar con Santa Teresa', 'Com pregar amb Santa Teresa', 'How to pray with Saint Teresa'),
+                      ('Oración', 'Oració', 'Prayer'),
+                      ('Biblia', 'Bíblia', 'Bible'),
+                      ('Santa Teresa', 'Santa Teresa', 'Saint Teresa'),
+                      ('Liturgia', 'Litúrgia', 'Liturgy'),
+                      ('Vida cristiana', 'Vida cristiana', 'Christian life'),
+                      ('Cápsulas de fe', 'Càpsules de fe', 'Faith in a minute'),
+                      ('Vídeos cortos para aprender y rezar: la oración, los sacramentos, la Biblia y la espiritualidad de Santa Teresa.', "Vídeos curts per aprendre i pregar: l'oració, els sagraments, la Bíblia i l'espiritualitat de Santa Teresa.", 'Short videos to learn and pray: prayer, the sacraments, the Bible and the spirituality of Saint Teresa.'),
+                      ('Ver todas las cápsulas', 'Veure totes les càpsules', 'See all videos'),
+                      ('Al reproducir un vídeo se carga desde Instagram o YouTube.', "En reproduir un vídeo es carrega des d'Instagram o YouTube.", 'Playing a video loads it from Instagram or YouTube.'),
+                      ('Reproducir', 'Reproduir', 'Play'),
+                      ('Vídeo de Instagram', "Vídeo d'Instagram", 'Instagram video'),
+                      ('Vídeo de YouTube', 'Vídeo de YouTube', 'YouTube video'),
+                      ('¿Qué es la Eucaristía?', "Què és l'Eucaristia?", 'What is the Eucharist?'),
+                      ('La Biblia en un minuto', 'La Bíblia en un minut', 'The Bible in a minute'),
+                      ('Próximamente', 'Properament', 'Coming soon'),
+                      ('Cápsulas de fe | Parroquia Santa Teresa de Jesús', 'Càpsules de fe | Parròquia de Santa Teresa de Jesús', 'Faith in a minute | Santa Teresa de Jesús Parish'),
+                      ('Vídeos cortos de formación católica de la Parroquia Santa Teresa de Jesús (El Carmel, Barcelona): oración, sacramentos, Biblia y Santa Teresa.', 'Vídeos curts de formació catòlica de la Parròquia de Santa Teresa de Jesús (el Carmel, Barcelona): oració, sagraments, Bíblia i Santa Teresa.', 'Short Catholic formation videos from Santa Teresa de Jesús Parish (El Carmel, Barcelona): prayer, sacraments, the Bible and Saint Teresa.'),
                       ('Escribir a la parroquia por WhatsApp', 'Escriure a la parròquia per WhatsApp', 'Message the parish on WhatsApp'),
                       ('Meses del año', "Mesos de l'any", 'Months of the year'),
                       ('Ver actos anteriores', 'Veure actes anteriors', 'See past events'),

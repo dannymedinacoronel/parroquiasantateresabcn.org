@@ -199,7 +199,7 @@ function Block({ id, html }) {
 // ---------------------------------------------------------------- vista previa de los bloques automáticos
 let livePage = null;
 function liveSection(type) {
-    const sel = { Horario: "#horarios", Reflexion: "#reflexion", Agenda: "#agenda", Actualidad: "#actualidad", Revista: "#revista", Ubicacion: "#ubicacion" }[type];
+    const sel = { Horario: "#horarios", Reflexion: "#reflexion", Agenda: "#agenda", Actualidad: "#actualidad", Revista: "#revista", Ubicacion: "#ubicacion", Capsulas: "#capsulas" }[type];
     if (!livePage) {
         livePage = fetch("/?vista-editor=" + Date.now()).then((r) => r.text()).then((h) => new DOMParser().parseFromString(h, "text/html")).catch(() => null);
     }
