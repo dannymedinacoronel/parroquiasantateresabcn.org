@@ -117,7 +117,7 @@ class Renderer:
                         out.append(self.run(kids, stack))
                 elif isinstance(v, list):
                     for i, item in enumerate(v):
-                        meta = {"@index": i + 1, "@first": i == 0, "@last": i == len(v) - 1}
+                        meta = {"@i": i, "@index": i + 1, "@first": i == 0, "@last": i == len(v) - 1}
                         out.append(self.run(kids, stack + [meta, item if isinstance(item, dict) else {".": item}]))
                 elif isinstance(v, dict):
                     out.append(self.run(kids, stack + [v]))
@@ -254,4 +254,4 @@ def render_page(data, renderer, templates, auto):
             out.append(renderer.render(templates[t], props))
         else:
             print("AVISO: bloque desconocido en el editor visual:", t)
-    return "\n".join(out)
+    return re.sub(r' data-(?:f="[^"]*"|multi|bgf)(?=[\s>])', "", "\n".join(out))

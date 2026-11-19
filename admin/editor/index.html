@@ -46,6 +46,11 @@
         .pst-toast { border-radius: 999px; padding: .85rem 1.4rem; }
         .pst-guide { border-radius: 12px; box-shadow: 0 4px 16px rgba(40,30,10,.06); }
         .pst-img-field img { border-radius: 10px; }
+        .pst-item { display: grid; grid-template-columns: 78px 1fr; align-items: center; gap: .7rem; padding: .45rem; border-radius: 12px; background: #fff; border: 1px solid #ece4d4; box-shadow: 0 2px 8px rgba(40,30,10,.05); transition: box-shadow .2s, transform .2s, border-color .2s; cursor: grab; }
+        .pst-item:hover { border-color: #bfa065; box-shadow: 0 8px 20px rgba(40,30,10,.12); transform: translateY(-1px); }
+        .pst-thumb svg { display: block; width: 100%; height: auto; border-radius: 8px; background: #fbf8f2; }
+        .pst-item-label { font: 600 .78rem/1.25 "Montserrat", system-ui, sans-serif; color: #3b3326; }
+        .pst-img-field.is-over { outline: 3px dashed #bfa065; outline-offset: 4px; border-radius: 10px; }
     </style>
 </head>
 <body>

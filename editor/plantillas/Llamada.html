@@ -1,9 +1,9 @@
         <section{{#ancla}} id="{{ancla}}"{{/ancla}}{{#fondo}} class="{{fondo}}"{{/fondo}}>
             <div class="vol-cta">
-                <h3>{{titulo}}</h3>{{#texto}}
-                <p>{{texto}}</p>{{/texto}}
+                <h3 data-f="titulo">{{titulo}}</h3>{{#texto}}
+                <p data-f="texto">{{texto}}</p>{{/texto}}
                 <div class="btn-group center">{{#botones}}
-                    {{#estilo=solido}}<a href="{{enlace|url}}" class="btn btn-solid">{{texto}}</a>{{/estilo=solido}}{{#estilo=normal}}<a href="{{enlace|url}}" class="btn">{{texto}}</a>{{/estilo=normal}}{{#estilo=claro}}<a href="{{enlace|url}}" class="btn btn-light">{{texto}}</a>{{/estilo=claro}}{{#estilo=flecha}}<a href="{{enlace|url}}" class="link-arrow" style="align-self:center;">{{texto}} <span>&rarr;</span></a>{{/estilo=flecha}}{{#estilo=llamar}}<a href="tel:{{_tel}}" class="btn btn-light btn-call">{{{_icon_phone}}}<span>{{texto}}</span></a>{{/estilo=llamar}}{{/botones}}
+                    {{#estilo=solido}}<a href="{{enlace|url}}" class="btn btn-solid" data-f="botones.{{@i}}.texto">{{texto}}</a>{{/estilo=solido}}{{#estilo=normal}}<a href="{{enlace|url}}" class="btn" data-f="botones.{{@i}}.texto">{{texto}}</a>{{/estilo=normal}}{{#estilo=claro}}<a href="{{enlace|url}}" class="btn btn-light" data-f="botones.{{@i}}.texto">{{texto}}</a>{{/estilo=claro}}{{#estilo=flecha}}<a href="{{enlace|url}}" class="link-arrow" style="align-self:center;" data-f="botones.{{@i}}.texto">{{texto}} <span>&rarr;</span></a>{{/estilo=flecha}}{{#estilo=llamar}}<a href="tel:{{_tel}}" class="btn btn-light btn-call">{{{_icon_phone}}}<span data-f="botones.{{@i}}.texto">{{texto}}</span></a>{{/estilo=llamar}}{{/botones}}
                 </div>
             </div>
         </section>

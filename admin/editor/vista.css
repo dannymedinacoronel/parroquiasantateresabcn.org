@@ -8,3 +8,11 @@ body { background: var(--bg-color, #fcfbf9); }
 .pst-auto-tag { position: absolute; z-index: 5; top: .6rem; left: .6rem; background: rgba(31, 26, 18, .82); color: #fff; font: 600 .7rem/1 system-ui, sans-serif; letter-spacing: .5px; padding: .45rem .7rem; border-radius: 999px; }
 .pst-auto-empty { padding: 3rem 1rem; text-align: center; color: #8b8479; background: repeating-linear-gradient(135deg, #fbf7ef 0 14px, #f6f0e3 14px 28px); font-family: system-ui, sans-serif; }
 .pst-auto iframe { pointer-events: none; }
+
+/* edición directa sobre la página */
+[data-f]:not(img):not([data-bgf]) { cursor: text; border-radius: 4px; transition: outline-color .15s; outline: 2px dashed transparent; outline-offset: 3px; }
+[data-f]:not(img):not([data-bgf]):hover { outline-color: rgba(191, 160, 101, .9); }
+[data-f][contenteditable] { outline: 2px solid #bfa065 !important; background: rgba(255, 255, 255, .55); }
+img[data-f]:hover, [data-bgf]:hover { outline: 3px dashed rgba(191, 160, 101, .9); outline-offset: -3px; }
+.pst-drop { outline: 4px solid #bfa065 !important; outline-offset: -4px; filter: brightness(1.08); }
+.pst-uploading { opacity: .45; }

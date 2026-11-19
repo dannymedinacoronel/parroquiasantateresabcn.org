@@ -1,15 +1,15 @@
         <section{{#ancla}} id="{{ancla}}"{{/ancla}}{{#fondo}} class="{{fondo}}"{{/fondo}}>
             <div class="section-head">
                 {{{_ornament}}}{{#antetitulo}}
-                <span class="subtitulo">{{antetitulo}}</span>{{/antetitulo}}
-                <h2>{{titulo}}</h2>{{#entradilla}}
-                <p>{{entradilla}}</p>{{/entradilla}}
+                <span class="subtitulo" data-f="antetitulo">{{antetitulo}}</span>{{/antetitulo}}
+                <h2 data-f="titulo">{{titulo}}</h2>{{#entradilla}}
+                <p data-f="entradilla">{{entradilla}}</p>{{/entradilla}}
             </div>
             <div class="icon-grid {{columnas}}">{{#tarjetas}}
                 <a class="icon-card" href="{{enlace|url}}">
                     <div class="icon-circle">{{icono|icon}}</div>
-                    <h3>{{titulo}}</h3>
-                    <p>{{texto}}</p>
+                    <h3 data-f="tarjetas.{{@i}}.titulo">{{titulo}}</h3>
+                    <p data-f="tarjetas.{{@i}}.texto">{{texto}}</p>
                 </a>{{/tarjetas}}
             </div>{{#boton_texto}}
             <div class="btn-group center" style="margin-top:3rem;">

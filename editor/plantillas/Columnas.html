@@ -1,14 +1,14 @@
         <section{{#ancla}} id="{{ancla}}"{{/ancla}}{{#fondo}} class="{{fondo}}"{{/fondo}}>{{#titulo}}
             <div class="section-head">{{#antetitulo}}
-                <span class="subtitulo">{{antetitulo}}</span>{{/antetitulo}}
-                <h2>{{titulo}}</h2>
+                <span class="subtitulo" data-f="antetitulo">{{antetitulo}}</span>{{/antetitulo}}
+                <h2 data-f="titulo">{{titulo}}</h2>
                 <hr class="section-divider" style="margin-bottom:0;">
             </div>{{/titulo}}
             <div class="vol-grid">{{#columnas}}
                 <article class="vol-card">{{#icono}}
                     <div class="icon-circle">{{icono|icon}}</div>{{/icono}}
-                    <h3>{{titulo}}</h3>
-                    {{texto|p}}{{#enlace}}
+                    <h3 data-f="columnas.{{@i}}.titulo">{{titulo}}</h3>
+                    <div data-f="columnas.{{@i}}.texto" data-multi>{{texto|p}}</div>{{#enlace}}
                     <a class="link-arrow" href="{{enlace|url}}">{{#enlace_texto}}{{enlace_texto}}{{/enlace_texto}}{{^enlace_texto}}Más información{{/enlace_texto}} <span>&rarr;</span></a>{{/enlace}}
                 </article>{{/columnas}}
             </div>

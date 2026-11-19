@@ -1,7 +1,7 @@
-        <section class="image-band" data-bg="{{foto|img}}">
+        <section class="image-band" data-f="foto" data-bgf data-bg="{{foto|img}}">
             <div class="quote">
                 <span class="quote-mark" aria-hidden="true">&ldquo;</span>
-                <blockquote>{{frase}}</blockquote>{{#autor}}
-                <cite>{{autor}}</cite>{{/autor}}
+                <blockquote data-f="frase" data-multi>{{frase}}</blockquote>{{#autor}}
+                <cite data-f="autor">{{autor}}</cite>{{/autor}}
             </div>
         </section>

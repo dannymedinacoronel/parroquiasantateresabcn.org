@@ -65,7 +65,7 @@ export function makeRenderer(filters, globals) {
                 const v = lookup(stack, name);
                 if (kind === "^") { if (!truthy(v) || (Array.isArray(v) && !v.length)) out += run(kids, stack); }
                 else if (Array.isArray(v)) v.forEach((item, i) => {
-                    const meta = { "@index": i + 1, "@first": i === 0, "@last": i === v.length - 1 };
+                    const meta = { "@i": i, "@index": i + 1, "@first": i === 0, "@last": i === v.length - 1 };
                     out += run(kids, stack.concat([meta, item && typeof item === "object" ? item : { ".": item }]));
                 });
                 else if (v && typeof v === "object") out += run(kids, stack.concat([v]));

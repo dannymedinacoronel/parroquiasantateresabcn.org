@@ -17,6 +17,30 @@ import Separador from "./plantillas/Separador.html";
 
 export const TEMPLATES = { Carrusel, TextoFoto, BandaFrase, TarjetasFoto, TarjetasIcono, Galeria, Visita, Texto, Cita, Llamada, Video, Columnas, Separador };
 
+// ---------------------------------------------------------------- miniaturas de los bloques (columna izquierda)
+const G = "#bfa065", L = "#e8dcc2", D = "#cdbf9f";
+const box = (x, y, w, h, f = L, r = 3) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${f}"/>`;
+const lines = (x, y, w, n, gap = 6) => Array.from({ length: n }, (_, i) => box(x, y + i * gap, i === n - 1 ? w * 0.6 : w, 3, D, 1.5)).join("");
+const THUMB = {
+    Carrusel: box(0, 0, 120, 70, "#6d5326", 6) + box(30, 22, 60, 7, "#fff", 2) + box(42, 34, 36, 3, "#f3e7c9", 1.5) + box(38, 46, 20, 7, G, 2) + box(62, 46, 20, 7, "none") + `<circle cx="54" cy="63" r="2" fill="#fff"/><circle cx="60" cy="63" r="2" fill="#fff8"/><circle cx="66" cy="63" r="2" fill="#fff8"/>`,
+    TextoFoto: box(8, 12, 46, 46, "#d9c9a5", 4) + box(64, 16, 30, 5, G, 2) + lines(64, 28, 48, 4) + box(64, 52, 22, 7, G, 2),
+    Texto: box(40, 10, 40, 5, G, 2) + lines(20, 24, 80, 5),
+    Columnas: [8, 46, 84].map((x) => box(x, 12, 28, 46, "#fff", 4) + box(x + 4, 18, 14, 4, G, 2) + lines(x + 4, 28, 20, 4, 5)).join(""),
+    Visita: box(8, 10, 40, 50, "#d9c9a5", 4) + box(58, 14, 34, 5, G, 2) + lines(58, 26, 52, 3) + box(58, 48, 26, 7, G, 2),
+    BandaFrase: box(0, 6, 120, 58, "#8f7340", 4) + box(26, 26, 68, 4, "#fff", 2) + box(36, 34, 48, 4, "#fff", 2) + box(48, 44, 24, 3, "#f3e7c9", 1.5),
+    Cita: box(30, 18, 60, 6, D, 3) + box(38, 28, 44, 6, D, 3) + box(48, 42, 24, 3, G, 1.5),
+    Llamada: box(14, 10, 92, 50, "#fbf5e8", 6) + box(40, 18, 40, 5, G, 2) + lines(30, 28, 60, 2) + box(46, 44, 28, 8, G, 3),
+    TarjetasFoto: [6, 34, 62, 90].map((x) => box(x, 10, 24, 50, "#fff", 3) + box(x, 10, 24, 22, "#d9c9a5", 3) + lines(x + 3, 38, 18, 3, 5)).join(""),
+    TarjetasIcono: [8, 46, 84].map((x) => box(x, 12, 28, 46, "#fff", 4) + `<circle cx="${x + 14}" cy="26" r="7" fill="#f3e7c9" stroke="${G}"/>` + lines(x + 4, 40, 20, 2, 6)).join(""),
+    Galeria: box(6, 8, 52, 26, "#d9c9a5") + box(62, 8, 24, 54, "#c9b48a") + box(90, 8, 24, 26, "#d9c9a5") + box(6, 38, 24, 24, "#c9b48a") + box(34, 38, 24, 24, "#d9c9a5") + box(90, 38, 24, 24, "#c9b48a"),
+    Video: box(14, 8, 92, 54, "#2a241c", 5) + `<path d="M54 24l16 11-16 11z" fill="${G}"/>`,
+    Separador: box(10, 34, 40, 2, D, 1) + box(70, 34, 40, 2, D, 1) + `<circle cx="60" cy="35" r="4" fill="none" stroke="${G}"/>`,
+};
+const AUTO_THUMB = box(6, 8, 108, 54, "#f6f0e3", 6) + `<path d="M48 35a12 12 0 1 1 3.5 8.5M48 44v-9h9" fill="none" stroke="${G}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>` + box(66, 30, 30, 4, D, 2) + box(66, 38, 22, 4, D, 2);
+export function thumb(name) {
+    return `<svg viewBox="0 0 120 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${THUMB[name] || AUTO_THUMB}</svg>`;
+}
+
 // ---- campos reutilizables
 // texto en castellano + traducción opcional (català / English) debajo
 let ADV = false;   // «Más opciones»: traducciones y campos técnicos
@@ -58,10 +82,10 @@ const cabecera = () => ({ ...tx("antetitulo", "Texto pequeño de arriba"), ...tx
 const boton1 = () => ({ ...tx("boton_texto", "Botón de abajo (opcional)"), boton_enlace: { type: "text", label: "Enlace del botón" } });
 
 // ---- bloques
-export function makeConfig({ render, imageField, autoPreview, advanced, help }) {
+export function makeConfig({ render, imageField, autoPreview, advanced, help, Block }) {
     ADV = !!advanced;
     const ANCLA = ADV ? ANCLA_F : {};
-    const tpl = (type) => (props) => <div className="pst-block" dangerouslySetInnerHTML={{ __html: render(type, props) }} />;
+    const tpl = (type) => (props) => <Block id={props.id} html={render(type, props)} />;
     const auto = (type, label, help) => ({
         label,
         fields: { aviso: { type: "custom", label: "", render: () => <p className="pst-help">{help}</p> } },

@@ -4,10 +4,10 @@
 // Publicar         -> contenido/paginas/<página>.json (Netlify vuelve a generar la web en 1-2 minutos)
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Puck } from "@puckeditor/core";
+import { Puck, useGetPuck } from "@puckeditor/core";
 import "@puckeditor/core/puck.css";
 import { makeRenderer, makeFilters, esc } from "./tpl.js";
-import { TEMPLATES, makeConfig } from "./bloques.jsx";
+import { TEMPLATES, makeConfig, thumb } from "./bloques.jsx";
 
 const PAGE = new URLSearchParams(location.search).get("pagina") || "portada";
 const MAIN = `contenido/paginas/${PAGE}.json`;
@@ -95,40 +95,105 @@ function resize(file, max = 1600) {
 }
 const slug = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/\.[a-z0-9]+$/, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "foto";
 
+async function uploadPhoto(f) {
+    if (!f || !/^image\//.test(f.type)) throw new Error("foto");
+    const blob = await resize(f);
+    const b64 = await new Promise((res) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1]); r.readAsDataURL(blob); });
+    const d = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+    const path = `paginas/${d}-${slug(f.name)}-${Math.random().toString(36).slice(2, 6)}.jpg`;
+    await putFile("fotosdefinitivas/web/" + path, b64, `Foto subida desde el editor visual «${path}» — por ${who()}`);
+    uploaded.set(path, URL.createObjectURL(blob));
+    return path;
+}
+const uploadError = (err) => alert(err.message === "sesion" ? "La sesión ha caducado. Vuelve a entrar en el panel y repite." : "No se ha podido subir la foto. Prueba con otra foto (JPG o PNG).");
+
 function ImageField({ label, value, onChange, advanced }) {
     const [busy, setBusy] = useState(false);
+    const [over, setOver] = useState(false);
     const input = useRef(null);
-    async function pick(e) {
-        const f = e.target.files && e.target.files[0];
-        e.target.value = "";
+    async function send(f) {
         if (!f) return;
         setBusy(true);
-        try {
-            const blob = await resize(f);
-            const b64 = await new Promise((res) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1]); r.readAsDataURL(blob); });
-            const d = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-            const path = `paginas/${d}-${slug(f.name)}-${Math.random().toString(36).slice(2, 6)}.jpg`;
-            await putFile("fotosdefinitivas/web/" + path, b64, `Foto subida desde el editor visual «${path}» — por ${who()}`);
-            uploaded.set(path, URL.createObjectURL(blob));
-            onChange(path);
-        } catch (err) {
-            alert(err.message === "sesion" ? "La sesión ha caducado. Vuelve a entrar en el panel y repite." : "No se ha podido subir la foto. Inténtalo de nuevo.");
-        }
+        try { onChange(await uploadPhoto(f)); } catch (err) { uploadError(err); }
         setBusy(false);
     }
+    const pick = (e) => { const f = e.target.files && e.target.files[0]; e.target.value = ""; send(f); };
     const src = imgUrl(value).replace(/&amp;/g, "&");
     return (
-        <div className="pst-img-field">
+        <div className={"pst-img-field" + (over ? " is-over" : "")}
+            onDragOver={(e) => { e.preventDefault(); setOver(true); }} onDragLeave={() => setOver(false)}
+            onDrop={(e) => { e.preventDefault(); setOver(false); send(e.dataTransfer.files[0]); }}>
             <span className="pst-label">{label}</span>
             {src ? <img src={src} alt="" /> : <div className="pst-img-empty">Sin foto</div>}
             <div className="pst-img-actions">
                 <button type="button" onClick={() => input.current.click()} disabled={busy}>{busy ? "Subiendo…" : "Subir una foto"}</button>
+                <span className="pst-help">o arrástrala aquí</span>
                 <input ref={input} type="file" accept="image/*" hidden onChange={pick} />
             </div>
             {advanced && <input className="pst-img-path" type="text" value={value || ""} onChange={(e) => onChange(e.target.value)} placeholder="o el nombre de una foto de la web" />}
             <small className="pst-help">Si salen personas reconocibles, asegúrate de tener su permiso. No publiques caras de niños sin el permiso de sus padres.</small>
         </div>
     );
+}
+
+// ---------------------------------------------------------------- bloque editable sobre la página
+function setPath(obj, path, value) {
+    const ks = path.split(".");
+    let o = obj;
+    ks.slice(0, -1).forEach((k) => { o = o[/^\d+$/.test(k) ? +k : k]; });
+    o[ks[ks.length - 1]] = value;
+}
+function Block({ id, html }) {
+    const ref = useRef(null);
+    const getPuck = useGetPuck();
+    useEffect(() => {
+        const root = ref.current;
+        if (!root) return;
+        const update = (path, value) => getPuck().dispatch({
+            type: "setData",
+            data: (prev) => ({ ...prev, content: prev.content.map((c) => {
+                if (c.props.id !== id) return c;
+                const n = JSON.parse(JSON.stringify(c));
+                try { setPath(n.props, path, value); } catch (e) { return c; }
+                return n;
+            }) }),
+        });
+        root.querySelectorAll("[data-f]").forEach((el) => {
+            const path = el.getAttribute("data-f");
+            if (el.tagName === "IMG" || el.hasAttribute("data-bgf")) {
+                el.title = "Arrastra aquí una foto de tu ordenador para cambiarla";
+                el.addEventListener("dragover", (e) => { if ([...(e.dataTransfer.types || [])].includes("Files")) { e.preventDefault(); el.classList.add("pst-drop"); } });
+                el.addEventListener("dragleave", () => el.classList.remove("pst-drop"));
+                el.addEventListener("drop", async (e) => {
+                    const f = e.dataTransfer.files && e.dataTransfer.files[0];
+                    if (!f) return;
+                    e.preventDefault(); e.stopPropagation();
+                    el.classList.remove("pst-drop"); el.classList.add("pst-uploading");
+                    try { update(path, await uploadPhoto(f)); } catch (err) { uploadError(err); }
+                    el.classList.remove("pst-uploading");
+                });
+                return;
+            }
+            el.title = "Doble clic para escribir";
+            el.addEventListener("dblclick", (e) => {
+                e.preventDefault(); e.stopPropagation();
+                el.setAttribute("contenteditable", "plaintext-only");
+                el.focus();
+            });
+            el.addEventListener("keydown", (e) => {
+                e.stopPropagation();
+                if ((e.key === "Enter" && !el.hasAttribute("data-multi")) || e.key === "Escape") { e.preventDefault(); el.blur(); }
+            });
+            el.addEventListener("blur", () => {
+                if (!el.hasAttribute("contenteditable")) return;
+                el.removeAttribute("contenteditable");
+                let v = el.innerText.replace(/\u00a0/g, " ");
+                v = el.hasAttribute("data-multi") ? v.replace(/\n{3,}/g, "\n\n").trim() : v.replace(/\s*\n\s*/g, " ").trim();
+                update(path, v);
+            });
+        });
+    }, [html]);
+    return <div className="pst-block" ref={ref} dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
 // ---------------------------------------------------------------- vista previa de los bloques automáticos
@@ -204,11 +269,13 @@ function App() {
             render: (type, props) => render(TEMPLATES[type], props),
             imageField: (label) => ({ type: "custom", label, render: ({ value, onChange }) => <ImageField label={label} value={value} onChange={onChange} advanced={adv} /> }),
             advanced: adv,
+            Block,
             help: () => (
                 <div className="pst-guide">
                     <strong>Cómo editar la página</strong>
                     <ol>
-                        <li><b>Pulsa un apartado</b> de la página para cambiar sus textos, fotos y botones aquí.</li>
+                        <li><b>Doble clic</b> en un título o un texto de la página para escribir encima. <b>Arrastra una foto</b> de tu ordenador sobre una imagen para cambiarla.</li>
+                        <li><b>Pulsa un apartado</b> para ver todas sus opciones aquí.</li>
                         <li><b>Arrastra un bloque</b> desde la izquierda para añadir un apartado nuevo, o arrastra los apartados para cambiarlos de sitio.</li>
                         <li><b>Guardar borrador</b> lo deja a medias sin cambiar la web. <b>Publicar</b> lo pone en la web.</li>
                     </ol>
@@ -281,6 +348,12 @@ function App() {
                 headerTitle={PAGE === "portada" ? "Portada" : PAGE}
                 iframe={{ enabled: true, syncHostStyles: true }}
                 overrides={{
+                    componentItem: ({ name }) => (
+                        <div className="pst-item">
+                            <span className="pst-thumb" dangerouslySetInnerHTML={{ __html: thumb(name) }} />
+                            <span className="pst-item-label">{(config.components[name] || {}).label || name}</span>
+                        </div>
+                    ),
                     // dentro de la vista previa se cargan los estilos de la web (fuera, el editor usa los suyos)
                     iframe: ({ children, document: doc }) => {
                         useEffect(() => {
