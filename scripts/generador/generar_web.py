@@ -555,8 +555,8 @@ def gospel_feature(depth):
 
 GALLERY = [
     ("dsc_0541.jpg", "Interior de la iglesia durante la eucaristía", "wide"),
-    ("img_5432.jpg", "Música en la eucaristía", "tall"),
     ("album/salida-2026.jpg", "Salida parroquial", ""),
+    ("img_5432.jpg", "Música en la eucaristía", "tall"),
     ("dsc_0589.jpg", "Bendición de ramos en el Domingo de Ramos", ""),
     ("dsc_0599webog.jpg", "El campanario durante el Domingo de Ramos", "tall"),
     ("fotobodapepi.jpg", "Celebración de un aniversario de boda", ""),
