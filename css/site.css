@@ -3230,3 +3230,12 @@ html { scrollbar-color: #cdb27f #f6f1e8; }
 /* pie: enlaces que se iluminan en dorado */
 footer a { transition: color .25s; } footer a:hover { color: #e6d3a8; }
 @media (prefers-reduced-motion: reduce) { .js img[loading="lazy"] { animation: none; } .icon-card:hover { transform: none; } }
+
+/* ---------- Movimiento elegante al bajar ---------- */
+.js .reveal { filter: blur(6px); transform: translateY(26px) scale(.985); transition: opacity 1s var(--ease), transform 1s var(--ease), filter 1s var(--ease); }
+.js .reveal.in { filter: none; transform: none; }
+/* profundidad: la foto de fondo se queda quieta y el texto pasa por encima (solo ordenador) */
+@media (min-width: 1000px) and (hover: hover) {
+    .image-band { background-attachment: fixed; background-size: cover; background-position: center; }
+}
+@media (prefers-reduced-motion: reduce) { .js .reveal { filter: none; transform: none; transition: opacity .4s; } }
