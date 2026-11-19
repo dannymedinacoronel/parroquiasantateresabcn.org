@@ -44,7 +44,8 @@ const b64dec = (s) => decodeURIComponent(escape(atob(s.replace(/\s/g, ""))));
 async function api(path, opts = {}) {
     await ready;
     opts.headers = Object.assign({ Authorization: "Bearer " + token(), "Content-Type": "application/json" }, opts.headers || {});
-    const r = await fetch(gw.url + "/repos/" + gw.repo + path, opts);
+    // el gateway de DecapBridge ya sabe cuál es el repositorio: las rutas van sin /repos/<repo>, como las que usa Decap
+    const r = await fetch(gw.url + path, opts);
     if (r.status === 401 || r.status === 403) throw new Error("sesion");
     return r;
 }
@@ -179,7 +180,7 @@ function App() {
 
     useEffect(() => {
         (async () => {
-            if (!token()) return setState({ status: "sin-sesion" });
+            if (!token()) return setState({ status: "sin-sesion", why: "no hay sesión guardada en este navegador" });
             try {
                 const [datos, main, draft] = await Promise.all([
                     fetch("/admin/editor/datos.json", { cache: "no-store" }).then((r) => r.json()),
@@ -190,7 +191,7 @@ function App() {
                 current.current = data;
                 setState({ status: "listo", datos, data, hasDraft: !!draft });
             } catch (e) {
-                setState({ status: e.message === "sesion" ? "sin-sesion" : "error" });
+                setState({ status: e.message === "sesion" ? "sin-sesion" : "error", why: e.message === "sesion" ? "la sesión ha caducado" : e.message });
             }
         })();
     }, []);
@@ -248,6 +249,7 @@ function App() {
         <div className="pst-screen">
             <h1>Editor visual de la web</h1>
             <p>Para editar las páginas, entra primero en el panel con tu usuario y vuelve a esta pestaña.</p>
+            {state.why && <p style={{ fontSize: ".8rem", color: "#8b8479" }}>({state.why})</p>}
             <p><a className="pst-btn" href="/admin/">Entrar en el panel</a> <button className="pst-btn" onClick={() => location.reload()}>Ya he entrado</button></p>
         </div>
     );
