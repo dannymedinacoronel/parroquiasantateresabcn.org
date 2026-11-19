@@ -1,8 +1,11 @@
 // Cápsulas de fe automáticas: los reels de Instagram de la parroquia que llevan #CápsulasDeFe en el texto.
 // GET /api/capsulas-ig      -> lista de reels (la web los añade sola a la portada y a «Cápsulas de fe»)
 // GET /api/ig-thumb?id=...  -> foto de portada del reel, guardada aquí (la web no pide nada a Instagram al cargar)
-// Necesita la clave de la API de Instagram en la variable IG_TOKEN de Netlify (cuenta profesional).
-// La clave dura 60 días: esta función la renueva sola cada 20 días y guarda la nueva en Blobs.
+// Dos formas de conectarlo (las dos con la cuenta de Instagram en modo profesional):
+//  - BEHOLD_FEED: el enlace del feed JSON de behold.so (gratis; solo hay que conectar Instagram en su web), o
+//  - IG_TOKEN: la clave de la API de Instagram (dura 60 días; esta función la renueva sola cada 20 días).
+// Los reels encontrados se guardan en Blobs, así no se pierden aunque el feed solo traiga los últimos.
+const BEHOLD_FEED = process.env.BEHOLD_FEED || "";
 import { getStore } from "@netlify/blobs";
 
 const TAG = /#c[aá]psulasdefe\b/i;
@@ -29,9 +32,39 @@ export default async (req) => {
         if (!img) return new Response("", { status: 404 });
         return new Response(img, { headers: { "Content-Type": "image/jpeg", "Cache-Control": "public, max-age=86400", "Netlify-CDN-Cache-Control": "public, durable, s-maxage=2592000" } });
     }
+    const saved = (await store.get("ultimas", { type: "json" }).catch(() => null)) || [];
+    const keep = (found) => {
+        const all = new Map(saved.map((x) => [x.id, x]));
+        found.forEach((x) => all.set(x.id, x));
+        return [...all.values()].sort((a, b) => (b.fecha || "").localeCompare(a.fecha || "")).slice(0, 60);
+    };
+    async function thumb(id, src) {
+        if (!src || (await store.getMetadata("thumb/" + id).catch(() => null))) return;
+        const im = await fetch(src).catch(() => null);
+        if (im && im.ok) await store.set("thumb/" + id, await im.arrayBuffer());
+    }
+    if (BEHOLD_FEED) {
+        try {
+            const r = await fetch(BEHOLD_FEED, { signal: AbortSignal.timeout(8000) });
+            const j = await r.json();
+            const found = [];
+            for (const m of (j.posts || j || [])) {
+                if (!/video|reel/i.test(m.mediaType || m.media_type || "") || !TAG.test(m.caption || "")) continue;
+                const id = String(m.id || "").replace(/\D/g, "") || String(Math.abs([...String(m.permalink)].reduce((h, c) => (h * 31 + c.charCodeAt(0)) | 0, 0)));
+                await thumb(id, m.thumbnailUrl || (m.sizes && m.sizes.medium && m.sizes.medium.mediaUrl) || m.mediaUrl);
+                found.push({ id, link: m.permalink, titulo: titleOf(m.caption), tema: temaOf(m.caption), fecha: (m.timestamp || "").slice(0, 10), foto: `/api/ig-thumb?id=${id}` });
+            }
+            const items = keep(found);
+            await store.setJSON("ultimas", items);
+            return reply(items, 3 * 3600);
+        } catch (e) {
+            console.log("behold:", String(e));
+            return reply(saved, 600);
+        }
+    }
     let tok = await store.get("token", { type: "json" }).catch(() => null);
     if (!tok && process.env.IG_TOKEN) tok = { t: process.env.IG_TOKEN, at: 0 };
-    if (!tok) return reply([], 3600);
+    if (!tok) return reply(saved, 3600);
     if (Date.now() - (tok.at || 0) > 20 * 864e5) {
         try {
             const r = await fetch(`https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${encodeURIComponent(tok.t)}`);
@@ -46,14 +79,12 @@ export default async (req) => {
         const items = [];
         for (const m of j.data || []) {
             if (m.media_type !== "VIDEO" || !TAG.test(m.caption || "")) continue;
-            if (m.thumbnail_url && !(await store.getMetadata("thumb/" + m.id).catch(() => null))) {
-                const im = await fetch(m.thumbnail_url).catch(() => null);
-                if (im && im.ok) await store.set("thumb/" + m.id, await im.arrayBuffer());
-            }
+            await thumb(m.id, m.thumbnail_url);
             items.push({ id: m.id, link: m.permalink, titulo: titleOf(m.caption), tema: temaOf(m.caption), fecha: (m.timestamp || "").slice(0, 10), foto: `/api/ig-thumb?id=${m.id}` });
         }
-        await store.setJSON("ultimas", items);
-        return reply(items, 3 * 3600);
+        const all = keep(items);
+        await store.setJSON("ultimas", all);
+        return reply(all, 3 * 3600);
     } catch (e) {
         console.log("ig:", String(e));
         return reply((await store.get("ultimas", { type: "json" }).catch(() => null)) || [], 600);

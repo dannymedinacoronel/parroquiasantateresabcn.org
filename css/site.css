@@ -3315,3 +3315,64 @@ body.menu-open .wa-float { opacity: 0; visibility: hidden; }
 @media (max-width: 700px) { .cap-strip { grid-auto-columns: 62%; } }
 .cap-strip { grid-auto-columns: 230px; justify-content: center; }
 @media (max-width: 700px) { .cap-strip { grid-auto-columns: 62%; justify-content: start; } }
+
+/* ---------- Cápsulas: reproductor y tira mejorados ---------- */
+.cap-strip-wrap { position: relative; max-width: 1240px; margin: 0 auto; }
+.cap-strip-wrap .cap-strip { scrollbar-width: none; -webkit-mask: linear-gradient(90deg, transparent 0, #000 3%, #000 97%, transparent 100%); mask: linear-gradient(90deg, transparent 0, #000 3%, #000 97%, transparent 100%); }
+.cap-strip-wrap .cap-strip::-webkit-scrollbar { display: none; }
+.cap-snav { position: absolute; top: calc(50% - 10px); transform: translateY(-50%); z-index: 3; width: 48px; height: 48px; border-radius: 50%; border: 1px solid #e2cc9c; background: rgba(255, 255, 255, .95); color: var(--accent-dark); font-size: 1.8rem; line-height: 1; cursor: pointer; box-shadow: 0 8px 22px rgba(40, 30, 10, .16); opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; }
+.cap-snav-prev { left: -8px; } .cap-snav-next { right: -8px; }
+.cap-strip-wrap.can-prev .cap-snav-prev, .cap-strip-wrap.can-next .cap-snav-next { opacity: 1; pointer-events: auto; }
+.cap-snav:hover { background: var(--accent-color); color: #fff; border-color: var(--accent-color); }
+@media (hover: none) { .cap-snav { display: none; } }
+.cap-card > button:focus-visible { outline: 3px solid var(--accent-color); outline-offset: 3px; }
+
+.cap-modal { position: fixed; inset: 0; z-index: 2000; display: grid; place-items: center; padding: 1.25rem; background: rgba(10, 7, 3, .78); opacity: 0; transition: opacity .25s ease; }
+.cap-modal.is-open { opacity: 1; }
+.cap-modal-bg { position: absolute; inset: -40px; background-size: cover; background-position: center; filter: blur(38px) brightness(.45) saturate(1.2); transform: scale(1.1); }
+.cap-stage { position: relative; z-index: 1; display: flex; align-items: center; gap: 2rem; transform: scale(.96); transition: transform .3s var(--ease); }
+.cap-modal.is-open .cap-stage { transform: none; }
+.cap-frame { position: relative; overflow: hidden; border-radius: 18px; background: #000; box-shadow: 0 30px 80px rgba(0, 0, 0, .55), 0 0 0 1px rgba(230, 211, 168, .25); }
+.cap-frame.is-yt { width: min(400px, 88vw, calc(86vh * 9 / 16)); aspect-ratio: 9 / 16; }
+.cap-frame.is-ig { width: min(400px, 88vw); height: min(86vh, 760px); background: #fff; }
+.cap-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.cap-spin { position: absolute; left: 50%; top: 50%; width: 42px; height: 42px; margin: -21px 0 0 -21px; border-radius: 50%; border: 3px solid rgba(191, 160, 101, .25); border-top-color: var(--accent-color); animation: capSpin .8s linear infinite; opacity: 0; transition: opacity .2s; }
+.cap-frame.is-loading .cap-spin { opacity: 1; }
+@keyframes capSpin { to { transform: rotate(360deg); } }
+.cap-meta { width: 230px; color: #fff; display: grid; gap: .55rem; align-content: center; }
+.cap-meta-tema { justify-self: start; font-size: .62rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #fff; padding: .35rem .7rem; border-radius: 999px; border: 1px solid rgba(230, 211, 168, .55); background: rgba(0, 0, 0, .25); }
+.cap-meta strong { font-family: var(--header-font); font-size: 2rem; line-height: 1.1; font-weight: 600; }
+.cap-count { font-size: .75rem; letter-spacing: 2px; color: rgba(230, 211, 168, .8); }
+.cap-meta a { justify-self: start; margin-top: .4rem; font-size: .75rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: #e6d3a8; text-decoration: none; border-bottom: 1px solid rgba(230, 211, 168, .5); padding-bottom: 2px; }
+.cap-close { position: absolute; top: 1rem; right: 1rem; z-index: 2; width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .35); background: rgba(0, 0, 0, .25); color: #fff; font-size: 1.7rem; cursor: pointer; }
+.cap-arrow { position: absolute; top: 50%; z-index: 2; transform: translateY(-50%); width: 54px; height: 54px; border-radius: 50%; border: 1px solid rgba(230, 211, 168, .45); background: rgba(0, 0, 0, .3); color: #fff; font-size: 2rem; line-height: 1; cursor: pointer; transition: background .2s; }
+.cap-arrow:hover, .cap-close:hover { background: var(--accent-color); border-color: var(--accent-color); }
+.cap-prev { left: 1.25rem; } .cap-next { right: 1.25rem; }
+.cap-modal.is-single .cap-arrow, .cap-modal.is-single .cap-count { display: none; }
+@media (max-width: 760px) {
+    .cap-stage { flex-direction: column; gap: .9rem; }
+    .cap-meta { width: min(400px, 88vw); text-align: center; justify-items: center; }
+    .cap-meta-tema, .cap-meta a { justify-self: center; }
+    .cap-meta strong { font-size: 1.45rem; }
+    .cap-frame.is-ig { height: min(74vh, 700px); }
+    .cap-frame.is-yt { width: min(88vw, calc(72vh * 9 / 16)); }
+    .cap-arrow { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .cap-modal, .cap-stage { transition: none; } }
+
+/* ---------- Mapa a juego con la web ---------- */
+/* tonos cálidos y suaves (sepia y dorado) para que el mapa no desentone */
+.location-map iframe { filter: grayscale(.5) sepia(.28) saturate(1.05) hue-rotate(-6deg) contrast(.97); transition: filter .6s var(--ease); }
+.location:hover .location-map iframe { filter: grayscale(.25) sepia(.15) contrast(1); }
+/* velo cálido en los bordes y filo dorado arriba y abajo */
+.location-map::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 90% at 70% 50%, transparent 62%, rgba(246, 241, 232, .4) 100%); }
+.location::before, .location::after { content: ""; position: absolute; left: 0; right: 0; height: 2px; z-index: 2; background: var(--gold-line); pointer-events: none; }
+.location::before { top: 0; } .location::after { bottom: 0; }
+/* aviso de cookies del mapa: fondo de plano dibujado en vez de rayas */
+.location-map .consent-placeholder { background:
+    radial-gradient(circle at 72% 48%, rgba(191, 160, 101, .35) 0 10px, rgba(191, 160, 101, .12) 11px 46px, transparent 47px),
+    repeating-linear-gradient(35deg, transparent 0 46px, rgba(143, 115, 64, .10) 46px 49px),
+    repeating-linear-gradient(-55deg, transparent 0 70px, rgba(143, 115, 64, .08) 70px 72px),
+    linear-gradient(180deg, #f3ece0, #e9dfcc); }
+/* tarjeta «Cómo llegar» con filo dorado */
+.location-card { border-radius: 14px; box-shadow: 0 24px 60px rgba(40, 30, 10, .18), 0 0 0 1px rgba(191, 160, 101, .3); }

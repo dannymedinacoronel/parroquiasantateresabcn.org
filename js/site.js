@@ -321,26 +321,70 @@
         return dt.toLocaleDateString(LOCALE, opts);
     }
     /* --- Cápsulas de fe: el vídeo (Instagram o YouTube) se carga solo al pulsar «reproducir» --- */
+    /* reproductor: vídeo grande con fondo difuminado, título, flechas para pasar al siguiente y deslizar en el móvil */
     function openCapsule(btn) {
-        {
-            var box = document.createElement("div");
-            box.className = "cap-modal";
-            box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true");
-            box.innerHTML = '<div class="cap-modal-in"><iframe allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>' +
-                '<a class="cap-modal-link" target="_blank" rel="noopener"></a></div><button type="button" class="cap-close" aria-label="' + T("close") + '">&times;</button>';
-            box.querySelector("iframe").src = btn.getAttribute("data-cap-embed");
-            var a = box.querySelector(".cap-modal-link");
-            a.href = btn.getAttribute("data-cap-link");
-            a.textContent = (btn.getAttribute("data-cap-src") === "instagram" ? "Instagram" : "YouTube") + " ↗";
-            function close() { box.remove(); document.body.classList.remove("menu-open"); document.removeEventListener("keydown", esc); }
-            function esc(e) { if (e.key === "Escape") close(); }
-            box.addEventListener("click", function (e) { if (e.target === box) close(); });
-            box.querySelector(".cap-close").addEventListener("click", close);
-            document.addEventListener("keydown", esc);
-            document.body.appendChild(box);
-            document.body.classList.add("menu-open");
+        var all = Array.prototype.slice.call((btn.closest(".cap-strip") || document).querySelectorAll("[data-cap-embed]"));
+        var idx = Math.max(0, all.indexOf(btn));
+        var box = document.createElement("div");
+        box.className = "cap-modal";
+        box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true");
+        box.innerHTML = '<div class="cap-modal-bg"></div>' +
+            '<button type="button" class="cap-close" aria-label="' + T("close") + '">&times;</button>' +
+            '<button type="button" class="cap-arrow cap-prev" aria-label="' + T("prev") + '">&#8249;</button>' +
+            '<button type="button" class="cap-arrow cap-next" aria-label="' + T("next") + '">&#8250;</button>' +
+            '<div class="cap-stage"><div class="cap-frame"><span class="cap-spin"></span><iframe allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen scrolling="no"></iframe></div>' +
+            '<div class="cap-meta"><span class="cap-meta-tema"></span><strong></strong><span class="cap-count"></span><a target="_blank" rel="noopener"></a></div></div>';
+        var bg = box.querySelector(".cap-modal-bg"), frame = box.querySelector(".cap-frame"), ifr = box.querySelector("iframe");
+        function show(k) {
+            idx = (k + all.length) % all.length;
+            var b = all[idx], src = b.getAttribute("data-cap-src"), img = b.querySelector("img");
+            frame.className = "cap-frame is-loading " + (src === "instagram" ? "is-ig" : "is-yt");
+            bg.style.backgroundImage = img && img.src ? "url('" + img.src + "')" : "";
+            ifr.onload = function () { frame.classList.remove("is-loading"); };
+            ifr.src = b.getAttribute("data-cap-embed");
+            box.querySelector(".cap-meta-tema").textContent = (b.querySelector(".cap-tema") || {}).textContent || "";
+            box.querySelector(".cap-meta strong").textContent = (b.querySelector(".cap-info strong") || {}).textContent || "";
+            box.querySelector(".cap-count").textContent = all.length > 1 ? (idx + 1) + " / " + all.length : "";
+            var a = box.querySelector(".cap-meta a");
+            a.href = b.getAttribute("data-cap-link");
+            a.textContent = (src === "instagram" ? "Instagram" : "YouTube") + " ↗";
         }
+        function close() { box.classList.remove("is-open"); setTimeout(function () { box.remove(); }, 250); document.body.classList.remove("menu-open"); document.removeEventListener("keydown", key); }
+        function key(e) { if (e.key === "Escape") close(); if (e.key === "ArrowRight") show(idx + 1); if (e.key === "ArrowLeft") show(idx - 1); }
+        box.addEventListener("click", function (e) { if (e.target === box || e.target === bg || e.target.classList.contains("cap-stage")) close(); });
+        box.querySelector(".cap-close").addEventListener("click", close);
+        box.querySelector(".cap-prev").addEventListener("click", function () { show(idx - 1); });
+        box.querySelector(".cap-next").addEventListener("click", function () { show(idx + 1); });
+        if (all.length < 2) box.classList.add("is-single");
+        var x0 = null;
+        box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+        box.addEventListener("touchend", function (e) { if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 60) show(idx + (dx < 0 ? 1 : -1)); x0 = null; });
+        document.addEventListener("keydown", key);
+        document.body.appendChild(box);
+        document.body.classList.add("menu-open");
+        show(idx);
+        requestAnimationFrame(function () { box.classList.add("is-open"); });
     }
+    /* tira de cápsulas: flechas para pasar en el ordenador */
+    document.querySelectorAll(".cap-strip").forEach(function (strip) {
+        if (strip.closest(".capsulas-page")) return;
+        var wrap = document.createElement("div");
+        wrap.className = "cap-strip-wrap";
+        strip.parentNode.insertBefore(wrap, strip); wrap.appendChild(strip);
+        ["prev", "next"].forEach(function (d) {
+            var b = document.createElement("button");
+            b.type = "button"; b.className = "cap-snav cap-snav-" + d; b.setAttribute("aria-label", T(d));
+            b.innerHTML = d === "prev" ? "&#8249;" : "&#8250;";
+            b.addEventListener("click", function () { strip.scrollBy({ left: (d === "prev" ? -1 : 1) * strip.clientWidth * .8, behavior: "smooth" }); });
+            wrap.appendChild(b);
+        });
+        function upd() {
+            wrap.classList.toggle("can-prev", strip.scrollLeft > 8);
+            wrap.classList.toggle("can-next", strip.scrollLeft + strip.clientWidth < strip.scrollWidth - 8);
+        }
+        strip.addEventListener("scroll", upd, { passive: true }); window.addEventListener("resize", upd); setTimeout(upd, 300);
+        strip.upd = upd;
+    });
     document.addEventListener("click", function (e) {
         var btn = e.target.closest && e.target.closest("[data-cap-embed]");
         if (btn) openCapsule(btn);
@@ -370,6 +414,7 @@
             });
             if (added) capsBox.querySelectorAll(".cap-soon").forEach(function (x) { x.parentNode.removeChild(x); });
             if (limit) Array.prototype.slice.call(capsBox.children, limit).forEach(function (x) { x.parentNode.removeChild(x); });
+            if (capsBox.upd) capsBox.upd();
         }).catch(function () { });
     }
 
