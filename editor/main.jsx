@@ -217,8 +217,9 @@ function App() {
             ),
             autoPreview: (type, label) => <AutoPreview type={type} label={label} />,
         });
-        cfg.components.TarjetasIcono.fields.tarjetas.arrayFields.icono.options =
-            Object.keys(state.datos.iconos).map((k) => ({ label: ICON_NAMES[k] || k, value: k }));
+        const iconOpts = Object.keys(state.datos.iconos).map((k) => ({ label: ICON_NAMES[k] || k, value: k }));
+        cfg.components.TarjetasIcono.fields.tarjetas.arrayFields.icono.options = iconOpts;
+        cfg.components.Columnas.fields.columnas.arrayFields.icono.options = [{ label: "Sin icono", value: "" }].concat(iconOpts);
         return cfg;
     }, [state.status, adv]);
 

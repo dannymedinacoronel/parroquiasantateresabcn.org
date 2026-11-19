@@ -6,7 +6,7 @@ así lo que se ve al editar y lo que se publica sale del mismo sitio.
 
 Plantillas (un «mustache» pequeño, igual en editor/tpl.js):
   {{campo}}            texto escapado            {{{campo}}}        HTML tal cual
-  {{campo|filtro}}     filtro: p (párrafos), br (saltos de línea), img (foto), url (enlace), icon (icono), count
+  {{campo|filtro}}     filtro: p (párrafos), br (saltos de línea), img (foto), url (enlace), icon (icono), count, yt (vídeo de YouTube)
   {{#lista}}…{{/lista}}  repite por cada elemento (dentro: @index, @first, @last); con un valor, se muestra si no está vacío
   {{^campo}}…{{/campo}}  se muestra si el campo está vacío
   {{#campo=valor}}…{{/campo=valor}}  se muestra si el campo vale eso
@@ -163,7 +163,12 @@ def make_filters(base, icons, img_url=None, hero_url=None):
         n = int(m.group(2))
         return f' data-count="{n}"' + (' data-prefix="+"' if m.group(1) else "") + (' data-from="1850"' if 1850 < n < 2100 else "")
 
-    return {"img": img_url or img, "hero": hero_url or img_url or img, "url": url, "p": paras, "br": br, "icon": icon, "count": count}
+    def yt(v, _s=None):
+        v = str(v or "").strip()
+        m = re.search(r"(?:youtu\.be/|v=|embed/|shorts/)([A-Za-z0-9_-]{11})", v)
+        return esc(m.group(1) if m else v if re.fullmatch(r"[A-Za-z0-9_-]{11}", v) else "")
+
+    return {"yt": yt, "img": img_url or img, "hero": hero_url or img_url or img, "url": url, "p": paras, "br": br, "icon": icon, "count": count}
 
 
 # ------------------------------------------------------------------ páginas

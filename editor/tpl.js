@@ -101,6 +101,11 @@ export function makeFilters(base, icons, imgUrl) {
         const n = parseInt(m[2], 10);
         return ` data-count="${n}"` + (m[1] ? ' data-prefix="+"' : "") + (n > 1850 && n < 2100 ? ' data-from="1850"' : "");
     };
+    const yt = (v) => {
+        v = String(v || "").trim();
+        const m = /(?:youtu\.be\/|v=|embed\/|shorts\/)([A-Za-z0-9_-]{11})/.exec(v);
+        return esc(m ? m[1] : /^[A-Za-z0-9_-]{11}$/.test(v) ? v : "");
+    };
     const im = imgUrl || img;
-    return { img: im, hero: im, url, p, br, icon, count };
+    return { yt, img: im, hero: im, url, p, br, icon, count };
 }

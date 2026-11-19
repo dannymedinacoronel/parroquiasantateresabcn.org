@@ -1,7 +1,7 @@
         <section{{#ancla}} id="{{ancla}}"{{/ancla}}{{#fondo}} class="{{fondo}}"{{/fondo}}>
             <div class="two-col center">
                 <div class="framed-img">
-                    <img src="{{foto|img}}" alt="{{foto_alt}}" loading="lazy">{{#sello_numero}}
+                    <img src="{{foto|img}}" alt="{{#foto_alt}}{{foto_alt}}{{/foto_alt}}{{^foto_alt}}{{titulo}}{{/foto_alt}}" loading="lazy">{{#sello_numero}}
                     <div class="badge"><span>{{sello_texto}}</span><strong{{sello_numero|count}}>{{sello_numero}}</strong></div>{{/sello_numero}}
                 </div>
                 <div>{{#antetitulo}}

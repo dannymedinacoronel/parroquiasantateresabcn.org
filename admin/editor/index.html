@@ -7,6 +7,7 @@
     <title>Editor visual · Parroquia Santa Teresa de Jesús</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <!-- Editor visual de páginas (Puck). El código está en editor/ y se compila con «npm run build:editor». -->
+    <link rel="stylesheet" href="/css/fonts.css">
     <link rel="stylesheet" href="/admin/editor/editor.css">
     <style>
         html, body { margin: 0; height: 100%; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
@@ -30,6 +31,21 @@
         .pst-guide ol { margin: 0 0 .5rem; padding-left: 1.2rem; }
         .pst-guide li { margin-bottom: .35rem; }
         .pst-guide small { color: #6b6458; }
+        /* tema: dorado de la parroquia en lugar del azul de Puck */
+        :root {
+            --puck-font-family: "Montserrat", system-ui, sans-serif;
+            --puck-color-azure-01: #2f2410; --puck-color-azure-02: #4a3818; --puck-color-azure-03: #6d5326; --puck-color-azure-04: #8f7340;
+            --puck-color-azure-05: #a88a52; --puck-color-azure-06: #bfa065; --puck-color-azure-07: #cdb27f; --puck-color-azure-08: #dac59c;
+            --puck-color-azure-09: #e6d3a8; --puck-color-azure-10: #efe3c6; --puck-color-azure-11: #f6eedb; --puck-color-azure-12: #fbf7ee;
+        }
+        body { background: #f7f4ee; }
+        .pst-btn { white-space: nowrap; border-radius: 999px; padding: .5rem 1rem; font-family: "Montserrat", system-ui, sans-serif; letter-spacing: .2px; transition: background .2s, box-shadow .2s; }
+        .pst-btn-ghost:hover { background: #fbf5e8; }
+        .pst-btn:not(.pst-btn-ghost) { box-shadow: 0 4px 14px rgba(191,160,101,.35); }
+        .pst-screen h1 { font-family: "Cormorant Garamond", Georgia, serif; font-size: 2.2rem; font-weight: 600; }
+        .pst-toast { border-radius: 999px; padding: .85rem 1.4rem; }
+        .pst-guide { border-radius: 12px; box-shadow: 0 4px 16px rgba(40,30,10,.06); }
+        .pst-img-field img { border-radius: 10px; }
     </style>
 </head>
 <body>

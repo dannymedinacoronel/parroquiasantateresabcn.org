@@ -1,7 +1,7 @@
         <section class="visit{{#fondo}} {{fondo}}{{/fondo}}"{{#ancla}} id="{{ancla}}"{{/ancla}}>
             <div class="two-col center">
                 <figure class="visit-img">
-                    <img src="{{foto|img}}" alt="{{foto_alt}}" loading="lazy">{{#pie}}
+                    <img src="{{foto|img}}" alt="{{#foto_alt}}{{foto_alt}}{{/foto_alt}}{{^foto_alt}}{{titulo}}{{/foto_alt}}" loading="lazy">{{#pie}}
                     <figcaption>{{pie}}</figcaption>{{/pie}}
                 </figure>
                 <div>{{#antetitulo}}

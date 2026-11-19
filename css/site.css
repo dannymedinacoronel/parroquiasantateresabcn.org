@@ -3098,5 +3098,10 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
     .ag-day { font-size: 2rem; }
 }
 
+/* Editor visual: separador entre apartados */
+.blq-sep { display: grid; place-items: center; color: var(--accent-color); }
+.blq-sep-pequeno { height: 2rem; } .blq-sep-medio { height: 4rem; } .blq-sep-grande { height: 7rem; }
+.blq-sep .ornament { width: 120px; }
+
 /* Texto solo para lectores de pantalla */
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

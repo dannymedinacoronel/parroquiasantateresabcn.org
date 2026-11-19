@@ -11,12 +11,16 @@ import Visita from "./plantillas/Visita.html";
 import Texto from "./plantillas/Texto.html";
 import Cita from "./plantillas/Cita.html";
 import Llamada from "./plantillas/Llamada.html";
+import Video from "./plantillas/Video.html";
+import Columnas from "./plantillas/Columnas.html";
+import Separador from "./plantillas/Separador.html";
 
-export const TEMPLATES = { Carrusel, TextoFoto, BandaFrase, TarjetasFoto, TarjetasIcono, Galeria, Visita, Texto, Cita, Llamada };
+export const TEMPLATES = { Carrusel, TextoFoto, BandaFrase, TarjetasFoto, TarjetasIcono, Galeria, Visita, Texto, Cita, Llamada, Video, Columnas, Separador };
 
 // ---- campos reutilizables
 // texto en castellano + traducción opcional (català / English) debajo
 let ADV = false;   // «Más opciones»: traducciones y campos técnicos
+const adv = (o) => (ADV ? o : {});
 export function tx(name, label, type = "text") {
     if (!ADV) return { [name]: { type, label } };
     return {
@@ -50,7 +54,7 @@ const botones = (label = "Botones") => ({
         },
     },
 });
-const cabecera = () => ({ ...tx("antetitulo", "Texto pequeño de arriba"), ...tx("titulo", "Título"), ...tx("entradilla", "Entradilla (opcional)", "textarea") });
+const cabecera = () => ({ ...tx("antetitulo", "Texto pequeño de arriba"), ...tx("titulo", "Título"), ...adv(tx("entradilla", "Entradilla (opcional)", "textarea")) });
 const boton1 = () => ({ ...tx("boton_texto", "Botón de abajo (opcional)"), boton_enlace: { type: "text", label: "Enlace del botón" } });
 
 // ---- bloques
@@ -69,8 +73,9 @@ export function makeConfig({ render, imageField, autoPreview, advanced, help }) 
         root: { fields: { ayuda: { type: "custom", label: "", render: help } } },
         categories: {
             portada: { title: "Portada", components: ["Carrusel"] },
-            texto: { title: "Texto y fotos", components: ["TextoFoto", "Texto", "Visita", "BandaFrase", "Cita", "Llamada"] },
-            tarjetas: { title: "Tarjetas y galerías", components: ["TarjetasFoto", "TarjetasIcono", "Galeria"] },
+            texto: { title: "Texto y fotos", components: ["TextoFoto", "Texto", "Columnas", "Visita", "BandaFrase", "Cita", "Llamada"] },
+            tarjetas: { title: "Tarjetas, galerías y vídeo", components: ["TarjetasFoto", "TarjetasIcono", "Galeria", "Video"] },
+            otros: { title: "Espacios", components: ["Separador"] },
             auto: { title: "Se actualizan solos", components: ["Horario", "Reflexion", "Agenda", "Actualidad", "Revista", "Ubicacion"] },
         },
         components: {
@@ -84,7 +89,7 @@ export function makeConfig({ render, imageField, autoPreview, advanced, help }) 
                         arrayFields: {
                             foto: img("Foto (horizontal, grande)"),
                             ...tx("frase", "Frase"),
-                            posicion: { type: "number", label: "Encuadre vertical (0 = arriba, 50 = centro, 100 = abajo)", min: 0, max: 100 },
+                            ...adv({ posicion: { type: "number", label: "Encuadre vertical (0 = arriba, 50 = centro, 100 = abajo)", min: 0, max: 100 } }),
                         },
                     },
                     ...tx("antetitulo", "Texto pequeño de arriba"), ...tx("titulo", "Título (puede tener dos líneas)", "textarea"),
@@ -96,35 +101,35 @@ export function makeConfig({ render, imageField, autoPreview, advanced, help }) 
             TextoFoto: {
                 label: "Texto con foto",
                 fields: {
-                    foto: img(), ...tx("foto_alt", "Descripción de la foto (para personas ciegas)"),
-                    ...tx("sello_texto", "Sello sobre la foto: texto (opcional)"), sello_numero: { type: "text", label: "Sello: número (opcional)" },
+                    foto: img(), ...adv(tx("foto_alt", "Descripción de la foto (para personas ciegas)")),
+                    ...adv({ ...tx("sello_texto", "Sello sobre la foto: texto (opcional)"), sello_numero: { type: "text", label: "Sello: número (opcional)" } }),
                     ...tx("antetitulo", "Texto pequeño de arriba"), ...tx("titulo", "Título"), ...tx("texto", "Texto (deja una línea en blanco entre párrafos)", "textarea"),
-                    cifras: {
+                    ...adv({ cifras: {
                         type: "array", label: "Cifras destacadas (opcional)", getItemSummary: (c) => `${c.numero || ""} ${c.texto || ""}`.trim() || "Cifra",
                         defaultItemProps: { numero: "", texto: "" },
                         arrayFields: { numero: { type: "text", label: "Número (por ejemplo 1928 o +100)" }, ...tx("texto", "Qué significa") },
-                    },
-                    ...botones(), ...FONDO, ...ANCLA,
+                    } }),
+                    ...botones(), ...adv(FONDO), ...ANCLA,
                 },
                 defaultProps: { foto: "nuevalife.jpg", foto_alt: "", sello_texto: "", sello_numero: "", antetitulo: "", titulo: "Título del apartado", texto: "Escribe aquí el texto.", cifras: [], botones: [], fondo: "", ancla: "" },
                 render: tpl("TextoFoto"),
             },
             Texto: {
                 label: "Texto",
-                fields: { ...cabecera(), ...tx("texto", "Texto (deja una línea en blanco entre párrafos)", "textarea"), ...botones(), ...FONDO, ...ANCLA },
+                fields: { ...cabecera(), ...tx("texto", "Texto (deja una línea en blanco entre párrafos)", "textarea"), ...botones(), ...adv(FONDO), ...ANCLA },
                 defaultProps: { antetitulo: "", titulo: "Título", entradilla: "", texto: "Escribe aquí el texto.", botones: [], fondo: "", ancla: "" },
                 render: tpl("Texto"),
             },
             Visita: {
                 label: "Foto con pie y datos",
                 fields: {
-                    foto: img(), ...tx("foto_alt", "Descripción de la foto (para personas ciegas)"), ...tx("pie", "Pie de foto (opcional)"),
+                    foto: img(), ...adv(tx("foto_alt", "Descripción de la foto (para personas ciegas)")), ...tx("pie", "Pie de foto (opcional)"),
                     ...tx("antetitulo", "Texto pequeño de arriba"), ...tx("titulo", "Título"), ...tx("texto", "Texto", "textarea"),
                     datos: {
                         type: "array", label: "Datos (por ejemplo Dirección, Horario…)", getItemSummary: (d) => d.etiqueta || "Dato",
                         defaultItemProps: { etiqueta: "", valor: "" }, arrayFields: { ...tx("etiqueta", "Nombre"), ...tx("valor", "Valor") },
                     },
-                    ...botones(), ...FONDO, ...ANCLA,
+                    ...botones(), ...adv(FONDO), ...ANCLA,
                 },
                 defaultProps: { foto: "vidriera.jpg", foto_alt: "", pie: "", antetitulo: "", titulo: "Título", texto: "", datos: [], botones: [], fondo: "", ancla: "" },
                 render: tpl("Visita"),
@@ -137,13 +142,13 @@ export function makeConfig({ render, imageField, autoPreview, advanced, help }) 
             },
             Cita: {
                 label: "Cita destacada",
-                fields: { ...tx("frase", "Frase", "textarea"), ...tx("autor", "Autor (opcional)"), ...FONDO, ...ANCLA },
+                fields: { ...tx("frase", "Frase", "textarea"), ...tx("autor", "Autor (opcional)"), ...adv(FONDO), ...ANCLA },
                 defaultProps: { frase: "Obras quiere el Señor.", autor: "Santa Teresa de Jesús", fondo: "", ancla: "" },
                 render: tpl("Cita"),
             },
             Llamada: {
                 label: "Recuadro con botones",
-                fields: { ...tx("titulo", "Título"), ...tx("texto", "Texto (opcional)"), ...botones(), ...FONDO, ...ANCLA },
+                fields: { ...tx("titulo", "Título"), ...tx("texto", "Texto (opcional)"), ...botones(), ...adv(FONDO), ...ANCLA },
                 defaultProps: { titulo: "¿Te animas?", texto: "Escríbenos o pásate por el despacho parroquial.", botones: [{ texto: "Escríbenos", enlace: "html/contacto.html#escribenos", estilo: "solido" }], fondo: "", ancla: "" },
                 render: tpl("Llamada"),
             },
@@ -156,7 +161,7 @@ export function makeConfig({ render, imageField, autoPreview, advanced, help }) 
                         defaultItemProps: { foto: "dsc_0546.jpg", antetitulo: "", titulo: "Título", texto: "", enlace: "html/contacto.html" },
                         arrayFields: { foto: img(), ...tx("antetitulo", "Texto pequeño"), ...tx("titulo", "Título"), ...tx("texto", "Texto", "textarea"), enlace: { type: "text", label: "Enlace" } },
                     },
-                    ...boton1(), ...FONDO, ...ANCLA,
+                    ...boton1(), ...adv(FONDO), ...ANCLA,
                 },
                 defaultProps: { antetitulo: "", titulo: "Título", entradilla: "", tarjetas: [], boton_texto: "", boton_enlace: "", fondo: "section-warm", ancla: "" },
                 render: tpl("TarjetasFoto"),
@@ -171,7 +176,7 @@ export function makeConfig({ render, imageField, autoPreview, advanced, help }) 
                         defaultItemProps: { icono: "caliz", titulo: "Título", texto: "", enlace: "html/contacto.html" },
                         arrayFields: { icono: { type: "select", label: "Icono", options: [] }, ...tx("titulo", "Título"), ...tx("texto", "Texto", "textarea"), enlace: { type: "text", label: "Enlace" } },
                     },
-                    ...boton1(), ...FONDO, ...ANCLA,
+                    ...boton1(), ...adv(FONDO), ...ANCLA,
                 },
                 defaultProps: { antetitulo: "", titulo: "Título", entradilla: "", columnas: "three", tarjetas: [], boton_texto: "", boton_enlace: "", fondo: "", ancla: "" },
                 render: tpl("TarjetasIcono"),
@@ -184,14 +189,49 @@ export function makeConfig({ render, imageField, autoPreview, advanced, help }) 
                         type: "array", label: "Fotos", getItemSummary: (f) => f.alt || f.foto || "Foto",
                         defaultItemProps: { foto: "", alt: "", forma: "" },
                         arrayFields: {
-                            foto: img(), ...tx("alt", "Descripción de la foto"),
+                            foto: img(), ...adv(tx("alt", "Descripción de la foto")),
                             forma: { type: "select", label: "Tamaño", options: [{ label: "Normal", value: "" }, { label: "Ancha", value: "wide" }, { label: "Alta", value: "tall" }] },
                         },
                     },
-                    ...boton1(), ...FONDO, ...ANCLA,
+                    ...boton1(), ...adv(FONDO), ...ANCLA,
                 },
                 defaultProps: { antetitulo: "Galería", titulo: "Fotos", entradilla: "", fotos: [], boton_texto: "", boton_enlace: "", fondo: "section-warm", ancla: "" },
                 render: tpl("Galeria"),
+            },
+            Video: {
+                label: "Vídeo de YouTube",
+                fields: { video: { type: "text", label: "Enlace del vídeo de YouTube" }, ...tx("antetitulo", "Texto pequeño de arriba (opcional)"), ...tx("titulo", "Título (opcional)"), ...adv(FONDO), ...ANCLA },
+                defaultProps: { video: "", antetitulo: "", titulo: "", fondo: "", ancla: "" },
+                render: tpl("Video"),
+            },
+            Columnas: {
+                label: "Columnas de texto",
+                fields: {
+                    ...tx("antetitulo", "Texto pequeño de arriba (opcional)"), ...tx("titulo", "Título (opcional)"),
+                    columnas: {
+                        type: "array", label: "Columnas", getItemSummary: (c) => c.titulo || "Columna",
+                        defaultItemProps: { icono: "", titulo: "Título", texto: "Texto de la columna.", enlace: "", enlace_texto: "" },
+                        arrayFields: {
+                            icono: { type: "select", label: "Icono", options: [] }, ...tx("titulo", "Título"), ...tx("texto", "Texto", "textarea"),
+                            enlace: { type: "text", label: "Enlace (opcional)" }, ...tx("enlace_texto", "Texto del enlace (opcional)"),
+                        },
+                    },
+                    ...adv(FONDO), ...ANCLA,
+                },
+                defaultProps: { antetitulo: "", titulo: "", columnas: [
+                    { icono: "", titulo: "Primera columna", texto: "Escribe aquí.", enlace: "", enlace_texto: "" },
+                    { icono: "", titulo: "Segunda columna", texto: "Escribe aquí.", enlace: "", enlace_texto: "" },
+                    { icono: "", titulo: "Tercera columna", texto: "Escribe aquí.", enlace: "", enlace_texto: "" }], fondo: "", ancla: "" },
+                render: tpl("Columnas"),
+            },
+            Separador: {
+                label: "Espacio entre apartados",
+                fields: {
+                    alto: { type: "radio", label: "Tamaño", options: [{ label: "Pequeño", value: "pequeno" }, { label: "Mediano", value: "medio" }, { label: "Grande", value: "grande" }] },
+                    adorno: { type: "radio", label: "Con adorno dorado", options: [{ label: "Sí", value: true }, { label: "No", value: false }] },
+                },
+                defaultProps: { alto: "medio", adorno: true },
+                render: tpl("Separador"),
             },
             Horario: auto("Horario", "Horario de eucaristías", "Muestra el horario de misas de la parroquia. Por ahora el horario se cambia pidiéndolo al administrador de la web."),
             Reflexion: auto("Reflexion", "Última reflexión", "Muestra sola la última homilía publicada desde el panel (Homilías y reflexiones)."),
