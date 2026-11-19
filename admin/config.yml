@@ -270,7 +270,8 @@ collections:
     public_folder: /fotosdefinitivas/web/capsulas
     fields:
       - { label: Título, name: titulo, widget: string, hint: "Corto: por ejemplo «¿Qué es el Adviento?»" }
-      - { label: Enlace del vídeo, name: enlace, widget: string, hint: "Pega el enlace del reel de Instagram (instagram.com/reel/…) o del Short de YouTube (youtube.com/shorts/…)." }
+      - { label: Enlace del vídeo, name: enlace, widget: string, required: false, hint: "Pega el enlace del reel de Instagram (instagram.com/reel/…) o del Short de YouTube (youtube.com/shorts/…)." }
+      - { label: Archivo del vídeo (MP4, opcional), name: video, widget: file, required: false, hint: "Si subes aquí el mismo vídeo (mejor de menos de 10 MB), se ve dentro de la web con el reproductor de la parroquia. Si no, se usa el de Instagram o YouTube." }
       - label: Tema
         name: tema
         widget: select

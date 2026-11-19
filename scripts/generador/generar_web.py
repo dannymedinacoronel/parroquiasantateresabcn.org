@@ -1303,9 +1303,11 @@ def _load_caps():
         except ValueError:
             continue
         v = _caps_video(c.get("enlace"))
-        if not (c.get("titulo") or "").strip() or c.get("publicado") is False or not v:
+        vid = REV.media(ROOT, c.get("video"))
+        if not (c.get("titulo") or "").strip() or c.get("publicado") is False or not (v or vid):
             continue
-        c.update(src=v[0], embed=v[1], link=v[2], foto=REV.media(ROOT, c.get("portada")), fecha=(c.get("fecha") or "")[:10],
+        v = v or ("video", "", "")
+        c.update(src=v[0], embed=v[1], link=v[2], video=vid, foto=REV.media(ROOT, c.get("portada")), fecha=(c.get("fecha") or "")[:10],
                  tema=c.get("tema") if c.get("tema") in CAPS_TEMAS else "Otros")
         out.append(c)
     return sorted(out, key=lambda c: c["fecha"], reverse=True)
@@ -1317,15 +1319,17 @@ PLAY_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.
 
 def caps_card(c, depth):
     img = rev_img(c["foto"], depth, 480, c["titulo"]) if c["foto"] else ""
-    via = "Instagram" if c["src"] == "instagram" else "YouTube"
+    via = {"instagram": "Vídeo de Instagram", "youtube": "Vídeo de YouTube"}.get(c["src"], "Vídeo de la parroquia")
+    vid = c.get("video") or ""
+    vid = f' data-cap-video="{_attr(vid if vid.startswith(("http", "/")) else "../" * depth + vid)}"' if vid else ""
     dur = f'<span class="cap-dur">{esc(c.get("duracion") or "")}</span>' if (c.get("duracion") or "").strip() else ""
     return f"""
                 <li class="cap-card">
-                    <button type="button" class="cap-play" data-cap-embed="{_attr(c['embed'])}" data-cap-link="{_attr(c['link'])}" data-cap-src="{c['src']}" aria-label="Reproducir">
+                    <button type="button" class="cap-play" data-cap-embed="{_attr(c['embed'])}" data-cap-link="{_attr(c['link'])}" data-cap-src="{c['src']}"{vid} aria-label="Reproducir">
                         <span class="cap-poster{'' if img else ' is-empty'}">{img}</span>
                         <span class="cap-tema">{c['tema']}</span>{dur}
                         <span class="cap-btn">{PLAY_SVG}</span>
-                        <span class="cap-info"><!--notr--><strong>{esc(c['titulo'])}</strong><!--/notr--><small>Vídeo de {via}</small></span>
+                        <span class="cap-info"><!--notr--><strong>{esc(c['titulo'])}</strong><!--/notr--><small>{via}</small></span>
                     </button>
                 </li>"""
 
@@ -3549,7 +3553,7 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ('Al reproducir un vídeo se carga desde Instagram o YouTube.', "En reproduir un vídeo es carrega des d'Instagram o YouTube.", 'Playing a video loads it from Instagram or YouTube.'),
                       ('Reproducir', 'Reproduir', 'Play'),
                       ('Vídeo de Instagram', "Vídeo d'Instagram", 'Instagram video'),
-                      ('Vídeo de YouTube', 'Vídeo de YouTube', 'YouTube video'),
+                      ('Vídeo de YouTube', 'Vídeo de YouTube', 'YouTube video'), ('Vídeo de la parroquia', 'Vídeo de la parròquia', 'Parish video'),
                       ('¿Qué es la Eucaristía?', "Què és l'Eucaristia?", 'What is the Eucharist?'),
                       ('La Biblia en un minuto', 'La Bíblia en un minut', 'The Bible in a minute'),
                       ('Próximamente', 'Properament', 'Coming soon'),

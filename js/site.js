@@ -8,7 +8,7 @@
             massNow: "Eucaristía <strong>en curso</strong> · comenzó a las ", massNext: "Próxima eucaristía: ",
             today: "hoy", tomorrow: "mañana", at: " a las ", hours: " h",
             days: ["el domingo", "el lunes", "el martes", "el miércoles", "el jueves", "el viernes", "el sábado"],
-            gospelToday: "Hoy", gospelNow: "Ahora mismo, en la iglesia", agPast: "Ver actos anteriores", agPastHide: "Ocultar actos anteriores", capPlay: "Reproducir", capIg: "Vídeo de Instagram",
+            gospelToday: "Hoy", gospelNow: "Ahora mismo, en la iglesia", agPast: "Ver actos anteriores", agPastHide: "Ocultar actos anteriores", capPlay: "Reproducir", capIg: "Vídeo de Instagram", capKicker: "Cápsulas de fe", capPause: "Pausa", capMute: "Silenciar", capUnmute: "Activar el sonido", capFs: "Pantalla completa", capNextUp: "A continuación", capIgOpen: "Ver en Instagram", capYt: "Ver en YouTube", capSeek: "Avance del vídeo",
             viewer: "Visor de fotos", close: "Cerrar", prev: "Anterior", next: "Siguiente",
             newsEmpty: "No se han podido cargar las noticias. Inténtalo más tarde.", readMore: "Leer en la web original", updated: "Actualizado:",
             srcVatican: "Vaticano", srcDiocese: "Arzobispado", featured: "Noticia destacada",
@@ -30,7 +30,7 @@
             massNow: "Eucaristia <strong>en curs</strong> · ha començat a les ", massNext: "Propera eucaristia: ",
             today: "avui", tomorrow: "demà", at: " a les ", hours: " h",
             days: ["diumenge", "dilluns", "dimarts", "dimecres", "dijous", "divendres", "dissabte"],
-            gospelToday: "Avui", gospelNow: "Ara mateix, a l'església", agPast: "Veure actes anteriors", agPastHide: "Amagar actes anteriors", capPlay: "Reproduir", capIg: "Vídeo d'Instagram",
+            gospelToday: "Avui", gospelNow: "Ara mateix, a l'església", agPast: "Veure actes anteriors", agPastHide: "Amagar actes anteriors", capPlay: "Reproduir", capIg: "Vídeo d'Instagram", capKicker: "Càpsules de fe", capPause: "Pausa", capMute: "Silenciar", capUnmute: "Activar el so", capFs: "Pantalla completa", capNextUp: "A continuació", capIgOpen: "Veure a Instagram", capYt: "Veure a YouTube", capSeek: "Avançament del vídeo",
             viewer: "Visor de fotos", close: "Tancar", prev: "Anterior", next: "Següent",
             newsEmpty: "No s'han pogut carregar les notícies. Torna-ho a provar més tard.", readMore: "Llegir al web original", updated: "Actualitzat:",
             srcVatican: "Vaticà", srcDiocese: "Arquebisbat", featured: "Notícia destacada",
@@ -52,7 +52,7 @@
             massNow: "Mass <strong>in progress</strong> · started at ", massNext: "Next Mass: ",
             today: "today", tomorrow: "tomorrow", at: " at ", hours: "",
             days: ["on Sunday", "on Monday", "on Tuesday", "on Wednesday", "on Thursday", "on Friday", "on Saturday"],
-            gospelToday: "Today", gospelNow: "Right now, in church", agPast: "See past events", agPastHide: "Hide past events", capPlay: "Play", capIg: "Instagram video",
+            gospelToday: "Today", gospelNow: "Right now, in church", agPast: "See past events", agPastHide: "Hide past events", capPlay: "Play", capIg: "Instagram video", capKicker: "Faith capsules", capPause: "Pause", capMute: "Mute", capUnmute: "Unmute", capFs: "Full screen", capNextUp: "Up next", capIgOpen: "View on Instagram", capYt: "Watch on YouTube", capSeek: "Video progress",
             viewer: "Photo viewer", close: "Close", prev: "Previous", next: "Next",
             newsEmpty: "The news could not be loaded. Please try again later.", readMore: "Read on the original website", updated: "Updated:",
             srcVatican: "Vatican", srcDiocese: "Archdiocese", featured: "Top story",
@@ -321,49 +321,202 @@
         return dt.toLocaleDateString(LOCALE, opts);
     }
     /* --- Cápsulas de fe: el vídeo (Instagram o YouTube) se carga solo al pulsar «reproducir» --- */
-    /* reproductor: vídeo grande con fondo difuminado, título, flechas para pasar al siguiente y deslizar en el móvil */
+    /* reproductor propio: se abre encima de la misma página, con marco dorado, barras de avance, controles y paso al siguiente */
+    var SVG_PLAY = '<svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>',
+        SVG_PAUSE = '<svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></svg>',
+        SVG_VOL = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path class="cap-wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="cap-x" d="M16.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+        SVG_FS = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+    var capMuted = false;
     function openCapsule(btn) {
-        var all = Array.prototype.slice.call((btn.closest(".cap-strip") || document).querySelectorAll("[data-cap-embed]"));
-        var idx = Math.max(0, all.indexOf(btn));
+        var all = Array.prototype.slice.call((btn.closest(".cap-strip") || document).querySelectorAll("[data-cap-embed],[data-cap-video]"));
+        var idx = Math.max(0, all.indexOf(btn)), vid = null, idle = 0;
+        var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         var box = document.createElement("div");
-        box.className = "cap-modal";
-        box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true");
+        box.className = "cap-modal" + (all.length < 2 ? " is-single" : "");
+        box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-label", T("capKicker"));
+        var bars = all.length > 1 ? '<div class="cap-bars">' + all.map(function () { return "<i><b></b></i>"; }).join("") + "</div>" : "";
         box.innerHTML = '<div class="cap-modal-bg"></div>' +
             '<button type="button" class="cap-close" aria-label="' + T("close") + '">&times;</button>' +
             '<button type="button" class="cap-arrow cap-prev" aria-label="' + T("prev") + '">&#8249;</button>' +
             '<button type="button" class="cap-arrow cap-next" aria-label="' + T("next") + '">&#8250;</button>' +
-            '<div class="cap-stage"><div class="cap-frame"><span class="cap-spin"></span><iframe allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen scrolling="no"></iframe></div>' +
-            '<div class="cap-meta"><span class="cap-meta-tema"></span><strong></strong><span class="cap-count"></span><a target="_blank" rel="noopener"></a></div></div>';
-        var bg = box.querySelector(".cap-modal-bg"), frame = box.querySelector(".cap-frame"), ifr = box.querySelector("iframe");
+            '<div class="cap-stage"><div class="cap-shell"><span class="cap-orn cap-orn-t"></span><span class="cap-orn cap-orn-b"></span><div class="cap-glow"></div>' +
+            '<div class="cap-frame">' + bars + '<div class="cap-media"></div><span class="cap-spin"></span>' +
+            '<button type="button" class="cap-big" aria-label="' + T("capPlay") + '">' + SVG_PLAY + '</button>' +
+            '<div class="cap-foot"><div class="cap-cap"><span class="cap-meta-tema"></span><strong></strong></div>' +
+            '<div class="cap-ctrl"><button type="button" class="cap-pp" aria-label="' + T("capPause") + '">' + SVG_PAUSE + SVG_PLAY + '</button>' +
+            '<div class="cap-seek" role="slider" tabindex="0" aria-label="' + T("capSeek") + '" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>' +
+            '<span class="cap-time">0:00</span>' +
+            '<button type="button" class="cap-mute" aria-label="' + T("capMute") + '">' + SVG_VOL + '</button>' +
+            '<button type="button" class="cap-fs" aria-label="' + T("capFs") + '">' + SVG_FS + '</button></div></div></div></div>' +
+            '<aside class="cap-meta"><span class="cap-kicker">' + T("capKicker") + '</span><span class="cap-num"></span><strong class="cap-title"></strong>' +
+            '<span class="cap-meta-tema"></span><a class="cap-ig" target="_blank" rel="noopener"></a>' +
+            '<button type="button" class="cap-up"><span class="cap-up-img"></span><span><small>' + T("capNextUp") + '</small><b></b></span></button></aside></div>';
+        function $(s) { return box.querySelector(s); }
+        function txt(b, s) { var e = b.querySelector(s); return e ? e.textContent : ""; }
+        function poster(b) { var i = b.querySelector("img"); return i ? (i.currentSrc || i.src || "") : ""; }
+        function fmt(s) { s = Math.max(0, Math.floor(s || 0)); return Math.floor(s / 60) + ":" + ("0" + s % 60).slice(-2); }
+        function pad(n) { return ("0" + n).slice(-2); }
+        var frame = $(".cap-frame"), media = $(".cap-media"), seek = $(".cap-seek");
+        function bar(p) {
+            var i = box.querySelectorAll(".cap-bars b")[idx];
+            if (i) i.style.width = (p * 100) + "%";
+            seek.firstChild.style.width = (p * 100) + "%";
+            seek.setAttribute("aria-valuenow", Math.round(p * 100));
+        }
+        function setMute(m) {
+            capMuted = m; if (vid) vid.muted = m;
+            frame.classList.toggle("is-muted", m);
+            $(".cap-mute").setAttribute("aria-label", T(m ? "capUnmute" : "capMute"));
+        }
+        function toggle() {
+            if (!vid) return;
+            if (vid.paused) { if (vid.ended) vid.currentTime = 0; var p = vid.play(); if (p && p.catch) p.catch(function () { }); } else vid.pause();
+        }
+        function wake() {
+            frame.classList.add("is-active"); clearTimeout(idle);
+            idle = setTimeout(function () { frame.classList.remove("is-active"); }, 2600);
+        }
+        function stop() { if (vid) { vid.pause(); vid.removeAttribute("src"); vid.load(); vid = null; } }
         function show(k) {
             idx = (k + all.length) % all.length;
-            var b = all[idx], src = b.getAttribute("data-cap-src"), img = b.querySelector("img");
-            frame.className = "cap-frame is-loading " + (src === "instagram" ? "is-ig" : "is-yt");
-            bg.style.backgroundImage = img && img.src ? "url('" + img.src + "')" : "";
-            ifr.onload = function () { frame.classList.remove("is-loading"); };
-            ifr.src = b.getAttribute("data-cap-embed");
-            box.querySelector(".cap-meta-tema").textContent = (b.querySelector(".cap-tema") || {}).textContent || "";
-            box.querySelector(".cap-meta strong").textContent = (b.querySelector(".cap-info strong") || {}).textContent || "";
-            box.querySelector(".cap-count").textContent = all.length > 1 ? (idx + 1) + " / " + all.length : "";
-            var a = box.querySelector(".cap-meta a");
-            a.href = b.getAttribute("data-cap-link");
-            a.textContent = (src === "instagram" ? "Instagram" : "YouTube") + " ↗";
+            var b = all[idx], v = b.getAttribute("data-cap-video"), pic = poster(b), title = txt(b, ".cap-info strong"), tema = txt(b, ".cap-tema");
+            box.querySelectorAll(".cap-bars b").forEach(function (x, n) { x.style.width = n < idx ? "100%" : "0"; });
+            $(".cap-modal-bg").style.backgroundImage = $(".cap-glow").style.backgroundImage = pic ? "url('" + pic + "')" : "";
+            box.querySelectorAll(".cap-meta-tema").forEach(function (x) { x.textContent = tema; x.style.display = tema ? "" : "none"; });
+            $(".cap-cap strong").textContent = $(".cap-title").textContent = title;
+            $(".cap-num").innerHTML = pad(idx + 1) + "<small>/ " + pad(all.length) + "</small>";
+            var link = b.getAttribute("data-cap-link") || "", ig = $(".cap-ig");
+            ig.style.display = link ? "" : "none"; ig.href = link || "#";
+            ig.textContent = T(b.getAttribute("data-cap-src") === "youtube" ? "capYt" : "capIgOpen") + " ↗";
+            var nb = all[(idx + 1) % all.length];
+            $(".cap-up b").textContent = txt(nb, ".cap-info strong");
+            $(".cap-up-img").style.backgroundImage = poster(nb) ? "url('" + poster(nb) + "')" : "";
+            stop(); media.innerHTML = ""; bar(0);
+            frame.className = "cap-frame is-loading " + (v ? "is-video" : "is-embed") + (capMuted ? " is-muted" : "");
+            if (v) {
+                vid = document.createElement("video");
+                vid.setAttribute("playsinline", ""); vid.playsInline = true; vid.preload = "auto";
+                if (pic) vid.poster = pic;
+                vid.muted = capMuted; vid.src = v;
+                media.appendChild(vid);
+                var me = vid;
+                vid.addEventListener("canplay", function () { frame.classList.remove("is-loading"); });
+                vid.addEventListener("waiting", function () { frame.classList.add("is-loading"); });
+                vid.addEventListener("playing", function () { frame.classList.remove("is-loading", "is-paused"); wake(); });
+                vid.addEventListener("pause", function () { frame.classList.add("is-paused"); $(".cap-pp").setAttribute("aria-label", T("capPlay")); });
+                vid.addEventListener("play", function () { frame.classList.remove("is-paused"); $(".cap-pp").setAttribute("aria-label", T("capPause")); });
+                vid.addEventListener("timeupdate", function () {
+                    if (!me.duration) return;
+                    bar(me.currentTime / me.duration);
+                    $(".cap-time").textContent = fmt(me.currentTime) + " / " + fmt(me.duration);
+                });
+                vid.addEventListener("ended", function () {
+                    bar(1);
+                    if (idx < all.length - 1) show(idx + 1); else frame.classList.add("is-paused");
+                });
+                vid.addEventListener("click", toggle);
+                var p = vid.play();
+                if (p && p.catch) p.catch(function () {
+                    if (vid !== me) return;
+                    setMute(true);
+                    me.play().catch(function () { frame.classList.add("is-paused"); frame.classList.remove("is-loading"); });
+                });
+            } else {
+                var f = document.createElement("iframe");
+                f.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture; fullscreen");
+                f.setAttribute("allowfullscreen", ""); f.setAttribute("scrolling", "no"); f.title = title;
+                f.onload = function () { frame.classList.remove("is-loading"); };
+                f.src = b.getAttribute("data-cap-embed");
+                media.appendChild(f);
+            }
         }
-        function close() { box.classList.remove("is-open"); setTimeout(function () { box.remove(); }, 250); document.body.classList.remove("menu-open"); document.removeEventListener("keydown", key); }
-        function key(e) { if (e.key === "Escape") close(); if (e.key === "ArrowRight") show(idx + 1); if (e.key === "ArrowLeft") show(idx - 1); }
-        box.addEventListener("click", function (e) { if (e.target === box || e.target === bg || e.target.classList.contains("cap-stage")) close(); });
-        box.querySelector(".cap-close").addEventListener("click", close);
-        box.querySelector(".cap-prev").addEventListener("click", function () { show(idx - 1); });
-        box.querySelector(".cap-next").addEventListener("click", function () { show(idx + 1); });
-        if (all.length < 2) box.classList.add("is-single");
-        var x0 = null;
-        box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true });
-        box.addEventListener("touchend", function (e) { if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 60) show(idx + (dx < 0 ? 1 : -1)); x0 = null; });
+        function close() {
+            if (vid) vid.pause();
+            box.classList.remove("is-open"); box.classList.add("is-closing");
+            setTimeout(function () { stop(); box.remove(); }, 320);
+            document.body.classList.remove("menu-open"); document.removeEventListener("keydown", key);
+            if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen();
+            try { btn.focus({ preventScroll: true }); } catch (e) { }
+        }
+        function key(e) {
+            if (e.key === "Escape") return close();
+            if (e.target === seek && (e.key === "ArrowRight" || e.key === "ArrowLeft")) {
+                if (vid && vid.duration) vid.currentTime = Math.max(0, Math.min(vid.duration, vid.currentTime + (e.key === "ArrowRight" ? 3 : -3)));
+                return e.preventDefault();
+            }
+            if (e.key === "ArrowRight") show(idx + 1);
+            if (e.key === "ArrowLeft") show(idx - 1);
+            if ((e.key === " " || e.key === "k") && !/^(BUTTON|A)$/.test(e.target.tagName)) { e.preventDefault(); toggle(); }
+        }
+        function seekTo(e) {
+            if (!vid || !vid.duration) return;
+            var r = seek.getBoundingClientRect();
+            vid.currentTime = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * vid.duration;
+        }
+        seek.addEventListener("pointerdown", function (e) {
+            seekTo(e); seek.setPointerCapture && seek.setPointerCapture(e.pointerId);
+            seek.onpointermove = seekTo;
+        });
+        seek.addEventListener("pointerup", function () { seek.onpointermove = null; });
+        box.addEventListener("click", function (e) {
+            var t = e.target;
+            if (t === box || t.classList.contains("cap-modal-bg") || t.classList.contains("cap-stage")) close();
+        });
+        $(".cap-close").addEventListener("click", close);
+        $(".cap-prev").addEventListener("click", function () { show(idx - 1); });
+        $(".cap-next").addEventListener("click", function () { show(idx + 1); });
+        $(".cap-up").addEventListener("click", function () { show(idx + 1); });
+        $(".cap-big").addEventListener("click", toggle);
+        $(".cap-pp").addEventListener("click", toggle);
+        $(".cap-mute").addEventListener("click", function () { setMute(!capMuted); });
+        $(".cap-fs").addEventListener("click", function () {
+            if (document.fullscreenElement) document.exitFullscreen();
+            else if (frame.requestFullscreen) frame.requestFullscreen();
+            else if (vid && vid.webkitEnterFullscreen) vid.webkitEnterFullscreen();
+        });
+        frame.addEventListener("pointermove", wake);
+        frame.addEventListener("touchstart", wake, { passive: true });
+        var x0 = null, y0 = 0;
+        box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+        box.addEventListener("touchend", function (e) {
+            if (x0 === null || e.target.closest(".cap-seek")) return;
+            var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+            if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) show(idx + (dx < 0 ? 1 : -1));
+            else if (dy > 110 && Math.abs(dx) < 60) close();
+        });
         document.addEventListener("keydown", key);
         document.body.appendChild(box);
         document.body.classList.add("menu-open");
         show(idx);
+        /* el vídeo «sale» de su tarjeta y crece hasta el marco */
+        var shell = $(".cap-shell"), from = (btn.querySelector(".cap-poster") || btn).getBoundingClientRect();
+        if (!reduce && from.width) {
+            var to = shell.getBoundingClientRect();
+            shell.style.transition = "none";
+            shell.style.transform = "translate(" + (from.left - to.left) + "px," + (from.top - to.top) + "px) scale(" + (from.width / to.width) + "," + (from.height / to.height) + ")";
+            shell.getBoundingClientRect();
+            requestAnimationFrame(function () { shell.style.transition = ""; shell.style.transform = ""; });
+        }
         requestAnimationFrame(function () { box.classList.add("is-open"); });
+        try { $(".cap-close").focus({ preventScroll: true }); } catch (e) { }
+    }
+    /* al pasar el ratón por una cápsula, se ve un avance del vídeo sin sonido */
+    if (window.matchMedia && window.matchMedia("(hover: hover) and (prefers-reduced-motion: no-preference)").matches && !(navigator.connection && navigator.connection.saveData)) {
+        document.addEventListener("mouseover", function (e) {
+            var b = e.target.closest && e.target.closest(".cap-play[data-cap-video]");
+            if (!b || b.querySelector("video")) return;
+            var v = document.createElement("video");
+            v.muted = true; v.loop = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.setAttribute("aria-hidden", "true");
+            v.className = "cap-hover-vid"; v.preload = "auto"; v.src = b.getAttribute("data-cap-video");
+            (b.querySelector(".cap-poster") || b).appendChild(v);
+            v.addEventListener("playing", function () { v.classList.add("is-on"); });
+            var p = v.play(); if (p && p.catch) p.catch(function () { });
+            b.addEventListener("mouseleave", function out() {
+                b.removeEventListener("mouseleave", out);
+                v.classList.remove("is-on");
+                setTimeout(function () { v.pause(); v.removeAttribute("src"); v.load(); v.remove(); }, 350);
+            });
+        });
     }
     /* tira de cápsulas: flechas para pasar en el ordenador */
     document.querySelectorAll(".cap-strip").forEach(function (strip) {
@@ -386,7 +539,7 @@
         strip.upd = upd;
     });
     document.addEventListener("click", function (e) {
-        var btn = e.target.closest && e.target.closest("[data-cap-embed]");
+        var btn = e.target.closest && e.target.closest("[data-cap-embed],[data-cap-video]");
         if (btn) openCapsule(btn);
     });
     /* reels nuevos con #CápsulasDeFe que la parroquia sube a Instagram (netlify/functions/capsulas-ig.mjs) */
@@ -407,6 +560,7 @@
                 var b = li.querySelector("button");
                 b.setAttribute("data-cap-embed", c.link.replace(/\/?$/, "/") + "embed");
                 b.setAttribute("data-cap-link", c.link); b.setAttribute("data-cap-src", "instagram");
+                if (c.video) b.setAttribute("data-cap-video", c.video);
                 li.querySelector("img").src = c.foto; li.querySelector("img").alt = c.titulo;
                 li.querySelector(".cap-tema").textContent = TEMA[c.tema] || c.tema;
                 li.querySelector("strong").textContent = c.titulo;
