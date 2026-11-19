@@ -3178,3 +3178,24 @@ header.scrolled { background: rgba(252, 251, 249, .86); -webkit-backdrop-filter:
 /* títulos: un poco más de presencia */
 .section-head h2 { letter-spacing: -.01em; }
 .feature-body .subtitulo { justify-content: flex-start; text-align: left; }
+
+/* ---------- Portada y detalles: más brillo y profundidad ---------- */
+/* marco dorado fino dentro de la foto grande */
+.hero-slider::before { content: ""; position: absolute; inset: 22px; z-index: 1; border: 1px solid rgba(230, 211, 168, .28); pointer-events: none; }
+.hero-slider::after { background: radial-gradient(ellipse at center, rgba(0, 0, 0, .12), rgba(0, 0, 0, .55) 78%), linear-gradient(rgba(20, 14, 6, .35), rgba(20, 14, 6, .08) 40%, rgba(20, 14, 6, .7)); }
+/* antetítulo de la portada con filetes dorados */
+.hero .eyebrow { display: inline-flex; align-items: center; gap: .9rem; color: #ecdcb5; }
+.hero .eyebrow::before, .hero .eyebrow::after { content: ""; width: 34px; height: 1px; background: linear-gradient(90deg, transparent, #e6d3a8); }
+.hero .eyebrow::after { transform: scaleX(-1); }
+.hero h1 { text-shadow: 0 2px 0 rgba(0, 0, 0, .08), 0 8px 34px rgba(0, 0, 0, .45); }
+.hero-divider { height: 1px; width: 110px; background: linear-gradient(90deg, transparent, #e6d3a8, transparent); }
+/* botones con borde: filo dorado y relleno suave al pasar */
+.btn:not(.btn-solid):not(.btn-light) { border-color: #cdb27f; }
+.btn:not(.btn-solid):not(.btn-light):hover { background: #fbf5e8; color: var(--accent-dark); border-color: var(--accent-color); }
+.btn-light { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); background: rgba(255, 255, 255, .08); border-color: rgba(236, 220, 181, .7); }
+/* agenda: fecha en dorado */
+.ag-date { background: linear-gradient(180deg, #fffaf0, #f6ecd6); border-color: #e2cc9c; box-shadow: inset 0 0 0 3px #fffaf0; }
+.ag-item.is-soon .ag-date { background: var(--gold-grad); }
+/* horario sobre la foto: efecto cristal */
+.schedule-card { background: rgba(255, 255, 255, .94); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 24px 60px rgba(40, 30, 10, .16); }
+@media (max-width: 700px) { .hero-slider::before { inset: 12px; } }
