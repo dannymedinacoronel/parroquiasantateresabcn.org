@@ -9,6 +9,9 @@
                     <div class="year" data-f="hitos.{{@i}}.anio">{{anio}}</div>
                     <h3 data-f="hitos.{{@i}}.titulo">{{titulo}}</h3>
                     <div data-f="hitos.{{@i}}.texto" data-multi>{{texto|p}}</div>
-                </div>{{/hitos}}
+                </div>{{/hitos}}{{#mas_texto}}
+                <div class="timeline-item timeline-more">
+                    <a class="link-arrow" href="{{mas_enlace|url}}" data-f="mas_texto">{{mas_texto}} <span>&rarr;</span></a>
+                </div>{{/mas_texto}}
             </div>
         </section>

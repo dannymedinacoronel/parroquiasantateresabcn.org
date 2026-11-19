@@ -3243,3 +3243,22 @@ footer a { transition: color .25s; } footer a:hover { color: #e6d3a8; }
 .wa-float:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 14px 32px rgba(37, 211, 102, .45); }
 body.menu-open .wa-float { opacity: 0; visibility: hidden; }
 @media print { .wa-float { display: none; } }
+
+/* Portada: «Seguir leyendo» como último punto de la línea del tiempo */
+.timeline-more .link-arrow { font-size: .8rem; }
+.timeline-more::before { opacity: .55; }
+
+/* WhatsApp a juego con la web: dorado como los botones */
+.wa-float { background: var(--gold-grad); color: #fff; width: 52px; height: 52px; box-shadow: 0 10px 26px rgba(120, 90, 30, .32), inset 0 0 0 1px rgba(255, 255, 255, .3); }
+.wa-float svg { width: 26px; height: 26px; }
+.wa-float:hover { box-shadow: 0 14px 32px rgba(120, 90, 30, .42), inset 0 0 0 1px rgba(255, 255, 255, .4); }
+
+/* Rapidez: fuera los efectos más costosos para el móvil (mismo aspecto) */
+.js .reveal { filter: none; }
+@media (max-width: 900px), (hover: none) {
+    header.scrolled, .schedule-card, .btn-light { -webkit-backdrop-filter: none; backdrop-filter: none; }
+    header.scrolled { background: rgba(252, 251, 249, .97); }
+    .js img[loading="lazy"] { animation: none; }
+}
+/* próximos actos con fondo cálido para alternar con los apartados de alrededor */
+.ag-home { background: radial-gradient(120% 70% at 50% 0%, #fbf3e2 0%, var(--bg-warm) 55%), var(--bg-warm); }

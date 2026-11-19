@@ -312,6 +312,7 @@ export function makeConfig({ render, imageField, autoPreview, advanced, help, Bl
                         defaultItemProps: { anio: "2026", titulo: "Título", texto: "" },
                         arrayFields: { anio: { type: "text", label: "Año" }, ...tx("titulo", "Título"), ...tx("texto", "Texto", "textarea") },
                     },
+                    ...tx("mas_texto", "Último punto: «Seguir leyendo» (opcional)"), mas_enlace: { type: "text", label: "Enlace del último punto" },
                     ...adv(FONDO), ...ANCLA,
                 },
                 defaultProps: { antetitulo: "Un siglo de historia", titulo: "Línea del tiempo", fondo: "section-warm", ancla: "", hitos: [{ anio: "1924", titulo: "Nace la comunidad", texto: "" }] },
