@@ -1,0 +1,141 @@
+{
+  "root": {
+    "props": {
+      "titulo": "Voluntariado",
+      "antetitulo": "Comunidad",
+      "foto": "caritas.jpg",
+      "posicion": 45,
+      "menu": "voluntariado",
+      "descripcion": "Hazte voluntario en la Parroquia Santa Teresa de Jesús (El Carmel, Barcelona): Cáritas, catequesis, visita a enfermos, liturgia y coro, cuidado del templo y fiestas."
+    }
+  },
+  "content": [
+    {
+      "type": "Texto",
+      "props": {
+        "id": "Texto-1",
+        "antetitulo": "Voluntariado en la parroquia",
+        "titulo": "Hay un sitio para ti",
+        "entradilla": "",
+        "botones": [],
+        "fondo": "",
+        "ancla": "",
+        "texto": "Muchas de las cosas que hacemos salen adelante gracias a personas que regalan un poco de su tiempo. No hace falta experiencia ni mucho tiempo: cada uno aporta lo que puede, aunque sea una hora al mes."
+      }
+    },
+    {
+      "type": "Columnas",
+      "props": {
+        "id": "Columnas-2",
+        "antetitulo": "Dónde puedes ayudar",
+        "titulo": "Elige cómo colaborar",
+        "fondo": "section-warm",
+        "ancla": "areas",
+        "columnas": [
+          {
+            "icono": "manos",
+            "titulo": "Cáritas parroquial",
+            "texto": "Un día al mes repartimos alimentos a varias docenas de familias del barrio. Hacen falta manos para recoger, preparar los lotes y acoger a quien viene.",
+            "enlace": "html/contacto.html?motivo=Cáritas#escribenos",
+            "enlace_texto": "Quiero colaborar"
+          },
+          {
+            "icono": "libro",
+            "titulo": "Catequesis",
+            "texto": "Acompaña a los niños y adolescentes que se preparan para la Primera Comunión y la Confirmación. Te ayudamos con los materiales.",
+            "enlace": "html/contacto.html?motivo=Voluntariado#escribenos",
+            "enlace_texto": "Quiero colaborar"
+          },
+          {
+            "icono": "persona",
+            "titulo": "Visita a enfermos y mayores",
+            "texto": "Un rato de compañía y conversación para quienes ya no pueden venir a la parroquia, en su casa o en la residencia.",
+            "enlace": "html/contacto.html?motivo=Voluntariado#escribenos",
+            "enlace_texto": "Quiero colaborar"
+          },
+          {
+            "icono": "escoba",
+            "titulo": "Cuidado del templo",
+            "texto": "Desde hace muchos años, un equipo limpia la iglesia un día al mes. También se agradece ayuda con las flores y la sacristía.",
+            "enlace": "html/contacto.html?motivo=Voluntariado#escribenos",
+            "enlace_texto": "Quiero colaborar"
+          },
+          {
+            "icono": "nota",
+            "titulo": "Liturgia y coro",
+            "texto": "Lee en misa, ayuda a prepararla o canta en el coro góspel de la misa de las 11:00 de los domingos.",
+            "enlace": "html/contacto.html?motivo=Voluntariado#escribenos",
+            "enlace_texto": "Quiero colaborar"
+          },
+          {
+            "icono": "cal",
+            "titulo": "Fiestas y salidas",
+            "texto": "Echa una mano para organizar las salidas parroquiales, las fiestas y los grandes días como el Domingo de Ramos.",
+            "enlace": "html/contacto.html?motivo=Voluntariado#escribenos",
+            "enlace_texto": "Quiero colaborar"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Pasos",
+      "props": {
+        "id": "Pasos-3",
+        "antetitulo": "Cómo empezar",
+        "titulo": "Tres pasos sencillos",
+        "fondo": "",
+        "ancla": "empezar",
+        "pasos": [
+          {
+            "icono": "mail",
+            "titulo": "Escríbenos",
+            "texto": "Cuéntanos en qué te gustaría ayudar y cuándo tienes tiempo."
+          },
+          {
+            "icono": "phone",
+            "titulo": "Te conocemos",
+            "texto": "Te llamamos y te presentamos al grupo que más encaja contigo."
+          },
+          {
+            "icono": "manos",
+            "titulo": "Empiezas a tu ritmo",
+            "texto": "Te acompañamos los primeros días. Puedes dejarlo cuando quieras."
+          }
+        ]
+      }
+    },
+    {
+      "type": "Cita",
+      "props": {
+        "id": "Cita-4",
+        "frase": "Obras quiere el Señor.",
+        "autor": "Santa Teresa de Jesús, Moradas V",
+        "fondo": "",
+        "ancla": ""
+      }
+    },
+    {
+      "type": "Llamada",
+      "props": {
+        "id": "Llamada-5",
+        "titulo": "¿Te animas?",
+        "texto": "Escríbenos o pásate por el despacho parroquial. Te esperamos.",
+        "fondo": "",
+        "ancla": "",
+        "botones": [
+          {
+            "texto": "Quiero ser voluntario",
+            "enlace": "html/contacto.html?motivo=Voluntariado#escribenos",
+            "estilo": "solido"
+          },
+          {
+            "texto": "Llamar a la parroquia",
+            "enlace": "",
+            "estilo": "llamar"
+          }
+        ]
+      }
+    }
+  ],
+  "zones": {}
+}

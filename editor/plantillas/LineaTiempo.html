@@ -1,0 +1,14 @@
+        <section{{#ancla}} id="{{ancla}}"{{/ancla}}{{#fondo}} class="{{fondo}}"{{/fondo}}>{{#titulo}}
+            <div class="section-head">{{#antetitulo}}
+                <span class="subtitulo" data-f="antetitulo">{{antetitulo}}</span>{{/antetitulo}}
+                <h2 data-f="titulo">{{titulo}}</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>{{/titulo}}
+            <div class="timeline">{{#hitos}}
+                <div class="timeline-item">
+                    <div class="year" data-f="hitos.{{@i}}.anio">{{anio}}</div>
+                    <h3 data-f="hitos.{{@i}}.titulo">{{titulo}}</h3>
+                    <div data-f="hitos.{{@i}}.texto" data-multi>{{texto|p}}</div>
+                </div>{{/hitos}}
+            </div>
+        </section>

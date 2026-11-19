@@ -9,7 +9,7 @@ import "@puckeditor/core/puck.css";
 import { makeRenderer, makeFilters, esc } from "./tpl.js";
 import { TEMPLATES, makeConfig, thumb } from "./bloques.jsx";
 
-const PAGE = new URLSearchParams(location.search).get("pagina") || "portada";
+const PAGE = (new URLSearchParams(location.search).get("pagina") || "portada").replace(/[^a-z0-9-]/g, "") || "portada";
 const MAIN = `contenido/paginas/${PAGE}.json`;
 const DRAFT = `contenido/paginas/_borradores/${PAGE}.json`;
 const ICON_NAMES = {
@@ -151,7 +151,7 @@ function Block({ id, html }) {
         if (!root) return;
         const update = (path, value) => getPuck().dispatch({
             type: "setData",
-            data: (prev) => ({ ...prev, content: prev.content.map((c) => {
+            data: (prev) => id === "root" ? { ...prev, root: (() => { const r = JSON.parse(JSON.stringify(prev.root || { props: {} })); r.props = r.props || {}; setPath(r.props, path, value); return r; })() } : ({ ...prev, content: prev.content.map((c) => {
                 if (c.props.id !== id) return c;
                 const n = JSON.parse(JSON.stringify(c));
                 try { setPath(n.props, path, value); } catch (e) { return c; }
@@ -253,9 +253,14 @@ function App() {
                     getFile(MAIN), getFile(DRAFT),
                 ]);
                 shas.current = { main: main && main.sha, draft: draft && draft.sha };
-                const data = JSON.parse((draft || main || { text: '{"content":[],"root":{"props":{}}}' }).text);
+                const blank = { root: { props: { titulo: PAGE.replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase()), antetitulo: "Parroquia Santa Teresa de Jesús", foto: "dsc_0546.jpg" } },
+                    content: [{ type: "Texto", props: { id: "Texto-1", antetitulo: "", titulo: "Título del apartado", entradilla: "", texto: "Escribe aquí el texto de la página.", botones: [], fondo: "", ancla: "" } }], zones: {} };
+                const data = draft || main ? JSON.parse((draft || main).text) : blank;
+                const list = await api(`/contents/contenido/paginas?ref=${gw.branch}&t=${Date.now()}`).then((r) => (r.ok ? r.json() : [])).catch(() => []);
+                const pages = (Array.isArray(list) ? list : []).filter((f) => f.type === "file" && /\.json$/.test(f.name)).map((f) => f.name.replace(/\.json$/, ""));
+                if (!pages.includes(PAGE)) pages.push(PAGE);
                 current.current = data;
-                setState({ status: "listo", datos, data, hasDraft: !!draft });
+                setState({ status: "listo", datos, data, hasDraft: !!draft, pages, isNew: !main });
             } catch (e) {
                 setState({ status: e.message === "sesion" ? "sin-sesion" : "error", why: e.message === "sesion" ? "la sesión ha caducado" : e.message });
             }
@@ -264,12 +269,13 @@ function App() {
 
     const config = useMemo(() => {
         if (state.status !== "listo") return null;
-        const render = makeRenderer(makeFilters("/", state.datos.iconos, imgUrl), state.datos.globales);
+        const render = makeRenderer(makeFilters("/", state.datos.iconos, imgUrl), { ...state.datos.globales, _home: "/" });
         const cfg = makeConfig({
             render: (type, props) => render(TEMPLATES[type], props),
             imageField: (label) => ({ type: "custom", label, render: ({ value, onChange }) => <ImageField label={label} value={value} onChange={onChange} advanced={adv} /> }),
             advanced: adv,
             Block,
+            isHome: PAGE === "portada",
             help: () => (
                 <div className="pst-guide">
                     <strong>Cómo editar la página</strong>
@@ -287,6 +293,7 @@ function App() {
         const iconOpts = Object.keys(state.datos.iconos).map((k) => ({ label: ICON_NAMES[k] || k, value: k }));
         cfg.components.TarjetasIcono.fields.tarjetas.arrayFields.icono.options = iconOpts;
         cfg.components.Columnas.fields.columnas.arrayFields.icono.options = [{ label: "Sin icono", value: "" }].concat(iconOpts);
+        cfg.components.Pasos.fields.pasos.arrayFields.icono.options = iconOpts;
         return cfg;
     }, [state.status, adv]);
 
@@ -345,7 +352,7 @@ function App() {
                 onPublish={publish}
                 dictionary={DICTIONARY}
                 viewports={VIEWPORTS}
-                headerTitle={PAGE === "portada" ? "Portada" : PAGE}
+                headerTitle=""
                 iframe={{ enabled: true, syncHostStyles: true }}
                 overrides={{
                     componentItem: ({ name }) => (
@@ -369,6 +376,19 @@ function App() {
                     },
                     headerActions: ({ children }) => (
                         <>
+                            <select className="pst-pages" value={PAGE} title="Elegir página" onChange={(e) => {
+                                let v = e.target.value;
+                                if (v === "__nueva") {
+                                    const n = prompt("Nombre de la página nueva (por ejemplo: Fiesta de Santa Teresa)");
+                                    if (!n) { e.target.value = PAGE; return; }
+                                    v = slug(n);
+                                }
+                                location.search = "?pagina=" + v;
+                            }}>
+                                {state.pages.map((p) => <option key={p} value={p}>{p === "portada" ? "Portada" : p.replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase())}</option>)}
+                                <option value="__nueva">＋ Página nueva…</option>
+                            </select>
+                            {state.isNew && <span className="pst-draft">Página nueva: se crea al publicar</span>}
                             {state.hasDraft && <span className="pst-draft">Borrador sin publicar</span>}
                             <a className="pst-btn pst-btn-ghost" href={PAGE === "portada" ? "/" : `/html/${PAGE}.html`} target="_blank" rel="noopener">Ver la web</a>
                             {state.hasDraft && <button className="pst-btn pst-btn-ghost" onClick={discardDraft}>Descartar borrador</button>}

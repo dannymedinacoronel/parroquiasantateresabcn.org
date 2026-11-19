@@ -1,0 +1,13 @@
+        <section{{#ancla}} id="{{ancla}}"{{/ancla}}{{#fondo}} class="{{fondo}}"{{/fondo}}>{{#titulo}}
+            <div class="section-head">{{#antetitulo}}
+                <span class="subtitulo" data-f="antetitulo">{{antetitulo}}</span>{{/antetitulo}}
+                <h2 data-f="titulo">{{titulo}}</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>{{/titulo}}
+            <div class="blq-faq">{{#preguntas}}
+                <details class="blq-faq-item">
+                    <summary data-f="preguntas.{{@i}}.pregunta">{{pregunta}}</summary>
+                    <div data-f="preguntas.{{@i}}.respuesta" data-multi>{{respuesta|p}}</div>
+                </details>{{/preguntas}}
+            </div>
+        </section>

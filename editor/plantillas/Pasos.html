@@ -1,0 +1,10 @@
+        <section{{#ancla}} id="{{ancla}}"{{/ancla}}{{#fondo}} class="{{fondo}}"{{/fondo}}>{{#titulo}}
+            <div class="section-head">{{#antetitulo}}
+                <span class="subtitulo" data-f="antetitulo">{{antetitulo}}</span>{{/antetitulo}}
+                <h2 data-f="titulo">{{titulo}}</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>{{/titulo}}
+            <ol class="communion-steps vol-steps">{{#pasos}}
+                <li>{{icono|icon}}<strong data-f="pasos.{{@i}}.titulo">{{titulo}}</strong><span data-f="pasos.{{@i}}.texto">{{texto}}</span></li>{{/pasos}}
+            </ol>
+        </section>

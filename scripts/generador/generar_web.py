@@ -1472,7 +1472,7 @@ def _blq_hero(v, _s=None):
 
 def blq_renderer(depth):
     base = "../" * depth
-    globals_ = {"_tel": TEL, "_icon_phone": ICON_PHONE, "_ornament": ORNAMENT}
+    globals_ = {"_tel": TEL, "_icon_phone": ICON_PHONE, "_ornament": ORNAMENT, "_home": base + "index.html"}
     return BLQ.Renderer(BLQ.make_filters(base, SAC_ICONS, hero_url=_blq_hero if depth == 0 else None), globals_)
 
 
@@ -3911,6 +3911,21 @@ def relocate_assets(html):
                   r'\1../\2\3', html)
     return re.sub(r"url\('((?:\.\./)*)fotosdefinitivas/", r"url('../\1fotosdefinitivas/", html)
 
+
+# Páginas hechas con el editor visual: cabecera (foto y título de la página) + bloques
+for _pf in sorted(_glob.glob(os.path.join(ROOT, "contenido", "paginas", "*.json"))):
+    _slug = os.path.splitext(os.path.basename(_pf))[0]
+    if _slug == "portada" or not re.fullmatch(r"[a-z0-9][a-z0-9-]*", _slug):
+        continue
+    _res = blq_page(_slug, 1, {"Ubicacion": location_block})
+    if not _res:
+        continue
+    _rp = (_res[0].get("root") or {}).get("props") or {}
+    BLQ_ES.update(BLQ.spanish_texts(_rp))
+    _hero = blq_renderer(1).render(BLQ_TEMPLATES["Cabecera"], _rp) if _rp.get("titulo") else ""
+    _hero = re.sub(r' data-(?:f="[^"]*"|multi|bgf)(?=[\s>])', "", _hero)
+    PAGES[f"html/{_slug}.html"] = page(1, _rp.get("titulo") or _slug, _rp.get("descripcion") or f"{_rp.get('titulo') or _slug} · Parroquia Santa Teresa de Jesús (El Carmel, Barcelona).",
+                                       body=_hero + _res[1] + "\n", active=_rp.get("menu") or _slug)
 
 for _es, _ca, _en in BLQ_TR:
     _old = TABLE.get(_es, {})

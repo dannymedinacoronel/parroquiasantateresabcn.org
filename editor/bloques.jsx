@@ -14,8 +14,12 @@ import Llamada from "./plantillas/Llamada.html";
 import Video from "./plantillas/Video.html";
 import Columnas from "./plantillas/Columnas.html";
 import Separador from "./plantillas/Separador.html";
+import Cabecera from "./plantillas/Cabecera.html";
+import Pasos from "./plantillas/Pasos.html";
+import Preguntas from "./plantillas/Preguntas.html";
+import LineaTiempo from "./plantillas/LineaTiempo.html";
 
-export const TEMPLATES = { Carrusel, TextoFoto, BandaFrase, TarjetasFoto, TarjetasIcono, Galeria, Visita, Texto, Cita, Llamada, Video, Columnas, Separador };
+export const TEMPLATES = { Carrusel, TextoFoto, BandaFrase, TarjetasFoto, TarjetasIcono, Galeria, Visita, Texto, Cita, Llamada, Video, Columnas, Separador, Cabecera, Pasos, Preguntas, LineaTiempo };
 
 // ---------------------------------------------------------------- miniaturas de los bloques (columna izquierda)
 const G = "#bfa065", L = "#e8dcc2", D = "#cdbf9f";
@@ -34,6 +38,9 @@ const THUMB = {
     TarjetasIcono: [8, 46, 84].map((x) => box(x, 12, 28, 46, "#fff", 4) + `<circle cx="${x + 14}" cy="26" r="7" fill="#f3e7c9" stroke="${G}"/>` + lines(x + 4, 40, 20, 2, 6)).join(""),
     Galeria: box(6, 8, 52, 26, "#d9c9a5") + box(62, 8, 24, 54, "#c9b48a") + box(90, 8, 24, 26, "#d9c9a5") + box(6, 38, 24, 24, "#c9b48a") + box(34, 38, 24, 24, "#d9c9a5") + box(90, 38, 24, 24, "#c9b48a"),
     Video: box(14, 8, 92, 54, "#2a241c", 5) + `<path d="M54 24l16 11-16 11z" fill="${G}"/>`,
+    Pasos: [10, 46, 82].map((x, i) => `<circle cx="${x + 14}" cy="24" r="9" fill="#f3e7c9" stroke="${G}"/><text x="${x + 14}" y="28" font-size="10" text-anchor="middle" fill="${G}">${i + 1}</text>` + lines(x + 2, 40, 24, 2, 6)).join(""),
+    Preguntas: [10, 28, 46].map((y) => box(14, y, 92, 13, "#fff", 3) + box(20, y + 5, 50, 3, D, 1.5) + box(96, y + 4, 4, 5, G, 1)).join(""),
+    LineaTiempo: box(59, 6, 2, 58, D, 1) + [12, 34, 54].map((y, i) => `<circle cx="60" cy="${y}" r="3" fill="${G}"/>` + (i % 2 ? box(66, y - 3, 40, 6, L) : box(14, y - 3, 40, 6, L))).join(""),
     Separador: box(10, 34, 40, 2, D, 1) + box(70, 34, 40, 2, D, 1) + `<circle cx="60" cy="35" r="4" fill="none" stroke="${G}"/>`,
 };
 const AUTO_THUMB = box(6, 8, 108, 54, "#f6f0e3", 6) + `<path d="M48 35a12 12 0 1 1 3.5 8.5M48 44v-9h9" fill="none" stroke="${G}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>` + box(66, 30, 30, 4, D, 2) + box(66, 38, 22, 4, D, 2);
@@ -82,7 +89,7 @@ const cabecera = () => ({ ...tx("antetitulo", "Texto pequeño de arriba"), ...tx
 const boton1 = () => ({ ...tx("boton_texto", "Botón de abajo (opcional)"), boton_enlace: { type: "text", label: "Enlace del botón" } });
 
 // ---- bloques
-export function makeConfig({ render, imageField, autoPreview, advanced, help, Block }) {
+export function makeConfig({ render, imageField, autoPreview, advanced, help, Block, isHome }) {
     ADV = !!advanced;
     const ANCLA = ADV ? ANCLA_F : {};
     const tpl = (type) => (props) => <Block id={props.id} html={render(type, props)} />;
@@ -94,11 +101,19 @@ export function makeConfig({ render, imageField, autoPreview, advanced, help, Bl
     const img = (label = "Foto") => imageField(label);
 
     return {
-        root: { fields: { ayuda: { type: "custom", label: "", render: help } } },
+        root: isHome ? { fields: { ayuda: { type: "custom", label: "", render: help } } } : {
+            fields: {
+                ayuda: { type: "custom", label: "", render: help },
+                foto: imageField("Foto de la cabecera"), ...tx("antetitulo", "Texto pequeño de la cabecera"), ...tx("titulo", "Título de la página"),
+                ...adv({ descripcion: { type: "textarea", label: "Descripción para Google (una frase)" }, posicion: { type: "number", label: "Encuadre vertical de la foto (0-100)", min: 0, max: 100 } }),
+            },
+            render: ({ children, ...props }) => <><Block id="root" html={render("Cabecera", props)} />{children}</>,
+        },
         categories: {
             portada: { title: "Portada", components: ["Carrusel"] },
             texto: { title: "Texto y fotos", components: ["TextoFoto", "Texto", "Columnas", "Visita", "BandaFrase", "Cita", "Llamada"] },
             tarjetas: { title: "Tarjetas, galerías y vídeo", components: ["TarjetasFoto", "TarjetasIcono", "Galeria", "Video"] },
+            listas: { title: "Pasos, preguntas e historia", components: ["Pasos", "Preguntas", "LineaTiempo"] },
             otros: { title: "Espacios", components: ["Separador"] },
             auto: { title: "Se actualizan solos", components: ["Horario", "Reflexion", "Agenda", "Actualidad", "Revista", "Ubicacion"] },
         },
@@ -256,6 +271,51 @@ export function makeConfig({ render, imageField, autoPreview, advanced, help, Bl
                 },
                 defaultProps: { alto: "medio", adorno: true },
                 render: tpl("Separador"),
+            },
+            Pasos: {
+                label: "Pasos (1, 2, 3…)",
+                fields: {
+                    ...tx("antetitulo", "Texto pequeño de arriba (opcional)"), ...tx("titulo", "Título (opcional)"),
+                    pasos: {
+                        type: "array", label: "Pasos", getItemSummary: (p) => p.titulo || "Paso",
+                        defaultItemProps: { icono: "mail", titulo: "Paso", texto: "" },
+                        arrayFields: { icono: { type: "select", label: "Icono", options: [] }, ...tx("titulo", "Título"), ...tx("texto", "Texto", "textarea") },
+                    },
+                    ...adv(FONDO), ...ANCLA,
+                },
+                defaultProps: { antetitulo: "Cómo empezar", titulo: "Tres pasos sencillos", fondo: "", ancla: "", pasos: [
+                    { icono: "mail", titulo: "Escríbenos", texto: "Cuéntanos qué necesitas." },
+                    { icono: "phone", titulo: "Te llamamos", texto: "Hablamos contigo para concretarlo." },
+                    { icono: "manos", titulo: "Empezamos", texto: "Te acompañamos desde el primer día." }] },
+                render: tpl("Pasos"),
+            },
+            Preguntas: {
+                label: "Preguntas frecuentes",
+                fields: {
+                    ...tx("antetitulo", "Texto pequeño de arriba (opcional)"), ...tx("titulo", "Título (opcional)"),
+                    preguntas: {
+                        type: "array", label: "Preguntas", getItemSummary: (q) => q.pregunta || "Pregunta",
+                        defaultItemProps: { pregunta: "¿Pregunta?", respuesta: "Respuesta." },
+                        arrayFields: { ...tx("pregunta", "Pregunta"), ...tx("respuesta", "Respuesta", "textarea") },
+                    },
+                    ...adv(FONDO), ...ANCLA,
+                },
+                defaultProps: { antetitulo: "Dudas", titulo: "Preguntas frecuentes", fondo: "", ancla: "", preguntas: [{ pregunta: "¿Hace falta pedir cita?", respuesta: "Puedes pasar por el despacho parroquial o escribirnos." }] },
+                render: tpl("Preguntas"),
+            },
+            LineaTiempo: {
+                label: "Línea del tiempo",
+                fields: {
+                    ...tx("antetitulo", "Texto pequeño de arriba (opcional)"), ...tx("titulo", "Título (opcional)"),
+                    hitos: {
+                        type: "array", label: "Fechas", getItemSummary: (h) => `${h.anio || ""} ${h.titulo || ""}`.trim() || "Fecha",
+                        defaultItemProps: { anio: "2026", titulo: "Título", texto: "" },
+                        arrayFields: { anio: { type: "text", label: "Año" }, ...tx("titulo", "Título"), ...tx("texto", "Texto", "textarea") },
+                    },
+                    ...adv(FONDO), ...ANCLA,
+                },
+                defaultProps: { antetitulo: "Un siglo de historia", titulo: "Línea del tiempo", fondo: "section-warm", ancla: "", hitos: [{ anio: "1924", titulo: "Nace la comunidad", texto: "" }] },
+                render: tpl("LineaTiempo"),
             },
             Horario: auto("Horario", "Horario de eucaristías", "Muestra el horario de misas de la parroquia. Por ahora el horario se cambia pidiéndolo al administrador de la web."),
             Reflexion: auto("Reflexion", "Última reflexión", "Muestra sola la última homilía publicada desde el panel (Homilías y reflexiones)."),
