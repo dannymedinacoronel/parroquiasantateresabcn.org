@@ -3199,3 +3199,34 @@ header.scrolled { background: rgba(252, 251, 249, .86); -webkit-backdrop-filter:
 /* horario sobre la foto: efecto cristal */
 .schedule-card { background: rgba(255, 255, 255, .94); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 24px 60px rgba(40, 30, 10, .16); }
 @media (max-width: 700px) { .hero-slider::before { inset: 12px; } }
+
+/* ---------- Pasada de detalle (tipografía, ritmo y microinteracciones) ---------- */
+/* tipografía: títulos que no se parten mal y párrafos con un ancho cómodo */
+h1, h2, h3, .section-head h2 { text-wrap: balance; }
+p, li, blockquote { text-wrap: pretty; }
+.section-head p { color: #6f6758; font-size: 1.02rem; line-height: 1.75; max-width: 62ch; margin-left: auto; margin-right: auto; }
+.prose p, .two-col p { max-width: 66ch; }
+.section-head h2, .two-col h2 { font-size: clamp(2.3rem, 4.2vw, 3.4rem); line-height: 1.08; }
+/* ritmo vertical coherente */
+section:not(.hero):not(.page-hero):not(.schedule-section):not(.image-band):not(.location) { padding-top: clamp(4.25rem, 8vw, 6.5rem); padding-bottom: clamp(4.25rem, 8vw, 6.5rem); }
+/* cifras alineadas en horarios y fechas */
+.schedule-item .time, .stats strong, .ag-day, .year, .timeline .year { font-variant-numeric: lining-nums tabular-nums; }
+/* esquinas y sombras coherentes */
+.icon-card, .vol-card, .ag-item, .reflection-card, .widget-container, .location-card { border-radius: 12px; }
+.icon-card { transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s; }
+.icon-card:hover { transform: translateY(-6px); }
+/* enlaces con flecha: la flecha avanza */
+.link-arrow span { display: inline-block; transition: transform .3s var(--ease); }
+.link-arrow:hover span { transform: translateX(5px); }
+/* fotos que aparecen con un fundido suave al cargar */
+.js img[loading="lazy"] { animation: imgIn .9s var(--ease) both; }
+@keyframes imgIn { from { opacity: 0; } to { opacity: 1; } }
+/* selección, foco y barra de desplazamiento en dorado */
+::selection { background: rgba(191, 160, 101, .28); color: inherit; }
+:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 3px; border-radius: 4px; }
+html { scrollbar-color: #cdb27f #f6f1e8; }
+::-webkit-scrollbar { width: 11px; } ::-webkit-scrollbar-track { background: #f6f1e8; }
+::-webkit-scrollbar-thumb { background: linear-gradient(#d9c08a, #bfa065); border-radius: 999px; border: 3px solid #f6f1e8; }
+/* pie: enlaces que se iluminan en dorado */
+footer a { transition: color .25s; } footer a:hover { color: #e6d3a8; }
+@media (prefers-reduced-motion: reduce) { .js img[loading="lazy"] { animation: none; } .icon-card:hover { transform: none; } }
