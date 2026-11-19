@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Editor visual · Parroquia Santa Teresa de Jesús</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <!-- Editor visual de páginas (Puck). El código está en editor/ y se compila con «npm run build:editor». -->
+    <link rel="stylesheet" href="/admin/editor/editor.css">
+    <style>
+        html, body { margin: 0; height: 100%; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+        #editor { height: 100%; }
+        .pst-screen { max-width: 520px; margin: 12vh auto; padding: 0 1.5rem; text-align: center; color: #3b3326; line-height: 1.6; }
+        .pst-screen h1 { font-size: 1.6rem; color: #1a1a1a; }
+        .pst-btn { display: inline-flex; align-items: center; gap: .4rem; padding: .5rem .9rem; border-radius: 6px; border: 1px solid #bfa065; background: #bfa065; color: #fff; font: 600 .82rem/1.2 system-ui, sans-serif; text-decoration: none; cursor: pointer; }
+        .pst-btn-ghost { background: #fff; color: #6d5326; }
+        .pst-btn:hover { filter: brightness(.95); }
+        .pst-draft { font-size: .75rem; font-weight: 600; color: #8a4b00; background: #fff3d6; border-radius: 999px; padding: .3rem .7rem; }
+        .pst-toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%); z-index: 9999; background: #1f1a12; color: #fff; padding: .8rem 1.2rem; border-radius: 8px; font-size: .9rem; box-shadow: 0 10px 30px rgba(0,0,0,.25); max-width: 90vw; }
+        .pst-help { display: block; font-size: .78rem; line-height: 1.45; color: #6b6458; margin: .3rem 0 0; }
+        .pst-img-field { display: grid; gap: .45rem; }
+        .pst-label { font-size: .8rem; font-weight: 600; color: #333; }
+        .pst-img-field img { width: 100%; max-height: 160px; object-fit: cover; border-radius: 6px; border: 1px solid #e5e0d6; }
+        .pst-img-empty { padding: 1.2rem; text-align: center; font-size: .8rem; color: #8b8479; background: #f6f3ee; border: 1px dashed #d8d1c4; border-radius: 6px; }
+        .pst-img-actions button { padding: .45rem .8rem; border-radius: 6px; border: 1px solid #bfa065; background: #fff; color: #6d5326; font-weight: 600; cursor: pointer; }
+        .pst-img-path { width: 100%; box-sizing: border-box; padding: .4rem .5rem; border: 1px solid #ddd; border-radius: 6px; font-size: .78rem; color: #555; }
+    </style>
+</head>
+<body>
+    <div id="editor"></div>
+    <script src="/admin/editor/editor.js" defer></script>
+</body>
+</html>

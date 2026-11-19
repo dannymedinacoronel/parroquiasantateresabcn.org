@@ -1,0 +1,335 @@
+{
+  "root": {
+    "props": {
+      "title": "Portada"
+    }
+  },
+  "content": [
+    {
+      "type": "Carrusel",
+      "props": {
+        "antetitulo": "Parroquia · El Carmel · Barcelona",
+        "titulo": "Santa Teresa\nde Jesús",
+        "subtitulo": "C/ Llobregós, 132 · 08032 Barcelona",
+        "autor_frases": "Santa Teresa de Jesús",
+        "diapositivas": [
+          {
+            "foto": "portada/portada-1-1920.jpg",
+            "frase": "Nada te turbe",
+            "posicion": 38
+          },
+          {
+            "foto": "portada/portada-2-1920.jpg",
+            "frase": "Nada te espante",
+            "posicion": 55
+          },
+          {
+            "foto": "portada/portada-3-1920.jpg",
+            "frase": "Todo se pasa",
+            "posicion": 30
+          },
+          {
+            "foto": "portada/portada-4-1920.jpg",
+            "frase": "Dios no se muda",
+            "posicion": 50
+          },
+          {
+            "foto": "portada/portada-5-1920.jpg",
+            "frase": "La paciencia todo lo alcanza",
+            "posicion": 50
+          },
+          {
+            "foto": "portada/portada-6-1920.jpg",
+            "frase": "Quien a Dios tiene nada le falta",
+            "posicion": 35
+          },
+          {
+            "foto": "portada/portada-7-1920.jpg",
+            "frase": "Sólo Dios basta",
+            "posicion": 50
+          }
+        ],
+        "botones": [
+          {
+            "texto": "Horarios de misa",
+            "enlace": "#horarios",
+            "estilo": "solido"
+          },
+          {
+            "texto": "Conócenos",
+            "enlace": "#bienvenida",
+            "estilo": "claro"
+          }
+        ],
+        "id": "Carrusel-01"
+      }
+    },
+    {
+      "type": "Horario",
+      "props": {
+        "id": "Horario-02"
+      }
+    },
+    {
+      "type": "TextoFoto",
+      "props": {
+        "ancla": "bienvenida",
+        "fondo": "",
+        "foto": "nuevalife.jpg",
+        "foto_alt": "Campanario y fachada de la Parroquia Santa Teresa de Jesús",
+        "sello_texto": "Desde",
+        "sello_numero": "1924",
+        "antetitulo": "Bienvenidos",
+        "titulo": "Una parroquia en el corazón del Carmel",
+        "texto": "La iglesia se construyó en 1924 en terrenos de la antigua finca de Can Grau, y desde un primer momento estuvo muy integrada en el barrio: fue sede de una de las primeras cooperativas obreras y de una escuela para niños y adultos.",
+        "cifras": [
+          {
+            "numero": "1928",
+            "texto": "Bendición del templo"
+          },
+          {
+            "numero": "+100",
+            "texto": "Años en el barrio"
+          },
+          {
+            "numero": "14",
+            "texto": "Grupos y servicios"
+          }
+        ],
+        "botones": [
+          {
+            "texto": "Nuestra historia",
+            "enlace": "html/historia.html",
+            "estilo": "normal"
+          },
+          {
+            "texto": "Organigrama",
+            "enlace": "html/organigramaparroquial.html",
+            "estilo": "flecha"
+          }
+        ],
+        "id": "TextoFoto-03"
+      }
+    },
+    {
+      "type": "BandaFrase",
+      "props": {
+        "foto": "portada2.jpg",
+        "autor": "Santa Teresa de Jesús",
+        "frase": "Nada te turbe, nada te espante, todo se pasa, Dios no se muda; la paciencia todo lo alcanza; quien a Dios tiene nada le falta. Sólo Dios basta.",
+        "id": "BandaFrase-04"
+      }
+    },
+    {
+      "type": "Reflexion",
+      "props": {
+        "id": "Reflexion-05"
+      }
+    },
+    {
+      "type": "TarjetasFoto",
+      "props": {
+        "ancla": "vida",
+        "fondo": "section-warm",
+        "antetitulo": "Dinámica pastoral",
+        "titulo": "Vida parroquial",
+        "entradilla": "Grupos, celebraciones y servicios que dan vida a nuestra comunidad durante todo el año.",
+        "tarjetas": [
+          {
+            "foto": "dsc_0448.jpg",
+            "antetitulo": "Domingos 11:00 h",
+            "titulo": "Misa con coro góspel",
+            "texto": "Todos los domingos (salvo en agosto) canta un amplio grupo de góspel en la misa de las 11:00.",
+            "enlace": "html/misas.html"
+          },
+          {
+            "foto": "dsc_0586.jpg",
+            "antetitulo": "Niños y adolescentes",
+            "titulo": "Catequesis",
+            "texto": "Preparación para la primera comunión y la confirmación. Inscripciones abiertas.",
+            "enlace": "html/catequesis.html"
+          },
+          {
+            "foto": "caritas.jpg",
+            "antetitulo": "Solidaridad",
+            "titulo": "Cáritas parroquial",
+            "texto": "Un día al mes repartimos alimentos a varias docenas de familias del barrio.",
+            "enlace": "html/dinamicapastoral.html"
+          },
+          {
+            "foto": "img_5495.jpg",
+            "antetitulo": "Grupo de jóvenes",
+            "titulo": "Jóvenes",
+            "texto": "Cada 8 sábados aproximadamente comentamos con el rector el evangelio del domingo.",
+            "enlace": "html/jovenes2alternativa.html"
+          }
+        ],
+        "boton_texto": "Ver toda la dinámica pastoral",
+        "boton_enlace": "html/dinamicapastoral.html",
+        "id": "TarjetasFoto-06"
+      }
+    },
+    {
+      "type": "TarjetasIcono",
+      "props": {
+        "ancla": "sacramentos",
+        "fondo": "",
+        "antetitulo": "Celebrar la fe",
+        "titulo": "Sacramentos",
+        "entradilla": "Te acompañamos en los momentos más importantes de la vida cristiana.",
+        "columnas": "five",
+        "tarjetas": [
+          {
+            "icono": "agua",
+            "titulo": "Bautismo",
+            "texto": "Ceremonias bautismales al mediodía en cualquier domingo del año que se pida.",
+            "enlace": "html/bautismo.html"
+          },
+          {
+            "icono": "paloma",
+            "titulo": "Confirmación",
+            "texto": "Se celebra cada tres años, con catequesis a partir de los 14 años.",
+            "enlace": "html/confirmacion.html"
+          },
+          {
+            "icono": "anillos",
+            "titulo": "Matrimonio",
+            "texto": "Bodas, preparación y aniversarios de plata, oro o diamante: consulta en el despacho los viernes por la tarde.",
+            "enlace": "html/matrimonio.html"
+          },
+          {
+            "icono": "manos",
+            "titulo": "Perdón",
+            "texto": "Los sábados de 18:00 a 19:00 h y siempre un rato antes de cada misa.",
+            "enlace": "html/perdon.html"
+          },
+          {
+            "icono": "oleo",
+            "titulo": "Unción de los enfermos",
+            "texto": "Para enfermos y personas mayores, en casa, en el hospital o en la residencia. Si es urgente, llamad a la parroquia.",
+            "enlace": "html/uncion.html"
+          }
+        ],
+        "boton_texto": "",
+        "boton_enlace": "",
+        "id": "TarjetasIcono-07"
+      }
+    },
+    {
+      "type": "Agenda",
+      "props": {
+        "id": "Agenda-08"
+      }
+    },
+    {
+      "type": "Galeria",
+      "props": {
+        "ancla": "galeria",
+        "fondo": "section-warm",
+        "antetitulo": "Galería",
+        "titulo": "La parroquia en imágenes",
+        "entradilla": "",
+        "fotos": [
+          {
+            "foto": "dsc_0541.jpg",
+            "alt": "Interior de la iglesia durante la eucaristía",
+            "forma": "wide"
+          },
+          {
+            "foto": "img_5432.jpg",
+            "alt": "Música en la eucaristía",
+            "forma": "tall"
+          },
+          {
+            "foto": "album/salida-2026.jpg",
+            "alt": "Salida parroquial",
+            "forma": ""
+          },
+          {
+            "foto": "dsc_0589.jpg",
+            "alt": "Bendición de ramos en el Domingo de Ramos",
+            "forma": ""
+          },
+          {
+            "foto": "dsc_0599webog.jpg",
+            "alt": "El campanario durante el Domingo de Ramos",
+            "forma": "tall"
+          },
+          {
+            "foto": "fotobodapepi.jpg",
+            "alt": "Celebración de un aniversario de boda",
+            "forma": ""
+          },
+          {
+            "foto": "img_5434.jpg",
+            "alt": "Celebración de la eucaristía",
+            "forma": ""
+          },
+          {
+            "foto": "dsc_0512.jpg",
+            "alt": "La comunidad reunida en la iglesia",
+            "forma": "wide"
+          }
+        ],
+        "boton_texto": "Más fotos y vídeos",
+        "boton_enlace": "html/imagenes.html",
+        "id": "Galeria-09"
+      }
+    },
+    {
+      "type": "Actualidad",
+      "props": {
+        "id": "Actualidad-10"
+      }
+    },
+    {
+      "type": "Revista",
+      "props": {
+        "id": "Revista-11"
+      }
+    },
+    {
+      "type": "Visita",
+      "props": {
+        "ancla": "",
+        "fondo": "",
+        "foto": "vidriera.jpg",
+        "foto_alt": "Vidriera de Santa Teresa de Jesús con el Niño",
+        "pie": "Vidriera de Santa Teresa con el Niño Jesús",
+        "antetitulo": "Te esperamos",
+        "titulo": "Visítanos",
+        "texto": "Las puertas de la parroquia están abiertas para todos. Ven a celebrar la eucaristía con nosotros o a hablar con el párroco: bautizos, bodas, visitas a enfermos o cualquier consulta.",
+        "datos": [
+          {
+            "etiqueta": "Dirección",
+            "valor": "Carrer del Llobregós, 132 — 08032 Barcelona"
+          },
+          {
+            "etiqueta": "Despacho parroquial",
+            "valor": "Viernes por la tarde, y antes o después de cada misa"
+          }
+        ],
+        "botones": [
+          {
+            "texto": "Escríbenos",
+            "enlace": "html/contacto.html#escribenos",
+            "estilo": "solido"
+          },
+          {
+            "texto": "Llamar a la parroquia",
+            "enlace": "",
+            "estilo": "llamar"
+          }
+        ],
+        "id": "Visita-12"
+      }
+    },
+    {
+      "type": "Ubicacion",
+      "props": {
+        "id": "Ubicacion-13"
+      }
+    }
+  ],
+  "zones": {}
+}

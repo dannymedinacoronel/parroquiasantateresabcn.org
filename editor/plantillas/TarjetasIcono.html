@@ -1,0 +1,18 @@
+        <section{{#ancla}} id="{{ancla}}"{{/ancla}}{{#fondo}} class="{{fondo}}"{{/fondo}}>
+            <div class="section-head">
+                {{{_ornament}}}{{#antetitulo}}
+                <span class="subtitulo">{{antetitulo}}</span>{{/antetitulo}}
+                <h2>{{titulo}}</h2>{{#entradilla}}
+                <p>{{entradilla}}</p>{{/entradilla}}
+            </div>
+            <div class="icon-grid {{columnas}}">{{#tarjetas}}
+                <a class="icon-card" href="{{enlace|url}}">
+                    <div class="icon-circle">{{icono|icon}}</div>
+                    <h3>{{titulo}}</h3>
+                    <p>{{texto}}</p>
+                </a>{{/tarjetas}}
+            </div>{{#boton_texto}}
+            <div class="btn-group center" style="margin-top:3rem;">
+                <a href="{{boton_enlace|url}}" class="btn">{{boton_texto}}</a>
+            </div>{{/boton_texto}}
+        </section>

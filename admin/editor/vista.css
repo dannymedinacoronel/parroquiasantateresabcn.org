@@ -1,0 +1,10 @@
+/* Solo dentro de la vista previa del editor visual */
+body { background: var(--bg-color, #fcfbf9); }
+.hero { height: 640px !important; min-height: 0 !important; }
+.hero-slide { animation: none !important; transform: none !important; }
+.scroll-cue { display: none; }
+.pst-block > section { content-visibility: visible !important; }
+.pst-auto { position: relative; }
+.pst-auto-tag { position: absolute; z-index: 5; top: .6rem; left: .6rem; background: rgba(31, 26, 18, .82); color: #fff; font: 600 .7rem/1 system-ui, sans-serif; letter-spacing: .5px; padding: .45rem .7rem; border-radius: 999px; }
+.pst-auto-empty { padding: 3rem 1rem; text-align: center; color: #8b8479; background: repeating-linear-gradient(135deg, #fbf7ef 0 14px, #f6f0e3 14px 28px); font-family: system-ui, sans-serif; }
+.pst-auto iframe { pointer-events: none; }

@@ -1,0 +1,18 @@
+        <section class="hero hero-slider">
+            <div class="hero-bg hero-slides" aria-hidden="true">{{#diapositivas}}
+                <span class="hero-slide{{#@first}} is-on ready{{/@first}}" data-bg="{{foto|img}}" style="background-position:center {{posicion}}%;{{#@first}} background-image:url('{{foto|hero}}');{{/@first}}"><em>{{frase}}</em></span>{{/diapositivas}}
+            </div>
+            <span class="eyebrow">{{antetitulo}}</span>
+            <h1>{{titulo|br}}</h1>
+            <div class="hero-divider"></div>
+            <p>{{subtitulo}}</p>
+            <div class="next-mass" data-next-mass hidden></div>
+            <div class="hero-actions">{{#botones}}
+                {{#estilo=solido}}<a href="{{enlace|url}}" class="btn btn-solid">{{texto}}</a>{{/estilo=solido}}{{#estilo=normal}}<a href="{{enlace|url}}" class="btn">{{texto}}</a>{{/estilo=normal}}{{#estilo=claro}}<a href="{{enlace|url}}" class="btn btn-light">{{texto}}</a>{{/estilo=claro}}{{#estilo=flecha}}<a href="{{enlace|url}}" class="link-arrow" style="align-self:center;">{{texto}} <span>&rarr;</span></a>{{/estilo=flecha}}{{#estilo=llamar}}<a href="tel:{{_tel}}" class="btn btn-light btn-call">{{{_icon_phone}}}<span>{{texto}}</span></a>{{/estilo=llamar}}{{/botones}}
+            </div>
+            <a href="#horarios" class="scroll-cue" aria-label="Bajar a los horarios"></a>
+            <div class="hero-slider-ui" aria-hidden="true">
+                <span class="hero-quote"><span class="hero-caption" data-hero-caption></span><small>{{autor_frases}}</small></span>
+                <span class="hero-dots">{{#diapositivas}}<i></i>{{/diapositivas}}</span>
+            </div>
+        </section>

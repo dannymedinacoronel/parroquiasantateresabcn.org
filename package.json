@@ -1,9 +1,18 @@
 {
   "name": "parroquiasantateresabcn",
   "private": true,
-  "description": "Funciones de Netlify para las métricas anónimas de los formularios (la web en sí es estática).",
+  "description": "Funciones de Netlify (métricas, noticias, informe semanal) y el editor visual de páginas (/admin/editor/).",
   "type": "module",
   "dependencies": {
     "@netlify/blobs": "11.1.5"
+  },
+  "devDependencies": {
+    "@puckeditor/core": "^0.24.1",
+    "esbuild": "^0.28.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "scripts": {
+    "build:editor": "esbuild editor/main.jsx --bundle --minify --format=iife --jsx=automatic --loader:.html=text --define:process.env.NODE_ENV=\\\"production\\\" --outfile=admin/editor/editor.js"
   }
 }

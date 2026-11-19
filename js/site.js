@@ -767,6 +767,14 @@
         function preload(i) {
             var s = slides[i];
             if (!s || s.classList.contains("ready")) return;
+            /* foto elegida en el editor visual (data-bg); en Netlify, reducida al ancho de la pantalla */
+            var bg = s.getAttribute("data-bg");
+            if (bg && !s.style.backgroundImage) {
+                var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+                var path = new URL(bg, location.href).pathname;
+                var w = (window.innerWidth || 1280) * (window.devicePixelRatio || 1) > 1400 ? 1920 : 1280;
+                s.style.backgroundImage = "url('" + (local ? path : "/.netlify/images?url=" + encodeURIComponent(path) + "&w=" + w + "&q=74") + "')";
+            }
             s.classList.add("ready");
             var m = /url\(["']?(.*?)["']?\)/.exec(getComputedStyle(s).backgroundImage || "");
             if (!m) { loaded[i] = true; return; }

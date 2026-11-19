@@ -1350,29 +1350,11 @@ os.makedirs(os.path.join(ROOT, "data"), exist_ok=True)
 with open(os.path.join(ROOT, "data", "agenda.ics"), "w", encoding="utf-8", newline="") as _fh:
     _fh.write(agenda_ics())
 
-PAGES["index.html"] = page(0, "", "Parroquia Santa Teresa de Jesús, en el barrio del Carmel (Barcelona). Horarios de eucaristías, actividades pastorales y contacto.",
-full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", extra_head=INDEX_HEAD, body="""        <section class="hero hero-slider">
-            <div class="hero-bg hero-slides" aria-hidden="true">""" + "".join(
-    f'\n                <span class="hero-slide{" is-on ready" if i == 1 else ""}"><em>{cap}</em></span>'
-    for i, cap in enumerate(HERO_SLIDES, 1)) + """
-            </div>
-            <span class="eyebrow">Parroquia · El Carmel · Barcelona</span>
-            <h1>Santa Teresa<br>de Jesús</h1>
-            <div class="hero-divider"></div>
-            <p>C/ Llobregós, 132 · 08032 Barcelona</p>
-            <div class="next-mass" data-next-mass hidden></div>
-            <div class="hero-actions">
-                <a href="#horarios" class="btn btn-solid">Horarios de misa</a>
-                <a href="#bienvenida" class="btn btn-light">Conócenos</a>
-            </div>
-            <a href="#horarios" class="scroll-cue" aria-label="Bajar a los horarios"></a>
-            <div class="hero-slider-ui" aria-hidden="true">
-                <span class="hero-quote"><span class="hero-caption" data-hero-caption></span><small>Santa Teresa de Jesús</small></span>
-                <span class="hero-dots">""" + "".join('<i></i>' for _ in HERO_SLIDES) + """</span>
-            </div>
-        </section>
-
-        <section id="horarios" class="schedule-section">
+# ---------------------------------------------------------------- PORTADA
+# Apartados de la portada que se rellenan solos. Se usan en la portada de siempre y en los bloques
+# «automáticos» del editor visual (contenido/paginas/portada.json).
+def home_horario():
+    return """        <section id="horarios" class="schedule-section">
             <h2 class="sr-only">Horario de eucaristías</h2>
             <div class="schedule-card">
                 <div class="schedule-item" data-days="1,2,3,4,5">
@@ -1405,7 +1387,129 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", ext
             </div>
         </section>
 
-        <section id="bienvenida">
+"""
+
+
+def home_actualidad():
+    return """        <section id="actualidad" class="section-alt">
+            <div class="section-head" style="margin-bottom:0;">
+                <span class="subtitulo">Vida Parroquial</span>
+                <h2>Actualidad y Evangelio</h2>
+                <hr class="section-divider" style="margin-bottom:0;">
+            </div>
+            <a class="family-entry family-entry-top" href="html/evangelio-familia.html">
+                <span class="family-entry-img" style="background-image:url('fotosdefinitivas/web/familia-pixelada.jpg')" aria-hidden="true"></span>
+                <span class="family-entry-body">
+                    <span class="subtitulo">Para leer en casa</span>
+                    <strong>El Evangelio para la familia</strong>
+                    <span class="family-entry-text">Cada día, el Evangelio explicado para los niños: texto, comentario, ilustración y juegos para leerlo juntos.</span>
+                    <span class="btn btn-solid">Leer en familia</span>
+                </span>
+            </a>
+            <div class="act-actions">
+                <a href="https://evangeli.net/evangelio" class="btn btn-solid" target="_blank" rel="noopener">Leer el Evangelio de hoy completo &rarr;</a>
+                <a href="html/noticias.html" class="btn">Noticias del Vaticano y del Arzobispado &rarr;</a>
+            </div>
+
+            <div class="grid-container">
+                <div class="widget-container">
+                    <h3>Evangelio de Hoy</h3>
+                    <div class="gospel-day">
+                        <span class="gospel-date" data-hoy>Hoy</span>
+                        <strong class="gospel-liturgia" data-liturgia>Evangelio del día</strong>
+                        <p class="gospel-sign">Una invitación diaria de la Parroquia Santa Teresa de Jesús a leer y orar con la Palabra de Dios.</p>
+                    </div>
+                    <script src="js/liturgia.js?v=""" + V["js/liturgia.js"] + """" defer></script>
+                    <div class="gospel-frame">
+                        <iframe title="Evangelio de hoy" width="100%" height="680" frameborder="0" loading="lazy" src="https://evangeli.net/evangelio/widget/web"></iframe>
+                    </div>
+                </div>
+
+                <div class="widget-container">
+                    <h3>@p.santateresadejesusbcn</h3>
+                    <div class="ig-card">
+                    """ + ig_profile(0, "flat") + """
+                    """ + ig_grid(0) + """
+                    <a class="btn btn-solid ig-more" href="""" + IG_URL + """" target="_blank" rel="noopener">Ver las últimas publicaciones en Instagram &rarr;</a>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+"""
+
+
+HOME_AUTO = {
+    "Horario": home_horario,
+    "Reflexion": lambda: HOME_HOMILY,
+    "Agenda": agenda_home,
+    "Actualidad": home_actualidad,
+    "Revista": lambda: revista_module(0),
+    "Ubicacion": location_block,
+}
+
+
+# ---------------------------------------------------------------- PÁGINAS DEL EDITOR VISUAL (/admin/editor/)
+_bs = _ilu.spec_from_file_location("bloques", os.path.join(os.path.dirname(os.path.abspath(__file__)), "bloques.py"))
+BLQ = _ilu.module_from_spec(_bs); _bs.loader.exec_module(BLQ)
+BLQ_TEMPLATES = BLQ.load_templates()
+BLQ_TR, BLQ_ES = [], set()     # traducciones escritas en el editor y textos en castellano de esas páginas
+
+
+def _blq_hero(v, _s=None):
+    v = str(v or "").strip()
+    path = v if v.startswith("/") else "/fotosdefinitivas/web/" + v
+    if ON_NETLIFY:
+        from urllib.parse import quote
+        return f"/.netlify/images?url={quote(path)}&w=1600&q=74"
+    return BLQ.esc(path.lstrip("/"))
+
+
+def blq_renderer(depth):
+    base = "../" * depth
+    globals_ = {"_tel": TEL, "_icon_phone": ICON_PHONE, "_ornament": ORNAMENT}
+    return BLQ.Renderer(BLQ.make_filters(base, SAC_ICONS, hero_url=_blq_hero if depth == 0 else None), globals_)
+
+
+def blq_page(slug, depth, auto):
+    """HTML de una página hecha con el editor visual, o None si no existe."""
+    data = BLQ.load_page(ROOT, slug)
+    if not data:
+        return None
+    BLQ_TR.extend(BLQ.translations(data))
+    BLQ_ES.update(BLQ.spanish_texts(data))
+    return data, BLQ.render_page(data, blq_renderer(depth), BLQ_TEMPLATES, auto)
+
+
+# lo que el editor necesita para pintar los bloques igual que la web (iconos, teléfono, adorno)
+os.makedirs(os.path.join(ROOT, "admin", "editor"), exist_ok=True)
+with open(os.path.join(ROOT, "admin", "editor", "datos.json"), "w", encoding="utf-8", newline="\n") as _fh:
+    _json.dump({"iconos": SAC_ICONS, "globales": {"_tel": TEL, "_icon_phone": ICON_PHONE, "_ornament": ORNAMENT}}, _fh, ensure_ascii=False)
+
+
+PAGES["index.html"] = page(0, "", "Parroquia Santa Teresa de Jesús, en el barrio del Carmel (Barcelona). Horarios de eucaristías, actividades pastorales y contacto.",
+full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", extra_head=INDEX_HEAD, body="""        <section class="hero hero-slider">
+            <div class="hero-bg hero-slides" aria-hidden="true">""" + "".join(
+    f'\n                <span class="hero-slide{" is-on ready" if i == 1 else ""}"><em>{cap}</em></span>'
+    for i, cap in enumerate(HERO_SLIDES, 1)) + """
+            </div>
+            <span class="eyebrow">Parroquia · El Carmel · Barcelona</span>
+            <h1>Santa Teresa<br>de Jesús</h1>
+            <div class="hero-divider"></div>
+            <p>C/ Llobregós, 132 · 08032 Barcelona</p>
+            <div class="next-mass" data-next-mass hidden></div>
+            <div class="hero-actions">
+                <a href="#horarios" class="btn btn-solid">Horarios de misa</a>
+                <a href="#bienvenida" class="btn btn-light">Conócenos</a>
+            </div>
+            <a href="#horarios" class="scroll-cue" aria-label="Bajar a los horarios"></a>
+            <div class="hero-slider-ui" aria-hidden="true">
+                <span class="hero-quote"><span class="hero-caption" data-hero-caption></span><small>Santa Teresa de Jesús</small></span>
+                <span class="hero-dots">""" + "".join('<i></i>' for _ in HERO_SLIDES) + """</span>
+            </div>
+        </section>
+
+""" + home_horario() + """        <section id="bienvenida">
             <div class="two-col center">
                 <div class="framed-img">
                     <img src=\"""" + img("nuevalife.jpeg", 0) + """\" alt="Campanario y fachada de la Parroquia Santa Teresa de Jesús" loading="lazy">
@@ -1489,52 +1593,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", ext
             </div>
         </section>
 
-        <section id="actualidad" class="section-alt">
-            <div class="section-head" style="margin-bottom:0;">
-                <span class="subtitulo">Vida Parroquial</span>
-                <h2>Actualidad y Evangelio</h2>
-                <hr class="section-divider" style="margin-bottom:0;">
-            </div>
-            <a class="family-entry family-entry-top" href="html/evangelio-familia.html">
-                <span class="family-entry-img" style="background-image:url('fotosdefinitivas/web/familia-pixelada.jpg')" aria-hidden="true"></span>
-                <span class="family-entry-body">
-                    <span class="subtitulo">Para leer en casa</span>
-                    <strong>El Evangelio para la familia</strong>
-                    <span class="family-entry-text">Cada día, el Evangelio explicado para los niños: texto, comentario, ilustración y juegos para leerlo juntos.</span>
-                    <span class="btn btn-solid">Leer en familia</span>
-                </span>
-            </a>
-            <div class="act-actions">
-                <a href="https://evangeli.net/evangelio" class="btn btn-solid" target="_blank" rel="noopener">Leer el Evangelio de hoy completo &rarr;</a>
-                <a href="html/noticias.html" class="btn">Noticias del Vaticano y del Arzobispado &rarr;</a>
-            </div>
-
-            <div class="grid-container">
-                <div class="widget-container">
-                    <h3>Evangelio de Hoy</h3>
-                    <div class="gospel-day">
-                        <span class="gospel-date" data-hoy>Hoy</span>
-                        <strong class="gospel-liturgia" data-liturgia>Evangelio del día</strong>
-                        <p class="gospel-sign">Una invitación diaria de la Parroquia Santa Teresa de Jesús a leer y orar con la Palabra de Dios.</p>
-                    </div>
-                    <script src="js/liturgia.js?v=""" + V["js/liturgia.js"] + """" defer></script>
-                    <div class="gospel-frame">
-                        <iframe title="Evangelio de hoy" width="100%" height="680" frameborder="0" loading="lazy" src="https://evangeli.net/evangelio/widget/web"></iframe>
-                    </div>
-                </div>
-
-                <div class="widget-container">
-                    <h3>@p.santateresadejesusbcn</h3>
-                    <div class="ig-card">
-                    """ + ig_profile(0, "flat") + """
-                    """ + ig_grid(0) + """
-                    <a class="btn btn-solid ig-more" href="""" + IG_URL + """" target="_blank" rel="noopener">Ver las últimas publicaciones en Instagram &rarr;</a>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-""" + revista_module(0) + """
+""" + home_actualidad() + """""" + revista_module(0) + """
 
         <section class="visit">
             <div class="two-col center">
@@ -1560,6 +1619,19 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", ext
         </section>
 
 """ + location_block() + """""")
+
+# Si existe contenido/paginas/portada.json (editor visual), la portada sale de ahí
+_PORTADA = blq_page("portada", 0, HOME_AUTO)
+if _PORTADA:
+    _first = next((b for b in _PORTADA[0].get("content", []) if b.get("type") == "Carrusel" and (b.get("props") or {}).get("diapositivas")), None)
+    _head = INDEX_HEAD
+    if _first:
+        _hero = _blq_hero(_first["props"]["diapositivas"][0].get("foto"))
+        _head = re.sub(r'    <link rel="preload" as="image"[^\n]*\n', "", _head)
+        _head = f'    <link rel="preload" as="image" href="{_hero}" fetchpriority="high">\n' + _head
+    PAGES["index.html"] = page(0, "", "Parroquia Santa Teresa de Jesús, en el barrio del Carmel (Barcelona). Horarios de eucaristías, actividades pastorales y contacto.",
+                               full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", extra_head=_head, body=_PORTADA[1] + "\n")
+
 
 # ---------------------------------------------------------------- DINÁMICA PASTORAL
 FLIP = [
@@ -3832,6 +3904,10 @@ def relocate_assets(html):
     return re.sub(r"url\('((?:\.\./)*)fotosdefinitivas/", r"url('../\1fotosdefinitivas/", html)
 
 
+for _es, _ca, _en in BLQ_TR:
+    _old = TABLE.get(_es, {})
+    TABLE[_es] = {"ca": _ca or _old.get("ca") or _es, "en": _en or _old.get("en") or _es}
+
 missing = set()
 written = []
 for rel, base in PAGES.items():
@@ -3914,6 +3990,7 @@ with open(os.path.join(ROOT, "robots.txt"), "w", encoding="utf-8", newline="\n")
     fh.write(f"User-agent: *\nAllow: /\nDisallow: /scripts/\nDisallow: /admin/\nDisallow: /contenido/\n\nSitemap: {SITE}sitemap.xml\n")
 
 print(len(written), "páginas escritas en", len(LANGS), "idiomas;", len(urls), "URL en sitemap.xml")
+missing -= BLQ_ES
 if missing:
     print("SIN TRADUCIR:", len(missing))
     for m_ in sorted(missing):

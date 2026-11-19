@@ -1,0 +1,21 @@
+        <section{{#ancla}} id="{{ancla}}"{{/ancla}}{{#fondo}} class="{{fondo}}"{{/fondo}}>
+            <div class="section-head">{{#antetitulo}}
+                <span class="subtitulo">{{antetitulo}}</span>{{/antetitulo}}
+                <h2>{{titulo}}</h2>
+                <hr class="section-divider" style="margin-bottom:{{#entradilla}}1.25rem{{/entradilla}}{{^entradilla}}0{{/entradilla}};">{{#entradilla}}
+                <p>{{entradilla}}</p>{{/entradilla}}
+            </div>
+            <div class="feature-grid">{{#tarjetas}}
+                <a class="feature" href="{{enlace|url}}">
+                    <img src="{{foto|img}}" alt="{{titulo}}" loading="lazy">
+                    <div class="feature-body">
+                        <span class="subtitulo">{{antetitulo}}</span>
+                        <h3>{{titulo}}</h3>
+                        <p>{{texto}}</p>
+                    </div>
+                </a>{{/tarjetas}}
+            </div>{{#boton_texto}}
+            <div class="btn-group center" style="margin-top:3rem;">
+                <a href="{{boton_enlace|url}}" class="btn">{{boton_texto}}</a>
+            </div>{{/boton_texto}}
+        </section>

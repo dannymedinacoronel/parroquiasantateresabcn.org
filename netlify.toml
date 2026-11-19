@@ -7,9 +7,9 @@
   # homilías, noticias, agenda, revista). Las noticias del Vaticano y del Arzobispado ya no se
   # descargan aquí: las sirve al momento netlify/functions/noticias.mjs (sin GitHub Actions).
   command = "python3 scripts/generador/generar_web.py ."
-  # Si en un cambio solo se han tocado las tareas del equipo, no hace falta volver a generar la web
+  # Si en un cambio solo se han tocado las tareas del equipo, borradores o fotos del editor visual, no se vuelve a generar la web
   # (si Netlify no sabe cuál fue la última versión publicada, o es la misma, se genera igualmente)
-  ignore = "test -n \"$CACHED_COMMIT_REF\" && test \"$CACHED_COMMIT_REF\" != \"$COMMIT_REF\" && git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':(exclude)contenido/tareas.json'"
+  ignore = "test -n \"$CACHED_COMMIT_REF\" && test \"$CACHED_COMMIT_REF\" != \"$COMMIT_REF\" && git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':(exclude)contenido/tareas.json' ':(exclude)contenido/paginas/_borradores' ':(exclude)fotosdefinitivas/web/paginas'"
 
 [build.environment]
   PYTHON_VERSION = "3.12"
