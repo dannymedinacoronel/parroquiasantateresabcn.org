@@ -210,7 +210,7 @@
         }
     });
 
-    /* --- Misa dominical: la pila de fotos va pasando sola (se para al pasar el ratón o fuera de pantalla) --- */
+    /* --- Eucaristía dominical: la pila de fotos va pasando sola (se para al pasar el ratón o fuera de pantalla) --- */
     document.querySelectorAll("[data-pile-autoplay]").forEach(function (pile) {
         if (REDUCED || pile.children.length < 2) return;
         var visible = false, paused = false;
@@ -291,13 +291,13 @@
     };
     var LOCALE = { es: "es-ES", ca: "ca-ES", en: "en-GB" }[LANG] || "es-ES";
 
-    /* --- Misas: próximo domingo con coro góspel (11:00 h; en agosto no canta) --- */
+    /* --- Eucaristías: próximo domingo con coro góspel (11:00 h; en agosto no canta) --- */
     var gospelNext = document.querySelector("[data-gospel-next]");
     if (gospelNext) {
         var gNow = new Date(), g = new Date(gNow);
         g.setHours(11, 0, 0, 0);
         g.setDate(g.getDate() + (7 - g.getDay()) % 7);
-        if (gNow - g > 75 * 60000) g.setDate(g.getDate() + 7);   /* la misa de hoy ya ha terminado */
+        if (gNow - g > 75 * 60000) g.setDate(g.getDate() + 7);   /* la eucaristía de hoy ya ha terminado */
         while (g.getMonth() === 7) g.setDate(g.getDate() + 7);
         var gText;
         if (gNow >= g) gText = T("gospelNow");

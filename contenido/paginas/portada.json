@@ -51,7 +51,7 @@
         ],
         "botones": [
           {
-            "texto": "Horarios de misa",
+            "texto": "Horario de eucaristías",
             "enlace": "#horarios",
             "estilo": "solido"
           },
@@ -142,8 +142,8 @@
           {
             "foto": "dsc_0448.jpg",
             "antetitulo": "Domingos 11:00 h",
-            "titulo": "Misa con coro góspel",
-            "texto": "Todos los domingos (salvo en agosto) canta un amplio grupo de góspel en la misa de las 11:00.",
+            "titulo": "Eucaristía con coro góspel",
+            "texto": "Todos los domingos (salvo en agosto) canta un amplio grupo de góspel en la eucaristía de las 11:00.",
             "enlace": "html/misas.html"
           },
           {
@@ -219,7 +219,7 @@
           {
             "icono": "manos",
             "titulo": "Perdón",
-            "texto": "Los sábados de 18:00 a 19:00 h y siempre un rato antes de cada misa.",
+            "texto": "Los sábados de 18:00 a 19:00 h y siempre un rato antes de cada eucaristía.",
             "enlace": "html/perdon.html"
           },
           {
@@ -331,7 +331,7 @@
           },
           {
             "etiqueta": "Despacho parroquial",
-            "valor": "Viernes por la tarde, y antes o después de cada misa"
+            "valor": "Viernes por la tarde, y antes o después de cada eucaristía"
           }
         ],
         "botones": [

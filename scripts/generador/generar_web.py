@@ -43,7 +43,7 @@ NAV = [
     ("portada|buscador", "Inicio", "index.html", [
         ("§", "Bienvenidos", "index.html"),
         ("Quiénes somos", "index.html#bienvenida", "torre"),
-        ("Próxima misa y horarios", "index.html#horarios", "reloj"),
+        ("Próxima eucaristía y horarios", "index.html#horarios", "reloj"),
         ("Reflexión de la semana", "index.html#reflexion", "libro"),
         ("Cómo llegar", "index.html#ubicacion", "pin"),
         ("Buscar una parroquia", "html/buscador-parroquias.html", "globo"),
@@ -51,8 +51,8 @@ NAV = [
     ]),
     ("eucaristias", "Celebraciones", "html/misas.html", [
         ("§", "Eucaristía", "html/misas.html"),
-        ("Horarios de misa", "html/misas.html#horarios", "reloj"),
-        ("Misa con coro góspel", "html/misas.html#gospel", "nota"),
+        ("Horario de eucaristías", "html/misas.html#horarios", "reloj"),
+        ("Eucaristía con coro góspel", "html/misas.html#gospel", "nota"),
         ("Calendario semanal", "html/misas.html#calendario", "cal"),
         ("¶", "¿Quieres pedir un sacramento?", "html/contacto.html#escribenos", "Escríbenos y te acompañamos"),
         ("§", "Sacramentos", "html/adminsacra.html"),
@@ -190,7 +190,7 @@ CTA_BAND = """
             <div>
                 <span class="subtitulo text-left">Estamos para ayudarte</span>
                 <h2 class="text-left">¿Tienes alguna pregunta?</h2>
-                <p>Escríbenos o pásate por el despacho parroquial: los viernes por la tarde, y antes o después de cada misa.</p>
+                <p>Escríbenos o pásate por el despacho parroquial: los viernes por la tarde, y antes o después de cada eucaristía.</p>
             </div>
             <div class="btn-group">
                 <a href="contacto.html" class="btn btn-solid">Contactar</a>
@@ -505,7 +505,7 @@ ALBUMS = [
         ("img_5471.jpg", "Velas encendidas ante el Cristo"),
         ("nuevalife.jpg", "El campanario y la fachada de la iglesia"),
     ]),
-    ("La misa del domingo", "Cada domingo", "La comunidad reunida, la música y la mesa del altar.", [
+    ("La eucaristía del domingo", "Cada domingo", "La comunidad reunida, la música y la mesa del altar.", [
         ("dsc_0546.jpg", "La iglesia llena durante una celebración"),
         ("album/dsc_0459.jpg", "La celebración desde el presbiterio"),
         ("dsc_0541.jpg", "Interior de la iglesia durante la eucaristía"),
@@ -513,7 +513,7 @@ ALBUMS = [
         ("img_5434.jpg", "Celebración de la eucaristía"),
         ("album/img_5454.jpg", "La comunión"),
         ("img_5432.jpg", "Música en la eucaristía"),
-        ("album/img_5486.jpg", "El altar durante la misa"),
+        ("album/img_5486.jpg", "El altar durante la eucaristía"),
     ]),
     ("Últimas comuniones", "Sacramentos", "Un día de fiesta para toda la comunidad: los niños reciben a Jesús por primera vez, acompañados de sus familias, sus catequistas y el párroco.", [
         ("album/comuniones-1444.jpg", "Los niños de primera comunión con el párroco y la catequista ante el altar"),
@@ -526,7 +526,7 @@ GOSPEL_PHOTOS = [
     ("album/img_5454.jpg", "La comunión"),
     ("album/dsc_0459.jpg", "La celebración desde el presbiterio"),
     ("dsc_0546.jpg", "La iglesia llena durante una celebración"),
-    ("album/img_5486.jpg", "El altar durante la misa"),
+    ("album/img_5486.jpg", "El altar durante la eucaristía"),
     ("dsc_0541.jpg", "Interior de la iglesia durante la eucaristía"),
 ]
 
@@ -544,7 +544,7 @@ def album_shelf(depth):
 
 def gospel_feature(depth):
     return f'''<div class="gospel-feature">
-                    {photo_pile(GOSPEL_PHOTOS, depth, "Fotos de la misa dominical", " photo-pile-wide", autoplay=True)}
+                    {photo_pile(GOSPEL_PHOTOS, depth, "Fotos de la eucaristía dominical", " photo-pile-wide", autoplay=True)}
                     <div class="gospel-next">
                         <span class="gospel-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
                         <div>
@@ -987,7 +987,7 @@ def location_block(big=False, sid="ubicacion"):
                     </li>
                     <li>
                         {ICON_CLOCK}
-                        <div><strong>Misas</strong><span>Laborables y sábados 19:00 h · Domingos 11:00 y 13:15 h</span></div>
+                        <div><strong>Eucaristías</strong><span>Laborables y sábados 19:00 h · Domingos 11:00 y 13:15 h</span></div>
                     </li>
                     <li>
                         {ICON_PHONE}
@@ -1473,7 +1473,7 @@ def home_horario():
                     """ + ICON_HEART + """
                     <h3>Confesiones</h3>
                     <div class="time">18:00 <small>h</small></div>
-                    <p>Sábados, y antes de cada misa</p>
+                    <p>Sábados, y antes de cada eucaristía</p>
                 </div>
             </div>
             <div class="schedule-foot">
@@ -1594,7 +1594,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", ext
             <p>C/ Llobregós, 132 · 08032 Barcelona</p>
             <div class="next-mass" data-next-mass hidden></div>
             <div class="hero-actions">
-                <a href="#horarios" class="btn btn-solid">Horarios de misa</a>
+                <a href="#horarios" class="btn btn-solid">Horario de eucaristías</a>
                 <a href="#bienvenida" class="btn btn-light">Conócenos</a>
             </div>
             <a href="#horarios" class="scroll-cue" aria-label="Bajar a los horarios"></a>
@@ -1646,7 +1646,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", ext
             </div>
             <div class="feature-grid">
 """ + "\n".join([
-    feature("DSC_0448.JPG", "Domingos 11:00 h", "Misa con coro góspel", "Todos los domingos (salvo en agosto) canta un amplio grupo de góspel en la misa de las 11:00.", "html/misas.html"),
+    feature("DSC_0448.JPG", "Domingos 11:00 h", "Eucaristía con coro góspel", "Todos los domingos (salvo en agosto) canta un amplio grupo de góspel en la eucaristía de las 11:00.", "html/misas.html"),
     feature("DSC_0586.JPG", "Niños y adolescentes", "Catequesis", "Preparación para la primera comunión y la confirmación. Inscripciones abiertas.", "html/catequesis.html"),
     feature("caritas.jpg", "Solidaridad", "Cáritas parroquial", "Un día al mes repartimos alimentos a varias docenas de familias del barrio.", "html/dinamicapastoral.html"),
     feature("IMG_5495.jpg", "Grupo de jóvenes", "Jóvenes", "Cada 8 sábados aproximadamente comentamos con el rector el evangelio del domingo.", "html/jovenes2alternativa.html"),
@@ -1669,7 +1669,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", ext
     icon_card("agua", "Bautismo", "Ceremonias bautismales al mediodía en cualquier domingo del año que se pida.", "html/bautismo.html"),
     icon_card("paloma", "Confirmación", "Se celebra cada tres años, con catequesis a partir de los 14 años.", "html/confirmacion.html"),
     icon_card("anillos", "Matrimonio", "Bodas, preparación y aniversarios de plata, oro o diamante: consulta en el despacho los viernes por la tarde.", "html/matrimonio.html"),
-    icon_card("manos", "Perdón", "Los sábados de 18:00 a 19:00 h y siempre un rato antes de cada misa.", "html/perdon.html"),
+    icon_card("manos", "Perdón", "Los sábados de 18:00 a 19:00 h y siempre un rato antes de cada eucaristía.", "html/perdon.html"),
     icon_card("oleo", "Unción de los enfermos", UNCION_TXT, "html/uncion.html"),
 ]) + """
             </div>
@@ -1703,7 +1703,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", ext
                     <p>Las puertas de la parroquia están abiertas para todos. Ven a celebrar la eucaristía con nosotros o a hablar con el párroco: bautizos, bodas, visitas a enfermos o cualquier consulta.</p>
                     <ul class="info-list" style="margin:1.5rem 0 2rem;">
                         <li><strong>Dirección</strong>Carrer del Llobregós, 132 — 08032 Barcelona</li>
-                        <li><strong>Despacho parroquial</strong>Viernes por la tarde, y antes o después de cada misa</li>
+                        <li><strong>Despacho parroquial</strong>Viernes por la tarde, y antes o después de cada eucaristía</li>
                     </ul>
                     <div class="btn-group">
                         <a href="html/contacto.html#escribenos" class="btn btn-solid">Escríbenos</a>
@@ -1730,15 +1730,15 @@ if _PORTADA:
 
 # ---------------------------------------------------------------- DINÁMICA PASTORAL
 FLIP = [
-    ("DSC_0448.JPG", "Misa dominical de las 11:00h y actos eucarísticos",
-     "De las misas que se celebran durante el fin de semana, desde el punto de vista de animación, destaca la de las 11:00h.",
-     "Misa dominical de las 11:00h y actos eucarísticos",
-     "De las misas que se celebran durante el fin de semana, desde el punto de vista de animación, destaca la de las 11:00h. Todos los domingos (salvo en agosto) canta un amplio grupo de Góspel en dicha misa.",
+    ("DSC_0448.JPG", "Eucaristía dominical de las 11:00h y actos eucarísticos",
+     "De las eucaristías que se celebran durante el fin de semana, desde el punto de vista de animación, destaca la de las 11:00h.",
+     "Eucaristía dominical de las 11:00h y actos eucarísticos",
+     "De las eucaristías que se celebran durante el fin de semana, desde el punto de vista de animación, destaca la de las 11:00h. Todos los domingos (salvo en agosto) canta un amplio grupo de Góspel en dicha eucaristía.",
      ("misas.html", "Ver horarios", False)),
     ("IMG_5471.jpg", "Administración de otros Sacramentos",
      "Mn. Sols administra el sacramento del Perdón de manera fija los sábados.",
      "Administración de otros Sacramentos",
-     "Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:00-19:00 horas y siempre un rato antes de cada misa. Hay ceremonias bautismales al mediodía en cualquier domingo del año que se le pida. Cada tres años se celebra la Confirmación.",
+     "Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:00-19:00 horas y siempre un rato antes de cada eucaristía. Hay ceremonias bautismales al mediodía en cualquier domingo del año que se le pida. Cada tres años se celebra la Confirmación.",
      ("adminsacra.html", "Sacramentos", False)),
     ("caritas.jpg", "Cáritas parroquial y equipo arciprestal de Cáritas",
      "La labor que realiza Cáritas parroquial consiste en repartir alimentos, un día al mes, a varias docenas de familias.",
@@ -1783,12 +1783,12 @@ FLIP = [
     ("DSC_0568.JPG", "Despacho parroquial, bautizos y bodas",
      "Hay un despacho parroquial de 6 a 7 de la tarde donde toda persona se encuentra con Mn. Sols para consultarle cosas diversas.",
      "Despacho parroquial",
-     "Los viernes por la tarde y de hecho un rato antes o después de todas las misas de la semana, el cura párroco atiende a gente para cualquier tipo de asuntos.",
+     "Los viernes por la tarde y de hecho un rato antes o después de todas las eucaristías de la semana, el cura párroco atiende a gente para cualquier tipo de asuntos.",
      ("contacto.html", "Contacto", False)),
     ("santateresa.jpg", "Charlas semanales de formación",
-     "Los viernes, al acabar la misa vespertina, se imparten charlas de formación sobre espiritualidad litúrgica, bíblica y moral católica.",
+     "Los viernes, al acabar la eucaristía vespertina, se imparten charlas de formación sobre espiritualidad litúrgica, bíblica y moral católica.",
      "Charlas semanales de formación",
-     "Los viernes, al acabar la misa vespertina, se imparten charlas de formación sobre espiritualidad litúrgica, bíblica y moral católica.",
+     "Los viernes, al acabar la eucaristía vespertina, se imparten charlas de formación sobre espiritualidad litúrgica, bíblica y moral católica.",
      None),
     ("colegio.jpeg", "Colegio Santa Teresa",
      "No es propiamente un centro educativo parroquial pero se respeta el humanismo cristiano en su didáctica escolar.",
@@ -2060,7 +2060,7 @@ PAGES["html/voluntariado.html"] = page(1, "Voluntariado", "Hazte voluntario en l
                 <article class="vol-card">
                     <div class="icon-circle">{SAC_ICONS["nota"]}</div>
                     <h3>Liturgia y coro</h3>
-                    <p>Lee en misa, ayuda a prepararla o canta en el coro góspel de la misa de las 11:00 de los domingos.</p>
+                    <p>Lee en eucaristía, ayuda a prepararla o canta en el coro góspel de la eucaristía de las 11:00 de los domingos.</p>
                     <a class="link-arrow" href="contacto.html?motivo=Voluntariado#escribenos">Quiero colaborar <span>&rarr;</span></a>
                 </article>
                 <article class="vol-card">
@@ -2181,7 +2181,7 @@ PAGES["html/historia.html"] = page(1, "Historia", "Historia y archivo fotográfi
                 <div class="timeline-item timeline-now">
                     <div class="year">Hoy</div>
                     <h3>Un siglo de vida en el Carmel</h3>
-                    <p>Cien años después de su construcción, la parroquia sigue siendo un punto de encuentro del barrio: la misa dominical con coro góspel, la catequesis de niños y adolescentes, Cáritas, los grupos de jóvenes y de matrimonios, y una comunidad que continúa abierta a todos.</p>
+                    <p>Cien años después de su construcción, la parroquia sigue siendo un punto de encuentro del barrio: la eucaristía dominical con coro góspel, la catequesis de niños y adolescentes, Cáritas, los grupos de jóvenes y de matrimonios, y una comunidad que continúa abierta a todos.</p>
                     <a href="dinamicapastoral.html" class="link-arrow">Conoce la vida parroquial <span>&rarr;</span></a>
                 </div>
             </div>
@@ -2325,7 +2325,7 @@ PAGES["html/contacto.html"] = page(1, "Contacto", "Contacta con la Parroquia San
                         <span><small>Llamar a la parroquia</small><strong>""" + TEL_TXT + """</strong></span>
                     </a>
                     <ul class="contact-facts">
-                        <li>""" + ICON_CLOCK + """<div><strong>Despacho parroquial</strong><span>Viernes por la tarde, y antes o después de cada misa</span></div></li>
+                        <li>""" + ICON_CLOCK + """<div><strong>Despacho parroquial</strong><span>Viernes por la tarde, y antes o después de cada eucaristía</span></div></li>
                         <li>""" + ICON_PIN + """<div><strong>Carrer del Llobregós, 132</strong><span>08032 Barcelona · El Carmel · <a href="#mapa">ver el mapa ↓</a></span></div></li>
                         <li>""" + SAC_ICONS["mail"].replace('<svg ', '<svg class="icon" ') + """<div><strong>Correo electrónico</strong><span><a href="mailto:albertsols@gmail.com">albertsols@gmail.com</a></span></div></li>
                         <li>""" + SAC_ICONS["insta"].replace('<svg ', '<svg class="icon" ') + """<div><strong>Instagram</strong><span><a href="https://www.instagram.com/p.santateresadejesusbcn/" target="_blank" rel="noopener">@p.santateresadejesusbcn</a></span></div></li>
@@ -2360,7 +2360,7 @@ def week_plan():
     return '<ol class="week-plan">\n' + "\n".join(rows) + "\n                    </ol>"
 
 
-PAGES["html/misas.html"] = page(1, "Eucaristías", "Horarios de misas y calendario de eucaristías y actividades de la Parroquia Santa Teresa de Jesús.", active="eucaristias", body=page_hero("Celebraciones litúrgicas", "Eucaristías", "eucaristia.jpeg") + """
+PAGES["html/misas.html"] = page(1, "Eucaristías", "Horario de eucaristíass y calendario de eucaristías y actividades de la Parroquia Santa Teresa de Jesús.", active="eucaristias", body=page_hero("Celebraciones litúrgicas", "Eucaristías", "eucaristia.jpeg") + """
         <section id="horarios">
             <span class="subtitulo">Horarios</span>
             <h2>Horarios de Eucaristía</h2>
@@ -2385,10 +2385,10 @@ PAGES["html/misas.html"] = page(1, "Eucaristías", "Horarios de misas y calendar
             <div class="two-col">
                 <div>
                     <span class="subtitulo">Con coro góspel</span>
-                    <h2>Misa dominical de las 11:00 h</h2>
+                    <h2>Eucaristía dominical de las 11:00 h</h2>
                     <hr class="section-divider">
                     <div class="prose">
-                        <p>De las misas que se celebran en fin de semana, desde el punto de vista de animación, destaca la dominical de las 11:00 h. Todos los domingos, salvo en agosto, canta en la misa un amplio grupo de góspel.</p>
+                        <p>De las eucaristías que se celebran en fin de semana, desde el punto de vista de animación, destaca la dominical de las 11:00 h. Todos los domingos, salvo en agosto, canta en la eucaristía un amplio grupo de góspel.</p>
                     </div>
                     """ + gospel_feature(1) + """
                 </div>
@@ -2397,7 +2397,7 @@ PAGES["html/misas.html"] = page(1, "Eucaristías", "Horarios de misas y calendar
                     <h2>Calendario de eucaristías y actividades</h2>
                     <hr class="section-divider">
                     """ + week_plan() + """
-                    <p class="week-note">Antes o después de cada misa el párroco atiende a quien lo necesite, también para confesarse. El último domingo de cada mes se visita en casa a los enfermos que lo pidan.</p>
+                    <p class="week-note">Antes o después de cada eucaristía el párroco atiende a quien lo necesite, también para confesarse. El último domingo de cada mes se visita en casa a los enfermos que lo pidan.</p>
                     <div class="btn-group">
                         <a class="btn btn-solid" href="../data/eucaristias.ics" download>Añadir a mi calendario</a>
                         <a class="btn" href="contacto.html#escribenos">Preguntar un horario</a>
@@ -2453,11 +2453,11 @@ SACRAMENTOS = [
          credit=_t("Grabado de J. A. Riedel según G. M. Crespi · The Met", "Gravat de J. A. Riedel segons G. M. Crespi · The Met", "Engraving by J. A. Riedel after G. M. Crespi · The Met"), motivo="Sacramento del Perdón",
          title=_t("Perdón", "Perdó", "Confession"),
          h2=_t("El sacramento del Perdón", "El sagrament del Perdó", "The sacrament of Confession"),
-         text=_t("Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:00 a 19:00 horas y siempre un rato antes de cada misa.",
+         text=_t("Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:00 a 19:00 horas y siempre un rato antes de cada eucaristía.",
                  "Mn. Sols administra el sagrament del Perdó de manera fixa els dissabtes de 18:00 a 19:00 hores i sempre una estona abans de cada missa.",
                  "Fr. Sols hears confessions every Saturday from 18:00 to 19:00 and always a while before every Mass."),
          info=[(_t("Sábados", "Dissabtes", "Saturdays"), _t("De 18:00 a 19:00", "De 18:00 a 19:00", "From 18:00 to 19:00")),
-               (_t("Cada día", "Cada dia", "Every day"), _t("Un rato antes de cada misa", "Una estona abans de cada missa", "A while before every Mass"))],
+               (_t("Cada día", "Cada dia", "Every day"), _t("Un rato antes de cada eucaristía", "Una estona abans de cada missa", "A while before every Mass"))],
          cta=_t("Pedir otro horario", "Demanar un altre horari", "Ask for another time")),
     dict(slug="uncion", icon="oleo", photo="sac-uncion.jpg",
          credit=_t("Grabado de J. A. Riedel según G. M. Crespi · The Met", "Gravat de J. A. Riedel segons G. M. Crespi · The Met", "Engraving by J. A. Riedel after G. M. Crespi · The Met"), motivo="Unción de los enfermos",
@@ -2562,7 +2562,7 @@ PAGES["html/adminsacra.html"] = page(1, "Sacramentos", "Sacramento del Perdón, 
             </div>
             <div class="icon-grid five">
 """ + "\n".join([
-    icon_card("manos", "Perdón", "Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:00 a 19:00 horas y siempre un rato antes de cada misa.", "perdon.html", "Más información"),
+    icon_card("manos", "Perdón", "Mn. Sols administra el sacramento del Perdón de manera fija los sábados de 18:00 a 19:00 horas y siempre un rato antes de cada eucaristía.", "perdon.html", "Más información"),
     icon_card("agua", "Bautismo", "Hay ceremonias bautismales al mediodía en cualquier domingo del año que se pida.", "bautismo.html", "Más información"),
     icon_card("paloma", "Confirmación", "Cada tres años se celebra la Confirmación. La catequesis prepara a los adolescentes a partir de los 14 años.", "confirmacion.html", "Más información"),
     icon_card("anillos", "Matrimonio", "Bodas, su preparación y aniversarios de plata, oro o diamante: consulta en el despacho parroquial los viernes por la tarde.", "matrimonio.html", "Más información"),
@@ -2581,10 +2581,10 @@ PAGES["html/adminsacra.html"] = page(1, "Sacramentos", "Sacramento del Perdón, 
                     <span class="subtitulo text-left">Despacho parroquial</span>
                     <h2 class="text-left">Habla con el párroco</h2>
                     <hr class="section-divider" style="margin-left:0;">
-                    <p>Los viernes por la tarde y, de hecho, un rato antes o después de todas las misas de la semana, el cura párroco atiende a la gente para cualquier tipo de asuntos: bautizos, bodas, visitas a enfermos o cualquier consulta.</p>
+                    <p>Los viernes por la tarde y, de hecho, un rato antes o después de todas las eucaristías de la semana, el cura párroco atiende a la gente para cualquier tipo de asuntos: bautizos, bodas, visitas a enfermos o cualquier consulta.</p>
                     <div class="btn-group">
                         <a href="catequesis.html" class="btn">Catequesis</a>
-                        <a href="misas.html" class="btn">Horarios de misa</a>
+                        <a href="misas.html" class="btn">Horario de eucaristías</a>
                     </div>
                 </div>
             </div>
@@ -3606,7 +3606,7 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ('Un día de fiesta para toda la comunidad: los niños reciben a Jesús por primera vez, acompañados de sus familias, sus catequistas y el párroco.', 'Un dia de festa per a tota la comunitat: els nens reben Jesús per primera vegada, acompanyats de les seves famílies, els seus catequistes i el rector.', 'A day of celebration for the whole community: the children receive Jesus for the first time, surrounded by their families, their catechists and the parish priest.'),
                       ('Los niños de primera comunión con el párroco y la catequista ante el altar', "Els nens de primera comunió amb el rector i la catequista davant de l'altar", 'The First Communion children with the parish priest and their catechist before the altar'),
                       ('El grupo de primera comunión con sus recordatorios y sus velas', 'El grup de primera comunió amb els seus recordatoris i les seves espelmes', 'The First Communion group with their keepsake cards and candles'),
-                      ('Fotos de la misa dominical', 'Fotos de la missa dominical', 'Photos of Sunday Mass'),
+                      ('Fotos de la eucaristía dominical', 'Fotos de la missa dominical', 'Photos of Sunday Mass'),
                       ('Logotipo de Carmel Amunt', 'Logotip de Carmel Amunt', 'Carmel Amunt logo'),
                       ("Logotipo de 40 p'arriba 40 p'abajo", "Logotip de 40 p'arriba 40 p'abajo", "40 p'arriba 40 p'abajo logo"),
                       ('Cartel de la Fiesta Mayor del Carmel 2026', 'Cartell de la Festa Major del Carmel 2026', 'Poster for the 2026 El Carmel Festa Major'),
@@ -3684,7 +3684,7 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ('La comunidad reunida, la música y la mesa del altar.', "La comunitat reunida, la música i la taula de l'altar.", 'The community gathered, the music and the altar.'),
                       ('Ver más fotos (10)', 'Veure més fotos (10)', 'See more photos (10)'),
                       ('Nuestra iglesia', 'La nostra església', 'Our church'),
-                      ('La misa del domingo', 'La missa del diumenge', 'Sunday Mass'),
+                      ('La eucaristía del domingo', 'La missa del diumenge', 'Sunday Mass'),
                       ('Google Drive &#8599;', 'Google Drive &#8599;', 'Google Drive &#8599;'),
                       ('Palmas, palmones y olivo: el barrio entero en el patio y en la calle.', 'Palmes, palmons i olivera: tot el barri al pati i al carrer.', 'Palms, woven palm fronds and olive branches: the whole neighbourhood in the courtyard and the street.'),
                       ('Palmas y palmones frente al campanario', 'Palmes i palmons davant del campanar', 'Palms and woven fronds in front of the bell tower'),
@@ -3707,7 +3707,7 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ('La celebración desde el presbiterio', 'La celebració des del presbiteri', 'The celebration seen from the sanctuary'),
                       ('Eucaristía con la iglesia llena', "Eucaristia amb l'església plena", 'Mass with a full church'),
                       ('La comunión', 'La comunió', 'Holy Communion'),
-                      ('El altar durante la misa', "L'altar durant la missa", 'The altar during Mass'),
+                      ('El altar durante la eucaristía', "L'altar durant la missa", 'The altar during Mass'),
                       ('El álbum completo de aquel día, para ver y descargar.', "L'àlbum complet d'aquell dia, per veure'l i descarregar-lo.", 'The full album from that day, to view and download.'),
                       ('Próximo domingo con góspel', 'Proper diumenge amb gòspel', 'Next Sunday with gospel choir'),
                       ('Cada domingo · 11:00 h', 'Cada diumenge · 11:00 h', 'Every Sunday · 11:00'),
@@ -3769,7 +3769,7 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ('Cuidado del templo', 'Cura del temple', 'Caring for the church'),
                       ('Desde hace muchos años, un equipo limpia la iglesia un día al mes. También se agradece ayuda con las flores y la sacristía.', "Des de fa molts anys, un equip neteja l'església un dia al mes. També s'agraeix ajuda amb les flors i la sagristia.", 'For many years a team has cleaned the church one day a month. Help with the flowers and the sacristy is also welcome.'),
                       ('Liturgia y coro', 'Litúrgia i cor', 'Liturgy and choir'),
-                      ('Lee en misa, ayuda a prepararla o canta en el coro góspel de la misa de las 11:00 de los domingos.', 'Llegeix a missa, ajuda a preparar-la o canta al cor gòspel de la missa de les 11:00 dels diumenges.', 'Read at Mass, help prepare it or sing in the gospel choir at the 11:00 Sunday Mass.'),
+                      ('Lee en eucaristía, ayuda a prepararla o canta en el coro góspel de la eucaristía de las 11:00 de los domingos.', 'Llegeix a missa, ajuda a preparar-la o canta al cor gòspel de la missa de les 11:00 dels diumenges.', 'Read at Mass, help prepare it or sing in the gospel choir at the 11:00 Sunday Mass.'),
                       ('Fiestas y salidas', 'Festes i sortides', 'Celebrations and outings'),
                       ('Echa una mano para organizar las salidas parroquiales, las fiestas y los grandes días como el Domingo de Ramos.', 'Dona un cop de mà per organitzar les sortides parroquials, les festes i els grans dies com el Diumenge de Rams.', 'Help organise parish outings, celebrations and big days such as Palm Sunday.'),
                       ('Quiero colaborar', 'Vull col·laborar', 'I want to help'),
@@ -3831,7 +3831,7 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Revista digital de la parroquia", "Revista digital de la parròquia", "The parish digital magazine"),
                       ("Eucaristías: laborables y sábados 19:00 h · Domingos 11:00 y 13:15 h", "Eucaristies: feiners i dissabtes 19:00 h · Diumenges 11:00 i 13:15 h", "Mass: weekdays and Saturdays 19:00 · Sundays 11:00 and 13:15"),
                       ("Inicio", "Inici", "Home"), ("Bienvenidos", "Benvinguts", "Welcome"), ("Quiénes somos", "Qui som", "About us"),
-                      ("Próxima misa y horarios", "Propera missa i horaris", "Next Mass and times"),
+                      ("Próxima eucaristía y horarios", "Propera missa i horaris", "Next Mass and times"),
                       ("Reflexión de la semana", "Reflexió de la setmana", "This week's reflection"),
                       ("Buscar una parroquia", "Cercar una parròquia", "Find a parish"),
                       ("¿Es tu primera visita?", "És la teva primera visita?", "First time here?"),
@@ -3968,14 +3968,14 @@ def lang_switch(lang, rel):
 
 
 MENU_TEXT = {
-    "es": ("Horarios de misa", "Laborables y sábados · 19:00 h", "Domingos · 11:00 y 13:15 h", "Idioma"),
+    "es": ("Horario de eucaristías", "Laborables y sábados · 19:00 h", "Domingos · 11:00 y 13:15 h", "Idioma"),
     "ca": ("Horaris de missa", "Feiners i dissabtes · 19:00 h", "Diumenges · 11:00 i 13:15 h", "Idioma"),
     "en": ("Mass times", "Weekdays and Saturdays · 19:00", "Sundays · 11:00 and 13:15", "Language"),
 }
 
 
 def menu_extra(lang, rel, with_lang=True):
-    """Bloque que solo se ve en el menú del móvil: horarios de misa y selector de idioma grande."""
+    """Bloque que solo se ve en el menú del móvil: horarios de eucaristía y selector de idioma grande."""
     title, weekdays, sundays, lang_label = MENU_TEXT[lang]
     langs = ""
     if with_lang:
