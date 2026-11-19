@@ -346,6 +346,7 @@ __LANGSWITCH__    </header>
         </div>
     </footer>
 {ultima_template(depth)}
+    <a class="wa-float" href="https://wa.me/34619040913" target="_blank" rel="noopener" aria-label="Escribir a la parroquia por WhatsApp" title="Escribir a la parroquia por WhatsApp"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.7c-2 0-4-.6-5.7-1.6l-.4-.2-3.9 1 1-3.8-.3-.4A10.7 10.7 0 1 1 16 26.7zm5.9-8c-.3-.2-1.9-1-2.2-1-.3-.1-.5-.2-.7.1l-1 1.3c-.2.2-.4.2-.7.1a8.8 8.8 0 0 1-4.4-3.8c-.3-.6.3-.5 1-1.7.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.2 2.4 3.7 5.9 5.2 2.2.9 3 1 4.1.8.7-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5l-.7-.4z"/></svg></a>
     <script src="{p}data/avisos.js?v={V["data/avisos.js"]}"></script>
     <script src="{p}js/site.js?v={V["js/site.js"]}"></script>
 {extra_scripts}
@@ -3443,6 +3444,7 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ('Escribir a la parroquia por WhatsApp', 'Escriure a la parròquia per WhatsApp', 'Message the parish on WhatsApp'),
                       ('Meses del año', "Mesos de l'any", 'Months of the year'),
                       ('Ver actos anteriores', 'Veure actes anteriors', 'See past events'),
                       ('Ocultar actos anteriores', 'Amagar actes anteriors', 'Hide past events'),

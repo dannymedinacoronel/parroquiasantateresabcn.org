@@ -112,21 +112,6 @@
       }
     },
     {
-      "type": "BandaFrase",
-      "props": {
-        "foto": "portada2.jpg",
-        "autor": "Santa Teresa de Jesús",
-        "frase": "Nada te turbe, nada te espante, todo se pasa, Dios no se muda; la paciencia todo lo alcanza; quien a Dios tiene nada le falta. Sólo Dios basta.",
-        "id": "BandaFrase-04"
-      }
-    },
-    {
-      "type": "Reflexion",
-      "props": {
-        "id": "Reflexion-05"
-      }
-    },
-    {
       "type": "TarjetasFoto",
       "props": {
         "ancla": "vida",
@@ -170,10 +155,25 @@
       }
     },
     {
+      "type": "Agenda",
+      "props": {
+        "id": "Agenda-08"
+      }
+    },
+    {
+      "type": "BandaFrase",
+      "props": {
+        "foto": "portada2.jpg",
+        "autor": "Santa Teresa de Jesús",
+        "frase": "Nada te turbe, nada te espante, todo se pasa, Dios no se muda; la paciencia todo lo alcanza; quien a Dios tiene nada le falta. Sólo Dios basta.",
+        "id": "BandaFrase-04"
+      }
+    },
+    {
       "type": "TarjetasIcono",
       "props": {
         "ancla": "sacramentos",
-        "fondo": "",
+        "fondo": "section-warm",
         "antetitulo": "Celebrar la fe",
         "titulo": "Sacramentos",
         "entradilla": "Te acompañamos en los momentos más importantes de la vida cristiana.",
@@ -216,16 +216,10 @@
       }
     },
     {
-      "type": "Agenda",
-      "props": {
-        "id": "Agenda-08"
-      }
-    },
-    {
       "type": "Galeria",
       "props": {
         "ancla": "galeria",
-        "fondo": "section-warm",
+        "fondo": "",
         "antetitulo": "Galería",
         "titulo": "La parroquia en imágenes",
         "entradilla": "",
@@ -274,6 +268,12 @@
         "boton_texto": "Más fotos y vídeos",
         "boton_enlace": "html/imagenes.html",
         "id": "Galeria-09"
+      }
+    },
+    {
+      "type": "Reflexion",
+      "props": {
+        "id": "Reflexion-05"
       }
     },
     {
