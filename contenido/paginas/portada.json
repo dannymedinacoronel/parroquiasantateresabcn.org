@@ -71,6 +71,12 @@
       }
     },
     {
+      "type": "Agenda",
+      "props": {
+        "id": "Agenda-08"
+      }
+    },
+    {
       "type": "TextoFoto",
       "props": {
         "ancla": "bienvenida",
@@ -171,12 +177,6 @@
         "boton_texto": "Ver toda la dinámica pastoral",
         "boton_enlace": "html/dinamicapastoral.html",
         "id": "TarjetasFoto-06"
-      }
-    },
-    {
-      "type": "Agenda",
-      "props": {
-        "id": "Agenda-08"
       }
     },
     {
