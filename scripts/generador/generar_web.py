@@ -1425,9 +1425,12 @@ def home_actualidad():
                         <p class="gospel-sign">Una invitación diaria de la Parroquia Santa Teresa de Jesús a leer y orar con la Palabra de Dios.</p>
                     </div>
                     <script src="js/liturgia.js?v=""" + V["js/liturgia.js"] + """" defer></script>
+                    <details class="gospel-more">
+                    <summary class="btn">Leer el Evangelio de hoy aquí</summary>
                     <div class="gospel-frame">
                         <iframe title="Evangelio de hoy" width="100%" height="680" frameborder="0" loading="lazy" src="https://evangeli.net/evangelio/widget/web"></iframe>
                     </div>
+                    </details>
                 </div>
 
                 <div class="widget-container">
@@ -3443,6 +3446,8 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ('Leer el Evangelio de hoy aquí', "Llegir aquí l'Evangeli d'avui", "Read today's Gospel here"),
+                      ('Accesos rápidos', 'Accessos ràpids', 'Quick links'),
                       ('Meses del año', "Mesos de l'any", 'Months of the year'),
                       ('Ver actos anteriores', 'Veure actes anteriors', 'See past events'),
                       ('Ocultar actos anteriores', 'Amagar actes anteriors', 'Hide past events'),

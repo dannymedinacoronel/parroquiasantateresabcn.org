@@ -3124,3 +3124,31 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 .blq-faq-item summary::after { content: "+"; color: var(--accent-color); font-size: 1.4rem; line-height: 1; transition: transform .25s; }
 .blq-faq-item[open] summary::after { transform: rotate(45deg); }
 .blq-faq-item > div { padding: 0 0 1.1rem; font-size: .95rem; line-height: 1.65; }
+
+/* ---------- Portada más compacta y ágil ---------- */
+.hero.hero-slider { height: 88vh; height: 88svh; }
+main:has(> .hero-slider) > section:not(.hero):not(.schedule-section):not(.quick-links):not(.image-band):not(.location) { padding-top: 4.5rem; padding-bottom: 4.5rem; }
+main:has(> .hero-slider) .section-head { margin-bottom: 2.5rem; }
+main:has(> .hero-slider) .schedule-section { padding-bottom: 2rem; }
+/* accesos rápidos */
+.quick-links { padding: 0 10% 3.5rem; }
+.ql { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; max-width: 1100px; margin: 0 auto; }
+.ql-item { display: inline-flex; align-items: center; gap: .6rem; padding: .55rem 1.1rem .55rem .55rem; border-radius: 999px; background: var(--white); border: 1px solid var(--border); box-shadow: var(--shadow-sm); color: var(--heading-color); font-size: .85rem; font-weight: 600; text-decoration: none; transition: transform .25s var(--ease), box-shadow .25s, border-color .25s; }
+.ql-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--accent-light); }
+.ql-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #fbf5e8; color: var(--accent-dark); flex: none; }
+.ql-icon svg { width: 18px; height: 18px; }
+/* Evangelio plegado */
+.gospel-more > summary { list-style: none; display: inline-flex; margin: .5rem 0 0; cursor: pointer; }
+.gospel-more > summary::-webkit-details-marker { display: none; }
+.gospel-more[open] > summary { display: none; }
+@media (max-width: 700px) {
+    .quick-links { padding: 0 0 2.5rem; }
+    .ql { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; padding: .3rem 1.25rem .8rem; scroll-snap-type: x proximity; scrollbar-width: none; }
+    .ql::-webkit-scrollbar { display: none; }
+    .ql-item { flex: none; scroll-snap-align: start; }
+    main:has(> .hero-slider) > section:not(.hero):not(.schedule-section):not(.quick-links):not(.image-band):not(.location) { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+    /* tarjetas en fila que se desliza con el dedo (menos scroll hacia abajo) */
+    .feature-grid, .icon-grid.five, .ag-cards { display: flex !important; overflow-x: auto; scroll-snap-type: x mandatory; gap: 1rem; padding-bottom: 1rem; scrollbar-width: none; }
+    .feature-grid::-webkit-scrollbar, .icon-grid.five::-webkit-scrollbar, .ag-cards::-webkit-scrollbar { display: none; }
+    .feature-grid > *, .icon-grid.five > *, .ag-cards > * { flex: 0 0 80%; scroll-snap-align: center; }
+}

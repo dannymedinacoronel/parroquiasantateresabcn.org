@@ -71,6 +71,44 @@
       }
     },
     {
+      "type": "Accesos",
+      "props": {
+        "id": "Accesos-20",
+        "accesos": [
+          {
+            "icono": "cal",
+            "texto": "Agenda",
+            "enlace": "html/agenda.html"
+          },
+          {
+            "icono": "agua",
+            "texto": "Sacramentos",
+            "enlace": "#sacramentos"
+          },
+          {
+            "icono": "libro",
+            "texto": "Catequesis",
+            "enlace": "html/catequesis.html"
+          },
+          {
+            "icono": "manos",
+            "texto": "Voluntariado",
+            "enlace": "html/voluntariado.html"
+          },
+          {
+            "icono": "mail",
+            "texto": "Contacto",
+            "enlace": "html/contacto.html"
+          },
+          {
+            "icono": "pin",
+            "texto": "Cómo llegar",
+            "enlace": "#ubicacion"
+          }
+        ]
+      }
+    },
+    {
       "type": "TextoFoto",
       "props": {
         "ancla": "bienvenida",
@@ -112,12 +150,9 @@
       }
     },
     {
-      "type": "BandaFrase",
+      "type": "Agenda",
       "props": {
-        "foto": "portada2.jpg",
-        "autor": "Santa Teresa de Jesús",
-        "frase": "Nada te turbe, nada te espante, todo se pasa, Dios no se muda; la paciencia todo lo alcanza; quien a Dios tiene nada le falta. Sólo Dios basta.",
-        "id": "BandaFrase-04"
+        "id": "Agenda-08"
       }
     },
     {
@@ -216,9 +251,12 @@
       }
     },
     {
-      "type": "Agenda",
+      "type": "BandaFrase",
       "props": {
-        "id": "Agenda-08"
+        "foto": "portada2.jpg",
+        "autor": "Santa Teresa de Jesús",
+        "frase": "Nada te turbe, nada te espante, todo se pasa, Dios no se muda; la paciencia todo lo alcanza; quien a Dios tiene nada le falta. Sólo Dios basta.",
+        "id": "BandaFrase-04"
       }
     },
     {
@@ -286,42 +324,6 @@
       "type": "Revista",
       "props": {
         "id": "Revista-11"
-      }
-    },
-    {
-      "type": "Visita",
-      "props": {
-        "ancla": "",
-        "fondo": "",
-        "foto": "vidriera.jpg",
-        "foto_alt": "Vidriera de Santa Teresa de Jesús con el Niño",
-        "pie": "Vidriera de Santa Teresa con el Niño Jesús",
-        "antetitulo": "Te esperamos",
-        "titulo": "Visítanos",
-        "texto": "Las puertas de la parroquia están abiertas para todos. Ven a celebrar la eucaristía con nosotros o a hablar con el párroco: bautizos, bodas, visitas a enfermos o cualquier consulta.",
-        "datos": [
-          {
-            "etiqueta": "Dirección",
-            "valor": "Carrer del Llobregós, 132 — 08032 Barcelona"
-          },
-          {
-            "etiqueta": "Despacho parroquial",
-            "valor": "Viernes por la tarde, y antes o después de cada misa"
-          }
-        ],
-        "botones": [
-          {
-            "texto": "Escríbenos",
-            "enlace": "html/contacto.html#escribenos",
-            "estilo": "solido"
-          },
-          {
-            "texto": "Llamar a la parroquia",
-            "enlace": "",
-            "estilo": "llamar"
-          }
-        ],
-        "id": "Visita-12"
       }
     },
     {

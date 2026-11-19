@@ -294,6 +294,7 @@ function App() {
         cfg.components.TarjetasIcono.fields.tarjetas.arrayFields.icono.options = iconOpts;
         cfg.components.Columnas.fields.columnas.arrayFields.icono.options = [{ label: "Sin icono", value: "" }].concat(iconOpts);
         cfg.components.Pasos.fields.pasos.arrayFields.icono.options = iconOpts;
+        cfg.components.Accesos.fields.accesos.arrayFields.icono.options = iconOpts;
         return cfg;
     }, [state.status, adv]);
 
