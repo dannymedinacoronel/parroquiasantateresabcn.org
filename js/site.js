@@ -8,7 +8,7 @@
             massNow: "Eucaristía <strong>en curso</strong> · comenzó a las ", massNext: "Próxima eucaristía: ",
             today: "hoy", tomorrow: "mañana", at: " a las ", hours: " h",
             days: ["el domingo", "el lunes", "el martes", "el miércoles", "el jueves", "el viernes", "el sábado"],
-            gospelToday: "Hoy", gospelNow: "Ahora mismo, en la iglesia", agPast: "Ver actos anteriores", agPastHide: "Ocultar actos anteriores",
+            gospelToday: "Hoy", gospelNow: "Ahora mismo, en la iglesia", agPast: "Ver actos anteriores", agPastHide: "Ocultar actos anteriores", capPlay: "Reproducir", capIg: "Vídeo de Instagram",
             viewer: "Visor de fotos", close: "Cerrar", prev: "Anterior", next: "Siguiente",
             newsEmpty: "No se han podido cargar las noticias. Inténtalo más tarde.", readMore: "Leer en la web original", updated: "Actualizado:",
             srcVatican: "Vaticano", srcDiocese: "Arzobispado", featured: "Noticia destacada",
@@ -30,7 +30,7 @@
             massNow: "Eucaristia <strong>en curs</strong> · ha començat a les ", massNext: "Propera eucaristia: ",
             today: "avui", tomorrow: "demà", at: " a les ", hours: " h",
             days: ["diumenge", "dilluns", "dimarts", "dimecres", "dijous", "divendres", "dissabte"],
-            gospelToday: "Avui", gospelNow: "Ara mateix, a l'església", agPast: "Veure actes anteriors", agPastHide: "Amagar actes anteriors",
+            gospelToday: "Avui", gospelNow: "Ara mateix, a l'església", agPast: "Veure actes anteriors", agPastHide: "Amagar actes anteriors", capPlay: "Reproduir", capIg: "Vídeo d'Instagram",
             viewer: "Visor de fotos", close: "Tancar", prev: "Anterior", next: "Següent",
             newsEmpty: "No s'han pogut carregar les notícies. Torna-ho a provar més tard.", readMore: "Llegir al web original", updated: "Actualitzat:",
             srcVatican: "Vaticà", srcDiocese: "Arquebisbat", featured: "Notícia destacada",
@@ -52,7 +52,7 @@
             massNow: "Mass <strong>in progress</strong> · started at ", massNext: "Next Mass: ",
             today: "today", tomorrow: "tomorrow", at: " at ", hours: "",
             days: ["on Sunday", "on Monday", "on Tuesday", "on Wednesday", "on Thursday", "on Friday", "on Saturday"],
-            gospelToday: "Today", gospelNow: "Right now, in church", agPast: "See past events", agPastHide: "Hide past events",
+            gospelToday: "Today", gospelNow: "Right now, in church", agPast: "See past events", agPastHide: "Hide past events", capPlay: "Play", capIg: "Instagram video",
             viewer: "Photo viewer", close: "Close", prev: "Previous", next: "Next",
             newsEmpty: "The news could not be loaded. Please try again later.", readMore: "Read on the original website", updated: "Updated:",
             srcVatican: "Vatican", srcDiocese: "Archdiocese", featured: "Top story",
@@ -321,8 +321,8 @@
         return dt.toLocaleDateString(LOCALE, opts);
     }
     /* --- Cápsulas de fe: el vídeo (Instagram o YouTube) se carga solo al pulsar «reproducir» --- */
-    document.querySelectorAll("[data-cap-embed]").forEach(function (btn) {
-        btn.addEventListener("click", function () {
+    function openCapsule(btn) {
+        {
             var box = document.createElement("div");
             box.className = "cap-modal";
             box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true");
@@ -339,8 +339,39 @@
             document.addEventListener("keydown", esc);
             document.body.appendChild(box);
             document.body.classList.add("menu-open");
-        });
+        }
+    }
+    document.addEventListener("click", function (e) {
+        var btn = e.target.closest && e.target.closest("[data-cap-embed]");
+        if (btn) openCapsule(btn);
     });
+    /* reels nuevos con #CápsulasDeFe que la parroquia sube a Instagram (netlify/functions/capsulas-ig.mjs) */
+    var capsBox = document.querySelector("#capsulas .cap-strip");
+    if (capsBox && window.fetch) {
+        fetch("/api/capsulas-ig").then(function (r) { return r.ok ? r.json() : []; }).then(function (list) {
+            var have = capsBox.innerHTML, limit = parseInt(capsBox.parentNode.getAttribute("data-caps-limit") || "0", 10), added = 0;
+            var TEMA = { ca: { "Oración": "Oració", "Sacramentos": "Sagraments", "Biblia": "Bíblia", "Liturgia": "Litúrgia", "Otros": "Altres" },
+                en: { "Oración": "Prayer", "Sacramentos": "Sacraments", "Biblia": "Bible", "Santa Teresa": "Saint Teresa", "Liturgia": "Liturgy", "Vida cristiana": "Christian life", "Otros": "Other" } }[LANG] || {};
+            (list || []).slice().reverse().forEach(function (c) {
+                var code = (/\/(?:p|reel|tv)\/([^/]+)/.exec(c.link) || [])[1];
+                if (!code || have.indexOf(code) > -1) return;
+                var li = document.createElement("li");
+                li.className = "cap-card";
+                li.innerHTML = '<button type="button" class="cap-play" aria-label="' + T("capPlay") + '"><span class="cap-poster"><img alt="" loading="lazy"></span>' +
+                    '<span class="cap-tema"></span><span class="cap-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>' +
+                    '<span class="cap-info"><strong></strong><small>' + T("capIg") + '</small></span></button>';
+                var b = li.querySelector("button");
+                b.setAttribute("data-cap-embed", c.link.replace(/\/?$/, "/") + "embed");
+                b.setAttribute("data-cap-link", c.link); b.setAttribute("data-cap-src", "instagram");
+                li.querySelector("img").src = c.foto; li.querySelector("img").alt = c.titulo;
+                li.querySelector(".cap-tema").textContent = TEMA[c.tema] || c.tema;
+                li.querySelector("strong").textContent = c.titulo;
+                capsBox.insertBefore(li, capsBox.firstChild); added++;
+            });
+            if (added) capsBox.querySelectorAll(".cap-soon").forEach(function (x) { x.parentNode.removeChild(x); });
+            if (limit) Array.prototype.slice.call(capsBox.children, limit).forEach(function (x) { x.parentNode.removeChild(x); });
+        }).catch(function () { });
+    }
 
     /* --- Agenda: se esconden los actos ya pasados y las fechas salen en el idioma de la página --- */
     function cap1(t) { return t.charAt(0).toUpperCase() + t.slice(1); }

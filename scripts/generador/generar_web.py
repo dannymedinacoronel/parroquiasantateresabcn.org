@@ -1284,9 +1284,10 @@ CAPS_TEMAS = ["Oración", "Sacramentos", "Biblia", "Santa Teresa", "Liturgia", "
 
 def _caps_video(url):
     url = (url or "").strip()
-    m = re.search(r"instagram\.com/(?:reel|reels|p|tv)/([A-Za-z0-9_-]+)", url)
+    m = re.search(r"instagram\.com/(reel|reels|p|tv)/([A-Za-z0-9_-]+)", url)
     if m:
-        return "instagram", f"https://www.instagram.com/reel/{m.group(1)}/embed", f"https://www.instagram.com/reel/{m.group(1)}/"
+        kind = "reel" if m.group(1) == "reels" else m.group(1)
+        return "instagram", f"https://www.instagram.com/{kind}/{m.group(2)}/embed", f"https://www.instagram.com/{kind}/{m.group(2)}/"
     m = re.search(r"(?:youtu\.be/|v=|embed/|shorts/)([A-Za-z0-9_-]{11})", url)
     if m:
         return "youtube", f"https://www.youtube-nocookie.com/embed/{m.group(1)}?autoplay=1&playsinline=1&rel=0", f"https://www.youtube.com/shorts/{m.group(1)}"
@@ -1350,7 +1351,7 @@ def caps_section(depth, limit=None, page=False):
                 <p>Vídeos cortos para aprender y rezar: la oración, los sacramentos, la Biblia y la espiritualidad de Santa Teresa.</p>
             </div>"""
     return f"""
-        <section id="capsulas" class="capsulas{' capsulas-page' if page else ''}">{head}
+        <section id="capsulas" class="capsulas{' capsulas-page' if page else ''}" data-caps-limit="{'' if page else limit or ''}">{head}
             <ul class="cap-strip">{cards}
             </ul>
             <p class="cap-note">Al reproducir un vídeo se carga desde Instagram o YouTube.</p>{more}
@@ -3534,6 +3535,7 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ('¿Qué es el Adviento?', "Què és l'Advent?", 'What is Advent?'),
                       ('Formación en un minuto', 'Formació en un minut', 'Faith in a minute'),
                       ('Cómo rezar con Santa Teresa', 'Com pregar amb Santa Teresa', 'How to pray with Saint Teresa'),
                       ('Oración', 'Oració', 'Prayer'),
