@@ -3153,3 +3153,28 @@ footer::before { content: ""; position: absolute; left: 0; right: 0; top: 0; hei
 .schedule-item .time, .stats strong, .ag-day { background: linear-gradient(180deg, #3a2f1f 30%, #8f7340 140%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .is-today .time, .ag-item.is-soon .ag-day { -webkit-text-fill-color: initial; color: inherit; background: none; }
 @media (prefers-reduced-motion: reduce) { .btn-solid::after { display: none; } }
+
+/* ---------- Pulido visual ---------- */
+/* fondos cálidos con un resplandor dorado muy suave */
+.section-warm { background: radial-gradient(120% 70% at 50% 0%, #fbf3e2 0%, var(--bg-warm) 55%), var(--bg-warm); }
+.section-alt { background: linear-gradient(180deg, #fff 0%, #fdfbf7 100%); }
+/* sello «Desde 1924» dorado, con filete interior */
+.framed-img .badge { background: var(--gold-grad); color: #fff !important; border-radius: 4px; box-shadow: 0 14px 34px rgba(120, 90, 30, .3), inset 0 0 0 1px rgba(255, 255, 255, .35), inset 0 0 0 5px rgba(191, 160, 101, .6), inset 0 0 0 6px rgba(255, 255, 255, .25); }
+.framed-img .badge span, .framed-img .badge strong { color: #fff !important; }
+/* tarjetas de vida parroquial: marco dorado interior y degradado más rico */
+.feature { border-radius: 10px; }
+.feature::before { content: ""; position: absolute; inset: 10px; z-index: 2; border: 1px solid rgba(230, 211, 168, 0); border-radius: 6px; transition: border-color .5s var(--ease), inset .5s var(--ease); pointer-events: none; }
+.feature:hover::before { border-color: rgba(230, 211, 168, .7); inset: 14px; }
+.feature::after { background: linear-gradient(180deg, transparent 30%, rgba(26, 18, 8, .55) 60%, rgba(16, 11, 4, .92)); }
+.feature h3 { text-shadow: 0 2px 14px rgba(0, 0, 0, .35); }
+/* frase sobre la foto: comilla en degradado dorado */
+.quote-mark { background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.image-band blockquote { text-shadow: 0 2px 18px rgba(0, 0, 0, .35); }
+/* cabecera al bajar: translúcida con filo dorado */
+header.scrolled { background: rgba(252, 251, 249, .86); -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px); box-shadow: 0 1px 0 rgba(191, 160, 101, .35), 0 10px 30px rgba(40, 30, 10, .06); }
+/* galería: esquinas suaves y brillo al pasar */
+.mosaic a { border-radius: 8px; }
+.mosaic a:hover img { filter: saturate(1.08) contrast(1.03); }
+/* títulos: un poco más de presencia */
+.section-head h2 { letter-spacing: -.01em; }
+.feature-body .subtitulo { justify-content: flex-start; text-align: left; }
