@@ -30,7 +30,11 @@ const ready = fetch("/admin/config.yml", { cache: "no-store" }).then((r) => r.te
 });
 function token() {
     try { const k = JSON.parse(localStorage.getItem("pst-gw-token") || "null"); if (k && k.t) return k.t; } catch (e) { /* sin llave */ }
-    return "";
+    // si no, la sesión que guarda el propio panel al iniciar sesión (igual que admin/dashboard.html)
+    try {
+        const u = JSON.parse(localStorage.getItem("decap-cms-user") || "null"), t = u && u.token;
+        return typeof t === "string" ? t : (t && (t.access_token || t.token)) || "";
+    } catch (e) { return ""; }
 }
 function who() {
     try { const u = JSON.parse(localStorage.getItem("decap-cms-user") || "null"); return (u && (u.name || u.email)) || "el equipo"; } catch (e) { return "el equipo"; }
