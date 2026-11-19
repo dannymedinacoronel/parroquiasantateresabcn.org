@@ -539,8 +539,8 @@ footer::before { content: ""; position: absolute; top: 0; left: 0; right: 0; hei
 .footer-brand strong { font-family: var(--header-font); font-size: 2.2rem; color: var(--white); font-weight: 600; font-style: italic; }
 .footer-brand span { font-size: 0.78rem; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-color); }
 .footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; border-bottom: 1px solid #2a2a2a; padding-bottom: 3rem; }
-.footer-col h4 { font-family: var(--body-font); color: var(--white); font-size: 0.8rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1.4rem; }
-.footer-col h4::after { content: ""; display: block; width: 24px; height: 1px; background: var(--accent-color); margin-top: 0.75rem; }
+.footer-col h3, .footer-col h4 { font-family: var(--body-font); color: var(--white); font-size: 0.8rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1.4rem; }
+.footer-col h3::after, .footer-col h4::after { content: ""; display: block; width: 24px; height: 1px; background: var(--accent-color); margin-top: 0.75rem; }
 .footer-links { list-style: none; }
 .footer-links li { margin-bottom: 0.7rem; }
 .footer-links a { color: #a8a399; text-decoration: none; transition: color .3s, padding-left .3s; }
@@ -1115,6 +1115,7 @@ body.menu-open .to-top { opacity: 0; visibility: hidden; }
 .sub-toggle {
     background: none; border: 0; cursor: pointer; color: #2c2c2c;
     display: inline-flex; align-items: center; justify-content: center; padding: 4px 2px 4px 3px;
+    min-width: 24px; min-height: 24px;
     transition: color .3s;
 }
 .sub-toggle svg { width: 13px; height: 13px; transition: transform .3s var(--ease); }
@@ -1386,7 +1387,7 @@ header nav { display: flex; align-items: center; margin-left: auto; }
     .framed-img .badge { left: -0.75rem; }
     footer { padding: 4rem 1.25rem 2rem; }
     .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 2.25rem; }
-    .footer-col h4::after { margin-left: auto; margin-right: auto; }
+    .footer-col h3::after, .footer-col h4::after { margin-left: auto; margin-right: auto; }
     .footer-bottom { flex-direction: column; text-align: center; }
     .hero-actions .btn { min-width: 220px; }
     .scroll-cue { display: none; }
@@ -1515,7 +1516,7 @@ header.menu-open { -webkit-backdrop-filter: none !important; backdrop-filter: no
 .visit-img figcaption { color: var(--muted); }
 
 footer { background: linear-gradient(180deg, #4a3c2b, #3b2f22); color: #e2d6c2; }
-.footer-col h4 { color: #fff8ea; }
+.footer-col h3, .footer-col h4 { color: #fff8ea; }
 .footer-links a { color: #e2d6c2; }
 .footer-links a:hover { color: #f0d79a; }
 .footer-brand strong { color: #fff8ea; }
@@ -2333,7 +2334,7 @@ header { -webkit-backdrop-filter: none; backdrop-filter: none; background-color:
 .tilt { will-change: auto; }
 .tilt:hover { will-change: transform; }
 /* Lo que está fuera de la pantalla no se dibuja hasta que se acerca */
-main > section:not(.hero):not(:first-child), .site-footer, body > footer { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+main > section:not(.hero):not(:first-child) { content-visibility: auto; contain-intrinsic-size: auto 900px; }
 @media (prefers-reduced-motion: reduce) { .next-mass .dot::after, .notice-dot::after, .scroll-cue::after { animation: none; } }
 
 /* ==========================================================================
@@ -3096,3 +3097,6 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
     .ag-img { grid-column: 1 / -1; width: 100%; aspect-ratio: 16 / 9; }
     .ag-day { font-size: 2rem; }
 }
+
+/* Texto solo para lectores de pantalla */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

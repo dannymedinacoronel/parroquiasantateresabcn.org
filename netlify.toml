@@ -131,12 +131,14 @@
 [[headers]]
   for = "/css/*"
   [headers.values]
-    Cache-Control = "public, max-age=86400, must-revalidate"
+    # las páginas los piden con ?v=<huella>: si cambian, cambia la dirección y no hay copia vieja
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
 
 [[headers]]
   for = "/js/*"
   [headers.values]
-    Cache-Control = "public, max-age=86400, must-revalidate"
+    # las páginas los piden con ?v=<huella>: si cambian, cambia la dirección y no hay copia vieja
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
 
 # Las noticias cambian dos veces al día
 [[headers]]

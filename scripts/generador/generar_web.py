@@ -303,21 +303,21 @@ __LANGSWITCH__    </header>
         </div>
         <div class="footer-grid">
             <div class="footer-col">
-                <h4>Santa Teresa de Jesús</h4>
+                <h3>Santa Teresa de Jesús</h3>
                 <p>Carrer del Llobregós, 132</p>
                 <p>08032 Barcelona</p>
                 <a href="https://goo.gl/maps/Y4SiUkiMGwp" class="footer-map" target="_blank" rel="noopener">Ver en Google Maps &rarr;</a>
             </div>
 
             <div class="footer-col">
-                <h4>La Parroquia</h4>
+                <h3>La Parroquia</h3>
                 <ul class="footer-links">
 {parroquia}
                 </ul>
             </div>
 
             <div class="footer-col">
-                <h4>Enlaces de Interés</h4>
+                <h3>Enlaces de Interés</h3>
                 <ul class="footer-links">
                     <li><a href="https://esglesia.barcelona/es/" target="_blank" rel="noopener">Arzobispado de Barcelona</a></li>
                     <li><a href="https://caritas.barcelona" target="_blank" rel="noopener">Cáritas Barcelona</a></li>
@@ -326,7 +326,7 @@ __LANGSWITCH__    </header>
             </div>
 
             <div class="footer-col">
-                <h4>Contacto</h4>
+                <h3>Contacto</h3>
                 <ul class="footer-links">
                     <li><a href="{href('html/contacto.html', depth)}">Contactar</a></li>
                     <li><a href="tel:{TEL}">Llamar: {TEL_TXT}</a></li>
@@ -370,7 +370,7 @@ def photo_pile(photos, depth, label, cls="", autoplay=False):
     photos: lista de (archivo en fotosdefinitivas/web/, texto alternativo).
     autoplay: las fotos van pasando solas (la de arriba sale y deja ver la siguiente)."""
     p = "../" * depth + "fotosdefinitivas/web/"
-    items = "\n".join(f'                        <a href="{p}{f}"><img src="{p}{f}" alt="{alt}" loading="lazy"></a>' for f, alt in photos)
+    items = "\n".join(f'                        <a href="{p}{f}"><img src="{p}{f}" alt="{alt}" loading="lazy" sizes="(max-width: 700px) 80vw, 520px"></a>' for f, alt in photos)
     auto = " data-pile-autoplay" if autoplay else ""
     return f'''<div class="photo-pile{cls}" data-gallery{auto} role="group" aria-label="{label}">
 {items}
@@ -466,7 +466,8 @@ def mosaic(photos, depth, more=()):
     items = []
     for name, alt, cls in list(photos) + [(n, a, (c + " mosaic-more").strip()) for n, a, c in more]:
         c = f' class="{cls}"' if cls else ""
-        items.append(f'                <a href="{p}{name}"{c}><img src="{p}{name}" alt="{alt}" loading="lazy"></a>')
+        sizes = "(max-width: 700px) 92vw, 50vw" if cls and "wide" in cls else "(max-width: 700px) 46vw, 25vw"
+        items.append(f'                <a href="{p}{name}"{c}><img src="{p}{name}" alt="{alt}" loading="lazy" sizes="{sizes}"></a>')
     html = '            <div class="mosaic">\n' + "\n".join(items) + "\n            </div>"
     if more:
         html += f'''
@@ -1372,6 +1373,7 @@ full_title="Parroquia Santa Teresa de Jesús | Barcelona", active="portada", ext
         </section>
 
         <section id="horarios" class="schedule-section">
+            <h2 class="sr-only">Horario de eucaristías</h2>
             <div class="schedule-card">
                 <div class="schedule-item" data-days="1,2,3,4,5">
                     """ + ICON_SUN + """
@@ -3274,6 +3276,40 @@ SERVICES = [
 ]
 
 
+# Fotos de la web: en Netlify, cada <img> de fotosdefinitivas/web/ recibe un srcset del Image CDN
+# (el navegador elige el tamaño justo y Netlify lo sirve en WebP o AVIF). La foto original queda en src.
+IMG_WIDTHS = (480, 800, 1200)
+IMG_SIZES = "(max-width: 700px) 92vw, 600px"
+
+
+def _cdn(rel_url, w, amp="&amp;"):
+    from urllib.parse import quote
+    return f"/.netlify/images?url={quote(rel_url)}{amp}w={w}{amp}q=74"
+
+
+def responsive_imgs(html):
+    if not ON_NETLIFY:
+        return html
+
+    def fix(m):
+        tag = m.group(0)
+        if " srcset=" in tag:
+            return tag
+        path = "/" + re.sub(r"^(\.\./)+", "", m.group(1))
+        srcset = ", ".join(f"{_cdn(path, w)} {w}w" for w in IMG_WIDTHS)
+        extra = f' srcset="{srcset}"' + ("" if " sizes=" in tag else f' sizes="{IMG_SIZES}"')
+        return tag[:-1].rstrip("/").rstrip() + extra + ">"
+    return re.sub(r'<img\b[^>]*?\bsrc="((?:\.\./)*fotosdefinitivas/web/[^"?]+\.jpe?g)"[^>]*>', fix, html)
+
+
+def hero_cdn(html):
+    """Fotos de cabecera (fondo en CSS): en Netlify, reducidas y en formato moderno."""
+    if not ON_NETLIFY:
+        return html
+    return re.sub(r"""(class="page-hero" style="background-image:url\(')((?:\.\./)*fotosdefinitivas/[^']+\.jpe?g)'""",
+                  lambda m: m.group(1) + _cdn("/" + re.sub(r"^(\.\./)+", "", m.group(2)), 1600, "&") + "'", html)
+
+
 def block_iframes(html):
     """Las iframes de terceros no se cargan hasta que el visitante acepta el contenido externo."""
     def sub(m):
@@ -3799,7 +3835,7 @@ def relocate_assets(html):
 missing = set()
 written = []
 for rel, base in PAGES.items():
-    base = block_scripts(block_iframes(base))
+    base = hero_cdn(responsive_imgs(block_scripts(block_iframes(base))))
     if rel == "404.html":
         # la 404 se sirve desde cualquier ruta: rutas absolutas desde la raíz, y fuera del índice de Google
         html = base.replace('    <link rel="canonical" href="__URL__">\n__HREFLANG__', '    <meta name="robots" content="noindex">\n')
