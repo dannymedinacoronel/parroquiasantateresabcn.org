@@ -95,7 +95,7 @@ function resize(file, max = 1600) {
 }
 const slug = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/\.[a-z0-9]+$/, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "foto";
 
-function ImageField({ label, value, onChange }) {
+function ImageField({ label, value, onChange, advanced }) {
     const [busy, setBusy] = useState(false);
     const input = useRef(null);
     async function pick(e) {
@@ -125,7 +125,7 @@ function ImageField({ label, value, onChange }) {
                 <button type="button" onClick={() => input.current.click()} disabled={busy}>{busy ? "Subiendo…" : "Subir una foto"}</button>
                 <input ref={input} type="file" accept="image/*" hidden onChange={pick} />
             </div>
-            <input className="pst-img-path" type="text" value={value || ""} onChange={(e) => onChange(e.target.value)} placeholder="o el nombre de una foto de la web" />
+            {advanced && <input className="pst-img-path" type="text" value={value || ""} onChange={(e) => onChange(e.target.value)} placeholder="o el nombre de una foto de la web" />}
             <small className="pst-help">Si salen personas reconocibles, asegúrate de tener su permiso. No publiques caras de niños sin el permiso de sus padres.</small>
         </div>
     );
@@ -175,6 +175,7 @@ const VIEWPORTS = [
 function App() {
     const [state, setState] = useState({ status: "cargando" });
     const [toast, setToast] = useState("");
+    const [adv, setAdv] = useState(() => localStorage.getItem("pst-editor-adv") === "1");
     const shas = useRef({ main: null, draft: null });
     const current = useRef(null);
 
@@ -201,13 +202,25 @@ function App() {
         const render = makeRenderer(makeFilters("/", state.datos.iconos, imgUrl), state.datos.globales);
         const cfg = makeConfig({
             render: (type, props) => render(TEMPLATES[type], props),
-            imageField: (label) => ({ type: "custom", label, render: ({ value, onChange }) => <ImageField label={label} value={value} onChange={onChange} /> }),
+            imageField: (label) => ({ type: "custom", label, render: ({ value, onChange }) => <ImageField label={label} value={value} onChange={onChange} advanced={adv} /> }),
+            advanced: adv,
+            help: () => (
+                <div className="pst-guide">
+                    <strong>Cómo editar la página</strong>
+                    <ol>
+                        <li><b>Pulsa un apartado</b> de la página para cambiar sus textos, fotos y botones aquí.</li>
+                        <li><b>Arrastra un bloque</b> desde la izquierda para añadir un apartado nuevo, o arrastra los apartados para cambiarlos de sitio.</li>
+                        <li><b>Guardar borrador</b> lo deja a medias sin cambiar la web. <b>Publicar</b> lo pone en la web.</li>
+                    </ol>
+                    <small>Los apartados con la etiqueta «se actualiza solo» se pueden mover o quitar, pero su contenido sale solo.</small>
+                </div>
+            ),
             autoPreview: (type, label) => <AutoPreview type={type} label={label} />,
         });
         cfg.components.TarjetasIcono.fields.tarjetas.arrayFields.icono.options =
             Object.keys(state.datos.iconos).map((k) => ({ label: ICON_NAMES[k] || k, value: k }));
         return cfg;
-    }, [state.status]);
+    }, [state.status, adv]);
 
     function flash(t) { setToast(t); setTimeout(() => setToast(""), 4000); }
     function failed(e) {
@@ -285,6 +298,8 @@ function App() {
                             {state.hasDraft && <span className="pst-draft">Borrador sin publicar</span>}
                             <a className="pst-btn pst-btn-ghost" href={PAGE === "portada" ? "/" : `/html/${PAGE}.html`} target="_blank" rel="noopener">Ver la web</a>
                             {state.hasDraft && <button className="pst-btn pst-btn-ghost" onClick={discardDraft}>Descartar borrador</button>}
+                            <button className="pst-btn pst-btn-ghost" onClick={() => { const v = !adv; setAdv(v); localStorage.setItem("pst-editor-adv", v ? "1" : "0"); }}
+                                title="Traducciones al catalán e inglés y opciones técnicas">{adv ? "Menos opciones" : "Más opciones"}</button>
                             <button className="pst-btn pst-btn-ghost" onClick={saveDraft}>Guardar borrador</button>
                             {children}
                         </>

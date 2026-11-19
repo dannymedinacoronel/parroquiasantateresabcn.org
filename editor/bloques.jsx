@@ -16,7 +16,9 @@ export const TEMPLATES = { Carrusel, TextoFoto, BandaFrase, TarjetasFoto, Tarjet
 
 // ---- campos reutilizables
 // texto en castellano + traducción opcional (català / English) debajo
+let ADV = false;   // «Más opciones»: traducciones y campos técnicos
 export function tx(name, label, type = "text") {
+    if (!ADV) return { [name]: { type, label } };
     return {
         [name]: { type, label },
         [name + "_tr"]: {
@@ -31,7 +33,7 @@ const FONDO = {
         options: [{ label: "Claro", value: "" }, { label: "Cálido (beige)", value: "section-warm" }, { label: "Gris muy claro", value: "section-alt" }],
     },
 };
-const ANCLA = { ancla: { type: "text", label: "Nombre del apartado (para enlazarlo con #, opcional)" } };
+const ANCLA_F = { ancla: { type: "text", label: "Nombre del apartado (para enlazarlo con #, opcional)" } };
 const ESTILOS = [
     { label: "Botón dorado", value: "solido" }, { label: "Botón con borde", value: "normal" },
     { label: "Botón claro", value: "claro" }, { label: "Enlace con flecha", value: "flecha" }, { label: "Llamar a la parroquia", value: "llamar" },
@@ -52,7 +54,9 @@ const cabecera = () => ({ ...tx("antetitulo", "Texto pequeño de arriba"), ...tx
 const boton1 = () => ({ ...tx("boton_texto", "Botón de abajo (opcional)"), boton_enlace: { type: "text", label: "Enlace del botón" } });
 
 // ---- bloques
-export function makeConfig({ render, imageField, autoPreview }) {
+export function makeConfig({ render, imageField, autoPreview, advanced, help }) {
+    ADV = !!advanced;
+    const ANCLA = ADV ? ANCLA_F : {};
     const tpl = (type) => (props) => <div className="pst-block" dangerouslySetInnerHTML={{ __html: render(type, props) }} />;
     const auto = (type, label, help) => ({
         label,
@@ -62,6 +66,7 @@ export function makeConfig({ render, imageField, autoPreview }) {
     const img = (label = "Foto") => imageField(label);
 
     return {
+        root: { fields: { ayuda: { type: "custom", label: "", render: help } } },
         categories: {
             portada: { title: "Portada", components: ["Carrusel"] },
             texto: { title: "Texto y fotos", components: ["TextoFoto", "Texto", "Visita", "BandaFrase", "Cita", "Llamada"] },
