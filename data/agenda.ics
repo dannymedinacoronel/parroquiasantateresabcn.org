@@ -6,7 +6,7 @@ X-WR-CALNAME:Agenda · Parroquia Santa Teresa de Jesús
 X-WR-TIMEZONE:Europe/Madrid
 BEGIN:VEVENT
 UID:2026-11-29-primer-domingo-de-adviento@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;TZID=Europe/Madrid:20261129T110000
 DTEND;TZID=Europe/Madrid:20261129T123000
 SUMMARY:Primer domingo de Adviento
@@ -15,7 +15,7 @@ DESCRIPTION:Empezamos el Adviento\, las cuatro semanas en que nos preparamos par
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-12-06-segundo-domingo-de-adviento@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;TZID=Europe/Madrid:20261206T110000
 DTEND;TZID=Europe/Madrid:20261206T123000
 SUMMARY:Segundo domingo de Adviento
@@ -24,7 +24,7 @@ DESCRIPTION:Eucaristías a las 11:00\, con el coro góspel\, y a las 13:15.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-12-13-tercer-domingo-de-adviento@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;TZID=Europe/Madrid:20261213T110000
 DTEND;TZID=Europe/Madrid:20261213T123000
 SUMMARY:Tercer domingo de Adviento
@@ -33,7 +33,7 @@ DESCRIPTION:El domingo de la alegría\, a mitad del Adviento. Eucaristías a las
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-12-20-cuarto-domingo-de-adviento@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;TZID=Europe/Madrid:20261220T110000
 DTEND;TZID=Europe/Madrid:20261220T123000
 SUMMARY:Cuarto domingo de Adviento
@@ -42,7 +42,7 @@ DESCRIPTION:El último domingo antes de Navidad. Eucaristías a las 11:00\, con 
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-12-27-la-sagrada-familia@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;TZID=Europe/Madrid:20261227T110000
 DTEND;TZID=Europe/Madrid:20261227T123000
 SUMMARY:La Sagrada Familia
@@ -51,7 +51,7 @@ DESCRIPTION:Celebramos a la familia de Nazaret y rezamos por todas las familias.
 END:VEVENT
 BEGIN:VEVENT
 UID:2027-01-01-santa-maria-madre-de-dios@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;VALUE=DATE:20270101
 DTEND;VALUE=DATE:20270102
 SUMMARY:Santa María\, Madre de Dios
@@ -60,7 +60,7 @@ DESCRIPTION:Empezamos el año con la Virgen. El horario de las celebraciones lo 
 END:VEVENT
 BEGIN:VEVENT
 UID:2027-01-06-epifania-del-senor-reyes@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;VALUE=DATE:20270106
 DTEND;VALUE=DATE:20270107
 SUMMARY:Epifanía del Señor (Reyes)
@@ -69,7 +69,7 @@ DESCRIPTION:La fiesta de los Reyes Magos. El horario de las celebraciones lo anu
 END:VEVENT
 BEGIN:VEVENT
 UID:2027-01-10-el-bautismo-del-senor@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;TZID=Europe/Madrid:20270110T110000
 DTEND;TZID=Europe/Madrid:20270110T123000
 SUMMARY:El Bautismo del Señor
@@ -78,7 +78,7 @@ DESCRIPTION:Con esta fiesta termina el tiempo de Navidad. Eucaristías a las 11:
 END:VEVENT
 BEGIN:VEVENT
 UID:2027-02-10-miercoles-de-ceniza@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;VALUE=DATE:20270210
 DTEND;VALUE=DATE:20270211
 SUMMARY:Miércoles de Ceniza
@@ -87,7 +87,7 @@ DESCRIPTION:Empieza la Cuaresma\, el camino de cuarenta días hacia la Pascua. E
 END:VEVENT
 BEGIN:VEVENT
 UID:2027-03-21-domingo-de-ramos@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;TZID=Europe/Madrid:20270321T110000
 DTEND;TZID=Europe/Madrid:20270321T123000
 SUMMARY:Domingo de Ramos
@@ -96,7 +96,7 @@ DESCRIPTION:Bendición de palmas y ramos de olivo y laurel\, y lectura de la Pas
 END:VEVENT
 BEGIN:VEVENT
 UID:2027-03-25-jueves-santo@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;VALUE=DATE:20270325
 DTEND;VALUE=DATE:20270326
 SUMMARY:Jueves Santo
@@ -105,7 +105,7 @@ DESCRIPTION:Misa de la Cena del Señor. El horario de las celebraciones lo anunc
 END:VEVENT
 BEGIN:VEVENT
 UID:2027-03-26-viernes-santo@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;VALUE=DATE:20270326
 DTEND;VALUE=DATE:20270327
 SUMMARY:Viernes Santo
@@ -114,7 +114,7 @@ DESCRIPTION:Celebración de la Pasión del Señor. El horario de las celebracion
 END:VEVENT
 BEGIN:VEVENT
 UID:2027-03-27-vigilia-pascual@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;VALUE=DATE:20270327
 DTEND;VALUE=DATE:20270328
 SUMMARY:Vigilia Pascual
@@ -123,7 +123,7 @@ DESCRIPTION:La noche más importante del año: celebramos que Jesús ha resucita
 END:VEVENT
 BEGIN:VEVENT
 UID:2027-03-28-domingo-de-pascua@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;TZID=Europe/Madrid:20270328T110000
 DTEND;TZID=Europe/Madrid:20270328T123000
 SUMMARY:Domingo de Pascua
@@ -132,7 +132,7 @@ DESCRIPTION:¡Cristo ha resucitado! Eucaristías a las 11:00\, con el coro gósp
 END:VEVENT
 BEGIN:VEVENT
 UID:2027-05-16-pentecostes@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;TZID=Europe/Madrid:20270516T110000
 DTEND;TZID=Europe/Madrid:20270516T123000
 SUMMARY:Pentecostés
@@ -141,7 +141,7 @@ DESCRIPTION:La venida del Espíritu Santo y el final del tiempo de Pascua. Eucar
 END:VEVENT
 BEGIN:VEVENT
 UID:2027-05-30-corpus-christi@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;TZID=Europe/Madrid:20270530T110000
 DTEND;TZID=Europe/Madrid:20270530T123000
 SUMMARY:Corpus Christi
@@ -150,7 +150,7 @@ DESCRIPTION:La fiesta del Cuerpo y la Sangre de Cristo. Eucaristías a las 11:00
 END:VEVENT
 BEGIN:VEVENT
 UID:2027-07-16-virgen-del-carmen@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;VALUE=DATE:20270716
 DTEND;VALUE=DATE:20270717
 SUMMARY:Virgen del Carmen
@@ -159,7 +159,7 @@ DESCRIPTION:La Virgen que da nombre a nuestro barrio. El horario de las celebrac
 END:VEVENT
 BEGIN:VEVENT
 UID:2027-10-15-santa-teresa-de-jesus-nuestra-patrona@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;VALUE=DATE:20271015
 DTEND;VALUE=DATE:20271016
 SUMMARY:Santa Teresa de Jesús\, nuestra patrona
@@ -168,7 +168,7 @@ DESCRIPTION:La fiesta de nuestra parroquia. El horario de las celebraciones lo a
 END:VEVENT
 BEGIN:VEVENT
 UID:2027-11-01-todos-los-santos@parroquiasantateresabcn
-DTSTAMP:20261119T014454Z
+DTSTAMP:20261119T014127Z
 DTSTART;VALUE=DATE:20271101
 DTEND;VALUE=DATE:20271102
 SUMMARY:Todos los Santos

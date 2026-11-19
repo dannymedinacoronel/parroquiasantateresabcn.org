@@ -15,12 +15,11 @@ import Video from "./plantillas/Video.html";
 import Columnas from "./plantillas/Columnas.html";
 import Separador from "./plantillas/Separador.html";
 import Cabecera from "./plantillas/Cabecera.html";
-import Accesos from "./plantillas/Accesos.html";
 import Pasos from "./plantillas/Pasos.html";
 import Preguntas from "./plantillas/Preguntas.html";
 import LineaTiempo from "./plantillas/LineaTiempo.html";
 
-export const TEMPLATES = { Carrusel, TextoFoto, BandaFrase, TarjetasFoto, TarjetasIcono, Galeria, Visita, Texto, Cita, Llamada, Video, Columnas, Separador, Cabecera, Pasos, Preguntas, LineaTiempo, Accesos };
+export const TEMPLATES = { Carrusel, TextoFoto, BandaFrase, TarjetasFoto, TarjetasIcono, Galeria, Visita, Texto, Cita, Llamada, Video, Columnas, Separador, Cabecera, Pasos, Preguntas, LineaTiempo };
 
 // ---------------------------------------------------------------- miniaturas de los bloques (columna izquierda)
 const G = "#bfa065", L = "#e8dcc2", D = "#cdbf9f";
@@ -39,7 +38,6 @@ const THUMB = {
     TarjetasIcono: [8, 46, 84].map((x) => box(x, 12, 28, 46, "#fff", 4) + `<circle cx="${x + 14}" cy="26" r="7" fill="#f3e7c9" stroke="${G}"/>` + lines(x + 4, 40, 20, 2, 6)).join(""),
     Galeria: box(6, 8, 52, 26, "#d9c9a5") + box(62, 8, 24, 54, "#c9b48a") + box(90, 8, 24, 26, "#d9c9a5") + box(6, 38, 24, 24, "#c9b48a") + box(34, 38, 24, 24, "#d9c9a5") + box(90, 38, 24, 24, "#c9b48a"),
     Video: box(14, 8, 92, 54, "#2a241c", 5) + `<path d="M54 24l16 11-16 11z" fill="${G}"/>`,
-    Accesos: [8, 46, 84].map((x) => box(x, 26, 30, 18, "#fff", 9) + `<circle cx="${x + 9}" cy="35" r="5" fill="#f3e7c9" stroke="${G}"/>` + box(x + 16, 33, 10, 4, D, 2)).join(""),
     Pasos: [10, 46, 82].map((x, i) => `<circle cx="${x + 14}" cy="24" r="9" fill="#f3e7c9" stroke="${G}"/><text x="${x + 14}" y="28" font-size="10" text-anchor="middle" fill="${G}">${i + 1}</text>` + lines(x + 2, 40, 24, 2, 6)).join(""),
     Preguntas: [10, 28, 46].map((y) => box(14, y, 92, 13, "#fff", 3) + box(20, y + 5, 50, 3, D, 1.5) + box(96, y + 4, 4, 5, G, 1)).join(""),
     LineaTiempo: box(59, 6, 2, 58, D, 1) + [12, 34, 54].map((y, i) => `<circle cx="60" cy="${y}" r="3" fill="${G}"/>` + (i % 2 ? box(66, y - 3, 40, 6, L) : box(14, y - 3, 40, 6, L))).join(""),
@@ -112,7 +110,7 @@ export function makeConfig({ render, imageField, autoPreview, advanced, help, Bl
             render: ({ children, ...props }) => <><Block id="root" html={render("Cabecera", props)} />{children}</>,
         },
         categories: {
-            portada: { title: "Portada", components: ["Carrusel", "Accesos"] },
+            portada: { title: "Portada", components: ["Carrusel"] },
             texto: { title: "Texto y fotos", components: ["TextoFoto", "Texto", "Columnas", "Visita", "BandaFrase", "Cita", "Llamada"] },
             tarjetas: { title: "Tarjetas, galerías y vídeo", components: ["TarjetasFoto", "TarjetasIcono", "Galeria", "Video"] },
             listas: { title: "Pasos, preguntas e historia", components: ["Pasos", "Preguntas", "LineaTiempo"] },
@@ -273,18 +271,6 @@ export function makeConfig({ render, imageField, autoPreview, advanced, help, Bl
                 },
                 defaultProps: { alto: "medio", adorno: true },
                 render: tpl("Separador"),
-            },
-            Accesos: {
-                label: "Accesos rápidos",
-                fields: {
-                    accesos: {
-                        type: "array", label: "Accesos", getItemSummary: (a) => a.texto || "Acceso",
-                        defaultItemProps: { icono: "pin", texto: "Cómo llegar", enlace: "#ubicacion" },
-                        arrayFields: { icono: { type: "select", label: "Icono", options: [] }, ...tx("texto", "Texto"), enlace: { type: "text", label: "Enlace (html/agenda.html, #ubicacion…)" } },
-                    },
-                },
-                defaultProps: { accesos: [{ icono: "cal", texto: "Agenda", enlace: "html/agenda.html" }, { icono: "mail", texto: "Contacto", enlace: "html/contacto.html" }] },
-                render: tpl("Accesos"),
             },
             Pasos: {
                 label: "Pasos (1, 2, 3…)",
