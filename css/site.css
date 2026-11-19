@@ -3105,3 +3105,13 @@ html[lang="en"] .revista:not(.rv-issue-intro)::before { content: "Magazine"; }
 
 /* Texto solo para lectores de pantalla */
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Agenda: meses del año, actos anteriores y 4 próximos actos en pantallas grandes */
+.ag-monthnav { display: flex; gap: .4rem; overflow-x: auto; max-width: 900px; margin: 0 auto 2rem; padding: .2rem .1rem .6rem; scrollbar-width: thin; }
+.ag-mnav { flex: none; padding: .45rem .8rem; border-radius: 8px; background: var(--white); border: 1px solid var(--border); font-size: .75rem; font-weight: 600; color: var(--accent-dark); text-decoration: none; white-space: nowrap; }
+.ag-mnav:hover { border-color: var(--accent-color); background: #fbf5e8; }
+.ag-month { scroll-margin-top: calc(var(--nav-height) + 1.5rem); }
+.ag-item.is-past { opacity: .6; }
+.ag-item.is-past .ag-date { background: var(--bg-warm); border-color: var(--border); }
+.ag-past-wrap { margin-top: 2rem; }
+@media (min-width: 1200px) { .ag-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 1240px; } }

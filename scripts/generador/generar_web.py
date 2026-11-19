@@ -1278,7 +1278,7 @@ def agenda_home():
         return ""
     items = "".join(agenda_item(e, 0, card=True) for e in AGENDA)
     return f"""
-        <section id="agenda" class="ag-home" data-agenda data-limit="3">
+        <section id="agenda" class="ag-home" data-agenda data-limit="3" data-limit-wide="4">
             <div class="section-head">
                 <span class="subtitulo">Agenda</span>
                 <h2>Próximos actos</h2>
@@ -1301,7 +1301,7 @@ def agenda_page():
             groups.append((key, [])); cur = key
         groups[-1][1].append(e)
     months = "".join(f"""
-            <div class="ag-month">
+            <div class="ag-month" id="mes-{y}-{m:02d}">
                 <h3 class="ag-month-title"><time datetime="{y}-{m:02d}" data-fmt="month">{AG_MONTHS[m - 1].capitalize()} de {y}</time></h3>
                 <ol class="ag-list">{"".join(agenda_item(e, 1) for e in es)}
                 </ol>
@@ -1310,15 +1310,20 @@ def agenda_page():
     chips = "".join(f'<button type="button" class="ag-chip" data-ag-filter="{_attr(c)}">{c}</button>' for c in cats)
     filters = f"""
             <div class="ag-filters" role="group" aria-label="Filtrar la agenda"><button type="button" class="ag-chip is-on" data-ag-filter="">Todos</button>{chips}</div>""" if len(cats) > 1 else ""
+    nav = "".join(f'<a class="ag-mnav" href="#mes-{y}-{m:02d}" data-ag-month="mes-{y}-{m:02d}"><time datetime="{y}-{m:02d}" data-fmt="mshort">{AG_MONTHS[m - 1][:3].capitalize()} {str(y)[2:]}</time></a>' for (y, m), _ in groups)
     body = page_hero("Actualidad", "Agenda de la parroquia", "web/album/dsc_0633.jpg", None, "center 40%") + f"""
-        <section data-agenda>
+        <section data-agenda data-agenda-past>
             <div class="section-head">
                 <span class="subtitulo">Próximos actos</span>
                 <h2>Lo que viene en Santa Teresa</h2>
                 <hr class="section-divider" style="margin-bottom:1.25rem;">
                 <p>Adviento, Navidad, Semana Santa, fiestas, salidas… Aquí tienes las celebraciones y actividades de la parroquia. Las eucaristías de cada semana están en <a href="misas.html">Eucaristías y calendario</a>.</p>
             </div>{filters}
+            <nav class="ag-monthnav" aria-label="Meses del año">{nav}</nav>
             <div class="ag-months">{months}
+            </div>
+            <div class="btn-group center ag-past-wrap" hidden>
+                <button type="button" class="btn" data-ag-past>Ver actos anteriores</button>
             </div>
             <p class="ag-empty lead" data-agenda-empty{"" if not AGENDA else " hidden"}>Muy pronto publicaremos aquí los próximos actos de la parroquia.</p>
             <div class="btn-group center" style="margin-top:2.5rem;">
@@ -3438,6 +3443,9 @@ for _es, _ca, _en in [("Celebraciones", "Celebracions", "Celebrations"), ("Comun
                       ("Palabra de Dios", "Paraula de Déu", "Word of God"), ("Iglesia", "Església", "Church"),
                       ("Vaticano y Arzobispado", "Vaticà i Arquebisbat", "Vatican and Archdiocese"),
                       ("Consejos parroquiales", "Consells parroquials", "Parish councils"), ("Ver todo", "Veure-ho tot", "See all"),
+                      ('Meses del año', "Mesos de l'any", 'Months of the year'),
+                      ('Ver actos anteriores', 'Veure actes anteriors', 'See past events'),
+                      ('Ocultar actos anteriores', 'Amagar actes anteriors', 'Hide past events'),
                       ('. Si quien se inscribe es menor de 14 años, este formulario debe rellenarlo su padre, madre o tutor. *', ". Si qui s'inscriu és menor de 14 anys, aquest formulari l'ha d'omplir el seu pare, mare o tutor. *", '. If the person registering is under 14, this form must be filled in by a parent or guardian. *'),
                       ('Agenda de la parroquia', 'Agenda de la parròquia', 'Parish calendar'),
                       ('Adviento', 'Advent', 'Advent'),

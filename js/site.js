@@ -8,7 +8,7 @@
             massNow: "Eucaristía <strong>en curso</strong> · comenzó a las ", massNext: "Próxima eucaristía: ",
             today: "hoy", tomorrow: "mañana", at: " a las ", hours: " h",
             days: ["el domingo", "el lunes", "el martes", "el miércoles", "el jueves", "el viernes", "el sábado"],
-            gospelToday: "Hoy", gospelNow: "Ahora mismo, en la iglesia",
+            gospelToday: "Hoy", gospelNow: "Ahora mismo, en la iglesia", agPast: "Ver actos anteriores", agPastHide: "Ocultar actos anteriores",
             viewer: "Visor de fotos", close: "Cerrar", prev: "Anterior", next: "Siguiente",
             newsEmpty: "No se han podido cargar las noticias. Inténtalo más tarde.", readMore: "Leer en la web original", updated: "Actualizado:",
             srcVatican: "Vaticano", srcDiocese: "Arzobispado", featured: "Noticia destacada",
@@ -30,7 +30,7 @@
             massNow: "Eucaristia <strong>en curs</strong> · ha començat a les ", massNext: "Propera eucaristia: ",
             today: "avui", tomorrow: "demà", at: " a les ", hours: " h",
             days: ["diumenge", "dilluns", "dimarts", "dimecres", "dijous", "divendres", "dissabte"],
-            gospelToday: "Avui", gospelNow: "Ara mateix, a l'església",
+            gospelToday: "Avui", gospelNow: "Ara mateix, a l'església", agPast: "Veure actes anteriors", agPastHide: "Amagar actes anteriors",
             viewer: "Visor de fotos", close: "Tancar", prev: "Anterior", next: "Següent",
             newsEmpty: "No s'han pogut carregar les notícies. Torna-ho a provar més tard.", readMore: "Llegir al web original", updated: "Actualitzat:",
             srcVatican: "Vaticà", srcDiocese: "Arquebisbat", featured: "Notícia destacada",
@@ -52,7 +52,7 @@
             massNow: "Mass <strong>in progress</strong> · started at ", massNext: "Next Mass: ",
             today: "today", tomorrow: "tomorrow", at: " at ", hours: "",
             days: ["on Sunday", "on Monday", "on Tuesday", "on Wednesday", "on Thursday", "on Friday", "on Saturday"],
-            gospelToday: "Today", gospelNow: "Right now, in church",
+            gospelToday: "Today", gospelNow: "Right now, in church", agPast: "See past events", agPastHide: "Hide past events",
             viewer: "Photo viewer", close: "Close", prev: "Previous", next: "Next",
             newsEmpty: "The news could not be loaded. Please try again later.", readMore: "Read on the original website", updated: "Updated:",
             srcVatican: "Vatican", srcDiocese: "Archdiocese", featured: "Top story",
@@ -323,17 +323,23 @@
     /* --- Agenda: se esconden los actos ya pasados y las fechas salen en el idioma de la página --- */
     function cap1(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
     document.querySelectorAll("[data-agenda]").forEach(function (box) {
-        var now = new Date(), limit = parseInt(box.getAttribute("data-limit") || "0", 10), shown = 0;
+        var now = new Date(), shown = 0, keepPast = box.hasAttribute("data-agenda-past"), past = 0;
+        var limit = parseInt(box.getAttribute(window.innerWidth >= 1200 && box.getAttribute("data-limit-wide") ? "data-limit-wide" : "data-limit") || "0", 10);
         var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         box.querySelectorAll(".ag-item").forEach(function (li) {
             var st = new Date(li.getAttribute("data-start")), en = new Date(li.getAttribute("data-end"));
-            if (isNaN(st) || en < now || (limit && shown >= limit)) { li.parentNode.removeChild(li); return; }
-            shown++;
+            if (!isNaN(st) && en < now && keepPast) { li.classList.add("is-past"); li.hidden = true; past++; }
+            else if (isNaN(st) || en < now || (limit && shown >= limit)) { li.parentNode.removeChild(li); return; }
+            else shown++;
             li.querySelector(".ag-wd").textContent = st.toLocaleDateString(LOCALE, { weekday: "long" });
             li.querySelector(".ag-mon").textContent = st.toLocaleDateString(LOCALE, { month: "short" }).replace(".", "");
             var days = Math.round((new Date(st.getFullYear(), st.getMonth(), st.getDate()) - today) / 864e5);
             var when = li.querySelector("[data-ag-when]");
             if (when && days <= 1) { when.textContent = cap1(T(days <= 0 ? "today" : "tomorrow")); li.classList.add("is-soon"); }
+        });
+        box.querySelectorAll("time[data-fmt='mshort']").forEach(function (t) {
+            var d = new Date(t.getAttribute("datetime") + "-01T12:00:00");
+            if (!isNaN(d)) t.textContent = cap1(d.toLocaleDateString(LOCALE, { month: "short" }).replace(".", "")) + " " + String(d.getFullYear()).slice(2);
         });
         box.querySelectorAll("time[data-fmt='month']").forEach(function (t) {
             var d = new Date(t.getAttribute("datetime") + "-01T12:00:00");
@@ -342,6 +348,8 @@
         function tidy() {
             box.querySelectorAll(".ag-month").forEach(function (m) {
                 m.hidden = !Array.prototype.some.call(m.querySelectorAll(".ag-item"), function (li) { return !li.hidden; });
+                var chip = box.querySelector('[data-ag-month="' + m.id + '"]');
+                if (chip) chip.hidden = m.hidden;
             });
         }
         tidy();
@@ -350,11 +358,25 @@
             if (empty) empty.hidden = false; else box.hidden = true;
             var filters = box.querySelector(".ag-filters"); if (filters) filters.hidden = true;
         }
+        var pastBtn = box.querySelector("[data-ag-past]");
+        if (pastBtn && past) {
+            pastBtn.parentNode.hidden = false;
+            pastBtn.textContent = T("agPast") + " (" + past + ")";
+            pastBtn.addEventListener("click", function () {
+                var show = !box.classList.contains("show-past");
+                box.classList.toggle("show-past", show);
+                box.querySelectorAll(".ag-item.is-past").forEach(function (li) { li.hidden = !show; });
+                pastBtn.textContent = show ? T("agPastHide") : T("agPast") + " (" + past + ")";
+                tidy();
+            });
+        }
         box.querySelectorAll("[data-ag-filter]").forEach(function (chip) {
             chip.addEventListener("click", function () {
                 var cat = chip.getAttribute("data-ag-filter");
                 box.querySelectorAll("[data-ag-filter]").forEach(function (c) { c.classList.toggle("is-on", c === chip); c.setAttribute("aria-pressed", c === chip); });
-                box.querySelectorAll(".ag-item").forEach(function (li) { li.hidden = !!cat && li.getAttribute("data-cat") !== cat; });
+                box.querySelectorAll(".ag-item").forEach(function (li) {
+                    li.hidden = (!!cat && li.getAttribute("data-cat") !== cat) || (li.classList.contains("is-past") && !box.classList.contains("show-past"));
+                });
                 tidy();
             });
         });
